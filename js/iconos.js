@@ -59,15 +59,38 @@ const ICONOS = {
     '<path d="M22 47c2.5 5 6 7.5 10 7.5s7.5-2.5 10-7.5"/>' +
     '</svg>',
 
-  /* AMMONITE — PNG transparente entregado por el dueño (CR-12).
-     El SVG generado no lograba la forma. El dueño entregó "fondo amonnite.png"
-     (447x447, trazo negro sobre blanco) con la instruccion "invertir color y
-     dejar solo bordes". Convertido a PNG transparente (trazo blanco sobre alfa)
-     en assets/img/ammonite-linea.png.
-     El tintado se hace por CSS con mask + background-color: currentColor, en
-     colecciones.css (.pieza__ico--png). Asi hereda el mismo color que los SVG
-     y responde al hover igual que el resto. */
-  ammonite: '<span class="ico-png ico-png--ammonite" role="img" aria-label="Ammonite"></span>',
+  /* AMMONITE — SVG de linea dibujado por nosotros (CR-14).
+     El PNG anterior ("fondo amonnite.png") resulto tener DERECHOS DE AUTOR,
+     asi que se elimino del sitio entero. Se reemplaza por este dibujo propio,
+     con la misma anatomia que ya habiamos investigado para las otras piezas.
+
+     Fuente: Wikipedia, "Ammonoidea" — "concha fina de aragonito,
+     planiespiralada y con una ornamentacion muy marcada, constituida por
+     COSTILLAS BIEN DEFINIDAS". La concha se divide en:
+       - fragmocono: la parte tabicada, con los SEPTOS que la compartimentan
+         y el gollete sifonal que los comunica
+       - camara de habitacion: la final y de mayor tamano, donde vivia el
+         cuerpo blando (con la corona de tentaculos asomando por la abertura)
+
+     El dibujo: espiral logaritmica que arranca en la abertura (arriba-derecha)
+     y se enrolla hacia el centro; costillas radiales en la vuelta externa;
+     septos curvos marcando las camaras; abertura con el borde del labio. */
+  ammonite: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* espiral logaritmica: arranca en la abertura y se enrolla al centro.
+       Cada vuelta es ~40% mas chica que la anterior, que es la proporcion
+       real de la concha de un ammonite. */
+    '<path d="M44 23c6 6.5 7.5 15.5 3.5 23.5C43.5 54.5 33 59.5 23 57 13 54.5 6.5 44 8 32.5 9.5 21 20 12.5 31.5 14c8.5 1.2 14.5 8 15 17 .4 7.5-4.5 13-11 13.5-5.5.4-10.5-3.5-11-9-.4-4.5 3-8.5 7.5-8.8 3-.2 5.5 1.5 6.2 4"/>' +
+    /* COSTILLAS: la ornamentacion radial, la firma del ammonite.
+       Van del centro hacia afuera y son mas densas en la vuelta externa. */
+    '<path d="M46.5 17.5l4-3.5M51.5 24.5l5-2.5M54 33l5.5-1.5M53 42l5.5 1M48.5 50l4.5 3.5M41 55.5l2.5 5M32 57.5l.5 5.5M22.5 55.5l-2.5 5M14 50l-4 4M8.5 42l-5 2M6.5 32.5l-5.5-.5M9 23l-4.5-3M15 15.5l-3.5-4M23.5 11l-1.5-5"/>' +
+    /* SEPTOS: las suturas que tabican el fragmocono. Son curvas, no rectas:
+       la interseccion de los septos con la pared dibuja la sutura. */
+    '<path d="M46 28c2.5 3 3 8 1 12M40.5 45.5c-3 3.5-8.5 5-13 3.5M20 44c-3.5-2.5-5.5-6.5-6-11"/>' +
+    /* ABERTURA: el borde del labio, por donde asomaba el cuerpo blando */
+    '<path d="M44 23c-2-3.5-5.5-5.5-9.5-5.5"/>' +
+    /* camara de habitacion: la ultima vuelta, mas amplia, marcada aparte */
+    '<path d="M51 33c1 7-2.5 15-9 19"/>' +
+    '</svg>',
 
   /* AMBAR — resina fosil con inclusion organica.
      Fuente (Wikipedia, "Ambar"): "resina fosilizada de origen vegetal,

@@ -25,17 +25,16 @@
 <!-- Barra de progreso de lectura -->
 <div class="progreso"></div>
 
-<!-- Fondo inmersivo animado (particulas marinas) -->
-<!-- Fondo: capas geologicas + ammonite real (DEC-008).
-     DEC-016: los ammonites van dentro de un contenedor con overflow:hidden.
-     Un elemento position:fixed con offsets negativos (right:-10%) SIGUE
-     contando en el scrollWidth del documento aunque este fuera del viewport,
-     y provocaba hasta 180px de scroll lateral. Dentro de un clip fijo el
-     desborde no puede escapar del viewport. -->
+<!-- Fondo inmersivo (DEC-008, reescrito CR-14).
+     Los ammonites ya NO son <img>: son divs con mask de un SVG propio.
+     El PNG anterior ("fondo amonnite.png") tenia DERECHOS DE AUTOR y se
+     elimino del sitio junto con todos sus derivados.
+     DEC-016: van dentro de #fondo-clip, que recorta el desborde para que
+     los offsets negativos no extiendan el scrollWidth del documento. -->
 <div id="fondo-clip" aria-hidden="true">
   <div id="fondo-sedimento"></div>
-  <img id="fondo-ammonite-grande" src="assets/img/fondo-ammonite-claro.png" alt="">
-  <img id="fondo-ammonite-2" src="assets/img/fondo-ammonite-claro.png" alt="">
+  <div id="fondo-ammonite-grande"></div>
+  <div id="fondo-ammonite-2"></div>
 </div>
 <div id="fondo-grano" aria-hidden="true"></div>
 

@@ -1,12 +1,20 @@
 /* ============================================================
-   MPCH — Fondo con el ammonite real (DEC-008)
-   Reemplaza el canvas de particulas (se veia artificial).
-   Se usa la ilustracion de ammonite entregada por el dueño,
-   repetida en patron sutil + un ejemplar grande de acento.
-   Colores MEDIDOS del logo.
-   ============================================================ */
+   MPCH — Fondo inmersivo (DEC-008, reescrito en CR-14)
 
-/* --- Patron repetido: ELIMINADO (llenaba la pagina de ammonites) --- */
+   HISTORIA IMPORTANTE: el fondo usaba "fondo amonnite.png", una imagen
+   entregada por el dueño que RESULTO TENER DERECHOS DE AUTOR. Se elimino
+   del sitio por completo (archivo y todos sus derivados).
+
+   El fondo se redibuja con un SVG PROPIO embebido como data-URI y aplicado
+   con mask. Ventajas:
+     - cero dependencia de archivos externos y de licencias de terceros
+     - el color sale de currentColor/background, asi que sigue la paleta
+     - pesa ~1 KB en vez de 256 KB del PNG anterior
+     - escala infinito sin pixelarse
+
+   El ammonite del fondo es el MISMO dibujo que el icono de la pieza
+   (espiral logaritmica con costillas y septos), asi el sitio es coherente.
+   ============================================================ */
 
 /* --- Contenedor de recorte (DEC-016) ---
    Fija al viewport, del tamano exacto de la pantalla, y recorta todo lo que
@@ -18,12 +26,24 @@
   pointer-events: none; overflow: hidden;
 }
 
-/* --- Ammonite grande de acento, latiendo muy lento ---
-   Tamano fluido: min(58vw, 620px). El offset negativo ya no puede desbordar
-   porque el padre (#fondo-clip) recorta. */
+/* El SVG del ammonite, reutilizado por las dos capas del fondo.
+   Mismo trazo que js/iconos.js -> ammonite. */
+#fondo-ammonite-grande,
+#fondo-ammonite-2 {
+  position: absolute;
+  pointer-events: none;
+  aspect-ratio: 1;
+  background-color: var(--celeste);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M44 23c6 6.5 7.5 15.5 3.5 23.5C43.5 54.5 33 59.5 23 57 13 54.5 6.5 44 8 32.5 9.5 21 20 12.5 31.5 14c8.5 1.2 14.5 8 15 17 .4 7.5-4.5 13-11 13.5-5.5.4-10.5-3.5-11-9-.4-4.5 3-8.5 7.5-8.8 3-.2 5.5 1.5 6.2 4'/%3E%3Cpath d='M46.5 17.5l4-3.5M51.5 24.5l5-2.5M54 33l5.5-1.5M53 42l5.5 1M48.5 50l4.5 3.5M41 55.5l2.5 5M32 57.5l.5 5.5M22.5 55.5l-2.5 5M14 50l-4 4M8.5 42l-5 2M6.5 32.5l-5.5-.5M9 23l-4.5-3M15 15.5l-3.5-4M23.5 11l-1.5-5'/%3E%3Cpath d='M46 28c2.5 3 3 8 1 12M40.5 45.5c-3 3.5-8.5 5-13 3.5M20 44c-3.5-2.5-5.5-6.5-6-11'/%3E%3Cpath d='M44 23c-2-3.5-5.5-5.5-9.5-5.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M44 23c6 6.5 7.5 15.5 3.5 23.5C43.5 54.5 33 59.5 23 57 13 54.5 6.5 44 8 32.5 9.5 21 20 12.5 31.5 14c8.5 1.2 14.5 8 15 17 .4 7.5-4.5 13-11 13.5-5.5.4-10.5-3.5-11-9-.4-4.5 3-8.5 7.5-8.8 3-.2 5.5 1.5 6.2 4'/%3E%3Cpath d='M46.5 17.5l4-3.5M51.5 24.5l5-2.5M54 33l5.5-1.5M53 42l5.5 1M48.5 50l4.5 3.5M41 55.5l2.5 5M32 57.5l.5 5.5M22.5 55.5l-2.5 5M14 50l-4 4M8.5 42l-5 2M6.5 32.5l-5.5-.5M9 23l-4.5-3M15 15.5l-3.5-4M23.5 11l-1.5-5'/%3E%3Cpath d='M46 28c2.5 3 3 8 1 12M40.5 45.5c-3 3.5-8.5 5-13 3.5M20 44c-3.5-2.5-5.5-6.5-6-11'/%3E%3Cpath d='M44 23c-2-3.5-5.5-5.5-9.5-5.5'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
+  -webkit-mask-size: contain; mask-size: contain;
+}
+
+/* --- Ammonite grande de acento, latiendo muy lento --- */
 #fondo-ammonite-grande {
-  position: absolute; z-index: -3; pointer-events: none;
-  width: min(58vw, 620px); height: auto; aspect-ratio: 1;
+  width: min(58vw, 620px); height: auto;
   right: -8%; top: 8%;
   opacity: .16;
   animation: respirarFondo 26s ease-in-out infinite;
@@ -35,8 +55,7 @@
 
 /* --- Segundo ammonite, abajo a la izquierda, contra-fase --- */
 #fondo-ammonite-2 {
-  position: absolute; z-index: -3; pointer-events: none;
-  width: min(42vw, 430px); height: auto; aspect-ratio: 1;
+  width: min(42vw, 430px); height: auto;
   left: -6%; bottom: 6%;
   opacity: .13;
   animation: respirarFondo2 32s ease-in-out infinite;
@@ -70,5 +89,5 @@
 
 /* Con movimiento reducido: sin animacion, pero con textura */
 @media (prefers-reduced-motion: reduce) {
-  #fondo-patron, #fondo-ammonite-grande, #fondo-ammonite-2 { animation: none !important; }
+  #fondo-ammonite-grande, #fondo-ammonite-2 { animation: none !important; }
 }

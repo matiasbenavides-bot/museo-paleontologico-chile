@@ -176,14 +176,6 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
    Se elimina el ::after: el <hr> con su gradiente ya es el separador. */
 .separador { position: relative; }
 
-/* --- Marca: latido del isotipo --- */
-.marca__iso { animation: latidoIso 6s ease-in-out infinite; }
-@keyframes latidoIso {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.055); }
-}
-.marca:hover .marca__iso { animation: none; transform: rotate(28deg) scale(1.12); }
-
 /* --- Accesibilidad: con movimiento reducido, todo quieto y visible --- */
 @media (prefers-reduced-motion: reduce) {
   .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta,
