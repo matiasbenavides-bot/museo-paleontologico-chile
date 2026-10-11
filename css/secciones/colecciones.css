@@ -68,5 +68,23 @@
    que el contenedor crece y el icono es fluido hasta 68px. */
 .pieza__ico { width: clamp(56px, 6vw, 68px); height: clamp(56px, 6vw, 68px); color: var(--ocre); margin-bottom: 18px; }
 .pieza__ico svg { width: 100%; height: 100%; display: block; }
+
+/* --- Iconos que vienen como PNG (CR-12) ---
+   El amonite lo entrego el dueño como imagen ("fondo amonnite.png", trazo
+   negro sobre blanco). Se convirtio a PNG transparente (trazo blanco sobre
+   alfa) y aca se tiñe con mask + background-color: currentColor, para que
+   herede EXACTAMENTE el mismo color y comportamiento que los SVG de linea.
+   Sin esto el PNG seria siempre blanco y no seguiria al tema ni al hover. */
+.ico-png {
+  display: block; width: 100%; height: 100%;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
+  -webkit-mask-size: contain; mask-size: contain;
+}
+.ico-png--ammonite {
+  -webkit-mask-image: url("../../assets/img/ammonite-linea.png");
+  mask-image: url("../../assets/img/ammonite-linea.png");
+}
 .pieza h3 { font-size: 1.1rem; margin-bottom: 9px; }
 .pieza p { font-size: .89rem; color: var(--text-muted); }

@@ -59,26 +59,15 @@ const ICONOS = {
     '<path d="M22 47c2.5 5 6 7.5 10 7.5s7.5-2.5 10-7.5"/>' +
     '</svg>',
 
-  /* AMMONITE — concha planiespiralada con COSTILLAS y camara de habitacion.
-     Segun la fuente (Wikipedia, "Ammonoidea"): "concha fina de aragonito,
-     planiespiralada y con una ornamentacion muy marcada, constituida por
-     COSTILLAS BIEN DEFINIDAS". Se divide en "fragmocono" (tabicado, con los
-     septos) y "camara de habitacion" (la final y de mayor tamano, donde
-     vivia el animal). Sin las costillas el dibujo eran 3 circulos y no se
-     reconocia como ammonite. */
-  ammonite: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
-    /* espiral logaritmica: arranca en la abertura y se enrolla al centro */
-    '<path d="M45 24c5.5 6 7 14.5 3.5 22.5C44.5 55 34 60 24.5 57.5 14.5 55 7.5 45 9 33.5 10.5 21.5 21 13 32.5 14.5c8.5 1 14.5 8 15 17 .4 7-4.5 12.5-11 13-5.5.4-10.5-3.5-11-9-.4-4.5 3-8.5 7.5-8.7"/>' +
-    /* COSTILLAS: la ornamentacion radial caracteristica, marcada en toda
-       la vuelta externa de la concha */
-    '<path d="M47 18l4.5-3M51.5 26l5-2M53.5 35l5.5-1M51.5 44l5.5 1.5M46 51l4.5 3.5M37.5 55.5l2.5 5M27 55.5l-1 5.5M17.5 51.5l-3.5 4.5M10.5 44l-4.5 2.5M8 34l-5-.5M10 24l-4-2.5M16.5 16l-3-4M26 11.5l-1-4.5"/>' +
-    /* abertura de la concha, en el extremo exterior de la espira */
-    '<path d="M45 24c-2-3-5.5-4.5-9-4"/>' +
-    /* SEPTOS: las suturas internas que tabican el fragmocono */
-    '<path d="M46 30l5.2 2M44.5 37l5.5 1M41 43.5l5 3M35.5 48.5l3.5 4.5M28.5 50.5l1.5 5.5"/>' +
-    /* camara de habitacion: el tramo final, mas amplio, se marca aparte */
-    '<path d="M51.5 33c1.5 6-1 13-6 17"/>' +
-    '</svg>',
+  /* AMMONITE — PNG transparente entregado por el dueño (CR-12).
+     El SVG generado no lograba la forma. El dueño entregó "fondo amonnite.png"
+     (447x447, trazo negro sobre blanco) con la instruccion "invertir color y
+     dejar solo bordes". Convertido a PNG transparente (trazo blanco sobre alfa)
+     en assets/img/ammonite-linea.png.
+     El tintado se hace por CSS con mask + background-color: currentColor, en
+     colecciones.css (.pieza__ico--png). Asi hereda el mismo color que los SVG
+     y responde al hover igual que el resto. */
+  ammonite: '<span class="ico-png ico-png--ammonite" role="img" aria-label="Ammonite"></span>',
 
   /* AMBAR — resina fosil con inclusion organica.
      Fuente (Wikipedia, "Ambar"): "resina fosilizada de origen vegetal,
@@ -117,49 +106,70 @@ const ICONOS = {
     '<path d="M22 30.5c7 2.5 13 2.5 20 0"/>' +
     '</svg>',
 
-  /* HUESO Y HUEVO DE DINOSAURIO — las dos piezas que expone el museo.
-     HUESO: un hueso largo tiene tres partes. La DIAFISIS (cuerpo, la parte
-     cilindrica del medio) es MAS ANGOSTA que las dos EPIFISIS (los extremos
-     articulares), que se ensanchan en forma de nudillo. Eso es lo que hace
-     que un hueso se reconozca como hueso y no como un palo.
-     HUEVO: forma ovoide, mas puntiagudo en un extremo. Los huevos fosiles
-     de dinosaurio aparecen con la CASCARA AGRIETADA o con la textura de
-     cascara conservada, y suelen hallarse en nidos. */
+  /* HUESO — forma levantada del PNG que entrego el dueño.
+     El PNG ("huesos ... invertir color y dejar solo bordes") trae un hueso
+     VERTICAL y SIMETRICO sobre su eje: dos epifisis (extremos) enfrentadas,
+     cada una con DOS LOBULOS tipo nudillo, y una diafisis que se estrecha al
+     centro formando una X / reloj de arena. Lo confirme leyendo el mapa de
+     pixeles del archivo, no a ojo.
+     Antes estaba mal: lo dibuje en diagonal con las epifisis desplazadas a
+     esquinas opuestas (una "copa mas afuera que la otra"). Ahora es simetrico.
+     El HUEVO ya no va en este icono: el dueño pidio separarlos. */
   hueso: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
-    /* HUESO largo: diafisis angosta + epifisis ensanchadas en los extremos.
-       El contorno define la cintura del hueso en el centro. */
-    '<path d="M9 45c-2.5-2-3-5.5-1-7.5 1.5-1.5 3.5-1.5 5 0l1.5 1.5 24-20-1.5-1.5c-1.5-1.5-1.5-3.5 0-5 2-2 5.5-1.5 7.5 1 2 2.5 2 5.5 0 7.5l-1.5 1.5 3 3-1.5 1.5c-2.5 2.5-6.5 2.5-9 0l-22.5 19 1.5 1.5c1.5 1.5 1.5 3.5 0 5-2 2-5.5 1.5-7.5-1z"/>' +
-    /* la cintura: las lineas que marcan donde termina el cuerpo del hueso */
-    '<path d="M22 33l3.5 3.5M41 19l3.5 3.5"/>' +
-    /* HUEVO: ovoide, mas agudo arriba, con la cascara agrietada tipica */
-    '<path d="M48 8c4.5 0 8 5 8 11s-3.5 10-8 10-8-4-8-10 3.5-11 8-11z"/>' +
-    '<path d="M43 14l2.5 2-1.5 2.5 2.5 2M53 13l-2 2 1.5 2.5-2 2"/>' +
-    /* cascara: linea que separa la cascara del interior */
-    '<path d="M41.5 21c4.5 2 8.5 2 13 0"/>' +
+    /* extremo SUPERIOR: epifisis con sus dos lobulos enfrentados */
+    '<path d="M24 6c3.5 0 6 3 6.5 6.5M40 6c-3.5 0-6 3-6.5 6.5"/>' +
+    '<path d="M30.5 12.5c-3 1-5.5 3-7 6M33.5 12.5c3 1 5.5 3 7 6"/>' +
+    /* cuerpo: se estrecha hacia la cintura central (la X) */
+    '<path d="M23.5 18.5c5 5.5 8 9 8.5 13.5.5-4.5 3.5-8 8.5-13.5"/>' +
+    '<path d="M23.5 45.5c5-5.5 8-9 8.5-13.5.5 4.5 3.5 8 8.5 13.5"/>' +
+    /* extremo INFERIOR: espejo exacto del superior */
+    '<path d="M30.5 51.5c-3-1-5.5-3-7-6M33.5 51.5c3-1 5.5-3 7-6"/>' +
+    '<path d="M24 58c3.5 0 6-3 6.5-6.5M40 58c-3.5 0-6-3-6.5-6.5"/>' +
+    /* la cintura: marca donde el cuerpo se hace mas angosto */
+    '<path d="M28 30.5c1.5 1 3 1 4.5 0M28 33.5c1.5-1 3-1 4.5 0"/>' +
     '</svg>',
 
-  /* RECONSTRUCCION — esqueleto de dinosaurio montado en sala.
-     Estructura real de un esqueleto de teropodo:
-       craneo con mandibula y fenestra (la ventana del craneo),
-       columna vertebral curvada (cervical -> dorsal -> caudal),
-       costillas que bajan de las vertebras dorsales,
-       pelvis, y patas con femur, tibia y pie.
-     Antes esto era una estrella de 5 puntas, sin ninguna relacion. */
+  /* HUEVO DE DINOSAURIO — icono PROPIO, separado del hueso (pedido del dueño).
+     Forma ovoide con un extremo mas agudo, cascara agrietada y textura de
+     cascara fosilizada. Los huevos de dinosaurio aparecen en nidos. */
+  huevo: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* contorno ovoide: mas agudo arriba, mas redondo abajo */
+    '<path d="M32 7c7.5 0 14 10.5 14 21.5S39.5 50 32 50s-14-10.5-14-21.5S24.5 7 32 7z"/>' +
+    /* cascara agrietada: la rotura tipica de un huevo fosil */
+    '<path d="M22 27l4 3-2.5 3 4 3-2 3M42 25l-3.5 3 2.5 3-3 3"/>' +
+    /* linea de cascara: separa la cascara del interior */
+    '<path d="M19.5 35c7.5 3.5 17.5 3.5 25 0"/>' +
+    /* el nido: hueco donde se apoya */
+    '<path d="M14 51c4 4 10 6 18 6s14-2 18-6"/>' +
+    '<path d="M18 55c3.5 2.5 8.5 4 14 4s10.5-1.5 14-4"/>' +
+    '</svg>',
+
+  /* RECONSTRUCCION — MANDIBULA DE DINOSAURIO (pedido del dueño).
+     Se reemplaza el esqueleto completo por una mandibula, que es lo que el
+     museo reconstruye y lo que se reconoce al instante.
+     Anatomia de una mandibula de teropodo:
+       - rama mandibular alargada y baja
+       - la SINFISIS (donde se unen las dos mitades) al frente
+       - DENTADURA: dientes conicos y aserrados, todos del mismo tipo
+         (homodontos), inclinados hacia atras
+       - la FENESTRA MANDIBULAR (abertura ovalada) en la mitad posterior
+       - el proceso articular y el proceso coronoide, atras y arriba
+       - los dientes siguen la curva de la mandibula: mas grandes al centro */
   recon: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
-    /* CRANEO: largo, con la fenestra (abertura) y la mandibula inferior */
-    '<path d="M8 20c0-3.5 2.5-6 6-6l8 .5c3.5.2 5.5 2 6 5l.5 3-6 1-2 5-3-4.5-4-1c-3 0-5.5-1-5.5-3z"/>' +
-    '<path d="M15 24c2.5 1.5 5.5 1.5 8 0"/>' +
-    /* COLUMNA: cervical curvada hacia arriba, dorsal descendente, caudal */
-    '<path d="M28 18c6-3 11-2 15 2 4 3.5 6 9 7 15"/>' +
-    /* VERTEBRAS: espinas neurales saliendo de la columna */
-    '<path d="M31 15.5l-1-3.5M36 15l-1-3.5M41 17l-1-3.5M45.5 21l-1-3.5M49 26.5l-1-3.5"/>' +
-    /* COSTILLAS: bajan de la zona dorsal, curvando hacia la pelvis */
-    '<path d="M30 20c1.5 6 1 12-1.5 17M35 21c2 6 2 12 0 17M40 23.5c2.5 5 3 10.5 1.5 15.5M45 27.5c2.5 4.5 3 9 1.5 13"/>' +
-    /* PELVIS */
-    '<path d="M44 38c3 1.5 4.5 4 4 7M44 38c-2 2-2.5 5-1.5 8"/>' +
-    /* PATA: femur, tibia y pie */
-    '<path d="M46 39c1 5 1.5 9.5 1 13M45 39c-1.5 4.5-2.5 8.5-2 12.5"/>' +
-    '<path d="M42 54h7"/>' +
+    /* rama mandibular: contorno alargado, bajo, con la sinfisis al frente
+       (extremo agudo a la izquierda) y el proceso articular atras */
+    '<path d="M7 38c1.5-4 5-6 9.5-6h28c4 0 7 2 8.5 5 .8 1.7.5 3.5-1 4.5-2 1.3-4.5 1.5-7 .8l-31 1.2c-4.5 0-8-2-7.3-5.5z"/>' +
+    /* la SINFISIS: la union de las dos mitades, al frente */
+    '<path d="M9 35.5c1.5 1.5 3 2.5 5 3"/>' +
+    /* FENESTRA MANDIBULAR: la ventana ovalada del hueso */
+    '<path d="M39 36c3.5 0 6 1.5 6 3.5S42.5 43 39 43s-6-1.5-6-3.5 2.5-3.5 6-3.5z"/>' +
+    /* el proceso articular (atras) y el coronoide (arriba) */
+    '<path d="M46 35c1.5-2.5 3.5-3.5 5.5-3M48.5 43c1.5 1.5 3 2 4.5 1.5"/>' +
+    /* DENTADURA: dientes conicos, homodontos, inclinados hacia atras.
+       Siguen la curva de la mandibula y son mas grandes al centro. */
+    '<path d="M11 32l1-5 1.5 5M16 31.5l1.2-6 1.8 6M21.5 31.5l1.3-6.5 1.7 6.5M27 31.5l1.3-7 1.7 7M32.5 31.5l1.3-6.5 1.7 6.5M38 31.5l1.2-6 1.8 6M43 32l1-5 1.5 5"/>' +
+    /* el borde superior del dentario, del que nacen los dientes */
+    '<path d="M10 32.5c10-2 24-2 34 0"/>' +
     '</svg>',
 
   /* --- Servicios (no son piezas: quedan como pictogramas funcionales) --- */

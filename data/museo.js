@@ -77,7 +77,8 @@ const COLECCIONES = {
     { icono: "ammonite",  nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica." },
     { icono: "ambar",     nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
     { icono: "tiburon",   nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos." },
-    { icono: "hueso",     nombre: "Huesos y huevos de dinosaurios", detalle: "Evidencia directa de los vertebrados que dominaron el Mesozoico." },
+    { icono: "hueso",     nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto." },
+    { icono: "huevo",     nombre: "Huevos de dinosaurios", detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." },
     { icono: "recon",     nombre: "Reconstrucciones", detalle: "Esqueletos y reconstrucciones que devuelven forma a los fósiles." }
   ]
 };
