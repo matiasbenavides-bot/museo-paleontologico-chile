@@ -81,26 +81,28 @@ img, svg, video { max-width: 100%; height: auto; }
   .contacto__grid,
   .footer__grid { grid-template-columns: 1fr; gap: clamp(18px, 5vw, 30px); }
 
-  /* Linea de tiempo: se vuelve vertical */
+  /* Linea de tiempo en movil: SIN linea conectora (pedido del dueño).
+     La version vertical dejaba una barra que se desplazaba en horizontal,
+     porque `right` heredado de la regla de escritorio (calc(50% / 5))
+     seguia deformando la caja junto a `top/bottom: 0`. En pantallas
+     angostas la linea aporta poco y molesta, asi que se elimina entera:
+     quedan los puntos y el texto, que es lo que se lee. */
   .linea {
     grid-template-columns: 1fr; gap: 0;
-    padding-top: 0; padding-left: 22px;
+    padding-top: 0; padding-left: 0;   /* sin puntos colgando: no hace falta sangria */
     margin-bottom: var(--space-bloque);
   }
-  .linea::before {
-    top: 0; bottom: 0; left: 4px; right: auto;
-    width: 2px; height: auto;
-    background: linear-gradient(180deg, var(--ocre-dark), var(--ocre), var(--verde-light));
-  }
-  /* En vertical el punto se ancla a la izquierda, no arriba */
+  .linea::before { content: none; }   /* sin linea conectora */
+  /* Sin linea que los una, los puntos dejan de tener sentido colgando a la
+     izquierda: se quitan tambien. Queda solo el texto (era + rango), que es
+     lo unico que se lee bien en una pantalla angosta. */
+  .linea__era::before { content: none; }
   .linea__era {
     text-align: left;
-    padding: var(--space-card) 0 var(--space-card) 6px;
-    padding-top: 12px;
+    padding: 12px 0;
   }
-  .linea__era::before {
-    top: 17px; left: -22px; transform: none;
-  }
+  /* El detalle de cada era se muestra completo en movil (hay espacio) */
+  .linea__detalle { display: block; }
 
   /* La tabla ficha del "quienes somos" se apila */
   .somos__ficha { grid-template-columns: 1fr; }
