@@ -1,0 +1,63 @@
+/* MPCH — Hero */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 140px 0 90px; position: relative; overflow: hidden;
+}
+/* Estratos geológicos de fondo */
+.hero__estratos {
+  position: absolute; inset: 0; z-index: -1; opacity: .5;
+  background: repeating-linear-gradient(
+    -8deg,
+    transparent 0px, transparent 60px,
+    rgba(81,173,198,.04) 60px, rgba(81,173,198,.04) 62px,
+    transparent 62px, transparent 130px,
+    rgba(47,126,130,.05) 130px, rgba(47,126,130,.05) 132px
+  );
+}
+.hero__grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 60px; align-items: center; }
+
+.hero__lema {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 7px 18px; border-radius: 999px;
+  background: rgba(81,173,198,.09); border: 1px solid var(--border-accent);
+  font-size: .78rem; font-weight: 600; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ocre-light); margin-bottom: 26px;
+}
+.hero__lema::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--ocre); animation: pulseGlow 2.6s infinite; }
+
+.hero__titulo {
+  font-size: clamp(2.3rem, 6vw, 4.2rem); line-height: 1.06;
+  margin-bottom: 22px; letter-spacing: -.02em;
+}
+.hero__titulo em {
+  font-style: normal; display: block;
+  background: linear-gradient(120deg, var(--ocre-light), var(--ocre), var(--ocre-dark));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero__desc { font-size: 1.09rem; color: var(--text-soft); max-width: 56ch; margin-bottom: 34px; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 46px; }
+
+.hero__datos { display: flex; flex-wrap: wrap; gap: 34px; }
+.hero__dato { display: flex; flex-direction: column; }
+.hero__dato strong { font-family: var(--font-display); font-size: 1.75rem; color: var(--ocre); line-height: 1.1; }
+.hero__dato span { font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
+
+/* Tarjeta lateral: horario vivo */
+.hero__tarjeta { padding: 34px 30px; position: relative; }
+.hero__tarjeta h3 { font-size: 1.05rem; margin-bottom: 6px; color: var(--ocre-light); letter-spacing: .02em; }
+.hero__tarjeta .nota { font-size: .8rem; color: var(--text-muted); margin-bottom: 20px; }
+.horario { display: flex; flex-direction: column; gap: 12px; }
+.horario__fila {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  padding-bottom: 11px; border-bottom: 1px solid var(--border-subtle); font-size: .88rem;
+}
+.horario__fila:last-child { border-bottom: 0; padding-bottom: 0; }
+.horario__dias { color: var(--text-soft); }
+.horario__horas { color: var(--text-main); font-weight: 600; font-variant-numeric: tabular-nums; }
+.horario__fila.cerrado .horario__horas { color: #b06a5a; }
+.horario__estado {
+  margin-top: 20px; padding: 11px 15px; border-radius: var(--radius-sm);
+  font-size: .82rem; text-align: center; font-weight: 600; letter-spacing: .02em;
+}
+.horario__estado.abierto { background: rgba(47,126,130,.22); color: #8fd0e2; border: 1px solid rgba(81,173,198,.38); }
+.horario__estado.cerrado { background: rgba(176,106,90,.16); color: #e0a897; border: 1px solid rgba(176,106,90,.32); }

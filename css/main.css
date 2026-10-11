@@ -1,0 +1,15 @@
+/* MPCH — Cadena de imports (solo imports, sin reglas) */
+@import url("base/reset.css");
+@import url("base/root.css");
+@import url("base/base.css");
+
+@import url("secciones/header.css");
+@import url("secciones/hero.css");
+@import url("secciones/somos.css");
+@import url("secciones/colecciones.css");
+@import url("secciones/servicios.css");
+@import url("secciones/visita.css");
+@import url("secciones/footer.css");
+@import url("secciones/fondo-ammonite.css");
+@import url("secciones/animaciones.css");
+@import url("secciones/responsive.css");

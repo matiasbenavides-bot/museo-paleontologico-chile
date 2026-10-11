@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" role="img" aria-label="Museo Paleontológico de Chile — MPCH">
+  <!-- Logo MPCH — redibujado limpio a partir de la foto del logo entregada.
+       Colores MEDIDOS de la foto (DEC-006):
+         azul marino #02153f · celeste #51adc6 · teal #2f7e82 · salmón #d26c53 -->
+  <defs>
+    <linearGradient id="espiral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#7ec8dd"/>
+      <stop offset="50%"  stop-color="#51adc6"/>
+      <stop offset="100%" stop-color="#2f7e82"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ====== ISOTIPO: ammonite ====== -->
+  <g transform="translate(4,4)">
+    <!-- Halo -->
+    <circle cx="44" cy="44" r="42" fill="#51adc6" opacity=".08"/>
+
+    <!-- Espiral del ammonite (4 vueltas decrecientes) -->
+    <g fill="none" stroke="url(#espiral)" stroke-linecap="round">
+      <path d="M44 10c18.8 0 34 15.2 34 34S62.8 78 44 78 10 62.8 10 44 25.2 10 44 10z" stroke-width="6.2"/>
+      <path d="M44 21c12.7 0 23 10.3 23 23s-10.3 23-23 23-23-10.3-23-23 10.3-23 23-23z" stroke-width="5.4"/>
+      <path d="M44 31c7.2 0 13 5.8 13 13s-5.8 13-13 13-13-5.8-13-13 5.8-13 13-13z" stroke-width="4.6"/>
+      <path d="M44 39c2.8 0 5 2.2 5 5s-2.2 5-5 5-5-2.2-5-5 2.2-5 5-5z" stroke-width="3.8"/>
+    </g>
+
+    <!-- Costillas radiales (teal) -->
+    <g stroke="#2f7e82" stroke-width="1.9" opacity=".5" stroke-linecap="round">
+      <line x1="44" y1="10" x2="44" y2="21"/>
+      <line x1="64" y1="24" x2="56" y2="32"/>
+      <line x1="78" y1="44" x2="67" y2="44"/>
+      <line x1="64" y1="64" x2="56" y2="56"/>
+      <line x1="44" y1="78" x2="44" y2="67"/>
+      <line x1="24" y1="64" x2="32" y2="56"/>
+      <line x1="10" y1="44" x2="21" y2="44"/>
+      <line x1="24" y1="24" x2="32" y2="32"/>
+    </g>
+
+    <!-- Núcleo salmón -->
+    <circle cx="44" cy="44" r="2.6" fill="#d26c53"/>
+  </g>
+
+  <!-- ====== WORDMARK: MPCH ====== -->
+  <g fill="#02153f" font-family="Georgia, 'Times New Roman', serif" font-weight="700">
+    <text x="100" y="52" font-size="40" letter-spacing="3.2">MPCH</text>
+  </g>
+
+  <!-- Línea de apoyo + bajada -->
+  <g>
+    <line x1="101" y1="61" x2="341" y2="61" stroke="#51adc6" stroke-width="1.6" opacity=".65"/>
+    <text x="101" y="78" fill="#2f7e82"
+          font-family="'Segoe UI', system-ui, sans-serif" font-size="11.4"
+          font-weight="600" letter-spacing="2.1">MUSEO PALEONTOLÓGICO DE CHILE</text>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+/* MPCH — Llamado final y pie de página */
+.cta-final {
+  padding: 80px 0; text-align: center; position: relative; overflow: hidden;
+  background: linear-gradient(160deg, rgba(47,126,130,.16), rgba(20,16,12,.4));
+  border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
+}
+.cta-final h2 { font-size: clamp(1.6rem, 3.6vw, 2.5rem); margin-bottom: 14px; }
+.cta-final p { color: var(--text-soft); max-width: 54ch; margin: 0 auto 30px; }
+
+.footer { padding: 58px 0 30px; background: rgba(12, 10, 7, .55); }
+.footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 44px; margin-bottom: 42px; }
+.footer__marca p { font-size: .89rem; color: var(--text-muted); margin-top: 14px; max-width: 40ch; }
+.footer h4 { font-family: var(--font-body); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ocre); margin-bottom: 16px; }
+.footer ul { display: flex; flex-direction: column; gap: 10px; }
+.footer ul a, .footer ul li { font-size: .89rem; color: var(--text-soft); transition: color .25s; }
+.footer ul a:hover { color: var(--ocre); }
+.footer__base {
+  padding-top: 26px; border-top: 1px solid var(--border-subtle);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  font-size: .79rem; color: var(--text-muted);
+}
+.footer__base a:hover { color: var(--ocre); }

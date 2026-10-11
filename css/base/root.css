@@ -1,0 +1,121 @@
+/* ============================================================
+   MPCH — Tokens de diseño
+   DEC-006: paleta MEDIDA de la foto del logo del museo
+   (WhatsApp Image 2026-10-11 at 6.19.57 PM.jpeg, 880x1202).
+   Medición pixel a pixel, no interpretación:
+     #02153f  azul marino   -> dominante de marca (wordmark + isotipo)
+     #51adc6  celeste       -> acento principal
+     #2f7e82  teal          -> interior del isotipo
+     #d26c53  salmón        -> acento cálido
+     #e8e9e3  crema/hueso   -> soporte, color más frecuente de la imagen
+   Lectura: fósiles MARINOS (trilobites, ammonites, tiburones)
+   -> paleta oceánica, no desierto.
+   ============================================================ */
+:root {
+  /* Fondos — azul marino medido del logo */
+  --bg-deep:      #010e26;
+  --bg-base:      #02153f;   /* azul marino MEDIDO */
+  --bg-elevated:  #061f48;
+  --bg-card:      #0a2a52;
+  --bg-glass:     rgba(6, 31, 72, 0.62);
+  --bg-glass-strong: rgba(2, 21, 63, 0.86);
+
+  /* Texto */
+  --text-main:  #eef2f4;
+  --text-soft:  #c2d4dd;
+  --text-muted: #7e9aad;
+
+  /* Bordes */
+  --border-subtle: rgba(232, 233, 227, 0.09);
+  --border-mid:    rgba(232, 233, 227, 0.17);
+  --border-accent: rgba(81, 173, 198, 0.38);
+
+  /* Acento principal — celeste MEDIDO */
+  --celeste:        #51adc6;
+  --celeste-light:  #7ec8dd;
+  --celeste-dark:   #2f7e82;
+
+  /* Acento cálido — salmón MEDIDO */
+  --salmon:       #d26c53;
+  --salmon-light: #e99d85;
+  --salmon-dark:  #a84f3a;
+
+  /* Crema MEDIDA */
+  --crema:      #e8e9e3;
+  --crema-soft: #cfd3cd;
+
+  /* Alias semánticos (los usa el CSS de secciones) */
+  --ocre:        var(--celeste);
+  --ocre-light:  var(--celeste-light);
+  --ocre-dark:   var(--celeste-dark);
+  --ocre-glow:   rgba(81, 173, 198, 0.32);
+
+  --verde:       #2f7e82;   /* teal medido del isotipo */
+  --verde-light: #51adc6;
+  --verde-dark:  #1d5257;
+
+  /* Sombras */
+  --shadow-md: 0 8px 24px rgba(1, 14, 38, 0.45);
+  --shadow-xl: 0 24px 64px rgba(1, 14, 38, 0.62);
+  --shadow-glow: 0 0 30px rgba(81, 173, 198, 0.18);
+
+  /* Radios */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+
+  /* Tipografía */
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Transiciones */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layout */
+  --maxw: 1180px;
+
+  /* ============================================================
+     ESCALA FLUIDA (DEC-015)
+     Un solo sistema con clamp() en vez de breakpoints duros.
+     Minimo en rem (accesibilidad: respeta el zoom del usuario),
+     punto medio en vw (escala con la pantalla), maximo en rem.
+     ============================================================ */
+
+  /* Contenedor: el padding respira con la pantalla sin desbordar */
+  --gutter: clamp(16px, 4vw, 24px);
+
+  /* Espaciado vertical de secciones */
+  --space-seccion: clamp(56px, 8vw, 96px);
+  --space-bloque:  clamp(24px, 4vw, 44px);
+  --space-card:    clamp(20px, 3vw, 28px);
+
+  /* Tipografia fluida */
+  --fs-hero:    clamp(1.9rem, 5.2vw, 4.2rem);
+  --fs-h2:      clamp(1.45rem, 3.6vw, 2.6rem);
+  --fs-h3:      clamp(1rem, 1.8vw, 1.1rem);
+  --fs-body:    clamp(.94rem, 1.4vw, 1.03rem);
+  --fs-small:   clamp(.82rem, 1.2vw, .89rem);
+  --fs-eyebrow: clamp(.68rem, 1vw, .74rem);
+
+  /* Radios fluidos */
+  --radius-card: clamp(14px, 2vw, 22px);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--ocre-glow); }
+  50%      { box-shadow: 0 0 0 14px rgba(81, 173, 198, 0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

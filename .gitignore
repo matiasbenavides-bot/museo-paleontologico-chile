@@ -1,0 +1,9 @@
+# Dependencias / sistema
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Capturas de trabajo (no son parte del sitio)
+_capturas/
+*.log

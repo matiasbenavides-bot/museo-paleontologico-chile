@@ -1,0 +1,7 @@
+# Normaliza finales de linea: el proyecto vive en /mnt/c (Windows) pero se
+# versiona desde WSL. Sin esto, git marca todo el CSS/HTML como modificado.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary

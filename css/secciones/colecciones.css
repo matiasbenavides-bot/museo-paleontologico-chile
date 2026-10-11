@@ -1,0 +1,68 @@
+/* MPCH — Colecciones */
+.colecciones { background: linear-gradient(180deg, transparent, rgba(20,16,12,.6), transparent); }
+.colecciones__rango {
+  display: inline-flex; align-items: center; gap: 14px; margin-bottom: 44px;
+  padding: 12px 22px; border-radius: 999px; background: var(--bg-glass);
+  border: 1px solid var(--border-accent); font-size: .86rem; color: var(--text-soft);
+}
+.colecciones__rango b { color: var(--ocre); font-family: var(--font-display); font-size: 1rem; letter-spacing: .03em; }
+
+/* Línea de tiempo geológica
+   CR-02: la linea horizontal no pasaba por los puntos (25px de desfase).
+   Solucion: la era NO tiene padding-top; reserva espacio con un ::after
+   invisible equivalente, para que el origen de la era coincida exactamente
+   con el origen del contenedor y los dos elementos se anclen a la MISMA
+   coordenada (--linea-nivel). La linea arranca y termina en el centro de
+   la primera y ultima columna, sin sangrar por los lados. */
+.linea {
+  --linea-nivel: clamp(18px, 2.2vw, 28px);
+  --pt: 11px;                                  /* diametro del punto */
+  position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(4px, .8vw, 8px); margin-bottom: clamp(38px, 5vw, 56px);
+}
+.linea::before {
+  content: ''; position: absolute;
+  top: calc(var(--linea-nivel) - 1px);
+  left: calc(50% / 5); right: calc(50% / 5);
+  height: 2px;
+  background: linear-gradient(90deg, var(--ocre-dark), var(--ocre), var(--verde-light));
+  opacity: .45;
+}
+.linea__era {
+  text-align: center; position: relative; min-width: 0;
+  /* el contenido baja para dejar espacio al punto y a la linea */
+  padding-top: calc(var(--linea-nivel) + 10px);
+}
+.linea__era::before {
+  content: ''; position: absolute;
+  /* anclado al CONTENEDOR, no a la era: misma coordenada que la linea */
+  top: calc(var(--linea-nivel) - var(--pt) / 2);
+  left: 50%; transform: translateX(-50%);
+  width: var(--pt); height: var(--pt); border-radius: 50%; background: var(--bg-base);
+  border: 2px solid var(--ocre); z-index: 1;
+}
+.linea__era.activa::before { background: var(--ocre); box-shadow: 0 0 0 5px var(--ocre-glow); }
+.linea__nombre { font-family: var(--font-display); font-size: clamp(.78rem, 1.1vw, .92rem); color: var(--text-main); }
+.linea__hace { font-size: clamp(.62rem, .85vw, .68rem); color: var(--text-muted); letter-spacing: .06em; }
+.linea__detalle { font-size: clamp(.6rem, .8vw, .66rem); color: var(--text-muted); opacity: .75; margin-top: 2px; }
+
+.colecciones__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.pieza {
+  padding: 28px 26px; border-radius: var(--radius-lg);
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  transition: transform .35s var(--ease-out-expo), border-color .35s, box-shadow .35s;
+  position: relative; overflow: hidden;
+}
+.pieza::after {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1.5px;
+  background: linear-gradient(135deg, transparent 35%, var(--ocre) 50%, transparent 65%);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#000) content-box, linear-gradient(#000);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity .35s; pointer-events: none;
+}
+.pieza:hover { transform: translateY(-6px); border-color: var(--border-accent); box-shadow: var(--shadow-xl); }
+.pieza:hover::after { opacity: 1; animation: shimmer 3s linear infinite; }
+.pieza__ico { width: 52px; height: 52px; color: var(--ocre); margin-bottom: 18px; }
+.pieza h3 { font-size: 1.1rem; margin-bottom: 9px; }
+.pieza p { font-size: .89rem; color: var(--text-muted); }

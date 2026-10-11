@@ -1,0 +1,90 @@
+/* MPCH — Base, contenedores y utilidades */
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--text-main);
+  background: var(--bg-base);
+  line-height: 1.65;
+  /* NO se usa overflow-x: hidden para tapar desbordes.
+     Un desborde oculto sigue rompiendo el layout en movil; la causa
+     real (menu fuera de pantalla) se corrige en responsive.css. */
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fondo: las capas viven en css/secciones/fondo-ammonite.css (DEC-008).
+   El body solo lleva el color base por si el CSS de fondo no carga. */
+body { background: var(--bg-deep); }
+
+.contenedor {
+  width: 100%; max-width: var(--maxw); margin: 0 auto;
+  padding-left: var(--gutter); padding-right: var(--gutter);
+  box-sizing: border-box;
+}
+
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
+
+/* Etiqueta de sección (eyebrow) */
+.etiqueta {
+  display: inline-block; font-family: var(--font-body);
+  font-size: .74rem; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--ocre);
+  margin-bottom: 14px;
+}
+.etiqueta::before { content: '— '; opacity: .5; }
+
+.seccion { padding: 96px 0; position: relative; }
+.seccion__titulo { font-size: clamp(1.7rem, 3.6vw, 2.6rem); margin-bottom: 16px; }
+.seccion__intro { color: var(--text-soft); max-width: 66ch; font-size: 1.03rem; }
+
+/* Botones */
+.btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 14px 30px; border-radius: 999px;
+  font-weight: 600; font-size: .95rem; letter-spacing: .01em;
+  transition: transform .3s var(--ease-out-expo), box-shadow .3s, background .3s;
+  will-change: transform;
+}
+.btn--primario {
+  background: linear-gradient(135deg, var(--ocre-light), var(--ocre-dark));
+  color: #02153f;
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(81,173,198,.35) inset;
+}
+.btn--primario:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl), var(--shadow-glow); }
+.btn--fantasma {
+  border: 1px solid var(--border-mid); color: var(--text-main);
+  background: rgba(244,237,224,.03);
+}
+.btn--fantasma:hover { border-color: var(--border-accent); background: rgba(81,173,198,.08); transform: translateY(-3px); }
+
+/* Glass panel */
+.glass {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* Fade-in al hacer scroll */
+.fade-in { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease-out-expo), transform .7s var(--ease-out-expo); }
+.fade-in.visible { opacity: 1; transform: none; }
+
+/* Separador decorativo */
+.separador {
+  height: 1px; border: 0; margin: 0;
+  background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+}
+
+::selection { background: var(--ocre); color: #02153f; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--ocre-dark); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ocre); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
+}

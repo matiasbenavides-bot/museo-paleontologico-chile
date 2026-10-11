@@ -1,0 +1,74 @@
+/* ============================================================
+   MPCH — Fondo con el ammonite real (DEC-008)
+   Reemplaza el canvas de particulas (se veia artificial).
+   Se usa la ilustracion de ammonite entregada por el dueño,
+   repetida en patron sutil + un ejemplar grande de acento.
+   Colores MEDIDOS del logo.
+   ============================================================ */
+
+/* --- Patron repetido: ELIMINADO (llenaba la pagina de ammonites) --- */
+
+/* --- Contenedor de recorte (DEC-016) ---
+   Fija al viewport, del tamano exacto de la pantalla, y recorta todo lo que
+   sus hijos quieran sangrar hacia afuera. Al vivir dentro de este clip, los
+   ammonites pueden usar offsets negativos SIN extender el scrollWidth del
+   documento (antes: hasta 180px de scroll lateral). */
+#fondo-clip {
+  position: fixed; inset: 0; z-index: -3;
+  pointer-events: none; overflow: hidden;
+}
+
+/* --- Ammonite grande de acento, latiendo muy lento ---
+   Tamano fluido: min(58vw, 620px). El offset negativo ya no puede desbordar
+   porque el padre (#fondo-clip) recorta. */
+#fondo-ammonite-grande {
+  position: absolute; z-index: -3; pointer-events: none;
+  width: min(58vw, 620px); height: auto; aspect-ratio: 1;
+  right: -8%; top: 8%;
+  opacity: .16;
+  animation: respirarFondo 26s ease-in-out infinite;
+}
+@keyframes respirarFondo {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: .14; }
+  50%      { transform: scale(1.06) rotate(7deg); opacity: .20; }
+}
+
+/* --- Segundo ammonite, abajo a la izquierda, contra-fase --- */
+#fondo-ammonite-2 {
+  position: absolute; z-index: -3; pointer-events: none;
+  width: min(42vw, 430px); height: auto; aspect-ratio: 1;
+  left: -6%; bottom: 6%;
+  opacity: .13;
+  animation: respirarFondo2 32s ease-in-out infinite;
+}
+@keyframes respirarFondo2 {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: .11; }
+  50%      { transform: scale(1.08) rotate(-8deg); opacity: .16; }
+}
+
+/* --- Sedimento: gradiente de capas geologicas muy sutil --- */
+#fondo-sedimento {
+  position: absolute; inset: 0; z-index: -4; pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 15%, rgba(81,173,198,.07), transparent 46%),
+    radial-gradient(circle at 82% 78%, rgba(47,126,130,.09), transparent 50%),
+    radial-gradient(circle at 50% 50%, #062143, #01102b 78%);
+}
+
+/* --- Grano de roca (textura fina, no plana) --- */
+#fondo-grano {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* En movil, el ammonite grande estorba: se reduce mas */
+@media (max-width: 768px) {
+  #fondo-ammonite-grande { width: min(52vw, 340px); right: -10%; opacity: .08; }
+  #fondo-ammonite-2 { width: min(40vw, 240px); left: -8%; opacity: .06; }
+}
+
+/* Con movimiento reducido: sin animacion, pero con textura */
+@media (prefers-reduced-motion: reduce) {
+  #fondo-patron, #fondo-ammonite-grande, #fondo-ammonite-2 { animation: none !important; }
+}

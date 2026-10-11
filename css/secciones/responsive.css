@@ -1,0 +1,120 @@
+/* ============================================================
+   MPCH — Responsive (DEC-015)
+   Sistema FLUIDO con clamp(): la mayoria de las medidas ya escalan
+   desde css/base/root.css (--gutter, --space-*, --fs-*).
+   Las media queries de aca abajo existen SOLO para cambios
+   ESTRUCTURALES reales (numero de columnas, menu movil, giro de
+   la linea de tiempo), nunca para ajustar tamanos.
+
+   Breakpoints estructurales:
+     <= 1024px  -> layouts de 2 columnas pasan a 1
+     <= 768px   -> menu movil, linea de tiempo vertical, 1 columna
+   ============================================================ */
+
+/* ---------- 1024px: el layout de 2 columnas se apila ---------- */
+@media (max-width: 1024px) {
+  .hero { min-height: auto; padding: clamp(100px, 14vw, 130px) 0 clamp(56px, 8vw, 80px); }
+  .hero__grid,
+  .somos__grid,
+  .servicios__grid,
+  .visita__grid { grid-template-columns: 1fr; gap: var(--space-bloque); }
+  .colecciones__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-bloque); }
+}
+
+/* ---------- Antidesborde de raiz (para todos los anchos) ----------
+   En CSS Grid el tamano minimo de una pista es `auto`, que equivale a
+   min-content: un hijo con contenido ancho estira la columna MAS ALLA
+   del contenedor. Medido: .somos__ficha quedaba con su borde derecho en
+   1184 en un viewport de 1180 (+4px) por esta razon. min-width:0 desactiva
+   el minimo automatico; overflow-x:clip recorta lo que igual se escape.
+   Lo mismo aplica a imagenes: sin tope se renderizan a su tamano natural. */
+.hero__grid > *, .somos__grid > *, .servicios__grid > *, .visita__grid > *,
+.colecciones__grid > *, .contacto__grid > *, .footer__grid > * { min-width: 0; }
+.hero__grid, .somos__grid, .servicios__grid, .visita__grid,
+.colecciones__grid, .contacto__grid, .footer__grid { overflow-x: clip; }
+img, svg, video { max-width: 100%; height: auto; }
+.contenedor { min-width: 0; }
+.seccion { overflow-x: clip; }
+
+/* ---------- 768px: menu movil + estructura de una columna ---------- */
+@media (max-width: 768px) {
+  /* El boton que abre el menu (el header lo oculta en escritorio) */
+  .menu-toggle { display: block; }
+
+  /* El menu NO se saca con right:-100% (generaba 27px de scroll lateral.
+     Tampoco basta translateX(100%) en un position:fixed: Chrome SIGUE
+     contando su area en el scrollWidth del documento (medido: 30px de
+     desborde a 320px). La solucion que no desborda es sacarlo del layout
+     con display:none y reincorporarlo solo al abrir, animando con
+     transform. Asi el documento nunca es mas ancho que el viewport. */
+  .nav { display: none; }
+  .nav.abierto {
+    display: flex;
+    position: fixed; top: 0; right: 0;
+    height: 100dvh; width: min(82vw, 320px);
+    flex-direction: column;
+    align-items: flex-start; justify-content: flex-start;
+    gap: 6px; padding: 100px 30px 40px; z-index: 1050;
+    background: var(--bg-elevated); border-left: 1px solid var(--border-mid);
+    box-shadow: var(--shadow-xl);
+    overflow-y: auto;
+    animation: navEntra .4s var(--ease-out-expo);
+  }
+  @keyframes navEntra {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
+  .nav.abierto a {
+    font-size: clamp(.98rem, 2.6vw, 1.06rem); width: 100%;
+    padding: 13px 0; border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .hero__cta { flex-direction: column; align-items: stretch; }
+  .hero__cta .btn { justify-content: center; }
+
+  /* Las 3 metricas del hero: 3 columnas apretadas se aplastan */
+  .hero__datos { gap: clamp(16px, 5vw, 24px); }
+  .hero__dato strong { font-size: clamp(1.25rem, 5vw, 1.5rem); }
+
+  .colecciones__grid,
+  .contacto__grid,
+  .footer__grid { grid-template-columns: 1fr; gap: clamp(18px, 5vw, 30px); }
+
+  /* Linea de tiempo: se vuelve vertical */
+  .linea {
+    grid-template-columns: 1fr; gap: 0;
+    padding-top: 0; padding-left: 22px;
+    margin-bottom: var(--space-bloque);
+  }
+  .linea::before {
+    top: 0; bottom: 0; left: 4px; right: auto;
+    width: 2px; height: auto;
+    background: linear-gradient(180deg, var(--ocre-dark), var(--ocre), var(--verde-light));
+  }
+  /* En vertical el punto se ancla a la izquierda, no arriba */
+  .linea__era {
+    text-align: left;
+    padding: var(--space-card) 0 var(--space-card) 6px;
+    padding-top: 12px;
+  }
+  .linea__era::before {
+    top: 17px; left: -22px; transform: none;
+  }
+
+  /* La tabla ficha del "quienes somos" se apila */
+  .somos__ficha { grid-template-columns: 1fr; }
+}
+
+/* ---------- 480px: pantallas muy angostas ---------- */
+@media (max-width: 480px) {
+  .marca__sub { display: none; }
+  .footer__base { flex-direction: column; gap: 8px; text-align: center; }
+
+  /* El CTA final y las tarjetas de contacto dejan de lado el padding grande */
+  .hero__tarjeta, .somos__ficha, .ubicacion, .mapa,
+  .pieza, .servicio, .contacto__card { padding: var(--space-card) clamp(16px, 5vw, 22px); }
+
+  /* Botones al ancho completo en pantallas chicas */
+  .hero__cta .btn, .cta-final .btn { width: 100%; justify-content: center; }
+}

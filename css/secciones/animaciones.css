@@ -1,0 +1,199 @@
+/* ============================================================
+   MPCH — Animaciones inmersivas (CSS)
+   ============================================================ */
+
+/* --- Canvas de fondo --- */
+#fondo-canvas {
+  position: fixed; inset: 0; z-index: -1;
+  width: 100%; height: 100%; pointer-events: none;
+}
+
+/* --- Barra de progreso de lectura --- */
+.progreso {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  z-index: 1200;
+  background: linear-gradient(90deg, var(--celeste-dark), var(--celeste), var(--celeste-light));
+  box-shadow: 0 0 12px var(--ocre-glow);
+  transition: width .1s linear;
+}
+
+/* --- Reveals --- */
+.reveal {
+  opacity: 0; transform: translateY(34px);
+  transition: opacity .85s var(--ease-out-expo), transform .85s var(--ease-out-expo);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* RED DE SEGURIDAD: si el JS no corre (o falla el IntersectionObserver),
+   el contenido se muestra igual a los 2s. Nunca una pagina en blanco. */
+@keyframes mostrarSiFalla { to { opacity: 1; transform: none; } }
+.reveal { animation: mostrarSiFalla .6s ease 2s forwards; }
+.reveal.visible { animation: none; }
+html.sin-js .reveal,
+html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animation: none !important; }
+
+/* Variantes de entrada
+   BUG CORREGIDO (CR-08): el reveal desplazaba el elemento FUERA del
+   contenedor antes de revelarse, y eso SI extiende el scrollWidth del
+   documento. Medido antes del arreglo: +22px de scroll lateral a 834px,
+   1024px y 1180px; y con el desplazamiento reducido a 28px quedaban +4px.
+   Es decir: cualquiera que cargara la pagina en tablet/escritorio medio y
+   NO hubiera hecho scroll todavia veia las tarjetas salirse por la derecha.
+   Solucion definitiva: el reveal SOLO se mueve en el eje Y (vertical).
+   Un translateY no ensancha el documento en ningun ancho. Se conserva el
+   efecto de entrada (sube + fade) y desaparece el desborde de raiz. */
+.reveal--izq { transform: translateY(22px); }
+.reveal--der { transform: translateY(22px); }
+.reveal--zoom { transform: translateY(14px) scale(.96); }
+.reveal--izq.visible, .reveal--der.visible, .reveal--zoom.visible { transform: none; }
+
+/* Los hijos de un [data-stagger] heredan el estado del padre */
+[data-stagger] > .reveal { transition-delay: 0ms; }
+
+/* --- Aurora que sigue al cursor en el hero --- */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(
+    620px circle at var(--mx, 50%) var(--my, 40%),
+    rgba(81,173,198,.13),
+    rgba(47,126,130,.06) 42%,
+    transparent 68%
+  );
+  transition: opacity .5s;
+}
+.hero .contenedor { position: relative; z-index: 1; }
+
+/* --- Estratos del hero, con movimiento lento propio --- */
+.hero__estratos { animation: derivaEstratos 42s linear infinite; }
+@keyframes derivaEstratos {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 -260px; }
+}
+
+  50%      { transform: translate(-50%, -54%) rotate(9deg) scale(1.045); }
+}
+
+/* --- Entrada escalonada del hero (al cargar) --- */
+.hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta {
+  opacity: 0; animation: entrarHero .95s var(--ease-out-expo) forwards;
+}
+.hero__lema   { animation-delay: .12s; }
+.hero__titulo { animation-delay: .26s; }
+.hero__desc   { animation-delay: .42s; }
+.hero__cta    { animation-delay: .56s; }
+.hero__datos  { animation-delay: .70s; }
+.hero__tarjeta{ animation-delay: .52s; animation-name: entrarTarjeta; }
+
+@keyframes entrarHero {
+  from { opacity: 0; transform: translateY(30px); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes entrarTarjeta {
+  from { opacity: 0; transform: translateY(30px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* --- Subrayado que crece bajo el título --- */
+.hero__titulo em { position: relative; display: inline-block; }
+.hero__titulo em::after {
+  content: ''; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0;
+  background: linear-gradient(90deg, var(--celeste), transparent);
+  animation: crecerLinea 1.5s var(--ease-out-expo) .9s forwards;
+}
+@keyframes crecerLinea { to { width: 68%; } }
+
+/* --- Glow pulsante en el CTA principal --- */
+.btn--primario { position: relative; overflow: hidden; }
+.btn--primario::after {
+  content: ''; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.34), transparent);
+  transform: skewX(-18deg);
+  animation: brilloBoton 4.5s ease-in-out infinite;
+}
+@keyframes brilloBoton {
+  0%, 62% { left: -120%; }
+  88%,100%{ left: 130%; }
+}
+
+/* --- Tarjetas: brillo que sigue al cursor (--mx/--my) --- */
+.pieza, .servicio, .contacto__card { position: relative; }
+.pieza::before, .servicio::before, .contacto__card::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(81,173,198,.13), transparent 62%);
+  opacity: 0; transition: opacity .4s;
+}
+.pieza:hover::before, .servicio:hover::before, .contacto__card:hover::before { opacity: 1; }
+
+/* --- Línea de tiempo: se ilumina según el scroll --- */
+.linea { --prog: 0%; }
+.linea::after {
+  content: ''; position: absolute; top: 32px; left: 0; height: 2px; width: var(--prog);
+  background: linear-gradient(90deg, var(--celeste-dark), var(--celeste-light));
+  box-shadow: 0 0 12px var(--ocre-glow);
+  transition: width .35s var(--ease-out-expo);
+}
+.linea__era { transition: transform .4s var(--ease-out-back); }
+.linea__era.activa .linea__nombre { color: var(--celeste-light); }
+.linea__era.activa::before {
+  background: var(--celeste-light);
+  box-shadow: 0 0 0 6px rgba(81,173,198,.16), 0 0 16px rgba(81,173,198,.5);
+  transform: translateX(-50%) scale(1.25);
+}
+.linea__era::before { transition: all .4s var(--ease-out-back); }
+
+/* --- Piezas: su propio estallido de espiral al entrar --- */
+.pieza__ico { transition: transform .55s var(--ease-out-back); }
+.pieza:hover .pieza__ico { transform: scale(1.14) rotate(-9deg); }
+
+/* --- Servicio destacado: borde que respira --- */
+.servicio--destacado { animation: respirarBorde 5s ease-in-out infinite; }
+@keyframes respirarBorde {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(81,173,198,0); }
+  50%      { box-shadow: 0 0 26px rgba(81,173,198,.20); }
+}
+
+/* --- Fósiles de fondo que flotan en las secciones --- */
+.adorno {
+  position: absolute; pointer-events: none; z-index: 0;
+  opacity: .05; color: var(--celeste);
+}
+.adorno--1 { top: 8%;  right: 4%;  width: 210px; animation: girarLento 60s linear infinite; }
+.adorno--2 { bottom: 9%; left: 3%; width: 160px; animation: flotarAdorno 18s ease-in-out infinite; }
+.adorno--3 { top: 42%; left: 6%;  width: 130px; animation: girarLento 78s linear infinite reverse; }
+
+@keyframes girarLento { to { transform: rotate(360deg); } }
+@keyframes flotarAdorno {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50%      { transform: translateY(-26px) rotate(6deg); }
+}
+
+/* --- Separadores con barrido de luz --- */
+.separador { position: relative; overflow: hidden; }
+.separador::after {
+  content: ''; position: absolute; top: 0; left: -30%; width: 30%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--celeste-light), transparent);
+  animation: barrido 7s ease-in-out infinite;
+}
+@keyframes barrido {
+  0%, 70% { left: -30%; }
+  100%    { left: 130%; }
+}
+
+/* --- Marca: latido del isotipo --- */
+.marca__iso { animation: latidoIso 6s ease-in-out infinite; }
+@keyframes latidoIso {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.055); }
+}
+.marca:hover .marca__iso { animation: none; transform: rotate(28deg) scale(1.12); }
+
+/* --- Accesibilidad: con movimiento reducido, todo quieto y visible --- */
+@media (prefers-reduced-motion: reduce) {
+  .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta,
+  .reveal, .fade-in { opacity: 1 !important; transform: none !important; animation: none !important; filter: none !important; }
+  #fondo-canvas, .adorno { display: none; }
+  .hero__estratos, .marca__iso, .separador::after,
+  .btn--primario::after, .servicio--destacado { animation: none !important; }
+}

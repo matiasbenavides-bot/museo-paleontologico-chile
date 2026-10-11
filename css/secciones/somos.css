@@ -1,0 +1,21 @@
+/* MPCH — Quiénes somos */
+.somos__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+.somos__texto p { color: var(--text-soft); margin-bottom: 17px; font-size: 1rem; }
+.somos__texto p:first-of-type::first-letter {
+  font-family: var(--font-display); font-size: 3.1rem; line-height: .82;
+  float: left; padding: 4px 12px 0 0; color: var(--ocre);
+}
+.somos__mision {
+  margin-top: 26px; padding: 20px 24px; border-left: 3px solid var(--ocre);
+  background: rgba(81,173,198,.06); border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.somos__mision strong { display: block; font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ocre); margin-bottom: 6px; }
+.somos__mision p { margin: 0; color: var(--text-main); font-family: var(--font-display); font-size: 1.12rem; }
+
+/* Panel de datos institucionales */
+.somos__ficha { padding: 32px 30px; display: flex; flex-direction: column; gap: 20px; }
+.ficha__item { display: flex; flex-direction: column; gap: 3px; }
+.ficha__clave { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--text-muted); }
+.ficha__valor { color: var(--text-main); font-weight: 500; }
+.ficha__valor a { color: var(--ocre-light); border-bottom: 1px solid transparent; transition: border-color .25s; word-break: break-word; }
+.ficha__valor a:hover { border-bottom-color: var(--ocre); }

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Ammonite">
+  <!-- Ammonite de trazo orgánico (fósil decorativo del hero).
+       Colores MEDIDOS del logo del museo (DEC-006):
+       azul marino #02153f · celeste #51adc6 · teal #2f7e82 · salmón #d26c53 -->
+  <defs>
+    <linearGradient id="org" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0%"   stop-color="#7ec8dd"/>
+      <stop offset="45%"  stop-color="#51adc6"/>
+      <stop offset="100%" stop-color="#2f7e82"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Espiral orgánica: trazo relleno, grosor decreciente hacia el centro -->
+  <path fill="url(#org)" d="
+    M48.2 13.6
+    C60.4 13.4 70.2 18.9 75.9 27.4
+    C81.7 36.1 81.4 46.1 76.2 53.9
+    C71.2 61.5 62.8 65.6 54.5 64.3
+    C46.6 63.0 41.3 57.3 40.6 50.2
+    C39.9 43.4 43.6 37.7 49.4 36.2
+    C54.6 34.8 58.9 37.4 60.1 41.5
+    C61.2 45.2 59.3 48.6 56.1 49.6
+    C53.4 50.5 51.0 49.4 50.5 47.3
+    C50.1 45.5 51.2 44.2 52.8 44.1
+    C54.0 44.0 54.7 44.8 54.6 45.8
+    C54.5 46.6 53.9 47.0 53.2 46.9
+    L53.0 49.3
+    C55.6 49.6 57.7 47.7 58.0 44.9
+    C58.4 41.2 55.5 37.9 51.3 37.7
+    C46.3 37.5 42.3 41.4 42.1 46.7
+    C41.9 52.6 46.4 57.6 52.5 58.4
+    C59.9 59.3 66.9 54.6 69.6 47.4
+    C72.6 39.6 69.6 30.9 63.1 25.4
+    C56.2 19.6 46.4 18.6 38.5 22.9
+    C30.3 27.4 26.0 36.5 28.0 45.5
+    C30.1 55.0 38.3 62.2 48.2 62.9
+    C58.9 63.6 68.9 57.3 73.2 47.4
+    L78.6 49.6
+    C73.4 62.1 60.8 69.9 47.6 69.0
+    C35.2 68.1 25.0 59.2 22.4 47.3
+    C19.9 35.8 25.3 24.2 35.7 18.4
+    C39.5 16.3 43.8 13.7 48.2 13.6 Z"/>
+
+  <!-- Costillas radiales (teal), trazo fino -->
+  <g stroke="#2f7e82" stroke-width="1.9" stroke-linecap="round" opacity=".5" fill="none">
+    <path d="M48 14 L48 24"/>
+    <path d="M64 18 L59 27"/>
+    <path d="M77 30 L68 34"/>
+    <path d="M79 50 L69 49"/>
+    <path d="M70 66 L62 58"/>
+    <path d="M52 70 L52 61"/>
+    <path d="M33 65 L39 57"/>
+    <path d="M22 48 L32 48"/>
+    <path d="M26 30 L34 35"/>
+  </g>
+
+  <!-- Núcleo salmón -->
+  <circle cx="52.6" cy="45.6" r="2.7" fill="#d26c53"/>
+</svg>

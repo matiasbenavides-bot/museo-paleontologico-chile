@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es-CL" class="sin-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Museo Paleontológico de Chile (MPCH) — Parque O'Higgins, Santiago</title>
+<meta name="description" content="El primer museo chileno centrado en la paleontología y los restos fósiles. Muestra del Cámbrico al Cuaternario: trilobites, ammonites, ámbar, huesos y huevos de dinosaurios. Interior del Pueblito del Parque O'Higgins, Santiago.">
+<meta name="theme-color" content="#02153f">
+
+<!-- Open Graph (el enlace que se comparte por WhatsApp) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Museo Paleontológico de Chile (MPCH)">
+<meta property="og:description" content="Museo del Cámbrico al Cuaternario en el Parque O'Higgins, Santiago. Primera muestra chilena centrada en la paleontología y los restos fósiles.">
+<meta property="og:locale" content="es_CL">
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="stylesheet" href="css/main.css">
+<script>document.documentElement.classList.remove("sin-js");</script>
+</head>
+<body>
+
+<!-- Barra de progreso de lectura -->
+<div class="progreso"></div>
+
+<!-- Fondo inmersivo animado (particulas marinas) -->
+<!-- Fondo: capas geologicas + ammonite real (DEC-008).
+     DEC-016: los ammonites van dentro de un contenedor con overflow:hidden.
+     Un elemento position:fixed con offsets negativos (right:-10%) SIGUE
+     contando en el scrollWidth del documento aunque este fuera del viewport,
+     y provocaba hasta 180px de scroll lateral. Dentro de un clip fijo el
+     desborde no puede escapar del viewport. -->
+<div id="fondo-clip" aria-hidden="true">
+  <div id="fondo-sedimento"></div>
+  <img id="fondo-ammonite-grande" src="assets/img/fondo-ammonite-claro.png" alt="">
+  <img id="fondo-ammonite-2" src="assets/img/fondo-ammonite-claro.png" alt="">
+</div>
+<div id="fondo-grano" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="contenedor header__inner">
+    <a href="#inicio" class="marca" aria-label="Museo Paleontológico de Chile — inicio">
+      <img class="marca__logo" src="assets/img/logo-mpch.png" alt="Museo Paleontológico de Chile">
+      <span class="marca__txt">
+        <span class="marca__sigla" data-marca-sigla>MPCH</span>
+        <span class="marca__sub" data-marca-nombre>Museo Paleontológico de Chile</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#somos">Quiénes somos</a>
+      <a href="#colecciones">Colecciones</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#visita">Visítanos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="overlay"></div>
+
+<main>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="inicio">
+    <div class="hero__estratos" aria-hidden="true"></div>
+
+    <div class="contenedor hero__grid">
+      <div class="hero__texto">
+        <span class="hero__lema" data-marca-lema>Primer museo chileno dedicado a la paleontología</span>
+
+        <h1 class="hero__titulo">
+          Museo Paleontológico
+          <em>de Chile</em>
+        </h1>
+
+        <p class="hero__desc" data-hero-desc>
+          El primer museo chileno que centra su muestra en la paleontología y en los restos fósiles.
+        </p>
+
+        <div class="hero__cta">
+          <a href="#visita" class="btn btn--primario">
+            Planifica tu visita
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#colecciones" class="btn btn--fantasma">Ver la colección</a>
+        </div>
+
+        <div class="hero__datos">
+          <div class="hero__dato">
+            <strong data-hero-rango>Cámbrico → Cuaternario</strong>
+            <span>Períodos en exhibición</span>
+          </div>
+          <div class="hero__dato">
+            <strong>6</strong>
+            <span>Tipos de piezas</span>
+          </div>
+          <div class="hero__dato">
+            <strong>GRINPACH</strong>
+            <span>Investigación detrás</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero__tarjeta glass">
+        <h3>Horario de atención</h3>
+        <p class="nota">Parque O'Higgins · Santiago</p>
+        <div class="horario" data-horario></div>
+        <div class="horario__estado" data-horario-estado>Consultando horario…</div>
+      </aside>
+    </div>
+  </section>
+
+  <hr class="separador">
+
+  <!-- ===== QUIÉNES SOMOS ===== -->
+  <section class="seccion" id="somos">
+    <svg class="adorno adorno--1" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M24 8c9 0 16 7 16 16s-7 16-16 16S8 33 8 24 15 8 24 8z"/><path d="M24 15c5 0 9 4 9 9s-4 9-9 9-9-4-9-9 4-9 9-9z"/><path d="M24 21c2 0 3 1 3 3s-1 3-3 3-3-1-3-3 1-3 3-3z"/></svg>
+    <div class="contenedor">
+      <span class="etiqueta reveal">Quiénes somos</span>
+      <h2 class="seccion__titulo reveal">Un museo levantado por sus propios investigadores</h2>
+
+      <div class="somos__grid">
+        <div class="somos__texto reveal reveal--izq" data-somos-parrafos></div>
+
+        <div class="somos__ficha glass reveal reveal--der">
+          <div class="ficha__item">
+            <span class="ficha__clave">Institución</span>
+            <span class="ficha__valor" data-marca-nombre>Museo Paleontológico de Chile</span>
+          </div>
+          <div class="ficha__item">
+            <span class="ficha__clave">Pertenece a</span>
+            <span class="ficha__valor" data-marca-pertenece></span>
+          </div>
+          <div class="ficha__item">
+            <span class="ficha__clave">Cobertura de la muestra</span>
+            <span class="ficha__valor" data-colecciones-rango></span>
+          </div>
+          <div class="ficha__item">
+            <span class="ficha__clave">Objetivo</span>
+            <span class="ficha__valor">Difundir y proteger el patrimonio paleontológico nacional.</span>
+          </div>
+
+          <div class="somos__mision">
+            <strong>Nuestra misión</strong>
+            <p data-somos-mision></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLECCIONES ===== -->
+  <section class="seccion colecciones" id="colecciones">
+    <div class="contenedor">
+      <span class="etiqueta reveal">Colecciones</span>
+      <h2 class="seccion__titulo reveal">Del Cámbrico al Cuaternario</h2>
+      <p class="seccion__intro reveal" data-colecciones-rango>
+        Una muestra que abarca desde el periodo Cámbrico hasta el Cuaternario.
+      </p>
+
+      <div class="linea reveal" data-linea aria-label="Línea de tiempo geológica"></div>
+
+      <div class="colecciones__grid" data-colecciones data-stagger></div>
+    </div>
+  </section>
+
+  <hr class="separador">
+
+  <!-- ===== SERVICIOS ===== -->
+  <section class="seccion servicios" id="servicios">
+    <svg class="adorno adorno--2" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M24 8c9 0 16 7 16 16s-7 16-16 16S8 33 8 24 15 8 24 8z"/><path d="M24 15c5 0 9 4 9 9s-4 9-9 9-9-4-9-9 4-9 9-9z"/><path d="M24 21c2 0 3 1 3 3s-1 3-3 3-3-1-3-3 1-3 3-3z"/></svg>
+    <div class="contenedor">
+      <span class="etiqueta reveal">Servicios</span>
+      <h2 class="seccion__titulo reveal">Lo que el museo puede hacer por tu institución</h2>
+      <p class="seccion__intro reveal">
+        Más de 20 años de trabajo en terreno y en sala, disponibles para colegios, empresas e instituciones.
+      </p>
+
+      <div class="servicios__grid" data-servicios data-stagger></div>
+      <div class="servicios__nota" data-servicios-nota></div>
+    </div>
+  </section>
+
+  <!-- ===== VISÍTANOS ===== -->
+  <section class="seccion" id="visita">
+    <div class="contenedor">
+      <span class="etiqueta reveal">Visítanos</span>
+      <h2 class="seccion__titulo reveal">Dónde encontrarnos</h2>
+      <p class="seccion__intro reveal">
+        Estamos al interior del Pueblito del Parque O'Higgins, a pasos del metro.
+      </p>
+
+      <div class="visita__grid">
+        <div class="ubicacion glass reveal reveal--izq" data-ubicacion></div>
+
+        <div class="mapa reveal reveal--der">
+          <div class="mapa__ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-6.5 8-12a8 8 0 10-16 0c0 5.5 8 12 8 12z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>Parque O'Higgins</h3>
+          <p>Plaza del Cabildo s/n, interior del Pueblito. Metro Estación Parque O'Higgins.</p>
+          <a class="btn btn--primario" data-mapa-link href="#" target="_blank" rel="noopener">
+            Abrir en el mapa
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACTO ===== -->
+  <section class="seccion" id="contacto">
+    <svg class="adorno adorno--3" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M24 8c9 0 16 7 16 16s-7 16-16 16S8 33 8 24 15 8 24 8z"/><path d="M24 15c5 0 9 4 9 9s-4 9-9 9-9-4-9-9 4-9 9-9z"/><path d="M24 21c2 0 3 1 3 3s-1 3-3 3-3-1-3-3 1-3 3-3z"/></svg>
+    <div class="contenedor">
+      <span class="etiqueta reveal">Contacto</span>
+      <h2 class="seccion__titulo reveal">Conversemos</h2>
+      <p class="seccion__intro reveal">
+        Para coordinar visitas de colegios, convenios especiales o servicios profesionales.
+      </p>
+      <div class="contacto__grid" data-contacto data-stagger></div>
+    </div>
+  </section>
+
+  <!-- ===== CTA FINAL ===== -->
+  <section class="cta-final">
+    <div class="contenedor">
+      <h2>El pasado de Chile está a la vuelta de la esquina</h2>
+      <p>Ven a conocer fósiles de nuestro país y del mundo, en el corazón del Parque O'Higgins.</p>
+      <a href="#visita" class="btn btn--primario">Ver horarios y ubicación</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="contenedor">
+    <div class="footer__grid">
+      <div class="footer__marca">
+        <a href="#inicio" class="marca">
+          <img class="marca__logo" src="assets/img/logo-mpch.png" alt="Museo Paleontológico de Chile">
+          <span class="marca__txt">
+            <span class="marca__sigla" data-marca-sigla>MPCH</span>
+            <span class="marca__sub" data-marca-nombre>Museo Paleontológico de Chile</span>
+          </span>
+        </a>
+        <p data-marca-lema>Primer museo chileno dedicado a la paleontología</p>
+      </div>
+
+      <div>
+        <h4>Explorar</h4>
+        <ul>
+          <li><a href="#somos">Quiénes somos</a></li>
+          <li><a href="#colecciones">Colecciones</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#visita">Visítanos</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contacto</h4>
+        <ul data-footer-contacto></ul>
+      </div>
+    </div>
+
+    <div class="footer__base">
+      <span>© <span data-anio>2026</span> Museo Paleontológico de Chile. Todos los derechos reservados.</span>
+      <span class="footer__pertenece" data-marca-pertenece></span>
+    </div>
+  </div>
+</footer>
+
+<script src="data/museo.js"></script>
+<script src="js/iconos.js"></script>
+<script src="js/render.js"></script>
+<script src="js/animaciones.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+/* MPCH — Servicios */
+.servicios { position: relative; }
+.servicios__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 44px; }
+.servicio {
+  padding: 34px 30px; border-radius: var(--radius-lg);
+  background: var(--bg-glass); border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  display: flex; flex-direction: column;
+  transition: transform .35s var(--ease-out-expo), border-color .35s, box-shadow .35s;
+}
+.servicio:hover { transform: translateY(-6px); border-color: var(--border-accent); box-shadow: var(--shadow-xl), var(--shadow-glow); }
+.servicio--destacado { border-color: var(--border-accent); background: linear-gradient(160deg, rgba(81,173,198,.09), var(--bg-glass)); }
+.servicio__badge {
+  align-self: flex-start; font-size: .66rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: #02153f; background: var(--ocre);
+  padding: 4px 11px; border-radius: 999px; margin-bottom: 14px;
+}
+.servicio__ico { width: 46px; height: 46px; color: var(--ocre); margin-bottom: 20px; }
+.servicio h3 { font-size: 1.14rem; margin-bottom: 11px; }
+.servicio p { font-size: .92rem; color: var(--text-soft); flex-grow: 1; }
+
+.servicios__nota {
+  margin-top: 34px; padding: 22px 26px; border-radius: var(--radius-md);
+  background: rgba(47,126,130,.10); border: 1px solid rgba(81,173,198,.28);
+  font-size: .87rem; color: var(--text-soft); display: flex; gap: 14px; align-items: flex-start;
+}
+.servicios__nota svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--verde-light); margin-top: 2px; }
