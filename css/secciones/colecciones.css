@@ -63,6 +63,10 @@
 }
 .pieza:hover { transform: translateY(-6px); border-color: var(--border-accent); box-shadow: var(--shadow-xl); }
 .pieza:hover::after { opacity: 1; animation: shimmer 3s linear infinite; }
-.pieza__ico { width: 52px; height: 52px; color: var(--ocre); margin-bottom: 18px; }
+/* Los iconos de pieza pasaron a viewBox 64 con detalle anatomico real
+   (CR-10). 52px no alcanzaba para que se distinguieran las partes, asi
+   que el contenedor crece y el icono es fluido hasta 68px. */
+.pieza__ico { width: clamp(56px, 6vw, 68px); height: clamp(56px, 6vw, 68px); color: var(--ocre); margin-bottom: 18px; }
+.pieza__ico svg { width: 100%; height: 100%; display: block; }
 .pieza h3 { font-size: 1.1rem; margin-bottom: 9px; }
 .pieza p { font-size: .89rem; color: var(--text-muted); }
