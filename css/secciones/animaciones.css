@@ -169,17 +169,12 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
   50%      { transform: translateY(-26px) rotate(6deg); }
 }
 
-/* --- Separadores con barrido de luz --- */
-.separador { position: relative; overflow: hidden; }
-.separador::after {
-  content: ''; position: absolute; top: 0; left: -30%; width: 30%; height: 100%;
-  background: linear-gradient(90deg, transparent, var(--celeste-light), transparent);
-  animation: barrido 7s ease-in-out infinite;
-}
-@keyframes barrido {
-  0%, 70% { left: -30%; }
-  100%    { left: 130%; }
-}
+/* --- Separadores ---
+   El barrido de luz (.separador::after) dibujaba una SEGUNDA linea de 1px
+   exactamente encima del <hr>, porque tenia height:100% y top:0 sobre un
+   elemento de 1px de alto. Se veian dos lineas donde debe haber una.
+   Se elimina el ::after: el <hr> con su gradiente ya es el separador. */
+.separador { position: relative; }
 
 /* --- Marca: latido del isotipo --- */
 .marca__iso { animation: latidoIso 6s ease-in-out infinite; }
@@ -194,6 +189,6 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
   .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta,
   .reveal, .fade-in { opacity: 1 !important; transform: none !important; animation: none !important; filter: none !important; }
   #fondo-canvas, .adorno { display: none; }
-  .hero__estratos, .marca__iso, .separador::after,
+  .hero__estratos, .marca__iso,
   .btn--primario::after, .servicio--destacado { animation: none !important; }
 }
