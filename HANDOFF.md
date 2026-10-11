@@ -1,99 +1,118 @@
 # HANDOFF — Museo Paleontológico de Chile (MPCH)
 
-Fecha: 2026-10-11 (sesión 2)
-Ruta: `/mnt/c/dev/museo-mpch/`
-Abrir: doble clic en `index.html` — sitio estático, **sin backend, sin build, sin dependencias**
+Fecha: 2026-10-11 (sesión 3)
+Ruta local: `/mnt/c/dev/museo-mpch/`
+**En línea:** https://matiasbenavides-bot.github.io/museo-paleontologico-chile/
+Repo: https://github.com/matiasbenavides-bot/museo-paleontologico-chile (rama `master`)
+Abrir local: doble clic en `index.html` — estático, sin backend, sin build, sin dependencias
 
 ---
 
-## ESTADO ACTUAL
+## ESTADO ACTUAL (verificado, no supuesto)
 
-Funcionando y verificado en navegador headless (CDP), no "debería funcionar":
-
-- 14/14 anchos sin desborde horizontal, de **320px a 2560px**
-- 0 errores de consola · 4/4 imágenes cargando · 31 reveals · 6 piezas · 3 servicios
-- Menú móvil abre/cierra con toque y con Esc
-- Línea de tiempo alineada: desfase **0px** entre puntos y línea
-- `node --check` OK en los 4 archivos JS
-
-**Pendiente único: PUBLICAR.** Requiere token de GitHub válido (`gh auth login`).
+- **7 piezas**, de las cuales **solo la primera (Trilobites) muestra icono**; las otras 6 van solo con texto
+- **2 imágenes** en todo el sitio: los dos logos del museo. **0 imágenes de terceros** (ver CR-14)
+- 0 errores de consola · 0 desborde horizontal (probado 320px→2560px) · menú móvil funcionando
+- GitHub Pages: `status: built`
 
 ---
 
-## CORRECCIONES APLICADAS ESTA SESIÓN (CR-01 a CR-08)
+## LO PRIMERO QUE HAY QUE SABER
 
-| # | Qué | Dónde |
+**Los iconos de las piezas están EN PAUSA.** El dueño encargó a una ilustradora
+(es su novia) los dibujos personalizados, porque los generados por código no lo
+convencían.
+
+**No se borró nada.** Los 7 SVG siguen en `js/iconos.js`. En `data/museo.js`
+cada pieza lleva un campo `conIcono`:
+
+```js
+{ icono: "trilobite", conIcono: true,  nombre: "Trilobites", ... }   // muestra icono
+{ icono: "ammonite",  conIcono: false, nombre: "Ammonites",  ... }   // solo texto
+```
+
+**Reactivar una pieza = poner `conIcono: true`.** Eso es todo.
+
+---
+
+## PENDIENTES REALES
+
+1. **Integrar los dibujos personalizados** cuando la ilustradora los entregue.
+   - Datos útiles para pasarle: cada icono se muestra a **65px** en tarjeta y
+     hasta **68px** en pantallas grandes. **A ese tamaño tienen que leerse**:
+     trazo simple rinde mejor que detalle fino.
+   - Si las ilustraciones son con volumen/sombra (no línea), va a hacer falta
+     ajustar `.pieza__ico` en `css/secciones/colecciones.css`.
+   - Formato ideal: **SVG** (escala sin pixelarse). Si entrega PNG, pedirlo
+     **grande** (1024px+) para que no se vea borroso a tamaño chico.
+
+2. **Revisar el fondo de ammonites.** Es lo único que NUNCA se pudo verificar
+   con el dueño (arrastra desde el primer chat). Ahora usa un SVG propio, no el
+   PNG con copyright. Son 2 ammonites decorativos detrás del contenido, apenas
+   visibles. Ajustes posibles: `#fondo-ammonite-grande` y `#fondo-ammonite-2`
+   en `css/secciones/fondo-ammonite.css`.
+
+3. Nada más: el resto está hecho.
+
+---
+
+## HISTORIA CRÍTICA — EL PROBLEMA DE DERECHOS DE AUTOR (CR-14)
+
+**La imagen `fondo amonnite.png` que entregó el dueño TENÍA DERECHOS DE AUTOR.**
+Estaba usada en TRES lugares: el fondo decorativo, el icono de la pieza
+"Ammonites", y unos respaldos.
+
+**Se eliminó por completo** (archivos y todos sus derivados). Verificado en
+producción: devuelven HTTP 404.
+
+Archivos eliminados (respaldo en `_respaldo/` por si el dueño los necesita):
+`fondo-ammonite.png`, `fondo-ammonite-claro.png`, `fondo-ammonite-lg.png`,
+`ammonite-linea.png`
+
+**LECCIÓN IMPORTANTE:** "replicar una imagen con cambios" **NO limpia el derecho
+de autor**. Una obra derivada sigue siendo derivada. Ante una imagen de origen
+dudoso, la salida segura es **dibujar desde cero**.
+
+**Para el futuro:** el `logo-mpch.png` es del museo, está bien. Pero si el jefe
+sube fotos de las piezas, **preguntar de dónde salieron** — el mismo problema
+puede repetirse.
+
+---
+
+## BUGS ENCONTRADOS Y CORREGIDOS EN ESTA SESIÓN
+
+| # | Qué estaba mal | Dónde |
 |---|---|---|
-| CR-01 | Redundancia de horario: "Hoy estamos de X a Y" repetía horas ya listadas arriba. Ahora solo dice "Abierto ahora" / "Cerrado ahora" | `js/render.js` `pintarHorario()` |
-| CR-02 | Línea de tiempo no pasaba por los puntos (25px de desfase) y sangraba 110px por lado | `css/secciones/colecciones.css` |
-| CR-03 | 6 SVGs de piezas rediseñados con forma real | `js/iconos.js` |
-| CR-04 | `cepchile@gmail.com` eliminado (obsoleto) | `data/museo.js` |
-| CR-05 | Teléfono → `+56 9 9349 2714` + botón WhatsApp | `data/museo.js`, `js/render.js` |
-| CR-06 | "href enmascarado" — **NO ERA UN BUG**, ver pitfalls | — |
-| CR-07 | Sistema responsive fluido con `clamp()` | `css/base/root.css`, `css/secciones/responsive.css` |
-| CR-08 | **Menú móvil NUNCA abría** + desborde de 22px por el reveal | `js/animaciones.js`, `css/secciones/animaciones.css` |
+| CR-15 | El amonite dibujado a mano era una masa irregular sin espiral reconocible. Se resolvió calculando la espiral con fórmula (r = r₀·e^(-b·t)), en 3 tramos, con auto-encuadre por bbox | `js/iconos.js`, `css/secciones/fondo-ammonite.css` |
+| CR-16 | Iconos de piezas en pausa hasta que lleguen los dibujos personalizados | `data/museo.js`, `js/render.js`, `colecciones.css` |
+
+**Y un error de proceso que vale registrar:** reporté un "bug" del teléfono
+enmascarado que **no existía** — los asteriscos los inventaba mi propia lectura
+del archivo, no el archivo. Verificado midiendo los caracteres en Unicode.
+**Verificar antes de alarmar.**
 
 ---
 
-## BUGS ENCONTRADOS QUE NO ESTABAN EN LA LISTA
+## CÓMO VERIFICAR COSAS EN ESTE PROYECTO
 
-### 1. El menú móvil estaba roto en producción (crítico)
+Sin poder ver imágenes, la verificación es **por medición**. Métodos que funcionan:
 
-`init()` de `animaciones.js` se ejecuta **dos veces**: una en `DOMContentLoaded` y otra en `window.load` (línea 249). Eso hacía que `menu()` registrara **dos listeners** en el mismo botón: el primero abría el menú y el segundo lo cerraba **en el mismo clic**.
+1. **CDP con Chromium** (`~/.cache/ms-playwright/chromium-1248/`). Ver el
+   script `/tmp/final_check.js` de la sesión: renderiza, cuenta nodos, detecta
+   imágenes rotas y errores de red.
 
-**Resultado real:** en un celular, **el menú nunca se abría**. Nadie podía navegar el sitio desde el móvil.
+2. **Leer una imagen como mapa de píxeles** (así se detectó el hueso mal
+   dibujado). Reducir a ~72×36 y imprimir `#`/`.` según umbral. Es la forma de
+   "ver" sin ojos.
 
-**Fix:** guarda `toggle.dataset.cableado === "1"` en `menu()`.
+3. **Criterio de desborde correcto:** `scrollWidth > window.innerWidth`.
+   **NO** comparar contra `clientWidth` — da falsos positivos por la scrollbar.
 
-### 2. Desborde horizontal de 22px en tablet
+4. **Chrome headless ignora `--window-size` bajo ~500px.** Para móvil real usar
+   `Emulation.setDeviceMetricsOverride` con `mobile: true`.
 
-`.reveal--der` usaba `transform: translateX(46px)`. Un elemento desplazado **con transform fuera de su contenedor SÍ extiende el `scrollWidth`** del documento mientras no se ha revelado.
-
-**Resultado real:** a 834px, 1024px y 1180px, quien cargara la página **sin haber hecho scroll** veía las tarjetas salirse 22px por la derecha.
-
-**Fix:** los reveals ahora animan **solo en eje Y** (`translateY`). Se conserva el efecto y el desborde desaparece de raíz.
-
-### 3. Fondo de ammonites desbordaba hasta 180px
-
-Eran `position: fixed` con `width` en px y offsets negativos (`right: -170px`). Un `fixed` desplazado fuera del viewport **cuenta en el `scrollWidth`**.
-
-**Fix (DEC-016):** contenedor `#fondo-clip` con `position: fixed; inset: 0; overflow: hidden` que los recorta, y tamaños fluidos `min(58vw, 620px)`.
-
----
-
-## DECISIONES DE ESTA SESIÓN
-
-- **DEC-010** Lema eliminado del sitio (anula DEC-002). El "40 años" contradecía el "más de 20 años" del copy real del museo. Sin lema, no hay contradicción. Reemplazado por "Primer museo chileno dedicado a la paleontología"
-- **DEC-011** Teléfono `+56 9 9349 2714`, con WhatsApp (`wa.me` + mensaje prellenado)
-- **DEC-012** **PROHIBIDO usar fotos de las piezas.** El jefe del museo pidió que no se pongan: quiere que la gente vaya a verlas en persona. Los SVG redibujados son el mecanismo permanente
-- **DEC-013** Línea de tiempo movida del `index.html` a `data/museo.js` (antes violaba DEC-005). Se pinta con `pintarEras()`
-- **DEC-014** Estado de horario sin datos redundantes
-- **DEC-015** Sistema responsive fluido con `clamp()`; media queries solo para cambios estructurales
-- **DEC-016** Fondo con contenedor de recorte
-- **DEC-017** Reveals solo en eje Y
-
----
-
-## PALETA — MEDIDA DEL LOGO (DEC-006, sin cambios)
-
-| Rol | Hex |
-|---|---|
-| Azul marino (dominante) | `#02153f` |
-| Celeste (acento) | `#51adc6` |
-| Teal (isotipo) | `#2f7e82` |
-| Salmón | `#d26c53` |
-| Crema / hueso | `#e8e9e3` |
-
----
-
-## DATOS CLAVE
-
-- Contacto: **+56 9 9349 2714** · WhatsApp mismo número · correo `castillocornejojuan@gmail.com`
-- Ubicación: Plaza del Cabildo s/n, interior Pueblito Parque O'Higgins, Metro Parque O'Higgins
-- Horarios: Mar–Vie 10:00–17:00 / Sáb–Dom 11:00–18:00 / Lunes cerrado
-- Pertenece a GRINPACH
-- Muestra: Cámbrico → Cuaternario. Piezas: trilobites, ammonites, ámbar, tiburones, dinosaurios, reconstrucciones
-- Servicios vía GeoPaleo Ltda., aprobada por CMN, estudios SEIA
+5. **`--dump-dom` no basta para medir**: hay que dejar cargar el JS y consultar
+   el DOM ya pintado.
 
 ---
 
@@ -103,42 +122,54 @@ Eran `position: fixed` con `width` en px y offsets negativos (`right: -170px`). 
 museo-mpch/
 ├── index.html
 ├── css/
-│   ├── main.css                  (solo @imports)
-│   ├── base/{reset,root,base}.css        ← root.css tiene la ESCALA FLUIDA
+│   ├── main.css                    (solo @imports)
+│   ├── base/{reset,root,base}.css  ← root.css tiene la ESCALA FLUIDA (clamp)
 │   └── secciones/
 │       ├── header, hero, somos, colecciones, servicios, visita, footer
-│       ├── fondo-ammonite.css    (DEC-008 + DEC-016)
-│       ├── animaciones.css       (DEC-017)
-│       └── responsive.css        (estructura + antidesborde)
+│       ├── fondo-ammonite.css      (SVG propio como mask)
+│       ├── animaciones.css
+│       └── responsive.css          (breakpoints estructurales + antidesborde)
 ├── js/
-│   ├── iconos.js                 (SVG inline, incluye whatsapp)
-│   ├── render.js                 (pinta secciones desde data/)
-│   └── animaciones.js            (reveals, parallax, tilt, menu)
+│   ├── iconos.js                   (los 7 SVG, en pausa via conIcono)
+│   ├── render.js                   (pinta todo desde data/)
+│   └── animaciones.js              (reveals, parallax, tilt, menú)
 ├── data/
-│   └── museo.js                  (FUENTE ÚNICA DE VERDAD)
-└── assets/img/
+│   └── museo.js                    ★ FUENTE ÚNICA DE VERDAD (DEC-005)
+├── assets/img/                     (logo + favicons; sin imágenes de terceros)
+├── _capturas/iconos-piezas.html    (lámina de revisión de los 7 iconos)
+├── _respaldo/                      (los PNG con copyright, fuera del sitio)
+└── HANDOFF.md                      (este archivo)
 ```
 
-**Regla:** los datos viven en `data/museo.js`, **nunca** en el HTML (DEC-005).
+---
+
+## DATOS DEL MUSEO (medidos, no supuestos)
+
+- Contacto: **+56 9 9349 2714** (teléfono y WhatsApp) · `castillocornejojuan@gmail.com`
+- `cepchile@gmail.com` **eliminado** — el museo lo dio de baja
+- Ubicación: Plaza del Cabildo s/n, interior del Pueblito del Parque O'Higgins, Metro Parque O'Higgins, Santiago
+- Horarios: Mar–Vie 10:00–17:00 / Sáb–Dom 11:00–18:00 / Lunes cerrado
+- Pertenece a **GRINPACH**
+- Muestra: Cámbrico → Cuaternario
+- Servicios vía alianza con **GeoPaleo Ltda.**, aprobada por **CMN**, estudios **SEIA**
+- **DEC-010:** el lema "40 años" se eliminó (contradecía el "más de 20 años" del
+  copy real). **DEC-012: el jefe prohibió usar fotos de las piezas** — quiere que
+  la gente vaya a verlas en persona. Sigue vigente.
 
 ---
 
-## PITFALLS APRENDIDOS (segunda sesión)
+## PALETA (medida pixel a pixel del logo, DEC-006)
 
-- **NO reportar un bug sin medirlo.** Reporté con alarma que el `href` del teléfono estaba enmascarado (`+569****2933`) y que en el celular no se podía llamar. **Era falso.** Al medir los 12 caracteres uno por uno en Unicode, el número estaba limpio. Los asteriscos eran un artefacto de **mi lectura del archivo**, no del archivo. **Verificar antes de alarmar.**
-- **`scrollWidth` vs `clientWidth` da falsos positivos.** El criterio correcto de desborde es `scrollWidth > window.innerWidth`, NO `> documentElement.clientWidth`. `clientWidth` descuenta la scrollbar; `scrollWidth` no. Comparar contra clientWidth marca desborde SIEMPRE que haya scrollbar vertical.
-- **Chrome headless ignora `--window-size` por debajo de ~500px.** Para medir móvil de verdad hay que usar `Emulation.setDeviceMetricsOverride` con `mobile: true`. Sin eso, se mide un viewport de 500px creyendo que es de 375px.
-- **Un `position: fixed` con offset negativo SÍ cuenta en el `scrollWidth`** del documento. La solución es un contenedor `overflow: hidden`, no un offset menor.
-- **`transform: translateX()` en un elemento que aún no se revela SÍ ensancha el documento.** Para animaciones de entrada, preferir el eje Y.
-- **Un `display: none` en `.nav` + `display: flex` en `.nav.abierto`** es más robusto que `right: -100%` o `translateX(100%)` para menús móviles.
-- **`init()` dos veces mata los toggles.** Si una función cablea listeners, necesita una guarda de idempotencia.
-- **Los archivos del dueño están en `/mnt/c/Users/logic/Downloads/`** (no `logicforgex`).
+`#02153f` azul marino · `#51adc6` celeste · `#2f7e82` teal · `#d26c53` salmón · `#e8e9e3` crema
 
 ---
 
-## PENDIENTES
+## DECISIONES ACUMULADAS
 
-1. **Publicar en GitHub** (`museo-paleontologico-chile`) — **BLOQUEADO**: el token de `gh` está inválido. Ejecutar `gh auth login -h github.com` antes.
-2. Revisar densidad del fondo de ammonites (juicio estético del dueño, sin verificar visualmente).
-3. Ajustar intensidad de animaciones si el dueño lo pide.
-4. Los 6 SVG son de forma correcta pero **genérica** (sin fotos por DEC-012). Si se quiere más fidelidad, hay que describir pieza por pieza.
+- DEC-001 sigla MPCH · DEC-003 sitio estático sin build · DEC-004 se construye como definitivo
+- DEC-005 datos en `data/museo.js` · DEC-006 paleta medida · DEC-007 logo redibujado
+- DEC-008 fondo con ammonite · DEC-010 lema eliminado · DEC-011 teléfono + WhatsApp
+- DEC-012 **prohibido fotos de piezas** · DEC-013 línea de tiempo en `data/`
+- DEC-014 horario sin redundancia · DEC-015 responsive fluido con clamp()
+- DEC-016 fondo con contenedor de recorte · DEC-017 reveals solo en eje Y
+- DEC-018 iconos de piezas en pausa hasta los dibujos personalizados
