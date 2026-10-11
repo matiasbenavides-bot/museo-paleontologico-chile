@@ -91,42 +91,67 @@ const ICONOS = {
     '<path d="M30 35c-1.5 2.5-1.5 6-.5 9M32 35c1.5 2.5 1.5 6 .5 9"/>' +
     '</svg>',
 
-  /* DIENTE DE TIBURON — la pieza que expone el museo son dientes y vertebras.
-     Anatomia correcta: corona triangular, denticulos laterales, raiz
-     bilobulada. Es la forma clasica de un diente fosil de escualo. */
-  tiburon: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
-    /* corona: triangulo ancho en la base, punta arriba, con un lado cortante */
-    '<path d="M32 5L44 22c1.5 3 1 6-1 7.5L32 34 21 29.5C19 28 18.5 25 20 22L32 5z"/>' +
-    /* denticulos: las muescas en los bordes de la corona */
-    '<path d="M23 25.5l-3.5 1M20.5 21l-3 .6M26.5 15.5l-2.5-1M41 25.5l3.5 1M43.5 21l3 .6M37.5 15.5l2.5-1"/>' +
-    /* raiz bilobulada: las dos ramas que anclan el diente en la encia */
-    '<path d="M24 32c-1 6-1.5 12-1 18 1 2 4 2 5 0l3-11"/>' +
-    '<path d="M40 32c1 6 1.5 12 1 18-1 2-4 2-5 0l-3-11"/>' +
-    /* esmalte: linea de separacion entre corona y raiz */
-    '<path d="M22 30.5c7 2.5 13 2.5 20 0"/>' +
+  /* DIENTE DE TIBURON — la pieza del museo son "restos de tiburones" (dientes
+     y vertebras), no dientes de dinosaurio.
+     Anatomia de un diente fosil de escualo:
+       - corona TRIANGULAR y APLANADA (a diferencia del dinosaurio, que es
+         conico y grueso). Es lo que la hace una cuchilla cortante.
+       - raiz BILOBULADA: las dos ramas que anclan el diente en la encia.
+         Es el rasgo que distingue un diente de tiburon de uno de reptil.
+       - DENTICULOS: las serraciones de los bordes, mas marcadas en las
+         especies cortadoras.
+       - esmalte liso en la cara lingual, con la linea que separa corona
+         y raiz.
+     Correccion de esta version: antes la corona era un triangulo simple sin
+     la raiz bilobulada bien formada ni el perfil aplanado del escualo. */
+  tiburon: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* corona: TRIANGULAR y aplanada, de lados convergentes a la punta.
+       El lado izquierdo es el borde cortante anterior. */
+    '<path d="M32 4c0 0 1.5 4 3 8 2.5 6.5 4.5 14 4.5 19 0 2-.5 3.5-1.5 4.5L32 39l-6-3.5c-1-1-1.5-2.5-1.5-4.5 0-5 2-12.5 4.5-19C30.5 8 32 4 32 4z"/>' +
+    /* denticulos: las serraciones del borde IZQUIERDO (anterior) */
+    '<path d="M30 10.5l-1.5 1 1.5 1-1.5 1 1.5 1-1.5 1 1.5 1-1.5 1 1.5 1"/>' +
+    /* denticulos del borde DERECHO (posterior) */
+    '<path d="M34 10.5l1.5 1-1.5 1 1.5 1-1.5 1 1.5 1-1.5 1 1.5 1-1.5 1"/>' +
+    /* la linea del cuello: donde el esmalte termina y empieza la raiz */
+    '<path d="M26 35.5c3.5 2 8.5 2 12 0"/>' +
+    /* RAIZ BILOBULADA: las dos ramas divergentes, el rasgo distintivo
+       de un diente de tiburon. Cada lobulo se hunde en la encia. */
+    '<path d="M26.5 36c-1 5-1.5 11-1 16.5.2 2 2.8 2 3 0l1.5-11"/>' +
+    '<path d="M37.5 36c1 5 1.5 11 1 16.5-.2 2-2.8 2-3 0l-1.5-11"/>' +
+    /* el canal central entre los dos lobulos de la raiz */
+    '<path d="M31.5 38v6"/>' +
     '</svg>',
 
-  /* HUESO — forma levantada del PNG que entrego el dueño.
-     El PNG ("huesos ... invertir color y dejar solo bordes") trae un hueso
-     VERTICAL y SIMETRICO sobre su eje: dos epifisis (extremos) enfrentadas,
-     cada una con DOS LOBULOS tipo nudillo, y una diafisis que se estrecha al
-     centro formando una X / reloj de arena. Lo confirme leyendo el mapa de
-     pixeles del archivo, no a ojo.
-     Antes estaba mal: lo dibuje en diagonal con las epifisis desplazadas a
-     esquinas opuestas (una "copa mas afuera que la otra"). Ahora es simetrico.
-     El HUEVO ya no va en este icono: el dueño pidio separarlos. */
+  /* HUESO — proporciones levantadas del PNG del dueño, midiendo pixeles.
+     Del perfil real del archivo (447x447) saque estas medidas:
+       - la cintura central mide 93px, o sea el 21% del ancho maximo (447px)
+       - NO es una X simple: cada extremo tiene DOS LOBULOS separados por una
+         muesca. En y=136 el trazo se parte en CUATRO segmentos
+         ([23-74][91-181] ... [265-355][372-423]): dos lobulos por lado.
+       - los lobulos son masas REDONDEADAS con muescas entre ellas, no puntas
+     Antes lo dibuje con las epifisis desplazadas a esquinas opuestas ("una
+     copa mas afuera que la otra", como lo describio el dueño). La forma real
+     es simetrica sobre el eje vertical. */
   hueso: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
-    /* extremo SUPERIOR: epifisis con sus dos lobulos enfrentados */
-    '<path d="M24 6c3.5 0 6 3 6.5 6.5M40 6c-3.5 0-6 3-6.5 6.5"/>' +
-    '<path d="M30.5 12.5c-3 1-5.5 3-7 6M33.5 12.5c3 1 5.5 3 7 6"/>' +
-    /* cuerpo: se estrecha hacia la cintura central (la X) */
-    '<path d="M23.5 18.5c5 5.5 8 9 8.5 13.5.5-4.5 3.5-8 8.5-13.5"/>' +
-    '<path d="M23.5 45.5c5-5.5 8-9 8.5-13.5.5 4.5 3.5 8 8.5 13.5"/>' +
-    /* extremo INFERIOR: espejo exacto del superior */
-    '<path d="M30.5 51.5c-3-1-5.5-3-7-6M33.5 51.5c3-1 5.5-3 7-6"/>' +
-    '<path d="M24 58c3.5 0 6-3 6.5-6.5M40 58c-3.5 0-6-3-6.5-6.5"/>' +
-    /* la cintura: marca donde el cuerpo se hace mas angosto */
-    '<path d="M28 30.5c1.5 1 3 1 4.5 0M28 33.5c1.5-1 3-1 4.5 0"/>' +
+    /* === CABEZA SUPERIOR: dos lobulos redondeados con muesca al centro === */
+    '<path d="M26 4.5c3.5 0 5.5 2.5 5.5 5.5"/>' +
+    '<path d="M38 4.5c-3.5 0-5.5 2.5-5.5 5.5"/>' +
+    /* contorno externo de la cabeza: se ensancha hacia los costados */
+    '<path d="M20.5 9c-3.5 1.5-6 4-6 7.5 0 2.5 1 4.5 2.5 6"/>' +
+    '<path d="M43.5 9c3.5 1.5 6 4 6 7.5 0 2.5-1 4.5-2.5 6"/>' +
+    /* la muesca central de la cabeza: separa los dos lobulos */
+    '<path d="M32 10v3"/>' +
+    /* === CINTURA: el cuerpo se estrecha al 21% del ancho, en X === */
+    '<path d="M25 22.5C28 27 31 30 31.5 32c.5-2 3.5-5 6.5-9.5"/>' +
+    '<path d="M25 41.5C28 37 31 34 31.5 32c.5 2 3.5 5 6.5 9.5"/>' +
+    /* === CABEZA INFERIOR: espejo exacto de la superior === */
+    '<path d="M20.5 55c-3.5-1.5-6-4-6-7.5 0-2.5 1-4.5 2.5-6"/>' +
+    '<path d="M43.5 55c3.5-1.5 6-4 6-7.5 0-2.5-1-4.5-2.5-6"/>' +
+    '<path d="M26 59.5c3.5 0 5.5-2.5 5.5-5.5"/>' +
+    '<path d="M38 59.5c-3.5 0-5.5-2.5-5.5-5.5"/>' +
+    '<path d="M32 54v-3"/>' +
+    /* la cintura, marcada: las dos lineas que senalan la parte mas angosta */
+    '<path d="M29.5 30.5c1.5 1 3.5 1 5 0M29.5 33.5c1.5-1 3.5-1 5 0"/>' +
     '</svg>',
 
   /* HUEVO DE DINOSAURIO — icono PROPIO, separado del hueso (pedido del dueño).
@@ -144,32 +169,46 @@ const ICONOS = {
     '<path d="M18 55c3.5 2.5 8.5 4 14 4s10.5-1.5 14-4"/>' +
     '</svg>',
 
-  /* RECONSTRUCCION — MANDIBULA DE DINOSAURIO (pedido del dueño).
-     Se reemplaza el esqueleto completo por una mandibula, que es lo que el
-     museo reconstruye y lo que se reconoce al instante.
-     Anatomia de una mandibula de teropodo:
-       - rama mandibular alargada y baja
-       - la SINFISIS (donde se unen las dos mitades) al frente
-       - DENTADURA: dientes conicos y aserrados, todos del mismo tipo
-         (homodontos), inclinados hacia atras
-       - la FENESTRA MANDIBULAR (abertura ovalada) en la mitad posterior
-       - el proceso articular y el proceso coronoide, atras y arriba
-       - los dientes siguen la curva de la mandibula: mas grandes al centro */
+  /* RECONSTRUCCION — MANDIBULA DE TIRANOSAURIDO.
+     Anatomia segun las fuentes consultadas:
+       - "grandes dientes maxilares y mandibulares ... extremadamente gruesos,
+         a menudo circulares en seccion transversal" (no cuchilla)
+       - la dentadura es HOMODONTA: "solo dientes de la misma forma y del
+         mismo tamaño" (Wikipedia, "Denticion") — no hay incisivos/caninos
+       - "dientes premaxilares en forma de D ... y mas pequenos que el resto"
+       - el craneo de Tyrannosaurus "presenta un gran numero de huesos
+         fusionados, supliendo la movilidad por una estructura mas maciza"
+       - el dentario es el hueso principal de la mandibula inferior; lleva
+         los dientes y aloja la fenestra mandibular (la ventana ovalada)
+     Mejoras sobre la version anterior: rama mas ALTA y maciza (no un perfil
+     plano), dientes conicos homodontos de tamano parejo, sinfisis marcada al
+     frente, y los dos procesos (articular y coronoide) separados por la
+     escotadura sigmoidea. */
   recon: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
-    /* rama mandibular: contorno alargado, bajo, con la sinfisis al frente
-       (extremo agudo a la izquierda) y el proceso articular atras */
-    '<path d="M7 38c1.5-4 5-6 9.5-6h28c4 0 7 2 8.5 5 .8 1.7.5 3.5-1 4.5-2 1.3-4.5 1.5-7 .8l-31 1.2c-4.5 0-8-2-7.3-5.5z"/>' +
+    /* === DENTARIO: rama mandibular alta y maciza ===
+       Borde superior (donde nacen los dientes) y borde inferior, con la
+       sinfisis al frente y la rama ascendente atras. */
+    '<path d="M4 36c0-3 2-5.5 5.5-5.5h13c2 0 3.5 1 4 3"/>' +
+    '<path d="M26.5 33.5c1.5 3 4 5.5 7 7.5 3.5 2.5 7.5 4 11.5 4.5"/>' +
+    '<path d="M45 45.5c2.5-.5 4-2.5 4-5.5v-6"/>' +
+    /* borde inferior: corre de la sinfisis a la rama */
+    '<path d="M4 36c0 4 2.5 7.5 6.5 9l12 5.5c2.5 1 5.5 1.5 8.5 1"/>' +
     /* la SINFISIS: la union de las dos mitades, al frente */
-    '<path d="M9 35.5c1.5 1.5 3 2.5 5 3"/>' +
-    /* FENESTRA MANDIBULAR: la ventana ovalada del hueso */
-    '<path d="M39 36c3.5 0 6 1.5 6 3.5S42.5 43 39 43s-6-1.5-6-3.5 2.5-3.5 6-3.5z"/>' +
-    /* el proceso articular (atras) y el coronoide (arriba) */
-    '<path d="M46 35c1.5-2.5 3.5-3.5 5.5-3M48.5 43c1.5 1.5 3 2 4.5 1.5"/>' +
-    /* DENTADURA: dientes conicos, homodontos, inclinados hacia atras.
-       Siguen la curva de la mandibula y son mas grandes al centro. */
-    '<path d="M11 32l1-5 1.5 5M16 31.5l1.2-6 1.8 6M21.5 31.5l1.3-6.5 1.7 6.5M27 31.5l1.3-7 1.7 7M32.5 31.5l1.3-6.5 1.7 6.5M38 31.5l1.2-6 1.8 6M43 32l1-5 1.5 5"/>' +
-    /* el borde superior del dentario, del que nacen los dientes */
-    '<path d="M10 32.5c10-2 24-2 34 0"/>' +
+    '<path d="M6.5 33c1 2.5 1 5.5 0 8"/>' +
+    /* === FENESTRA MANDIBULAR: la ventana ovalada === */
+    '<path d="M30 37c4 0 6.5 2 6.5 4.5S34 46 30 46s-6.5-2-6.5-4.5S26 37 30 37z"/>' +
+    /* === PROCESO CORONOIDE (anterior, arriba) y el ARTICULAR (posterior) === */
+    '<path d="M36 39c1-3 3-5 5.5-5.5"/>' +
+    '<path d="M45 45.5c1.5 1.5 3.5 2 5 1"/>' +
+    /* la ESCOTADURA SIGMOIDEA entre ambos procesos */
+    '<path d="M42 34c1.5 1 2.5 2 3 3.5"/>' +
+    /* === DENTADURA: homodonta, conica, gruesa, inclinada hacia atras.
+       El alveolo de cada diente se marca con su raiz dentro del dentario. */
+    '<path d="M9 30.5l1-5.5 1.5 5.5M14 30.5l1.2-6.5 1.8 6.5M20 30.5l1.2-7 1.8 7M26 31l1.3-7 1.7 7M32 32l1.3-6.5 1.7 6.5M38 34l1.2-6 1.8 6"/>' +
+    /* la linea del dentario de la que nacen los dientes */
+    '<path d="M8 30.5c10-1.5 20-1 32 2.5"/>' +
+    /* las raices, visibles dentro del hueso */
+    '<path d="M10.5 30.5v4M16.5 30.5v4M22.5 31v4M28.5 31.5v4M34.5 31.5v4"/>' +
     '</svg>',
 
   /* --- Servicios (no son piezas: quedan como pictogramas funcionales) --- */
