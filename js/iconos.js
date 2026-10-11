@@ -12,56 +12,94 @@
    ============================================================ */
 const ICONOS = {
 
-  /* TRILOBITE — vista dorsal.
-     Anatomia correcta: cefalon (escudo cefalico) con glabela y ojos,
-     torax con segmentos y lobulos pleurales, pigidio (cola) con anillo.
-     Simetria bilateral sobre el eje central; los lobulos laterales se
-     curvan hacia atras, que es la firma del trilobite. */
-  trilobite: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
-    /* contorno del cuerpo */
-    '<path d="M32 5c7 0 12 4 13 9 .8 4 .8 8 .8 13s0 9-.8 13c-1 5-6 9-13 9s-12-4-13-9c-.8-4-.8-8-.8-13s0-9 .8-13C19 9 25 5 32 5z"/>' +
-    /* cefalon: sutura que lo separa del torax */
-    '<path d="M19 20c6 2.5 20 2.5 26 0"/>' +
-    /* glabela (lobulo central de la cabeza) */
-    '<path d="M32 7.5c-3.5 0-5.5 3.5-5.5 7s2 5.5 5.5 5.5 5.5-2 5.5-5.5-2-7-5.5-7z"/>' +
+  /* TRILOBITE — vista dorsal, con la anatomia que define al grupo.
+     Segun la fuente (Wikipedia, "Trilobita", seccion Morfologia):
+       - "el cuerpo ... dividido en tres tagmas: cefalon, torax y pigidio"
+       - "dos surcos longitudinales que dividen el cuerpo en tres lobulos
+         claramente delimitados (de donde deriva su nombre): uno central
+         (glabela en el cefalon y raquis en el tronco) y dos laterales
+         (genas o mejillas en el cefalon y pleuras en el tronco)"
+       - "las genas se prolongan por los lados y por detras por DOS PUNTAS
+         GENALES"
+       - "las genas estan divididas en dos partes por una SUTURA: una gena
+         fija interna (fixigena) y una gena movil externa (librigena)"
+       - "un par de grandes ojos compuestos"
+       - torax de "entre 2 y 40 metameros" articulados; pigidio con
+         "metameros fusionados"
+     Los surcos axiales son LA razon del nombre del animal: sin ellos el
+     dibujo era un elipse generica. Las puntas genales son lo mas visible
+     en cualquier fosil real. */
+  trilobite: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* cefalon: escudo cefalico con las DOS PUNTAS GENALES prolongandose
+       hacia atras y hacia afuera (el rasgo mas reconocible de un trilobite) */
+    '<path d="M32 6c5 0 9 1.5 12 4.5l9 12-4 5c-2-1.5-4-3-5.5-5"/>' +
+    '<path d="M32 6c-5 0-9 1.5-12 4.5l-9 12 4 5c2-1.5 4-3 5.5-5"/>' +
+    /* borde inferior del cefalon */
+    '<path d="M20 27c7 3 17 3 24 0"/>' +
+    /* glabela: el lobulo CENTRAL del cefalon, entre los dos surcos axiales */
+    '<path d="M32 8.5c-4 0-6.5 3.5-6.5 8.5s2.5 8 6.5 8 6.5-3 6.5-8-2.5-8.5-6.5-8.5z"/>' +
+    /* LOS DOS SURCOS LONGITUDINALES: separan el lobulo central (raquis)
+       de las pleuras laterales. Van de la cabeza a la cola. */
+    '<path d="M27 22v22M37 22v22"/>' +
+    /* SUTURA FACIAL: divide la gena fija (interna) de la movil (externa) */
+    '<path d="M22 16l3 6M42 16l-3 6"/>' +
     /* ojos compuestos, a cada lado de la glabela */
-    '<path d="M23.5 12.5c1.8-.8 3.2-.4 3.8 1.2M40.5 12.5c-1.8-.8-3.2-.4-3.8 1.2"/>' +
-    /* torax: segmentos pleurales (van del eje hacia afuera y atras) */
-    '<path d="M32 24v14"/>' +
-    '<path d="M20 26c8 1.5 16 1.5 24 0M20 31c8 1.5 16 1.5 24 0M20 36c8 1.5 16 1.5 24 0"/>' +
-    /* lobulos pleurales con su curvatura hacia atras, uno por lado por segmento */
-    '<path d="M20 26c-2 1.5-3 3-2.5 5M44 26c2 1.5 3 3 2.5 5M20 31c-2 1.5-3 3-2.5 5M44 31c2 1.5 3 3 2.5 5M20.5 36c-1.8 1.4-2.6 2.8-2.2 4.6M43.5 36c1.8 1.4 2.6 2.8 2.2 4.6"/>' +
-    /* pigidio (cola) con su anillo y su borde */
-    '<path d="M20.5 44c7.5 2 15.5 2 23 0"/>' +
-    '<path d="M23 49c5.5 2.5 12.5 2.5 18 0"/>' +
+    '<path d="M22.5 13.5c2.5-.9 4.5.2 5.2 2.4M41.5 13.5c-2.5-.9-4.5.2-5.2 2.4"/>' +
+    /* torax: metameros articulados, cada uno cruzando los tres lobulos.
+       El segmento es continuo: raquis (centro) + pleuras (costados). */
+    '<path d="M21 30c7.5 2 14.5 2 22 0"/>' +
+    '<path d="M20 36c8 2 16 2 24 0"/>' +
+    '<path d="M20.5 42c7.5 2 15.5 2 23 0"/>' +
+    /* pleuras: los lobulos laterales se extienden hacia afuera en punta */
+    '<path d="M21 30l-4 3M43 30l4 3M20 36l-4.5 3M44 36l4.5 3M20.5 42l-4 3M43.5 42l4 3"/>' +
+    /* pigidio: segmentos FUSIONADOS (sin articulacion) + anillo del raquis */
+    '<path d="M22 47c6 2.5 14 2.5 20 0"/>' +
+    '<path d="M27 25v20M37 25v20"/>' +
+    /* borde final redondeado del pigidio */
+    '<path d="M22 47c2.5 5 6 7.5 10 7.5s7.5-2.5 10-7.5"/>' +
     '</svg>',
 
-  /* AMMONITE — concha en espiral logaritmica con camaras y septos.
-     Anatomia correcta: espiral que crece hacia afuera, linea de septos
-     (las suturas entre camaras) y abertura en el extremo exterior. */
-  ammonite: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
-    /* espiral externa: arranca en la abertura (arriba-derecha) y gira hacia el centro */
-    '<path d="M47 21c6 6 8 15 4 24-4 9-14 14-24 12C16 55 8 44 9.5 32 11 19 22 10 34 11c9 .7 16 7 17 16 1 7-3.5 13.5-10.5 14.5-6 .9-11.5-3-12.5-9-1-5 2.5-9.5 7.5-10 4-.4 7.5 2.4 7.7 6.4"/>' +
-    /* abertura de la concha, en el extremo exterior */
-    '<path d="M47 21c-1.5-2.5-4-4.2-6.6-4.6"/>' +
-    /* septos: suturas entre camaras, radiando desde el centro */
-    '<path d="M46.5 26.5l5.2 4M44 33l6.5 3M39 38.5l6 5M32.5 42l4.5 6.5M25 43.5l2.5 7M18 41.5l.5 7"/>' +
-    /* borde exterior de la concha */
-    '<path d="M51.5 45.5c-3.5 7.5-11.5 12-19.5 11.5"/>' +
+  /* AMMONITE — concha planiespiralada con COSTILLAS y camara de habitacion.
+     Segun la fuente (Wikipedia, "Ammonoidea"): "concha fina de aragonito,
+     planiespiralada y con una ornamentacion muy marcada, constituida por
+     COSTILLAS BIEN DEFINIDAS". Se divide en "fragmocono" (tabicado, con los
+     septos) y "camara de habitacion" (la final y de mayor tamano, donde
+     vivia el animal). Sin las costillas el dibujo eran 3 circulos y no se
+     reconocia como ammonite. */
+  ammonite: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* espiral logaritmica: arranca en la abertura y se enrolla al centro */
+    '<path d="M45 24c5.5 6 7 14.5 3.5 22.5C44.5 55 34 60 24.5 57.5 14.5 55 7.5 45 9 33.5 10.5 21.5 21 13 32.5 14.5c8.5 1 14.5 8 15 17 .4 7-4.5 12.5-11 13-5.5.4-10.5-3.5-11-9-.4-4.5 3-8.5 7.5-8.7"/>' +
+    /* COSTILLAS: la ornamentacion radial caracteristica, marcada en toda
+       la vuelta externa de la concha */
+    '<path d="M47 18l4.5-3M51.5 26l5-2M53.5 35l5.5-1M51.5 44l5.5 1.5M46 51l4.5 3.5M37.5 55.5l2.5 5M27 55.5l-1 5.5M17.5 51.5l-3.5 4.5M10.5 44l-4.5 2.5M8 34l-5-.5M10 24l-4-2.5M16.5 16l-3-4M26 11.5l-1-4.5"/>' +
+    /* abertura de la concha, en el extremo exterior de la espira */
+    '<path d="M45 24c-2-3-5.5-4.5-9-4"/>' +
+    /* SEPTOS: las suturas internas que tabican el fragmocono */
+    '<path d="M46 30l5.2 2M44.5 37l5.5 1M41 43.5l5 3M35.5 48.5l3.5 4.5M28.5 50.5l1.5 5.5"/>' +
+    /* camara de habitacion: el tramo final, mas amplio, se marca aparte */
+    '<path d="M51.5 33c1.5 6-1 13-6 17"/>' +
     '</svg>',
 
-  /* AMBAR — resina fosil amorfa con una inclusion (insecto atrapado).
-     No es geometrico: la resina tiene borde irregular y brillo interior. */
-  ambar: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
-    /* contorno irregular de la gota de resina */
-    '<path d="M32 6c9 0 17 6 19 16 2 9 1 19-5 26-5 6-13 9-20 6-8-3-13-11-13-20C13 20 20 6 32 6z"/>' +
-    /* brillo interior (la resina es translucida) */
-    '<path d="M22 20c3-5 8-8 13-8"/>' +
-    /* INSECTO atrapado: cuerpo, cabeza, patas y alas */
-    '<path d="M32 30c2.5 0 4 2 4 4.5s-1.5 4.5-4 4.5-4-2-4-4.5 1.5-4.5 4-4.5z"/>' +
-    '<path d="M32 27.5v-3M28.5 26l-3-3M35.5 26l3-3"/>' +
-    /* patas, tres por lado */
-    '<path d="M28.5 33l-5 2M28.3 36l-5 5M28.8 39l-3 6M35.5 33l5 2M35.7 36l5 5M35.2 39l3 6"/>' +
+  /* AMBAR — resina fosil con inclusion organica.
+     Fuente (Wikipedia, "Ambar"): "resina fosilizada de origen vegetal,
+     proveniente principalmente de restos de coniferas"; "transparente o
+     translucido"; color "naranja amarronado", "tono miel", "verdoso".
+     El contorno de una masa de resina es IRREGULAR: se endurece al caer,
+     no forma una gota geometrica. La inclusion es el atractivo de la pieza. */
+  ambar: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* contorno irregular, con lobulos y hundimientos propios de la resina */
+    '<path d="M30 5c7 0 12 3 16 8 5 5 8 12 7 20-1 9-6 17-13 21-6 4-14 4-20 1-7-4-11-11-11-19 0-7 2-13 6-18C19 12 24 6 30 5z"/>' +
+    '<path d="M46 33c3 1 5 4 5 7 0 4-3 7-7 7"/>' +
+    /* transparencia: lineas de brillo interno */
+    '<path d="M20 18c3-4 7-6 11-6.5M16 28c1-3 3-6 6-8"/>' +
+    /* INSECTO incluido: cuerpo segmentado, cabeza con antenas,
+       alas plegadas y seis patas. Es lo que da valor a la pieza. */
+    '<path d="M31 28c2 0 3.5 1.5 3.5 3.5S33 35 31 35s-3.5-1.5-3.5-3.5S29 28 31 28z"/>' +
+    '<path d="M31 25.5v-2.5"/>' +
+    '<path d="M29 24l-3.5-3M33 24l3.5-3"/>' +
+    '<path d="M27 31.5l-5.5 1.5M26.8 34l-5 4M27.5 36.5l-3 5.5M35 31.5l5.5 1.5M35.2 34l5 4M34.5 36.5l3 5.5"/>' +
+    /* alas plegadas sobre el abdomen */
+    '<path d="M30 35c-1.5 2.5-1.5 6-.5 9M32 35c1.5 2.5 1.5 6 .5 9"/>' +
     '</svg>',
 
   /* DIENTE DE TIBURON — la pieza que expone el museo son dientes y vertebras.
@@ -79,34 +117,49 @@ const ICONOS = {
     '<path d="M22 30.5c7 2.5 13 2.5 20 0"/>' +
     '</svg>',
 
-  /* HUESO Y HUEVO DE DINOSAURIO — las dos piezas en un solo icono,
-     porque el museo las expone juntas.
-     Hueso: epifisis (extremos) mas anchas que la diafisis (cuerpo).
-     Huevo: ovalo con cascara agrietada, propio de un nido fosilizado. */
-  hueso: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
-    /* HUESO largo, abajo-izquierda: cuerpo mas angosto en el centro */
-    '<path d="M8 46c-2.5-2.5-2.5-6 0-8s6-1.5 7.5 1l8-6c-1-2.5.5-5.5 3-6.5s5.5.5 6.5 3l6-4c-1-2.5.5-5.5 3-6.5s5.5.5 6.5 3c2.5 1.5 3.5 4.5 2 7s-4.5 3.5-7 2.5l-6 4c1 2.5-.5 5.5-3 6.5s-5.5-.5-6.5-3l-6 4c1 2.5-.5 5.5-3 6.5s-5.5-.5-6.5-3z"/>' +
-    /* HUEVO, arriba-derecha: ovalo */
-    '<path d="M46 10c5.5 0 9 4.5 9 10s-4 9.5-9 9.5-9-4-9-9.5 3.5-10 9-10z"/>' +
-    /* cascara agrietada */
-    '<path d="M41 15l3 2-2 2.5 3 2M51 14l-2.5 2 2 2.5-2.5 2"/>' +
+  /* HUESO Y HUEVO DE DINOSAURIO — las dos piezas que expone el museo.
+     HUESO: un hueso largo tiene tres partes. La DIAFISIS (cuerpo, la parte
+     cilindrica del medio) es MAS ANGOSTA que las dos EPIFISIS (los extremos
+     articulares), que se ensanchan en forma de nudillo. Eso es lo que hace
+     que un hueso se reconozca como hueso y no como un palo.
+     HUEVO: forma ovoide, mas puntiagudo en un extremo. Los huevos fosiles
+     de dinosaurio aparecen con la CASCARA AGRIETADA o con la textura de
+     cascara conservada, y suelen hallarse en nidos. */
+  hueso: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* HUESO largo: diafisis angosta + epifisis ensanchadas en los extremos.
+       El contorno define la cintura del hueso en el centro. */
+    '<path d="M9 45c-2.5-2-3-5.5-1-7.5 1.5-1.5 3.5-1.5 5 0l1.5 1.5 24-20-1.5-1.5c-1.5-1.5-1.5-3.5 0-5 2-2 5.5-1.5 7.5 1 2 2.5 2 5.5 0 7.5l-1.5 1.5 3 3-1.5 1.5c-2.5 2.5-6.5 2.5-9 0l-22.5 19 1.5 1.5c1.5 1.5 1.5 3.5 0 5-2 2-5.5 1.5-7.5-1z"/>' +
+    /* la cintura: las lineas que marcan donde termina el cuerpo del hueso */
+    '<path d="M22 33l3.5 3.5M41 19l3.5 3.5"/>' +
+    /* HUEVO: ovoide, mas agudo arriba, con la cascara agrietada tipica */
+    '<path d="M48 8c4.5 0 8 5 8 11s-3.5 10-8 10-8-4-8-10 3.5-11 8-11z"/>' +
+    '<path d="M43 14l2.5 2-1.5 2.5 2.5 2M53 13l-2 2 1.5 2.5-2 2"/>' +
+    /* cascara: linea que separa la cascara del interior */
+    '<path d="M41.5 21c4.5 2 8.5 2 13 0"/>' +
     '</svg>',
 
-  /* RECONSTRUCCION — esqueleto montado en sala, que es lo que hace el museo.
-     Anatomia correcta: craneo, columna vertebral con vertebras, costillas
-     y patas. Antes esto era una estrella de 5 puntas. */
-  recon: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
-    /* craneo, a la izquierda, con mandibula */
-    '<path d="M10 22c0-4 3-7 7-7h4c4 0 7 3 7 7v3c0 3-2 5-5 5h-2l-3 4-2-4c-4 0-6-2-6-5z"/>' +
-    '<path d="M13 25c2 1.5 5 1.5 7 0"/>' +
-    /* columna vertebral: cervical a caudal, con vertebras marcadas */
-    '<path d="M28 21c7 1 13 4 18 9s8 11 9 18"/>' +
-    '<path d="M33 23.5l-1-4M38 27l-1-4M43 32l-1-4M47.5 38l-1-4M51 45l-1-4"/>' +
-    /* costillas, cuatro pares, curvando hacia abajo */
-    '<path d="M31 24c1 5 .5 10-2 14M36 27c1.5 5 1 10-1.5 14M41 31c1.5 4.5 1.5 9 0 13M45.5 36c1.5 4 1.5 8.5.5 12"/>' +
-    /* pata trasera: femur, tibia y pie */
-    '<path d="M50 44c2 4 3 8 3.5 12M48 45c-1 5-1.5 9-1 13"/>' +
-    '<path d="M46 58h6"/>' +
+  /* RECONSTRUCCION — esqueleto de dinosaurio montado en sala.
+     Estructura real de un esqueleto de teropodo:
+       craneo con mandibula y fenestra (la ventana del craneo),
+       columna vertebral curvada (cervical -> dorsal -> caudal),
+       costillas que bajan de las vertebras dorsales,
+       pelvis, y patas con femur, tibia y pie.
+     Antes esto era una estrella de 5 puntas, sin ninguna relacion. */
+  recon: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* CRANEO: largo, con la fenestra (abertura) y la mandibula inferior */
+    '<path d="M8 20c0-3.5 2.5-6 6-6l8 .5c3.5.2 5.5 2 6 5l.5 3-6 1-2 5-3-4.5-4-1c-3 0-5.5-1-5.5-3z"/>' +
+    '<path d="M15 24c2.5 1.5 5.5 1.5 8 0"/>' +
+    /* COLUMNA: cervical curvada hacia arriba, dorsal descendente, caudal */
+    '<path d="M28 18c6-3 11-2 15 2 4 3.5 6 9 7 15"/>' +
+    /* VERTEBRAS: espinas neurales saliendo de la columna */
+    '<path d="M31 15.5l-1-3.5M36 15l-1-3.5M41 17l-1-3.5M45.5 21l-1-3.5M49 26.5l-1-3.5"/>' +
+    /* COSTILLAS: bajan de la zona dorsal, curvando hacia la pelvis */
+    '<path d="M30 20c1.5 6 1 12-1.5 17M35 21c2 6 2 12 0 17M40 23.5c2.5 5 3 10.5 1.5 15.5M45 27.5c2.5 4.5 3 9 1.5 13"/>' +
+    /* PELVIS */
+    '<path d="M44 38c3 1.5 4.5 4 4 7M44 38c-2 2-2.5 5-1.5 8"/>' +
+    /* PATA: femur, tibia y pie */
+    '<path d="M46 39c1 5 1.5 9.5 1 13M45 39c-1.5 4.5-2.5 8.5-2 12.5"/>' +
+    '<path d="M42 54h7"/>' +
     '</svg>',
 
   /* --- Servicios (no son piezas: quedan como pictogramas funcionales) --- */
