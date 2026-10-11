@@ -68,5 +68,17 @@
    que el contenedor crece y el icono es fluido hasta 68px. */
 .pieza__ico { width: clamp(56px, 6vw, 68px); height: clamp(56px, 6vw, 68px); color: var(--ocre); margin-bottom: 18px; }
 .pieza__ico svg { width: 100%; height: 100%; display: block; }
+
+/* CR-16: tarjetas SIN icono (las 6 que esperan el dibujo personalizado).
+   Se marcan con un filete superior de acento para que no queden como
+   bloques planos y para distinguirlas del estado con ilustracion.
+   El h3 sube un poco porque ya no tiene el icono encima. */
+.pieza--sin-ico { padding-top: clamp(24px, 3vw, 30px); }
+.pieza--sin-ico::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--ocre), var(--verde-light));
+  opacity: .5; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.pieza--sin-ico h3 { font-size: clamp(1rem, 1.8vw, 1.08rem); }
 .pieza h3 { font-size: 1.1rem; margin-bottom: 9px; }
 .pieza p { font-size: .89rem; color: var(--text-muted); }

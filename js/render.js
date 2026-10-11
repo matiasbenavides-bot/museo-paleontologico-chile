@@ -96,8 +96,14 @@
   function pintarColecciones() {
     var cont = $("[data-colecciones]"); if (!cont || !window.COLECCIONES) return;
     cont.innerHTML = window.COLECCIONES.piezas.map(function (p) {
-      return '<article class="pieza reveal reveal--zoom">' +
-               '<div class="pieza__ico">' + ico(p.icono) + "</div>" +
+      /* CR-16: el icono es OPCIONAL por pieza (campo conIcono en data/).
+         Hoy solo la primera (Trilobites) lo muestra: el dueño encargo a una
+         ilustradora los dibujos personalizados del resto. Los SVG siguen en
+         js/iconos.js, asi que reactivar una pieza = poner conIcono: true. */
+      var llevaIcono = p.conIcono !== false && ico(p.icono);
+      return '<article class="pieza reveal reveal--zoom' +
+               (llevaIcono ? "" : " pieza--sin-ico") + '">' +
+               (llevaIcono ? '<div class="pieza__ico">' + ico(p.icono) + "</div>" : "") +
                "<h3>" + esc(p.nombre) + "</h3>" +
                "<p>" + esc(p.detalle) + "</p>" +
              "</article>";

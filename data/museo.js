@@ -72,14 +72,19 @@ const COLECCIONES = {
   rango: "Cámbrico → Cuaternario",
   rangoDetalle:
     "Una muestra que abarca desde el periodo Cámbrico hasta el Cuaternario.",
+  /* piezas: cada una lleva `icono` (clave en js/iconos.js) y `conIcono`.
+     CR-16: el dueño encargo a una ilustradora los dibujos personalizados de
+     las piezas. Hasta que lleguen, SOLO la primera (Trilobites) muestra su
+     icono; las demas van solo con texto. Para reactivar una, poner
+     conIcono: true y listo — los dibujos siguen en js/iconos.js. */
   piezas: [
-    { icono: "trilobite", nombre: "Trilobites",   detalle: "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico." },
-    { icono: "ammonite",  nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica." },
-    { icono: "ambar",     nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
-    { icono: "tiburon",   nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos." },
-    { icono: "hueso",     nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto." },
-    { icono: "huevo",     nombre: "Huevos de dinosaurios", detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." },
-    { icono: "recon",     nombre: "Reconstrucciones", detalle: "Esqueletos y reconstrucciones que devuelven forma a los fósiles." }
+    { icono: "trilobite", conIcono: true,  nombre: "Trilobites",   detalle: "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico." },
+    { icono: "ammonite",  conIcono: false, nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica." },
+    { icono: "ambar",     conIcono: false, nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
+    { icono: "tiburon",   conIcono: false, nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos." },
+    { icono: "hueso",     conIcono: false, nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto." },
+    { icono: "huevo",     conIcono: false, nombre: "Huevos de dinosaurios", detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." },
+    { icono: "recon",     conIcono: false, nombre: "Reconstrucciones", detalle: "Esqueletos y reconstrucciones que devuelven forma a los fósiles." }
   ]
 };
 
