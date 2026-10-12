@@ -134,6 +134,33 @@
   .pieza__ico:has(img[src*="pieza-ambar"]) { width: 78px; height: 78px; margin-top: -11px; }
 }
 
+/* CR-26: el HUESO. Mismo problema que el ambar (CR-24) pero mas marcado.
+   El dibujo es MUY alargado (504x168 de contenido, relacion 3:1), asi que en
+   la caja cuadrada de 59x59 con object-fit:contain dibujaba 59x21 px — area
+   1239 contra 2842 del trilobite: la MITAD. El dueño lo reporto: "esta muy
+   pequenio".
+   -> Se agranda la CAJA de esta pieza (no el <img>, que no puede exceder su
+      contenedor; ver CR-24).
+
+   El hueso va DE LADO (el dueño lo pidio: "ponlo de lado"). Medido: rotarlo NO
+   agranda nada si la caja es cuadrada (mismo area, otro eje — 19x58 pasa a
+   58x19). Lo que agranda es la caja; la rotacion es para la LECTURA, que es la
+   natural de un fosil acostado.
+
+   Caja 94x94 -> dibujo 92x31 px, area ~2852 = el mismo porte que el trilobite.
+   El alto extra se compensa con margin-top para que el h3 quede a la MISMA
+   altura que sus vecinas (misma tecnica que CR-24).
+
+   ⚠️ POR PIEZA. Las otras cuatro no se tocan. */
+.pieza__ico:has(img[src*="pieza-huesos"]) {
+  width: 94px; height: 94px;
+  margin-top: -16px; margin-bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+@media (max-width: 768px) {
+  .pieza__ico:has(img[src*="pieza-huesos"]) { width: 82px; height: 82px; margin-top: -14px; }
+}
+
 /* CR-16: tarjetas SIN icono (las 6 que esperan el dibujo personalizado).
    Se marcan con un filete superior de acento para que no queden como
    bloques planos y para distinguirlas del estado con ilustracion.
