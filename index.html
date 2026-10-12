@@ -97,12 +97,16 @@
         </div>
 
         <div class="hero__datos">
-          <div class="hero__dato">
+          <div class="hero__dato" data-rango>
+            <!-- CR-30: el rango lo pinta render.js en dos lineas ("Cámbrico" /
+                 "→ Cuaternario"): en una sola no cabe en la columna de celular
+                 y se montaba encima de la metrica vecina. El conteo de piezas
+                 tambien sale de los datos: decia 6 con 7 piezas. -->
             <strong data-hero-rango>Cámbrico → Cuaternario</strong>
             <span>Períodos en exhibición</span>
           </div>
           <div class="hero__dato">
-            <strong>6</strong>
+            <strong data-hero-piezas>7</strong>
             <span>Tipos de piezas</span>
           </div>
           <div class="hero__dato">
@@ -116,7 +120,6 @@
         <h3>Horario de atención</h3>
         <p class="nota">Parque O'Higgins · Santiago</p>
         <div class="horario" data-horario></div>
-        <div class="horario__estado" data-horario-estado>Consultando horario…</div>
       </aside>
     </div>
   </section>
@@ -203,22 +206,6 @@
 
       <div class="visita__grid">
         <div class="ubicacion glass reveal reveal--izq" data-ubicacion></div>
-
-        <div class="mapa reveal reveal--der">
-          <div class="mapa__ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-6.5 8-12a8 8 0 10-16 0c0 5.5 8 12 8 12z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <h3>Parque O'Higgins</h3>
-          <!-- CR-29: este <p> tenia la direccion escrita A MANO ("Plaza del
-               Cabildo s/n"), duplicando el dato de data/museo.js y violando
-               DEC-005 (fuente unica). Ahora lo rellena render.js desde u.direccion
-               + u.referencia, igual que la tarjeta de ubicacion y el footer. -->
-          <p data-mapa-texto></p>
-          <a class="btn btn--primario" data-mapa-link href="#" target="_blank" rel="noopener">
-            Abrir en el mapa
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
-          </a>
-        </div>
       </div>
     </div>
   </section>

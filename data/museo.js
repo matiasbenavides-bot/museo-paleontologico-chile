@@ -55,6 +55,38 @@ const MUSEO = {
     { dias: "Lunes", horas: "Cerrado", abierto: false }
   ],
 
+  /* --- Estado de apertura (CR-30)
+         El dueño reportó que a veces el PARQUE cierra y el visitante no tiene
+         cómo saberlo: el sitio decía "Abierto ahora" con seguridad y podía
+         estar cerrado.
+
+         RESTRICCIÓN DURA: el sitio NO puede saber si el parque cerró. Es
+         estático, sin backend, sin API (DEC-003). Escanear avisos de terceros
+         desde el navegador sería (a) un backend encubierto y (b) CORS.
+
+         Lo único honesto es que el estado NO MIENTA: el sitio calcula si la
+         persona está DENTRO del horario publicado, no si las puertas están
+         abiertas. El texto lo declara, y el enlace de WhatsApp (que sí lo sabe
+         el museo) queda a un clic.
+
+         `abre`/`cierra` en minutos desde medianoche: son el dato que CALCULA
+         el estado. Antes esas horas estaban escritas a mano dentro de
+         render.js — o sea en el código, no en el data/ (violaba DEC-005).
+         Ahora el mismo número está en un solo lugar.
+
+         ⚠️ Si el museo informa un horario especial (feriado, cierre puntual),
+         se agrega acá como `excepto: ["YYYY-MM-DD"]` con su motivo. */
+  estado: {
+    aviso: "El horario es de referencia del museo; el Parque O'Higgins puede cerrar por eventos o mantención.",
+    mensajeWhatsApp: "Hola, quiero confirmar si el museo está abierto hoy.",
+    /* Índice por día de semana: 0=Dom ... 6=Sáb. null = cerrado todo el día.
+       Fuente: la lista `horarios` de arriba. */
+    abre:    { 1: null, 2: 600, 3: 600, 4: 600, 5: 600,  6: 660, 0: 660 },
+    cierra:  { 1: null, 2: 1020, 3: 1020, 4: 1020, 5: 1020, 6: 1080, 0: 1080 },
+    /* CR-30: fechas SIN atención. Formato YYYY-MM-DD. Vacío = sin cierres informados. */
+    excepto: []
+  },
+
   /* --- Línea de tiempo geológica (DEC-013)
          Antes vivía escrita a mano en index.html, violando DEC-005.
          Orden confirmado por el museo: del Cámbrico al Cuaternario. --- */

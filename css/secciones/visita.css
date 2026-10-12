@@ -16,20 +16,6 @@
    cada 34px) al 22% de opacidad, para simular papel de plano.
    Al quitarla, la tarjeta queda con el fondo plano de --bg-card; el
    position: relative se conserva porque el .mapa > * lo necesita. */
-.mapa {
-  border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle);
-  background: var(--bg-card); padding: 30px 28px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center; gap: 16px; min-height: 260px;
-  position: relative;
-}
-/* CR-19: aca vivia .mapa::before (la cuadricula fija). Eliminada a pedido del
-   dueño. Si algun dia se quiere recuperar, eran dos linear-gradient repetidos
-   en background-size 34px 34px. */
-.mapa > * { position: relative; }
-.mapa__ico { width: 46px; height: 46px; color: var(--ocre); animation: float 4.5s ease-in-out infinite; }
-.mapa h3 { font-size: 1.06rem; }
-.mapa p { font-size: .89rem; color: var(--text-muted); max-width: 34ch; }
-
 /* Contacto */
 .contacto__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 40px; }
 .contacto__card {

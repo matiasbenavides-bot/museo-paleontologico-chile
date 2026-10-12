@@ -127,7 +127,12 @@
         var umbral = i / eras.length;
         era.classList.toggle("activa", p >= umbral);
       });
-      linea.style.setProperty("--prog", (p * 100).toFixed(1) + "%");
+      /* CR-32: --prog alimenta `transform: scaleX()` en el CSS, que necesita un
+         NUMERO (0..1), no un porcentaje. Con "50%" el navegador descartaba el
+         transform y la linea quedaba en matrix(0,...) = invisible siempre.
+         Se emite el factor puro; `--progPct` se conserva por si algo mas lo usa. */
+      linea.style.setProperty("--prog", p.toFixed(4));
+      linea.style.setProperty("--progPct", (p * 100).toFixed(1) + "%");
     }
     window.addEventListener("scroll", act, { passive: true });
     window.addEventListener("resize", act);

@@ -134,13 +134,42 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
    coordenada que los puntos (.linea__era::before). Asi en celular, donde la
    variable baja a 18px, queda alineada con los puntos en vez de flotando. */
 .linea { --prog: 0%; }
+/* CR-30 / CR-32: la linea que avanza debe ARRANCAR en el centro del primer
+   punto y TERMINAR en el centro del ultimo, y no pasar de ahi.
+
+   Geometria REAL medida (1280 px, 5 columnas):
+     .linea va de x69 a x1201        -> ancho 1132 px
+     centro del 1er punto  x179      -> 10,0% del ancho
+     centro del ultimo     x1091     -> 90,6% del ancho
+     recorrido necesario   912 px    -> 80,6% del ancho
+
+   El intento anterior ponia `left: calc(50%/5)` (10%, correcto) y
+   `width: calc(var(--prog) * 0.8)` (80%, CORTO: faltaban ~7 px al llegar al
+   ultimo punto). Ademas, con `left` en 10% el ancho tiene que ser 80% para
+   caer en el 90% — pero el `gap` entre columnas mueve los centros un poco mas
+   alla del 10/90 exacto, asi que el punto final quedaba corto o largo segun el
+   ancho de pantalla.
+
+   SOLUCION ROBUSTA: anclar los DOS extremos con left y right en vez de calcular
+   el ancho. Asi la linea siempre empieza y termina EXACTAMENTE donde estan los
+   centros, sin depender del gap ni del ancho. `--prog` pasa a ser el "llenado"
+   dentro de esa pista, via transform: scaleX (que no toca el layout).
+
+   ⚠️ No volver a `width: calc(--prog * K)`: cualquier constante K falla en
+   algun ancho porque el gap es fluido (clamp). */
 .linea::after {
   content: ''; position: absolute;
   top: calc(var(--linea-nivel) - 1px);
-  left: calc(50% / 5); height: 2px; width: var(--prog);
+  /* los dos extremos fijos: centro del 1er punto y centro del ultimo.
+     Las 5 columnas van de 0 a 100%, asi que sus centros estan al 10% y al 90%.
+     El ancho de la pista es el 80% restante. */
+  left: 10%; right: 10%;
+  height: 2px;
+  transform-origin: left center;
+  transform: scaleX(var(--prog));
   background: linear-gradient(90deg, var(--celeste-dark), var(--celeste-light));
   box-shadow: 0 0 12px var(--ocre-glow);
-  transition: width .35s var(--ease-out-expo);
+  transition: transform .35s var(--ease-out-expo);
 }
 .linea__era { transition: transform .4s var(--ease-out-back); }
 .linea__era.activa .linea__nombre { color: var(--celeste-light); }
@@ -151,9 +180,13 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
 }
 .linea__era::before { transition: all .4s var(--ease-out-back); }
 
-/* --- Piezas: su propio estallido de espiral al entrar --- */
+/* --- Piezas: el icono responde al cursor ---
+   CR-30: aca habia `rotate(-9deg)`, que es un resto de cuando el icono era un
+   SVG dibujado por nosotros. Sobre el dibujo de la ilustradora es un giro que
+   ella no dibujo: se ve torcido, no vivo (mismo hallazgo que en el rediseno de
+   tarjeta). Se conserva unicamente la escala. */
 .pieza__ico { transition: transform .55s var(--ease-out-back); }
-.pieza:hover .pieza__ico { transform: scale(1.14) rotate(-9deg); }
+.pieza:hover .pieza__ico { transform: scale(1.08); }
 
 /* --- Servicio destacado: borde que respira --- */
 .servicio--destacado { animation: respirarBorde 5s ease-in-out infinite; }

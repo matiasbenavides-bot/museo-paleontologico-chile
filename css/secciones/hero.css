@@ -37,10 +37,41 @@
 .hero__desc { font-size: 1.09rem; color: var(--text-soft); max-width: 56ch; margin-bottom: 34px; }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 46px; }
 
-.hero__datos { display: flex; flex-wrap: wrap; gap: 34px; }
-.hero__dato { display: flex; flex-direction: column; }
-.hero__dato strong { font-family: var(--font-display); font-size: 1.75rem; color: var(--ocre); line-height: 1.1; }
-.hero__dato span { font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
+/* CR-30: las tres metricas del hero, medidas y parejas.
+   Antes eran un flex por contenido: cada columna media lo que su texto pedia
+   (253 / 42 / 150 px) y los huecos salian distintos, asi que el bloque se veia
+   desalineado y con "hoyos" entre columnas. En celular era peor: el rango
+   ("Cambrico -> Cuaternario") se partia en el medio y la flecha quedaba
+   colgando. Se paso a grid de 3 columnas iguales y el rango se declara en dos
+   lineas. */
+.hero__datos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 34px;
+}
+.hero__dato { display: flex; flex-direction: column; min-width: 0; }
+.hero__dato strong {
+  font-family: var(--font-display); font-size: 1.75rem; color: var(--ocre);
+  line-height: 1.12; letter-spacing: .01em;
+}
+.hero__dato span {
+  font-size: .76rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted); line-height: 1.35;
+}
+/* El rango ("Cámbrico → Cuaternario") es el UNICO de los tres valores que es
+   largo, y es el que rompia la metrica en celular: medido a 320px, el texto
+   ocupaba 157px dentro de una columna de 90px, asi que se salia de su caja y
+   se montaba encima de "Tipos de piezas". Eso era el "se ve raro".
+   Solucion: el rango se parte en DOS lineas declaradas y la flecha abre la
+   segunda — "Cámbrico" / "→ Cuaternario". Nunca queda un separador colgando
+   ni el texto invadiendo la columna vecina. */
+.hero__rangoA, .hero__rangoB { display: block; }
+.hero__flecha { color: var(--text-muted); margin-right: 6px; font-size: .82em; }
+/* En pantallas donde la columna es angosta, el rango cede tamano antes que
+   desbordar (mismo criterio que el resto de la escala fluida). */
+@media (max-width: 480px) {
+  .hero__dato[data-rango] strong { font-size: clamp(.82rem, 3.5vw, 1.02rem); }
+}
 
 /* Tarjeta lateral: horario vivo */
 .hero__tarjeta { padding: 34px 30px; position: relative; }
@@ -55,9 +86,10 @@
 .horario__dias { color: var(--text-soft); }
 .horario__horas { color: var(--text-main); font-weight: 600; font-variant-numeric: tabular-nums; }
 .horario__fila.cerrado .horario__horas { color: #b06a5a; }
-.horario__estado {
-  margin-top: 20px; padding: 11px 15px; border-radius: var(--radius-sm);
-  font-size: .82rem; text-align: center; font-weight: 600; letter-spacing: .02em;
-}
-.horario__estado.abierto { background: rgba(47,126,130,.22); color: #8fd0e2; border: 1px solid rgba(81,173,198,.38); }
-.horario__estado.cerrado { background: rgba(176,106,90,.16); color: #e0a897; border: 1px solid rgba(176,106,90,.32); }
+/* CR-31: aca vivian .horario__estado, .horario__aviso, .horario__wa y sus
+   variantes .abierto/.cerrado — el indicador de estado ("Cerrado ahora" /
+   "Abierto ahora"). Se ELIMINO a pedido del dueño: el horario ya esta escrito
+   arriba, el indicador repetia y agregaba ruido. Sin el elemento en el HTML,
+   estas reglas quedaban como codigo muerto.
+   Se conserva `.horario__fila.cerrado` (la linea "Lunes - Cerrado" de la lista),
+   que es OTRA cosa y si se usa. */

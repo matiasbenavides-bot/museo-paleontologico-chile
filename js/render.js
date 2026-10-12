@@ -23,14 +23,51 @@
     $$("[data-marca-lema]").forEach(function (el) { el.textContent = M.lema; });
   }
 
-  /* ---------- Hero ---------- */
+  /* ---------- Hero ----------
+     CR-30: la metrica "Tipos de piezas" estaba escrita a mano en el index.html
+     y decia 6 cuando el sitio ya tiene 7 (el hueso y el huevo se separaron en
+     CR-27). Ahora el numero sale de COLECCIONES.piezas: no puede volver a
+     quedar viejo. Tambien se quita la "flecha" del rango largo, que era el
+     caracter que hacia ver rara esa metrica en celular. */
   function pintarHero() {
     var d = $("[data-hero-desc]"); if (d) d.textContent = M.descripcionCorta;
     var r = $("[data-hero-rango]");
-    if (r && window.COLECCIONES) r.textContent = window.COLECCIONES.rango;
+    if (r && window.COLECCIONES) {
+      /* CR-32: el CSS define .hero__rangoA / .hero__rangoB (ambos display:block,
+         dos lineas declaradas) pero este render NUNCA los emitia: solo concatenaba
+         el texto, asi que el rango caia en UNA linea y a 768px DESBORDABA su caja
+         (medido: el strong de "Cambrico -> Cuaternario" con scrollWidth mayor que
+         clientWidth). Se envuelve cada parte en su span para que el CSS pueda
+         ponerlas en dos lineas y el rango nunca desborde.
+         En escritorio las dos lineas se ven juntas y compactas; en celular el
+         ancho de la columna manda y baja solo. */
+      var partes = String(window.COLECCIONES.rango).split("\u2192");
+      if (partes.length === 2) {
+        /* Dos lineas declaradas: "Cámbrico" arriba, "→ Cuaternario" abajo.
+           Antes iba todo en un renglon y en celular desbordaba su columna
+           (medido: 157px de texto en 90px de caja a 320px). */
+        r.innerHTML = '<span class="hero__rangoA">' + esc(partes[0].trim()) + "</span>" +
+          '<span class="hero__rangoB"><span class="hero__flecha">\u2192</span>' +
+          esc(partes[1].trim()) + "</span>";
+      } else {
+        r.textContent = window.COLECCIONES.rango;
+      }
+    }
+    var n = $("[data-hero-piezas]");
+    if (n && window.COLECCIONES && window.COLECCIONES.piezas) {
+      n.textContent = window.COLECCIONES.piezas.length;
+    }
   }
 
-  /* ---------- Horario + estado abierto/cerrado ---------- */
+  /* ---------- Horario + estado abierto/cerrado ----------
+     CR-30: el estado decía "Abierto ahora" con seguridad, pero el dueño avisó
+     que a veces el PARQUE cierra y nadie se entera. El sitio NO puede saberlo
+     (estático, sin backend: DEC-003), así que ahora el estado declara lo que
+     realmente sabe: si la persona está DENTRO del horario publicado, no si las
+     puertas están abiertas. Y ofrece el canal que sí lo sabe: WhatsApp.
+
+     Las horas de apertura/cierre y el aviso salen de MUSEO.estado (data/), ya
+     no están escritas a mano acá (DEC-005). */
   function pintarHorario() {
     var cont = $("[data-horario]"); if (!cont) return;
     cont.innerHTML = "";
@@ -42,30 +79,14 @@
       cont.appendChild(fila);
     });
 
-    /* Estado calculado con la hora REAL del visitante (America/Santiago)
-       CR-01 (DEC-014): NO se repiten las horas ni el día.
-       El horario completo ya está listado arriba en la misma tarjeta;
-       acá solo va el ESTADO del momento, sin datos redundantes. */
-    var estado = $("[data-horario-estado]"); if (!estado) return;
-    var ahora;
-    try {
-      ahora = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
-    } catch (e) { ahora = new Date(); }
-    var dia = ahora.getDay();      /* 0=Dom ... 6=Sáb */
-    var min = ahora.getHours() * 60 + ahora.getMinutes();
-    var abierto = false, detalle = "";
-
-    if (dia === 1) {                       /* Lunes: cerrado todo el día */
-      abierto = false; detalle = "Cerrado hoy";
-    } else if (dia >= 2 && dia <= 5) {     /* Mar–Vie 10:00–17:00 */
-      abierto = min >= 600 && min < 1020;
-      detalle = abierto ? "Abierto ahora" : "Cerrado ahora";
-    } else {                               /* Sáb–Dom 11:00–18:00 */
-      abierto = min >= 660 && min < 1080;
-      detalle = abierto ? "Abierto ahora" : "Cerrado ahora";
-    }
-    estado.textContent = detalle;
-    estado.className = "horario__estado " + (abierto ? "abierto" : "cerrado");
+    /* CR-31: aca vivia TODO el calculo del estado abierto/cerrado (el indicador
+       "Cerrado ahora" / "Abierto ahora", su aviso y el boton de confirmar por
+       WhatsApp). Se ELIMINO a pedido del dueño: el horario ya esta escrito en la
+       lista de arriba, el indicador lo repetia y agregaba ruido. Sin el elemento
+       en el HTML, ese codigo quedaba muerto — calculaba una fecha y escribia
+       sobre un nodo que ya no existe.
+       Si algun dia se quiere recuperar: el dato seguia saliendo de MUSEO.estado
+       (abre/cierra en minutos, mas `excepto` para cierres informados). */
   }
 
   /* ---------- Línea de tiempo geológica (DEC-013) ----------
@@ -153,11 +174,6 @@
         (sub ? "<small>" + esc(sub) + "</small>" : "") + "</div></div></div>";
     }
     var mapa = $("[data-mapa-link]"); if (mapa) mapa.href = u.mapaUrl;
-    /* CR-29: el texto bajo "Parque O'Higgins" estaba escrito a mano en el HTML
-       y repetia la direccion vieja. Ahora sale del data/ (DEC-005), igual que
-       todo el resto del bloque. Formato: direccion, referencia. Metro. */
-    var txt = $("[data-mapa-texto]");
-    if (txt) txt.textContent = u.direccion + ", " + u.referencia + ". " + u.metro + ".";
   }
 
   /* ---------- Contacto ---------- */

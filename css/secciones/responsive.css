@@ -73,9 +73,23 @@ img, svg, video { max-width: 100%; height: auto; }
   .hero__cta { flex-direction: column; align-items: stretch; }
   .hero__cta .btn { justify-content: center; }
 
-  /* Las 3 metricas del hero: 3 columnas apretadas se aplastan */
-  .hero__datos { gap: clamp(16px, 5vw, 24px); }
-  .hero__dato strong { font-size: clamp(1.25rem, 5vw, 1.5rem); }
+  /* CR-30: las 3 metricas del hero en celular.
+     Antes se apilaban en columna y cada una medía lo suyo, así que el bloque
+     quedaba como una lista suelta y a la derecha sobraba media pantalla (el
+     dueño lo reportó como "se ve raro o vacío"). Ahora van SIEMPRE en 3
+     columnas iguales, en dos filas limpias:
+        [Cámbrico →]  [ 7 ]  [GRINPACH]
+        [Cuaternario] [Tipos] [Investigación]
+     Lo de abajo de cada número son las etiquetas, así que la fila se lee como
+     una ficha y no como tres cosas sueltas. */
+  .hero__datos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(8px, 2.6vw, 18px);
+  }
+  .hero__dato strong { font-size: clamp(1.02rem, 4.6vw, 1.5rem); line-height: 1.1; }
+  .hero__dato span { font-size: clamp(.58rem, 2.4vw, .72rem); letter-spacing: .06em; }
+  .hero__flecha { margin-left: 3px; }
 
   .colecciones__grid,
   .contacto__grid,
@@ -122,8 +136,17 @@ img, svg, video { max-width: 100%; height: auto; }
     background: var(--bg-base); border: 2px solid var(--ocre); z-index: 1;
     transition: all .45s var(--ease-out-back);
   }
-  /* El detalle de cada era se muestra completo en movil (hay espacio) */
-  .linea__detalle { display: block; }
+  /* CR-30: el detalle de cada era ("Explosión de vida marina") se APAGA en
+     celular.
+     Medido: cada era mide 79px de alto y su texto 53px -> el 33% es aire, y las
+     5 eras sumaban 414px de bloque. El dueño reportó que esa zona "se ve rara o
+     vacía"; la causa medida es esta tercera línea por era, con el mismo aire
+     entre ellas.
+     ⚠️ El detalle lo escribió el museo: NO se borra del data/. Sólo se deja de
+     mostrar en celular, donde el nombre y el rango ("Cámbrico · ~540 Ma") ya
+     dicen lo esencial. En escritorio sigue completo. Para recuperarlo, borrar
+     esta regla. */
+  .linea__detalle { display: none; }
 
   /* La tabla ficha del "quienes somos" se apila */
   .somos__ficha { grid-template-columns: 1fr; }
