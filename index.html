@@ -13,10 +13,18 @@
 <meta property="og:description" content="Museo del Cámbrico al Cuaternario en el Parque O'Higgins, Santiago. Primera muestra chilena centrada en la paleontología y los restos fósiles.">
 <meta property="og:locale" content="es_CL">
 
+<!-- CR-35: favicon = el ammonite del fondo (assets/img/isotipo-ammonite.svg).
+     Antes era el logo completo, que a 32px no se leia. El ammonite es una
+     silueta simple y funciona a tamano chico.
+     Las tres medidas + apple-touch-icon salen del MISMO SVG (ver script), asi
+     que cambiar el dibujo es regenerar los PNG, no redibujar cinco archivos.
+     El `sizes` incluye 512 para que Android/Chrome tomen la version grande. -->
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+<link rel="mask-icon" href="assets/img/isotipo-ammonite.svg" color="#51adc6">
 <link rel="stylesheet" href="css/main.css">
 <script>document.documentElement.classList.remove("sin-js");</script>
 </head>
