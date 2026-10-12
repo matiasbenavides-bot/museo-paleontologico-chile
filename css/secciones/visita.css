@@ -44,14 +44,3 @@
   cursor: pointer; color: inherit;
 }
 .contacto__card--link:hover { text-decoration: none !important; }
-/* La frase de accion reemplaza al texto del enlace viejo ("Escribir por
-   WhatsApp"): es la senal de que TODA la tarjeta se puede apretar. */
-.contacto__accion {
-  display: inline-block; margin-top: 2px;
-  font-size: .92rem; color: var(--ocre-light);
-  transition: color .25s;
-}
-.contacto__card--link:hover .contacto__accion { color: var(--ocre); }
-.contacto__card--link:hover .contacto__accion::after {
-  content: ' \2192'; /* flecha: refuerza que la tarjeta lleva a algun lado */
-}

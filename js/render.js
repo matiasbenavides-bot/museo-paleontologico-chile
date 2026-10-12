@@ -205,8 +205,7 @@
       html += '<a class="contacto__card contacto__card--link reveal reveal--zoom"' +
               ' href="' + esc(wa) + '" target="_blank" rel="noopener"' +
               ' aria-label="Escribir por WhatsApp">' +
-              ico("whatsapp") + "<div><h3>WhatsApp</h3>" +
-              '<span class="contacto__accion">Abrir WhatsApp</span></div></a>';
+              ico("whatsapp") + "<div><h3>WhatsApp</h3></div></a>";
     }
     if (c.correos && c.correos.length) {
       html += '<div class="contacto__card reveal reveal--zoom">' + ico("correo") + "<div><h3>Correo electrónico</h3>" +
