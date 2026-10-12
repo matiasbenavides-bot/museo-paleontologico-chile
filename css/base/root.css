@@ -65,8 +65,22 @@
   --radius-lg: 22px;
   --radius-xl: 30px;
 
-  /* Tipografía */
-  --font-display: Georgia, "Times New Roman", serif;
+  /* Tipografía (CR-18)
+     Elegida por el dueño: "el más finito" = Cormorant Garamond.
+     Antes era Georgia, que es la serif que sale por defecto en casi todo:
+     no aportaba personalidad y NO EXISTE EN ANDROID, asi que en celular los
+     titulos caian a la Times del sistema.
+     Cormorant Garamond se empaqueta en assets/fonts/ (ver css/base/fuentes.css):
+     mismo aspecto en todos los equipos y sin depender de un tercero.
+     La cadena de respaldo mantiene Georgia y luego serif, por si el woff2
+     no llega a cargar.
+     El CUERPO DE TEXTO queda en la sans: Cormorant tiene el trazo MUY FINO y
+     un parrafo largo en pantalla chica pierde legibilidad. Es la combinacion
+     clasica: serif para titulos, sans para leer.
+     OJO: Cormorant NO es bold de verdad a ojo — su 700 es notoriamente mas
+     liviano que el 700 de otras fuentes, asi que los titulos pueden necesitar
+     mas tamano para tener presencia. */
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-body: "Segoe UI", system-ui, -apple-system, sans-serif;
 
   /* Transiciones */
@@ -91,10 +105,13 @@
   --space-bloque:  clamp(24px, 4vw, 44px);
   --space-card:    clamp(20px, 3vw, 28px);
 
-  /* Tipografia fluida */
-  --fs-hero:    clamp(1.9rem, 5.2vw, 4.2rem);
-  --fs-h2:      clamp(1.45rem, 3.6vw, 2.6rem);
-  --fs-h3:      clamp(1rem, 1.8vw, 1.1rem);
+  /* Tipografia fluida (CR-18: EB Garamond tiene el OJO MAS CHICO que Georgia
+     — a igual font-size el texto se ve notoriamente mas chico — asi que las
+     escalas de TITULO suben en todos sus minimos y maximos.
+     El cuerpo (--fs-body, --fs-small) NO se toca: esa sigue en la sans. */
+  --fs-hero:    clamp(2.1rem, 5.8vw, 4.7rem);
+  --fs-h2:      clamp(1.6rem, 4vw, 2.9rem);
+  --fs-h3:      clamp(1.05rem, 1.9vw, 1.2rem);
   --fs-body:    clamp(.94rem, 1.4vw, 1.03rem);
   --fs-small:   clamp(.82rem, 1.2vw, .89rem);
   --fs-eyebrow: clamp(.68rem, 1vw, .74rem);

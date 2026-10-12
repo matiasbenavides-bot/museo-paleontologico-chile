@@ -1,0 +1,38 @@
+/* MPCH — Fuentes del sitio (CR-18)
+   Tipografia elegida: CORMORANT GARAMOND (SIL Open Font License 1.1).
+   El dueño la eligio por ser "la mas finita" de las opciones.
+
+   Se EMPAQUETA en el repo en vez de enlazarla a Google Fonts: el sitio no
+   tiene ninguna dependencia externa y no se le agrega una (DEC-003).
+   Ademas garantiza que todos los visitantes vean LO MISMO, que era el
+   problema del Georgia: no existe en Android y ahi los titulos caian a la
+   Times del sistema.
+
+   Solo dos pesos: 400 y 700 — es lo que el sitio usa.
+   Solo el subset LATIN: el sitio esta en espanol, no necesita cirilico ni
+   griego, asi que el archivo queda chico (36 KB).
+
+   OJO CON LA RUTA: este archivo vive en css/base/, asi que para llegar a
+   assets/fonts/ hay que subir DOS niveles (../../). Con una sola barra el
+   navegador la busca en css/ y la fuente NO carga.
+
+   OJO CON LA LEGIBILIDAD: Cormorant es la mas fragil de las candidatas
+   porque su trazo es muy fino. Por eso el CUERPO DE TEXTO se queda en la
+   sans y solo los TITULOS la usan. Si algun dia se pasa el cuerpo a esta
+   fuente, hay que subir el peso a 500/600 o el parrafo largo desaparece en
+   pantallas chicas. */
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  src: url('../../assets/fonts/cormorant-garamond-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  src: url('../../assets/fonts/cormorant-garamond-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

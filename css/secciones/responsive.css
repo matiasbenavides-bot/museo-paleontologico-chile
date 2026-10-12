@@ -93,6 +93,13 @@ img, svg, video { max-width: 100%; height: auto; }
     margin-bottom: var(--space-bloque);
   }
   .linea::before { content: none; }   /* sin linea conectora */
+  /* CR-20: la linea que AVANZA (.linea::after, en animaciones.css) tambien
+     se apaga aca. Antes no hacia falta porque la que se veia como unica era
+     la FIJA (::before), que ya se apagaba en esta regla; al eliminar la fija
+     y dejar la que desliza como unica, se colaba en celular. Medido: sin
+     esto, en 320/768px quedaba una linea con width variable cruzando la
+     seccion. */
+  .linea::after { content: none; }
   /* Sin linea que los una, los puntos dejan de tener sentido colgando a la
      izquierda: se quitan tambien. Queda solo el texto (era + rango), que es
      lo unico que se lee bien en una pantalla angosta. */

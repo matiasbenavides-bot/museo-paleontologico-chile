@@ -22,7 +22,15 @@ body { background: var(--bg-deep); }
   box-sizing: border-box;
 }
 
-h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
+/* CR-18: los titulos pasan a Cormorant Garamond.
+   letter-spacing: el valor anterior era -.01em, pensado para Georgia, que es
+   ancha. Cormorant es FINA Y ESTRECHA: con tracking negativo las letras se
+   pegan y el titulo se ve apretado, no elegante. Se suelta a 0.
+   font-weight: cada titulo usa 700. Cormorant en 700 pesa a ojo como un 500
+   de otras fuentes; por eso NO se le baja el peso aunque quede fina — si
+   hiciera falta mas presencia, se sube el TAMANO, no el peso (no hay 800/900
+   en el subset descargado). */
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; font-weight: 700; letter-spacing: 0; }
 
 /* Etiqueta de sección (eyebrow) */
 .etiqueta {

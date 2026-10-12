@@ -126,10 +126,18 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
 }
 .pieza:hover::before, .servicio:hover::before, .contacto__card:hover::before { opacity: 1; }
 
-/* --- Línea de tiempo: se ilumina según el scroll --- */
+/* --- Línea de tiempo: se ilumina según el scroll ---
+   CR-20: la linea que avanza (esta) estaba en top: 32px FIJO, mientras la
+   linea fija que se eliminó estaba en top: calc(--linea-nivel - 1px). Eran
+   dos alturas distintas, y por eso el dueño veia DOS lineas en vez de una.
+   Ahora esta es la unica linea y se ancla a --linea-nivel, la MISMA
+   coordenada que los puntos (.linea__era::before). Asi en celular, donde la
+   variable baja a 18px, queda alineada con los puntos en vez de flotando. */
 .linea { --prog: 0%; }
 .linea::after {
-  content: ''; position: absolute; top: 32px; left: 0; height: 2px; width: var(--prog);
+  content: ''; position: absolute;
+  top: calc(var(--linea-nivel) - 1px);
+  left: calc(50% / 5); height: 2px; width: var(--prog);
   background: linear-gradient(90deg, var(--celeste-dark), var(--celeste-light));
   box-shadow: 0 0 12px var(--ocre-glow);
   transition: width .35s var(--ease-out-expo);

@@ -13,21 +13,27 @@
    invisible equivalente, para que el origen de la era coincida exactamente
    con el origen del contenedor y los dos elementos se anclen a la MISMA
    coordenada (--linea-nivel). La linea arranca y termina en el centro de
-   la primera y ultima columna, sin sangrar por los lados. */
+   la primera y ultima columna, sin sangrar por los lados.
+
+   CR-20: SE ELIMINA la linea FIJA (.linea::before). El dueño reporto que
+   veia DOS lineas: la quieta (esta, de 2px con degradado y opacidad .45) y
+   la que avanza con el scroll (.linea::after, en animaciones.css). Estaban
+   a distinta altura porque esta usaba top: calc(--linea-nivel - 1px) y la
+   otra top: 32px fijo, asi que no se superponian: se veian las dos.
+   Se queda SOLO la que desliza, que es la que el dueño quiere.
+   La coordenada de la que desliza se unifica a --linea-nivel en
+   animaciones.css, para que en celular (donde la variable baja a 18px)
+   quede alineada con los puntos. */
 .linea {
   --linea-nivel: clamp(18px, 2.2vw, 28px);
   --pt: 11px;                                  /* diametro del punto */
   position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: clamp(4px, .8vw, 8px); margin-bottom: clamp(38px, 5vw, 56px);
 }
-.linea::before {
-  content: ''; position: absolute;
-  top: calc(var(--linea-nivel) - 1px);
-  left: calc(50% / 5); right: calc(50% / 5);
-  height: 2px;
-  background: linear-gradient(90deg, var(--ocre-dark), var(--ocre), var(--verde-light));
-  opacity: .45;
-}
+/* CR-20: aca vivia .linea::before, la linea FIJA. Eliminada a pedido del
+   dueño, que veia dos lineas. Si algun dia se quiere recuperar, era una
+   barra de 2px con linear-gradient(90deg, --ocre-dark, --ocre, --verde-light)
+   a opacity .45, anclada a top: calc(--linea-nivel - 1px). */
 .linea__era {
   text-align: center; position: relative; min-width: 0;
   /* el contenido baja para dejar espacio al punto y a la linea */
@@ -73,19 +79,17 @@
    el minimo lo fija el dibujo. */
 .pieza__ico { width: clamp(58px, 4.6vw, 62px); height: clamp(58px, 4.6vw, 62px); color: var(--ocre); margin-bottom: 18px; }
 .pieza__ico svg { width: 100%; height: 100%; display: block; }
-/* El dibujo de la ilustradora llega sin color propio (trazo negro convertido
-   a alfa), asi que lo tinta el CSS via mask: queda del celeste de la paleta
-   igual que los SVG, y cambiar de color es cambiar una linea.
-   OJO: la ruta de la mascara se resuelve contra ESTA hoja de estilos, asi que
-   va con ../.. para llegar a la raiz del sitio. Con la ruta "assets/img/..."
-   el navegador la buscaba en css/secciones/ y el icono quedaba INVISIBLE
-   (medido: 404 y mascara sin resolver). Receta y forma de medirlo en la
-   skill, seccion de pitfalls. */
+/* El dibujo de la ilustradora es un <img> NORMAL: el PNG ya viene con el
+   celeste de la paleta y su alfa.
+   OJO, esto costo tres vueltas: la version anterior lo tinta por CSS con
+   mask + currentColor, y el icono NO pintaba. Se descarto entera. Si algun
+   dia hay que cambiarle el color a un dibujo, se regenera el PNG; NO se
+   vuelve a la mascara sin volver a verificar POR PIXELES (no por propiedades
+   del DOM: una captura de pantalla es la unica prueba que no se puede
+   falsear). */
 .pieza__ico img {
   width: 100%; height: 100%; display: block;
-  background: currentColor;
-  -webkit-mask: var(--arte, url(../../assets/img/pieza-trilobites.png)) center / contain no-repeat;
-  mask: var(--arte, url(../../assets/img/pieza-trilobites.png)) center / contain no-repeat;
+  object-fit: contain;
 }
 
 /* CR-16: tarjetas SIN icono (las 6 que esperan el dibujo personalizado).
@@ -98,6 +102,8 @@
   background: linear-gradient(90deg, var(--ocre), var(--verde-light));
   opacity: .5; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
-.pieza--sin-ico h3 { font-size: clamp(1rem, 1.8vw, 1.08rem); }
-.pieza h3 { font-size: 1.1rem; margin-bottom: 9px; }
+.pieza--sin-ico h3 { font-size: clamp(1.05rem, 1.9vw, 1.2rem); }
+/* CR-18: el h3 de pieza sube y lleva un poco de aire entre letras.
+   EB Garamond en cuerpos chicos se aprieta; el tracking lo abre. */
+.pieza h3 { font-size: clamp(1.08rem, 2vw, 1.24rem); margin-bottom: 9px; letter-spacing: .005em; }
 .pieza p { font-size: .89rem; color: var(--text-muted); }

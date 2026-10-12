@@ -8,19 +8,23 @@
 .ubicacion__valor { color: var(--text-main); font-size: .97rem; }
 .ubicacion__valor small { display: block; color: var(--text-muted); font-size: .86rem; margin-top: 2px; }
 
+/* CR-19: se elimina la cuadricula decorativa (.mapa::before).
+   El dueño la describio como "la linea del mapa que no se desliza" y pidio
+   dejarla fuera: la tarjeta mostraba DOS cosas a la vez, la cuadricula fija
+   de fondo y el pin que flota (animation: float, abajo). Se queda SOLO el pin.
+   La cuadricula eran dos juegos de lineas rectas (horizontales y verticales
+   cada 34px) al 22% de opacidad, para simular papel de plano.
+   Al quitarla, la tarjeta queda con el fondo plano de --bg-card; el
+   position: relative se conserva porque el .mapa > * lo necesita. */
 .mapa {
   border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle);
   background: var(--bg-card); padding: 30px 28px; display: flex; flex-direction: column;
   align-items: center; justify-content: center; text-align: center; gap: 16px; min-height: 260px;
   position: relative;
 }
-.mapa::before {
-  content: ''; position: absolute; inset: 0; opacity: .22;
-  background-image:
-    linear-gradient(rgba(81,173,198,.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(81,173,198,.16) 1px, transparent 1px);
-  background-size: 34px 34px;
-}
+/* CR-19: aca vivia .mapa::before (la cuadricula fija). Eliminada a pedido del
+   dueño. Si algun dia se quiere recuperar, eran dos linear-gradient repetidos
+   en background-size 34px 34px. */
 .mapa > * { position: relative; }
 .mapa__ico { width: 46px; height: 46px; color: var(--ocre); animation: float 4.5s ease-in-out infinite; }
 .mapa h3 { font-size: 1.06rem; }
