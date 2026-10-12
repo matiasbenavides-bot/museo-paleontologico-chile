@@ -93,6 +93,76 @@ del archivo, no el archivo. Verificado midiendo los caracteres en Unicode.
 
 ---
 
+## PENDIENTES NUEVOS (2026-10-12) — NO EJECUTADOS, esperan confirmación
+
+⚠️ **NADA de esta sección está publicado.** Es texto que dictó el dueño y que se
+guarda para trabajarlo. **No integrarlo sin resolver las dudas marcadas.**
+
+### ⚠️ PENDIENTE — TEXTOS QUE PUBLICAMOS SIN QUE NADIE LOS DIJERA (DEC-034)
+El 2026-10-12 se reescribió el párrafo 1 y 3 de `QUIENES_SOMOS` al sacar GRINPACH,
+y **el agente INVENTÓ frases** que el dueño nunca dijo: "institución
+independiente, dedicada a la paleontología", "trabaja en colaboración con la
+Municipalidad de Santiago", "más de 20 años de investigación en terreno y en
+sala". **El dueño lo detectó: "TODA ESA INFORMACION ES INVENTADA POR NOSOTROS".**
+→ Quedó PUBLICADO y **pendiente de validación con el dueño**. Las preguntas
+exactas para hacerle están en la respuesta de la sesión (dependencia del museo,
+municipalidad exacta, de quién son los 40 años y los "más de 20", quién está
+detrás hoy, si las 7 piezas y 5 eras siguen correctas).
+→ **Regla que se rompió acá: reescribir copy institucional NO es trabajo del
+agente.** Se quita el dato obsoleto y se PREGUNTA el nuevo; no se redacta.
+
+### ⚠️ PALETA DE COLORES — NO APLICADA, esperando los códigos
+El dueño tiene los colores verdaderos en `logo imprenta (3).jpg` (descargas).
+**La paleta del sitio sigue siendo la del logo VIEJO** (`#02153f`, `#51adc6`…,
+en `css/base/root.css`). El dueño dijo "TE LOS MANDO YO" y después "MEJOR NO".
+→ **Un JPG NO da el color de marca** (compresión + artefactos): solo da
+aproximaciones (`#085878`, `#08a8d8`). El exacto se pide al dueño
+(Pantone/CMYK/hex del archivo de diseño). **No repintar con la aproximación.**
+→ Cuando lleguen: se edita **`css/base/root.css`** y se riega a las 11 hojas.
+  Revisar CONTRASTE de los textos blancos y del **logo con placa blanca** si el
+  azul nuevo es más claro.
+
+### SECCIÓN SERVICIOS — "El museo va a tu colegio"
+Reemplaza/complementa "Exposición escolar itinerante". Texto dictado por el dueño:
+el MPCH, **en conjunto con el Centro de Estudios Paleontológicos de Chile
+(CEPCHILE)**, desarrolló un proyecto museológico escolar itinerante.
+Incluye 5 ítems: 20 vitrinas con reconstrucciones de material fosilífero ·
+material de historia natural (minerales, conchas, insectos) · material gráfico
+de apoyo · reconstrucciones de dinosaurios · especialista guiando la exposición.
+⚠️ **CONFLICTO A RESOLVER:** el sitio **YA ELIMINÓ CEPCHILE** (dieron de baja
+incluso `cepchile@gmail.com`, CR-04). Confirmar con el dueño si el trabajo
+conjunto con CEPCHILE sigue vigente antes de publicarlo.
+
+### LUGAR DE HONORES — nuevo bloque
+Título pedido: "Administración y Curación del Museo Paleontológico de Chile".
+Contenido dictado: **JUAN CASTILLO CORNEJO** — Director y Curador del MPCH.
+  · Diplomado en Paleontología y Patrimonio Paleontológico, Univ. Autónoma de
+    Zacatecas (México)
+  · Diplomado en Diseño y Espacios Expositivos, Univ. Adolfo Ibáñez
+  · Estudió Ancient Marine Reptile, Univ. de Alberta (Canadá)
+  · Presidente del Grupo de Investigaciones Paleontológicas de Chile
+  · Profesor asesor del Museo Nacional de Historia Natural en "Juventudes
+    Científicas de Chile"; paleontólogo en el Museo de Colchagua (Fund. Cardoen)
+  · +30 años de exposiciones y cursos de paleontología; artículos y ensayos de
+    divulgación; entrevistas en TV, prensa y revistas
+  · Profesor del curso "Paleontología básica, una introducción al estudio de la
+    vida antigua"; trabajos en terreno
+  · Libros: "Dinosaurios en Chile y los vertebrados del Mesozoico" ·
+    "Megabestias en Chile y los vertebrados del Cenozoico" · "Dinosaurios y
+    otros animales prehistóricos en Chile" · "Tiburones fósiles de Chile y la
+    fauna fósil de Bahía Inglesa"
+⚠️ **CONFLICTO A RESOLVER:** dice "presidente del Grupo de Investigaciones
+Paleontológicas de Chile (GRINPACH)", que el dueño declaró OBSOLETO. Aclarar si
+es (a) que el museo ya no depende del grupo, o (b) que el dato también caducó.
+⚠️ El "más de 30 años" de él convive con los "40 años" del museo: son cosas
+distintas (ya aclarado por el dueño), pero NO confundirlos al redactar.
+
+### SECCIÓN SERVICIOS — imágenes oficiales
+El dueño pidió mejorar Servicios con imágenes oficiales. **No hay assets
+todavía**: pedirlos y verificar PROCEDENCIA antes de publicar (DEC-018/DEC-027).
+
+---
+
 ## CÓMO VERIFICAR COSAS EN ESTE PROYECTO
 
 Sin poder ver imágenes, la verificación es **por medición**. Métodos que funcionan:
