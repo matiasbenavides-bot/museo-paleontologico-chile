@@ -42,12 +42,42 @@
 }
 
 /* --- Ammonite grande de acento, latiendo muy lento --- */
+/* CR-23: la capa SUMA el dibujo de la ilustradora como textura (mask + celeste).
+   Se conserva el SVG propio debajo, asi que el trazo vectorial no se pierde. */
 #fondo-ammonite-grande {
   width: min(58vw, 620px); height: auto;
   right: -8%; top: 8%;
   opacity: .16;
   animation: respirarFondo 26s ease-in-out infinite;
 }
+
+/* CR-23: textura del dibujo de la ilustradora, sumada encima del SVG.
+   MECANISMO: PNG con el COLOR HORNEADO + background-image normal.
+   NO se usa mask: en este proyecto mask+background YA fallo con el icono de la
+   tarjeta (0 pixeles pintados). El PNG trae el celeste de la paleta adentro. */
+#fondo-ilustracion,
+#fondo-ilustracion-2 {
+  position: absolute;
+  pointer-events: none;
+  aspect-ratio: 1;
+  background-image: url("../../assets/img/fondo-ammonite-ilustradora.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+#fondo-ilustracion {
+  width: min(58vw, 620px); height: auto;
+  right: -8%; top: 8%;
+  opacity: .16;
+  animation: respirarFondo 26s ease-in-out infinite;
+}
+#fondo-ilustracion-2 {
+  width: min(42vw, 430px); height: auto;
+  left: -6%; bottom: 6%;
+  opacity: .13;
+  animation: respirarFondo2 32s ease-in-out infinite;
+}
+
 @keyframes respirarFondo {
   0%, 100% { transform: scale(1) rotate(0deg); opacity: .14; }
   50%      { transform: scale(1.06) rotate(7deg); opacity: .20; }
@@ -85,9 +115,13 @@
 @media (max-width: 768px) {
   #fondo-ammonite-grande { width: min(52vw, 340px); right: -10%; opacity: .08; }
   #fondo-ammonite-2 { width: min(40vw, 240px); left: -8%; opacity: .06; }
+  /* CR-23: el dibujo de la ilustradora suma tambien en celular, mas tenue aun */
+  #fondo-ilustracion { width: min(52vw, 340px); right: -10%; opacity: .09; }
+  #fondo-ilustracion-2 { width: min(40vw, 240px); left: -8%; opacity: .07; }
 }
 
 /* Con movimiento reducido: sin animacion, pero con textura */
 @media (prefers-reduced-motion: reduce) {
-  #fondo-ammonite-grande, #fondo-ammonite-2 { animation: none !important; }
+  #fondo-ammonite-grande, #fondo-ammonite-2,
+  #fondo-ilustracion, #fondo-ilustracion-2 { animation: none !important; }
 }
