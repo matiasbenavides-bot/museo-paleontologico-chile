@@ -192,9 +192,21 @@
               '<a href="tel:' + esc(c.telefonoLink) + '">' + esc(c.telefono) + "</a></div></div>";
     }
     if (c.whatsapp && c.whatsapp.url) {
+      /* CR-37: la tarjeta de WhatsApp COMPLETA es el enlace (pedido del dueño:
+         "es para apretar en toda la tarjeta"). Antes solo el texto/icono era
+         clickeable, asi que tocar la tarjeta no hacia nada.
+
+         Se hace con <a> que envuelve la tarjeta entera, NO con un listener de
+         JS: asi funciona aunque falle el JS, el navegador muestra el destino
+         al pasar el cursor, y se puede abrir en pestana nueva con el teclado.
+         ⚠️ Sin texto visible en el enlace hace falta aria-label, si no un lector
+         de pantalla anuncia un enlace vacio. */
       var wa = c.whatsapp.url + (c.whatsapp.mensaje ? "?text=" + encodeURIComponent(c.whatsapp.mensaje) : "");
-      html += '<div class="contacto__card reveal reveal--zoom">' + ico("whatsapp") + "<div><h3>WhatsApp</h3>" +
-              '<a href="' + esc(wa) + '" target="_blank" rel="noopener">Escribir por WhatsApp</a></div></div>';
+      html += '<a class="contacto__card contacto__card--link reveal reveal--zoom"' +
+              ' href="' + esc(wa) + '" target="_blank" rel="noopener"' +
+              ' aria-label="Escribir por WhatsApp">' +
+              ico("whatsapp") + "<div><h3>WhatsApp</h3>" +
+              '<span class="contacto__accion">Abrir WhatsApp</span></div></a>';
     }
     if (c.correos && c.correos.length) {
       html += '<div class="contacto__card reveal reveal--zoom">' + ico("correo") + "<div><h3>Correo electrónico</h3>" +

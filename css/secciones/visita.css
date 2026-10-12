@@ -29,3 +29,29 @@
 .contacto__card p, .contacto__card a { font-size: .92rem; color: var(--text-soft); }
 .contacto__card a { display: block; color: var(--ocre-light); transition: color .25s; word-break: break-word; }
 .contacto__card a:hover { color: var(--ocre); text-decoration: underline; }
+
+/* CR-37: la tarjeta de WhatsApp COMPLETA es un enlace ("es para apretar en
+   toda la tarjeta"). Cuatro cosas que hay que resolver al hacer esto:
+   1. Es un <a>, asi que hereda display:block y subrayado del hover de las
+      reglas de arriba: los dos sobran y se neutralizan.
+   2. El cursor tiene que ser pointer en TODA la tarjeta, no solo en el texto.
+   3. El `transform: translateY(-5px)` del hover ya existe en .contacto__card,
+      pero `.contacto__card a:hover` mete subrayado: hay que apagarlo.
+   4. La tarjeta entera clickeable NO puede romper el layout de las vecinas:
+      el <a> ocupa la celda del grid igual que el <div> que reemplaza. */
+.contacto__card--link {
+  display: flex; text-decoration: none !important;
+  cursor: pointer; color: inherit;
+}
+.contacto__card--link:hover { text-decoration: none !important; }
+/* La frase de accion reemplaza al texto del enlace viejo ("Escribir por
+   WhatsApp"): es la senal de que TODA la tarjeta se puede apretar. */
+.contacto__accion {
+  display: inline-block; margin-top: 2px;
+  font-size: .92rem; color: var(--ocre-light);
+  transition: color .25s;
+}
+.contacto__card--link:hover .contacto__accion { color: var(--ocre); }
+.contacto__card--link:hover .contacto__accion::after {
+  content: ' \2192'; /* flecha: refuerza que la tarjeta lleva a algun lado */
+}
