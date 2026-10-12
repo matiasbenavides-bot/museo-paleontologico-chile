@@ -20,3 +20,45 @@
   font-size: .79rem; color: var(--text-muted);
 }
 .footer__base a:hover { color: var(--ocre); }
+
+/* --- Créditos de autoría (CR-34)
+   Van entre la grilla del footer y la línea de copyright, con su propio
+   separador para que se lean como una franja aparte y no como parte de
+   "Explorar" o "Contacto".
+   Son DOS ROLES distintos (creación del sitio / ilustraciones): por eso cada
+   nombre lleva su rol debajo y en tamaño menor — así no se leen como una
+   lista de dos desarrolladores.
+   Los nombres van en mayúsculas porque así los dictó el dueño; el CSS NO los
+   transforma (nada de text-transform), para que el dato del data/ se muestre
+   tal cual. */
+.footer__creditos {
+  padding-top: 26px; border-top: 1px solid var(--border-subtle);
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 10px clamp(18px, 3vw, 34px);
+}
+.creditos__titulo {
+  font-family: var(--font-body); font-size: .74rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ocre);
+}
+.creditos__item { display: flex; flex-direction: column; gap: 3px; }
+.creditos__nombre {
+  font-family: var(--font-display); font-size: clamp(.92rem, 1.6vw, 1.05rem);
+  color: var(--text-soft); letter-spacing: .02em; line-height: 1.2;
+}
+.creditos__rol {
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+/* Correo de quien hizo el sitio (opcional por autor). Va en minuscula, NO en
+   mayusculas: un mail en mayusculas se lee mal y no se puede copiar tal cual. */
+.creditos__correo {
+  font-size: .78rem; color: var(--text-soft); text-decoration: none;
+  margin-top: 2px; width: fit-content;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: color .25s, border-color .25s;
+  overflow-wrap: anywhere;
+}
+.creditos__correo:hover { color: var(--ocre); border-color: var(--border-accent); }
+@media (max-width: 480px) {
+  .footer__creditos { flex-direction: column; align-items: flex-start; gap: 14px; }
+}

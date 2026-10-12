@@ -214,6 +214,32 @@
                        (c.correos && c.correos[0] ? '<li><a href="mailto:' + esc(c.correos[0]) + '">' + esc(c.correos[0]) + "</a></li>" : "");
     }
     var anio = $("[data-anio]"); if (anio) anio.textContent = new Date().getFullYear();
+
+    /* CR-34: creditos de autoria, desde el data/ (DEC-005).
+       Son DOS ROLES distintos: el dueño creo el sitio, Betsabe hizo las
+       ilustraciones. Cada nombre va con su rol para que no se lean como dos
+       desarrolladores. Los nombres se transcriben EXACTOS como los dicto el
+       dueño (sin tildes): no se corrigen nombres propios. */
+    var cr = $("[data-footer-creditos]");
+    if (cr && M.creditos && M.creditos.autores) {
+      cr.innerHTML =
+        '<span class="creditos__titulo">' + esc(M.creditos.titulo || "Sitio desarrollado por") + "</span>" +
+        M.creditos.autores.map(function (a) {
+          /* El correo es OPCIONAL por autor: solo el creador del sitio lo trae.
+             Va como mailto para poder escribir desde el mismo telefono.
+             ⚠️ NO confundir con el correo del MUSEO (M.contacto.correos), que es
+             otro distinto y vive en la seccion Contacto. */
+          var correo = a.correo
+            ? '<a class="creditos__correo" href="mailto:' + esc(a.correo) + '">' +
+              esc(a.correo) + "</a>"
+            : "";
+          return '<span class="creditos__item">' +
+                   '<span class="creditos__nombre">' + esc(a.nombre) + "</span>" +
+                   '<span class="creditos__rol">' + esc(a.rol) + "</span>" +
+                   correo +
+                 "</span>";
+        }).join("");
+    }
   }
 
   /* ---------- Ejecutar ---------- */

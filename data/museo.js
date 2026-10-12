@@ -59,6 +59,28 @@ const MUSEO = {
     mapaUrl: "https://www.google.com/maps/search/?api=1&query=-33.4623623,-70.6578538"
   },
 
+  /* --- Créditos de autoría (CR-34) ---
+     Pedido del dueño, textual: "PON EN EL FOOTER QUE MATIAS IGNACIO BENAVIDES
+     MARAMBIO CREO LA PAGINA, Y BETSABE PAOLA CACERES PAILLALEF", y después
+     aclaró: "BETSABE DE ILUSTRADORA".
+     => Son DOS ROLES distintos, no dos desarrolladores: el dueño creó el sitio
+        y Betsabé hizo las ilustraciones (es la ilustradora de las piezas,
+        ver CR-17 y CR-22 — Trilobites y Ammonites son suyos).
+
+     ⚠️ LOS NOMBRES PROPIOS VAN EXACTOS COMO LOS DICTÓ EL DUEÑO: "MATIAS" y
+     "BETSABE", SIN TILDES. No se corrigen ni se "mejoran": un nombre propio
+     escrito por su dueño manda sobre la ortografía del agente. Ya se cometió
+     el error una vez en esta sesión (se escribió "Matías"); no repetirlo.
+     Si hace falta una tilde, la pide él. */
+  creditos: {
+    titulo: "Sitio desarrollado por",
+    autores: [
+      { nombre: "MATIAS IGNACIO BENAVIDES MARAMBIO", rol: "Creación de la página",
+        correo: "matiasbenavidesmarambio@gmail.com" },
+      { nombre: "BETSABE PAOLA CACERES PAILLALEF",  rol: "Ilustraciones" }
+    ]
+  },
+
   /* --- Horarios (medido del sitio real) --- */
   horarios: [
     { dias: "Martes a viernes", horas: "10:00 – 17:00 hrs.", abierto: true },
