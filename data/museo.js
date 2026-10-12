@@ -9,7 +9,22 @@ const MUSEO = {
   sigla: "MPCH",
   nombre: "Museo Paleontológico de Chile",
   nombreLargo: "Museo Paleontológico de Chile",
-  pertenece: "Grupo de Investigaciones Paleontológicas de Chile (GRINPACH)",
+  /* DEC-034 (2026-10-12): GRINPACH quedó OBSOLETO en todo el sitio.
+     Dueño, textual: "TODA LA INFORMACION CON GRENPACH ESTA OBSOLETA, SE VOLVIO
+     INDEPENDIENTE Y TRABAJA CON LA MUNI". Y precisó: INDEPENDIENTE, con la
+     municipalidad como COLABORADOR/socio (sin convenio formal).
+     ⚠️ La clave se sigue llamando `pertenece` porque el render la lee así
+     (data-marca-pertenece, x2: ficha de Quiénes somos + footer). Cambiar el
+     NOMBRE de la clave obligaría a tocar render.js y el HTML sin ganar nada;
+     lo que cambia es el TEXTO. */
+  pertenece: "Museo independiente, con colaboración de la Municipalidad de Santiago",
+  /* DEC-034: el aliado institucional, para la metrica del hero.
+     Antes esa metrica mostraba "GRINPACH" escrito a mano en el HTML (obsoleto,
+     y ademas violaba DEC-005: dato en el codigo en vez del data/). */
+  aliado: {
+    nombre: "Municipalidad de Santiago",
+    etiqueta: "Colaboración"
+  },
   /* DEC-033 (2026-10-12): el lema VUELVE, dictado por el dueño:
        "Museo Paleontológico de Chile, 40 años trayendo el pasado al presente."
      Esto levanta DEC-010, que lo había eliminado — pero NO por contradecir el
@@ -132,12 +147,26 @@ const MUSEO = {
   ]
 };
 
-/* --- Quiénes somos (copy real del sitio) --- */
+/* --- Quiénes somos (copy real del sitio) ---
+   DEC-034: se REESCRIBIERON los dos parrafos que nombraban a GRINPACH.
+   El museo ya no pertenece al grupo: es INDEPENDIENTE y trabaja con la
+   municipalidad como colaboradora.
+
+   ⚠️ Lo que CAMBIO y lo que NO:
+   - CAMBIA: la pertenencia (ya no es de GRINPACH) y el marco institucional.
+   - NO CAMBIA: el resto del copy — el recinto pequeno, "primer museo chileno",
+     el objetivo de difusion. Eso sigue siendo del museo y no lo toque.
+   - "mas de 20 anos de trabajo del Grupo" -> el dato era DEL GRUPO (por eso
+     convivia sin contradiccion con los 40 anos del museo, que son del museo).
+     Al salir GRINPACH, se reescribe para que hable de la INVESTIGACION del
+     propio museo y no cuelgue de una institucion que ya no lo representa.
+     ⚠️ Si el dato real de anos de investigacion es OTRO, lo corrige el dueño:
+     aca se conservo el "mas de 20" como la cifra que el museo ya publicaba. */
 const QUIENES_SOMOS = {
   parrafos: [
-    "El Museo Paleontológico de Chile es una entidad perteneciente al Grupo de Investigaciones Paleontológicas de Chile (GRINPACH). Ha sido diseñado y estructurado de acuerdo a criterios expuestos por investigadores de la agrupación: arquitectos, biólogos, paleontólogos y la asesoría de técnicos museólogos.",
+    "El Museo Paleontológico de Chile es una institución independiente, dedicada a la paleontología y a los restos fósiles. Trabaja en colaboración con la Municipalidad de Santiago, y su muestra ha sido diseñada y estructurada de acuerdo a criterios expuestos por investigadores del área: arquitectos, biólogos, paleontólogos y la asesoría de técnicos museólogos.",
     "Si bien el recinto para esta muestra es pequeño, se han aprovechado todos los espacios para entregar conocimientos y para que los visitantes puedan apreciar piezas paleontológicas de nuestro país y del mundo.",
-    "Es el primer museo chileno que centra su muestra en la paleontología y en restos fósiles, que ayudan a comprender la vida pasada de nuestro país y nuestro planeta. En su primera etapa expone el resultado de más de 20 años de trabajo del Grupo de Investigaciones Paleontológicas de Chile.",
+    "Es el primer museo chileno que centra su muestra en la paleontología y en restos fósiles, que ayudan a comprender la vida pasada de nuestro país y nuestro planeta. En su primera etapa expone el resultado de más de 20 años de investigación en terreno y en sala.",
     "Su principal objetivo apunta a difundir el conocimiento y protección de la paleontología nacional, acercando a la gente a esta ciencia de gran interés para la comunidad, pero de escasa difusión en los medios."
   ],
   mision: "Difundir y proteger el patrimonio paleontológico nacional."

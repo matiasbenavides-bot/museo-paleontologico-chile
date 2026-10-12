@@ -149,12 +149,15 @@ museo-mpch/
 - `cepchile@gmail.com` **eliminado** — el museo lo dio de baja
 - Ubicación: Plaza del Cabildo s/n, interior del Pueblito del Parque O'Higgins, Metro Parque O'Higgins, Santiago
 - Horarios: Mar–Vie 10:00–17:00 / Sáb–Dom 11:00–18:00 / Lunes cerrado
-- Pertenece a **GRINPACH**
+- **Independiente** — el museo ya NO pertenece a GRINPACH (obsoleto, DEC-034).
+  Trabaja con la **Municipalidad de Santiago** como colaboradora (sin convenio formal)
 - Muestra: Cámbrico → Cuaternario
 - Servicios vía alianza con **GeoPaleo Ltda.**, aprobada por **CMN**, estudios **SEIA**
-- **DEC-010:** el lema "40 años" se eliminó (contradecía el "más de 20 años" del
-  copy real). **DEC-012: el jefe prohibió usar fotos de las piezas** — quiere que
-  la gente vaya a verlas en persona. Sigue vigente.
+- **DEC-010 (SUPERADA por DEC-033):** el lema se había eliminado por creer que
+  el "40 años" contradecía el "más de 20 años" del copy. **El dueño aclaró el
+  2026-10-12 que son cosas distintas** (40 = el museo; 20 = el trabajo de
+  investigación). El lema está VIGENTE en el sitio: "Museo Paleontológico de
+  Chile, 40 años trayendo el pasado al presente." **No volver a borrarlo.**
 
 ---
 

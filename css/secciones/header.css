@@ -16,14 +16,25 @@
 
 /* Marca */
 .marca { display: flex; align-items: center; gap: 12px; }
+/* CR-38: el LOGO NUEVO del museo es un JPG con fondo BLANCO y esta certificado
+   por el "senior": va tal cual, sin recortarle el fondo (no se retoca un logo
+   certificado).
+   El problema: un bloque blanco sobre azul marino oscuro se ve como un parche
+   pegado. La solucion no es esconder el blanco, sino DARLE ASIENTO:
+   el PNG ya viene con una placa de esquinas redondeadas y borde celeste
+   (generada desde el mismo JPG), asi que el blanco se lee como una FICHA
+   apoyada sobre el fondo, del mismo lenguaje que las tarjetas del sitio.
+   Consecuencias que hay que compensar:
+   1. El `filter: drop-shadow + brightness` era para un logo TRANSPARENTE;
+      sobre un bloque opaco no hace halo, ensucia el borde. Se quita.
+   2. El logo crece en alto (la placa agrega aire), asi que el header necesita
+      mas espacio: se ajusta el padding en vez de encoger el logo. */
 .marca__logo {
-  height: 46px; width: auto; flex-shrink: 0;
+  height: 54px; width: auto; flex-shrink: 0;
   transition: transform .5s var(--ease-out-back);
-  /* el logo es oscuro: sobre fondo azul marino se le da un halo claro */
-  filter: drop-shadow(0 0 10px rgba(81,173,198,.22)) brightness(1.08);
 }
-.marca:hover .marca__logo { transform: scale(1.06) rotate(-2deg); }
-.marca__logo--footer { height: 52px; filter: drop-shadow(0 0 10px rgba(81,173,198,.18)) brightness(1.1); }
+.marca:hover .marca__logo { transform: scale(1.04); }
+.marca__logo--footer { height: 62px; }
 
 /* Isotipo suelto (hero, favicon) */
 .marca__iso { width: 44px; height: 44px; flex-shrink: 0; transition: transform .5s var(--ease-out-back); }

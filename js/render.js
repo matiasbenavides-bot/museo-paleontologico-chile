@@ -63,6 +63,10 @@
     if (n && window.COLECCIONES && window.COLECCIONES.piezas) {
       n.textContent = window.COLECCIONES.piezas.length;
     }
+    /* DEC-034: la tercera metrica del hero era "GRINPACH" (obsoleto).
+       Ahora sale del data/: el museo es independiente y la muni colabora. */
+    var a = $("[data-hero-aliado]");
+    if (a && M.aliado) a.textContent = M.aliado.nombre;
   }
 
   /* ---------- Horario + estado abierto/cerrado ----------

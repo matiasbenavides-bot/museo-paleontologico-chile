@@ -54,11 +54,14 @@
 <header class="header">
   <div class="contenedor header__inner">
     <a href="#inicio" class="marca" aria-label="Museo Paleontológico de Chile — inicio">
-      <img class="marca__logo" src="assets/img/logo-mpch.png" alt="Museo Paleontológico de Chile">
-      <span class="marca__txt">
-        <span class="marca__sigla" data-marca-sigla>MPCH</span>
-        <span class="marca__sub" data-marca-nombre>Museo Paleontológico de Chile</span>
-      </span>
+      <!-- CR-38: logo NUEVO (JPG del museo, fondo blanco, certificado).
+           Va con su placa de esquinas redondeadas para que el blanco repose
+           sobre el fondo en vez de verse como un parche pegado.
+           CR-39: se ELIMINO el texto "MPCH / Museo Paleontológico de Chile"
+           que iba al lado — el logo nuevo YA TRAE ese texto dentro del dibujo,
+           asi que se leia DUPLICADO. El <span class="marca__txt"> que habia
+           aca se saco completo. -->
+      <img class="marca__logo" src="assets/img/logo-mpch-placa.png" alt="Museo Paleontológico de Chile">
     </a>
 
     <nav class="nav" aria-label="Navegación principal">
@@ -120,8 +123,11 @@
             <span>Tipos de piezas</span>
           </div>
           <div class="hero__dato">
-            <strong>GRINPACH</strong>
-            <span>Investigación detrás</span>
+            <!-- DEC-034: aca decia "GRINPACH" (obsoleto). El museo es
+                 independiente y la muni colabora. El dato sale del data/ para
+                 que no vuelva a quedar viejo (DEC-005). -->
+            <strong data-hero-aliado>Municipalidad de Santiago</strong>
+            <span>Colaboración</span>
           </div>
         </div>
       </div>
@@ -250,11 +256,9 @@
     <div class="footer__grid">
       <div class="footer__marca">
         <a href="#inicio" class="marca">
-          <img class="marca__logo" src="assets/img/logo-mpch.png" alt="Museo Paleontológico de Chile">
-          <span class="marca__txt">
-            <span class="marca__sigla" data-marca-sigla>MPCH</span>
-            <span class="marca__sub" data-marca-nombre>Museo Paleontológico de Chile</span>
-          </span>
+          <!-- CR-38: mismo logo nuevo con placa, en version de footer.
+               CR-39: tambien se le quito el texto al lado (el logo ya lo trae). -->
+          <img class="marca__logo marca__logo--footer" src="assets/img/logo-mpch-placa.png" alt="Museo Paleontológico de Chile">
         </a>
         <!-- DEC-033: el lema lo llena render.js desde MUSEO.lema (DEC-005). El
              texto de aca es solo el respaldo por si falla el JS: debe ser EL
