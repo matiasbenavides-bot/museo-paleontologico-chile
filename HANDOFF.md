@@ -111,6 +111,31 @@ detrás hoy, si las 7 piezas y 5 eras siguen correctas).
 → **Regla que se rompió acá: reescribir copy institucional NO es trabajo del
 agente.** Se quita el dato obsoleto y se PREGUNTA el nuevo; no se redacta.
 
+### ⚠️ MATERIAL RESCATABLE — GRINPACH y CEPCHILE en estos textos NO son errores
+
+🔴 **Aclaración del dueño (2026-10-12), textual: "ES QUE ES INFORMACION
+OBSOLETA, PERO RESCATABLE".**
+
+Se había anotado como "conflicto a resolver" que estos textos nombran GRINPACH y
+CEPCHILE, que están obsoletos. **Estaba mal clasificado. NO ES UN CONFLICTO:**
+
+- **Dato INSTITUCIONAL** (de quién depende el museo HOY) → ahí GRINPACH es
+  obsoleto y se corrige. Es lo que se arregló en `pertenece` y en Quiénes somos.
+- **TRAYECTORIA de una PERSONA** (de qué fue presidente, qué museos integró) →
+  **GRINPACH es su HISTORIA y se cuenta tal cual.** Un currículum no se
+  "actualiza": describe lo que la persona hizo, en el tiempo en que lo hizo.
+  Que el museo ya no dependa del grupo NO borra que él lo presidió.
+- Mismo caso con **CEPCHILE**: que el sitio haya dado de baja su correo (CR-04)
+  no borra que el proyecto escolar **se hizo en conjunto con ellos.** Es
+  trayectoria del proyecto, no una dependencia vigente.
+
+→ **Consecuencia práctica: los textos de Juan Castillo y de "El museo va a tu
+colegio" se pueden publicar TAL COMO los dictó el dueño**, sin quitar GRINPACH
+ni CEPCHILE. No preguntar de nuevo por esto: ya está aclarado.
+→ **Regla general que deja esto:** antes de "corregir" un nombre viejo en un
+texto, preguntarse si es un DATO VIGENTE (se corrige) o HISTORIA (se conserva).
+Borrar un logro pasado por "obsoleto" sería falsificar el currículum.
+
 ### ⚠️ PALETA DE COLORES — NO APLICADA, esperando los códigos
 El dueño tiene los colores verdaderos en `logo imprenta (3).jpg` (descargas).
 **La paleta del sitio sigue siendo la del logo VIEJO** (`#02153f`, `#51adc6`…,
