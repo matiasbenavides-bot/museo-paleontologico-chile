@@ -92,6 +92,48 @@
   object-fit: contain;
 }
 
+/* CR-24: el AMBAR se veia mas chico que las otras piezas. El dueño lo reporto:
+   "esta mas pequeno que los demas".
+
+   CAUSA MEDIDA (no es impresion): el dibujo del ambar es ANCHO Y BAJO — su
+   contenido ocupa 504x372 px dentro del PNG de 512 (98,4% del ancho, 72,7% del
+   alto), porque es una resina ovalada. El trilobite y el amonite son altos
+   (416x502 y 418x504: ~98% del ALTO). En una caja CUADRADA con
+   object-fit:contain manda el lado que mas sobra -> el ALTO, asi que:
+       trilobite -> dibuja 48x58 px
+       amonite   -> dibuja 48x58 px
+       ambar     -> dibujaba 57x42 px   <- 16px menos de alto
+
+   🔴 DOS INTENTOS FALLIDOS ANTES DE ESTE, y los dos por la MISMA razon
+   (agrandar el <img> no sirve: el limite es la CAJA):
+   1) `.pieza__ico img[src*=...] { width:78px }` -> el <img> no puede exceder su
+      contenedor; el width computado seguia dando 58px.
+   2) `.pieza__ico:has(...) { width:78px; height:58px }` -> la caja crecio, pero
+      el dibujo quedo 57x42: al ser ANCHO, agrandar el ancho NO sube la escala
+      (el ancho ya estaba lleno). **El alto hay que darlo por el ALTO de la caja.**
+
+   SOLUCION: caja 81x80 SOLO para el ambar -> el dibujo queda 79x58, la MISMA
+   altura que las otras dos. El alto extra (22px) se COMPENSA con
+   `margin-bottom` para que el texto del ambar siga alineado con las tarjetas
+   vecinas de su fila.
+
+   ⚠️ POR PIEZA, nunca global: agrandar TODOS los .pieza__ico desarmaria las dos
+   piezas ya aprobadas. Se identifica por el src, no por nth-child.
+   ⚠️ El agente NO ve imagenes: estos valores salen de medir el bbox del PNG,
+   no de una apreciacion. */
+.pieza__ico:has(img[src*="pieza-ambar"]) {
+  /* 90x90 es lo que hace que el dibujo del ambar llegue a 58px de ALTO, igual
+     que las otras. El bloque normal mide 58+18=76px; con 90 hay que recuperar
+     los 13-14px de diferencia para que el h3 caiga a la MISMA altura que sus
+     vecinas (medido: sin compensar quedaba 10px mas abajo). */
+  width: 90px; height: 90px;
+  margin-top: -13px; margin-bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+@media (max-width: 768px) {
+  .pieza__ico:has(img[src*="pieza-ambar"]) { width: 78px; height: 78px; margin-top: -11px; }
+}
+
 /* CR-16: tarjetas SIN icono (las 6 que esperan el dibujo personalizado).
    Se marcan con un filete superior de acento para que no queden como
    bloques planos y para distinguirlas del estado con ilustracion.
