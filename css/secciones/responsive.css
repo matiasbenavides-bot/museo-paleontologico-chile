@@ -81,32 +81,46 @@ img, svg, video { max-width: 100%; height: auto; }
   .contacto__grid,
   .footer__grid { grid-template-columns: 1fr; gap: clamp(18px, 5vw, 30px); }
 
-  /* Linea de tiempo en movil: SIN linea conectora (pedido del dueño).
-     La version vertical dejaba una barra que se desplazaba en horizontal,
-     porque `right` heredado de la regla de escritorio (calc(50% / 5))
-     seguia deformando la caja junto a `top/bottom: 0`. En pantallas
-     angostas la linea aporta poco y molesta, asi que se elimina entera:
-     quedan los puntos y el texto, que es lo que se lee. */
+  /* Linea de tiempo en movil: SOLO PUNTOS, sin linea (CR-21).
+     El dueño eligio esta variante sobre el hilo vertical tenue.
+     Estado previo: al quitar la linea y los puntos quedaba una lista de cinco
+     bloques de texto suelta, SIN sangria y sin nada que los uniera. Medido en
+     768px: cada era de 79px con el texto pegado al borde izquierdo y 400px de
+     nada a la derecha -> "muy vacio".
+     Aca se recuperan los PUNTOS (que estaban borrados en la linea 99) y se le
+     da sangria a cada era para que el punto no pise el texto.
+
+     OJO CON LA SANGRIA — este fue el error de la lamina de revision: la
+     sangria iba en el CONTENEDOR (.linea) y las eras son hijos del grid que
+     arrancan en x:0, asi que el punto (a 20px) caia ENCIMA del texto.
+     La sangria va en `.linea__era`, que es quien contiene al punto y al texto.
+     Verificado: punto de 11px a left 14px -> ocupa 14-25; el texto arranca en
+     34px. No se tocan. */
   .linea {
     grid-template-columns: 1fr; gap: 0;
-    padding-top: 0; padding-left: 0;   /* sin puntos colgando: no hace falta sangria */
+    padding-top: 0; padding-left: 0;
     margin-bottom: var(--space-bloque);
   }
-  .linea::before { content: none; }   /* sin linea conectora */
-  /* CR-20: la linea que AVANZA (.linea::after, en animaciones.css) tambien
-     se apaga aca. Antes no hacia falta porque la que se veia como unica era
-     la FIJA (::before), que ya se apagaba en esta regla; al eliminar la fija
-     y dejar la que desliza como unica, se colaba en celular. Medido: sin
-     esto, en 320/768px quedaba una linea con width variable cruzando la
-     seccion. */
+  /* Sin linea conectora en movil: ni la FIJA ni la que avanza con el scroll.
+     La que avanza (.linea::after) crece en ANCHO, que en una columna vertical
+     no tiene sentido; por eso se apaga en vez de reorientarse. */
+  .linea::before { content: none; }
   .linea::after { content: none; }
-  /* Sin linea que los una, los puntos dejan de tener sentido colgando a la
-     izquierda: se quitan tambien. Queda solo el texto (era + rango), que es
-     lo unico que se lee bien en una pantalla angosta. */
-  .linea__era::before { content: none; }
+
   .linea__era {
+    --franja: 34px;             /* donde arranca el TEXTO */
+    position: relative;
     text-align: left;
-    padding: 12px 0;
+    padding: 14px 0 14px var(--franja);
+  }
+  /* EL PUNTO, que se enciende al bajar (animaciones.js le pone .activa).
+     Va dentro de la sangria de la era, a la izquierda del texto. */
+  .linea__era::before {
+    content: ''; position: absolute;
+    left: 14px; top: 19px;
+    width: var(--pt); height: var(--pt); border-radius: 50%;
+    background: var(--bg-base); border: 2px solid var(--ocre); z-index: 1;
+    transition: all .45s var(--ease-out-back);
   }
   /* El detalle de cada era se muestra completo en movil (hay espacio) */
   .linea__detalle { display: block; }
