@@ -83,7 +83,7 @@ const COLECCIONES = {
      queda solo como respaldo. Los 7 SVG siguen intactos. */
   piezas: [
     { icono: "trilobite", conIcono: true,  arte: "assets/img/pieza-trilobites.png", nombre: "Trilobites",   detalle: "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico." },
-    { icono: "ammonite",  conIcono: false, nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica." },
+    { icono: "ammonite",  conIcono: true,  arte: "assets/img/pieza-ammonite.png", nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica." },
     { icono: "ambar",     conIcono: false, nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
     { icono: "tiburon",   conIcono: false, nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos." },
     { icono: "hueso",     conIcono: false, nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto." },
