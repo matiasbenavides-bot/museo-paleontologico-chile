@@ -76,9 +76,13 @@ const COLECCIONES = {
      CR-16: el dueño encargo a una ilustradora los dibujos personalizados de
      las piezas. Hasta que lleguen, SOLO la primera (Trilobites) muestra su
      icono; las demas van solo con texto. Para reactivar una, poner
-     conIcono: true y listo — los dibujos siguen en js/iconos.js. */
+     conIcono: true y listo — los dibujos siguen en js/iconos.js.
+
+     CR-17: llego el PRIMER dibujo de la ilustradora (Trilobites). Cuando una
+     pieza trae `arte`, ese dibujo MANDA sobre el SVG de js/iconos.js; el SVG
+     queda solo como respaldo. Los 7 SVG siguen intactos. */
   piezas: [
-    { icono: "trilobite", conIcono: true,  nombre: "Trilobites",   detalle: "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico." },
+    { icono: "trilobite", conIcono: true,  arte: "assets/img/pieza-trilobites.png", nombre: "Trilobites",   detalle: "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico." },
     { icono: "ammonite",  conIcono: false, nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica." },
     { icono: "ambar",     conIcono: false, nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
     { icono: "tiburon",   conIcono: false, nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos." },

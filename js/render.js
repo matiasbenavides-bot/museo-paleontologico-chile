@@ -99,14 +99,29 @@
       /* CR-16: el icono es OPCIONAL por pieza (campo conIcono en data/).
          Hoy solo la primera (Trilobites) lo muestra: el dueño encargo a una
          ilustradora los dibujos personalizados del resto. Los SVG siguen en
-         js/iconos.js, asi que reactivar una pieza = poner conIcono: true. */
-      var llevaIcono = p.conIcono !== false && ico(p.icono);
+         js/iconos.js, asi que reactivar una pieza = poner conIcono: true.
+         CR-17: si la pieza trae `arte` (dibujo de la ilustradora), ese dibujo
+         manda sobre el SVG de respaldo. `arte` guarda la RUTA COMPLETA desde
+         la raiz del sitio (assets/img/...), porque la ruta relativa se
+         resolveria contra la hoja de estilos y no contra la pagina.
+         El srcset evita bajar la version de 512px en pantallas chicas.
+         El COLOR y la mascara los pone el CSS (.pieza__ico img): la ruta de la
+         mascara se resuelve contra la hoja de estilos, no contra la pagina, y
+         por eso NO se puede setear por atributo style desde aca. */
+      var arte = p.arte
+        ? '<img src="' + esc(p.arte) + '"' +
+          ' srcset="' + esc(p.arte).replace(/\.png$/, "-192.png") + ' 192w,' +
+          ' ' + esc(p.arte) + ' 512w"' +
+          ' sizes="62px" width="512" height="512"' +
+          ' alt="" loading="lazy" decoding="async">'
+        : "";
+      var llevaIcono = !!arte || (p.conIcono !== false && ico(p.icono));
       return '<article class="pieza reveal reveal--zoom' +
-               (llevaIcono ? "" : " pieza--sin-ico") + '">' +
-               (llevaIcono ? '<div class="pieza__ico">' + ico(p.icono) + "</div>" : "") +
-               "<h3>" + esc(p.nombre) + "</h3>" +
-               "<p>" + esc(p.detalle) + "</p>" +
-             "</article>";
+               (llevaIcono ? '' : ' pieza--sin-ico') + '">' +
+               (llevaIcono ? '<div class="pieza__ico">' + (arte || ico(p.icono)) + '</div>' : '') +
+               '<h3>' + esc(p.nombre) + '</h3>' +
+               '<p>' + esc(p.detalle) + '</p>' +
+             '</article>';
     }).join("");
     var det = $("[data-colecciones-rango]");
     if (det) det.textContent = window.COLECCIONES.rangoDetalle;

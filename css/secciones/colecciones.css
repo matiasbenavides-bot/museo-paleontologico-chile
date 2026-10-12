@@ -65,9 +65,28 @@
 .pieza:hover::after { opacity: 1; animation: shimmer 3s linear infinite; }
 /* Los iconos de pieza pasaron a viewBox 64 con detalle anatomico real
    (CR-10). 52px no alcanzaba para que se distinguieran las partes, asi
-   que el contenedor crece y el icono es fluido hasta 68px. */
-.pieza__ico { width: clamp(56px, 6vw, 68px); height: clamp(56px, 6vw, 68px); color: var(--ocre); margin-bottom: 18px; }
+   que el contenedor crece y el icono es fluido hasta 68px.
+   CR-17: el dibujo de la ilustradora (dos trilobites enfrentados) se veia
+   demasiado grande a 68px, asi que el CONTENEDOR se acota a un rango mas
+   bajo. Medido antes de tocar: a 56px las lineas llegan a 1px y el dibujo
+   deja de leerse; 58px es el piso. El SVG de respaldo escala solo, pero
+   el minimo lo fija el dibujo. */
+.pieza__ico { width: clamp(58px, 4.6vw, 62px); height: clamp(58px, 4.6vw, 62px); color: var(--ocre); margin-bottom: 18px; }
 .pieza__ico svg { width: 100%; height: 100%; display: block; }
+/* El dibujo de la ilustradora llega sin color propio (trazo negro convertido
+   a alfa), asi que lo tinta el CSS via mask: queda del celeste de la paleta
+   igual que los SVG, y cambiar de color es cambiar una linea.
+   OJO: la ruta de la mascara se resuelve contra ESTA hoja de estilos, asi que
+   va con ../.. para llegar a la raiz del sitio. Con la ruta "assets/img/..."
+   el navegador la buscaba en css/secciones/ y el icono quedaba INVISIBLE
+   (medido: 404 y mascara sin resolver). Receta y forma de medirlo en la
+   skill, seccion de pitfalls. */
+.pieza__ico img {
+  width: 100%; height: 100%; display: block;
+  background: currentColor;
+  -webkit-mask: var(--arte, url(../../assets/img/pieza-trilobites.png)) center / contain no-repeat;
+  mask: var(--arte, url(../../assets/img/pieza-trilobites.png)) center / contain no-repeat;
+}
 
 /* CR-16: tarjetas SIN icono (las 6 que esperan el dibujo personalizado).
    Se marcan con un filete superior de acento para que no queden como
