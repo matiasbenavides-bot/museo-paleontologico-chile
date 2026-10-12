@@ -160,10 +160,18 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
 .linea::after {
   content: ''; position: absolute;
   top: calc(var(--linea-nivel) - 1px);
-  /* los dos extremos fijos: centro del 1er punto y centro del ultimo.
-     Las 5 columnas van de 0 a 100%, asi que sus centros estan al 10% y al 90%.
-     El ancho de la pista es el 80% restante. */
-  left: 10%; right: 10%;
+  /* Los DOS extremos anclados al centro del 1er y del ultimo punto, con la
+     MISMA formula del grid. Ojo: los centros NO estan en 10%/90% exactos
+     porque el `gap` corre las columnas — medido a 1280px: 9,72% y 90,28%
+     (3,2px de desfase si se usa 10/90 a mano).
+       colAncho = (100% - 4*gap) / 5
+       centro1  = colAncho / 2
+       centro5  = 4 * (colAncho + gap) + colAncho / 2
+     Asi la linea arranca y termina EXACTAMENTE sobre los circulos en cualquier
+     ancho, sin constantes escritas a mano. */
+  --col: calc((100% - 4 * var(--linea-gap)) / 5);
+  left: calc(var(--col) / 2);
+  right: calc(var(--col) / 2);
   height: 2px;
   transform-origin: left center;
   transform: scaleX(var(--prog));

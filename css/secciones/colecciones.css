@@ -27,8 +27,12 @@
 .linea {
   --linea-nivel: clamp(18px, 2.2vw, 28px);
   --pt: 11px;                                  /* diametro del punto */
+  /* CR-32: el gap del grid queda en una variable porque la linea que avanza
+     necesita LA MISMA formula para anclar sus extremos a los centros de los
+     puntos (ver .linea::after). Antes vivia solo en `gap:` abajo. */
+  --linea-gap: clamp(4px, .8vw, 8px);
   position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: clamp(4px, .8vw, 8px); margin-bottom: clamp(38px, 5vw, 56px);
+  gap: var(--linea-gap); margin-bottom: clamp(38px, 5vw, 56px);
 }
 /* CR-20: aca vivia .linea::before, la linea FIJA. Eliminada a pedido del
    dueño, que veia dos lineas. Si algun dia se quiere recuperar, era una
