@@ -30,11 +30,22 @@ const MUSEO = {
 
   /* --- Visita --- */
   ubicacion: {
-    direccion: "Plaza del Cabildo s/n",
+    /* CR-29: direccion REEMPLAZADA por la oficial de Google Maps.
+       Fuente: https://maps.app.goo.gl/Bp2RMGB8t2Yo5TNs5 (resuelve al lugar
+       "Museo Paleontologico de Chile"). Google declara:
+         Av. Viel 1071-1653, Santiago, Region Metropolitana
+         coordenadas -33.4623623, -70.6578538
+         plus code   G8QR+3V Santiago
+       Antes decia "Plaza del Cabildo s/n" — decision del dueño reemplazarla.
+       La referencia se conserva porque es la indicacion UTIL para llegar. */
+    direccion: "Av. Viel 1071-1653",
     referencia: "Interior del Pueblito del Parque O'Higgins",
     metro: "Metro Estación Parque O'Higgins",
     ciudad: "Santiago, Chile",
-    mapaUrl: "https://www.google.com/maps/search/?api=1&query=Parque+O%27Higgins+Santiago"
+    /* CR-29: enlace DIRECTO al lugar (no el acortador goo.gl, que puede caducar).
+       El formato search/?api=1&query=lat,lng es el oficial de Google Maps y
+       abre el pin del museo, no un punto generico del parque. */
+    mapaUrl: "https://www.google.com/maps/search/?api=1&query=-33.4623623,-70.6578538"
   },
 
   /* --- Horarios (medido del sitio real) --- */

@@ -153,6 +153,11 @@
         (sub ? "<small>" + esc(sub) + "</small>" : "") + "</div></div></div>";
     }
     var mapa = $("[data-mapa-link]"); if (mapa) mapa.href = u.mapaUrl;
+    /* CR-29: el texto bajo "Parque O'Higgins" estaba escrito a mano en el HTML
+       y repetia la direccion vieja. Ahora sale del data/ (DEC-005), igual que
+       todo el resto del bloque. Formato: direccion, referencia. Metro. */
+    var txt = $("[data-mapa-texto]");
+    if (txt) txt.textContent = u.direccion + ", " + u.referencia + ". " + u.metro + ".";
   }
 
   /* ---------- Contacto ---------- */

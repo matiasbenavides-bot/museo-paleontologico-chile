@@ -209,7 +209,11 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-6.5 8-12a8 8 0 10-16 0c0 5.5 8 12 8 12z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <h3>Parque O'Higgins</h3>
-          <p>Plaza del Cabildo s/n, interior del Pueblito. Metro Estación Parque O'Higgins.</p>
+          <!-- CR-29: este <p> tenia la direccion escrita A MANO ("Plaza del
+               Cabildo s/n"), duplicando el dato de data/museo.js y violando
+               DEC-005 (fuente unica). Ahora lo rellena render.js desde u.direccion
+               + u.referencia, igual que la tarjeta de ubicacion y el footer. -->
+          <p data-mapa-texto></p>
           <a class="btn btn--primario" data-mapa-link href="#" target="_blank" rel="noopener">
             Abrir en el mapa
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
