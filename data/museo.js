@@ -10,7 +10,18 @@ const MUSEO = {
   nombre: "Museo Paleontológico de Chile",
   nombreLargo: "Museo Paleontológico de Chile",
   pertenece: "Grupo de Investigaciones Paleontológicas de Chile (GRINPACH)",
-  /* DEC-010: lema eliminado del sitio por decisión del museo. */
+  /* DEC-033 (2026-10-12): el lema VUELVE, dictado por el dueño:
+       "Museo Paleontológico de Chile, 40 años trayendo el pasado al presente."
+     Esto levanta DEC-010, que lo había eliminado — pero NO por contradecir el
+     copy, como se creía entonces.
+     Aclarado por el dueño el 2026-10-12: son DOS cosas distintas.
+       - los 40 años  = la edad del MUSEO
+       - "más de 20 años" (en QUIENES_SOMOS) = el trabajo del GRUPO en terreno
+     Nunca hubo contradicción: el choque era aparente porque los dos números
+     hablaban de tiempo. El "más de 20 años" del copy NO se toca.
+     ⚠️ Si una sesión futura ve los dos números y piensa que hay que unificarlos:
+     NO. El dueño ya explicó que miden cosas distintas. */
+  lema: "Museo Paleontológico de Chile, 40 años trayendo el pasado al presente.",
   descripcionCorta:
     "El primer museo chileno que centra su muestra en la paleontología y en los restos fósiles.",
 

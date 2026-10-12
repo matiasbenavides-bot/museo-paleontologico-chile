@@ -60,6 +60,17 @@
 
 .overlay {
   position: fixed; inset: 0; background: rgba(10, 8, 6, .6);
-  opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; z-index: 1040;
+  opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s;
+  /* 🔴 CR-33: el overlay tiene que quedar POR DEBAJO del header.
+     El .header es position:fixed con z-index 1000 => crea contexto de
+     apilamiento, y el .nav (1050) vive DENTRO de el, o sea atrapado en ese
+     contexto. El overlay es hermano del header en el <body> y con z-index 1040
+     ganaba SIEMPRE (1040 > 1000), comiendose los clics del menu abierto.
+     Sintoma del dueño: "toco las opciones del menu abierto y no navegan".
+     Valores: header 1000 · overlay 990 (debajo) · .nav 1050 dentro del header.
+     El overlay sigue cubriendo el RESTO de la pagina (tapando el main), que es
+     su funcion: al tocarlo se cierra el menu. */
+  z-index: 990;
+  cursor: pointer;
 }
 .overlay.visible { opacity: 1; visibility: visible; }

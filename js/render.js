@@ -30,7 +30,13 @@
      quedar viejo. Tambien se quita la "flecha" del rango largo, que era el
      caracter que hacia ver rara esa metrica en celular. */
   function pintarHero() {
-    var d = $("[data-hero-desc]"); if (d) d.textContent = M.descripcionCorta;
+    /* DEC-033: el parrafo del hero AHORA ES EL LEMA (el dueño lo dicto y pidio
+       sacarlo del <span class="hero__lema">). Si el dato `lema` existe, manda;
+       si no, se cae a `descripcionCorta` para que el hero nunca quede vacio.
+       `descripcionCorta` NO se borra del data/: la siguen usando los <meta>
+       description / og:description del index.html. */
+    var d = $("[data-hero-desc]");
+    if (d) d.textContent = M.lema || M.descripcionCorta;
     var r = $("[data-hero-rango]");
     if (r && window.COLECCIONES) {
       /* CR-32: el CSS define .hero__rangoA / .hero__rangoB (ambos display:block,

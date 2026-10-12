@@ -77,7 +77,9 @@
 
     <div class="contenedor hero__grid">
       <div class="hero__texto">
-        <span class="hero__lema" data-marca-lema>Primer museo chileno dedicado a la paleontología</span>
+        <!-- DEC-033: el lema salio del <span> de arriba y ahora ES el parrafo
+             del hero (data-hero-desc). El <span class="hero__lema"> se
+             elimino por pedido del dueño. -->
 
         <h1 class="hero__titulo">
           Museo Paleontológico
@@ -85,7 +87,7 @@
         </h1>
 
         <p class="hero__desc" data-hero-desc>
-          El primer museo chileno que centra su muestra en la paleontología y en los restos fósiles.
+          Museo Paleontológico de Chile, 40 años trayendo el pasado al presente.
         </p>
 
         <div class="hero__cta">
@@ -246,7 +248,10 @@
             <span class="marca__sub" data-marca-nombre>Museo Paleontológico de Chile</span>
           </span>
         </a>
-        <p data-marca-lema>Primer museo chileno dedicado a la paleontología</p>
+        <!-- DEC-033: el lema lo llena render.js desde MUSEO.lema (DEC-005). El
+             texto de aca es solo el respaldo por si falla el JS: debe ser EL
+             MISMO lema, nunca el viejo. -->
+        <p data-marca-lema>Museo Paleontológico de Chile, 40 años trayendo el pasado al presente.</p>
       </div>
 
       <div>

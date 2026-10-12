@@ -60,6 +60,23 @@ img, svg, video { max-width: 100%; height: auto; }
     box-shadow: var(--shadow-xl);
     overflow-y: auto;
     animation: navEntra .4s var(--ease-out-expo);
+    /* 🔴 CR-33: BUG REAL — el .overlay recibia los clics POR ENCIMA de las
+       opciones del menu: al tocar "Colecciones" el clic lo comia el overlay, el
+       menu se cerraba y NO navegaba. Sintoma exacto del dueño: "toco las
+       opciones del menu abierto y no navegan".
+       Medido antes del arreglo: en las 6 opciones, elementFromPoint devolvia
+       DIV.overlay y recibeElLink era false.
+
+       CAUSA RAIZ (medida, no supuesta): el .header es position:fixed con
+       z-index 1000, o sea CREA UN CONTEXTO DE APILAMIENTO. El .nav vive DENTRO
+       del header, asi que su z-index 1050 queda ATRAPADO dentro del contexto
+       1000. El .overlay es HERMANO del header en el <body>, con z-index 1040:
+       compite a nivel raiz y GANA siempre (1040 > 1000).
+       => Subir el z-index del .nav NO sirve: ningun valor lo saca del contexto
+       del header. (Se probo `isolation: isolate`: tampoco, mismo motivo.)
+       El arreglo va en el OVERLAY: se baja por debajo del header, que es lo
+       que necesita seguir clickeable (el boton de cerrar vive ahi). Ver
+       header.css -> .overlay. */
   }
   @keyframes navEntra {
     from { transform: translateX(100%); }
