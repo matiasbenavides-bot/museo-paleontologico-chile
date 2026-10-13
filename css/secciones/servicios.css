@@ -10,11 +10,12 @@
 }
 .servicio:hover { transform: translateY(-6px); border-color: var(--border-accent); box-shadow: var(--shadow-xl), var(--shadow-glow); }
 .servicio--destacado { border-color: var(--border-accent); background: linear-gradient(160deg, rgba(81,173,198,.09), var(--bg-glass)); }
-.servicio__badge {
-  align-self: flex-start; font-size: .66rem; font-weight: 700; letter-spacing: .14em;
-  text-transform: uppercase; color: #02153f; background: var(--ocre);
-  padding: 4px 11px; border-radius: 999px; margin-bottom: 14px;
-}
+/* CR-51 (2026-10-13): el badge "Más solicitado" se ELIMINÓ por pedido del
+   dueño. La tarjeta de "Servicios profesionales" conserva su borde de acento
+   (clase .servicio--destacado en el render, dato `destacado` en el data/), pero
+   ya no lleva la etiqueta encima.
+   ⚠️ Si alguna vez se quiere recuperar, era: píldora con background --ocre,
+   texto #02153f, uppercase, .66rem, radio 999px. */
 .servicio__ico { width: 46px; height: 46px; color: var(--ocre); margin-bottom: 20px; }
 .servicio h3 { font-size: 1.14rem; margin-bottom: 11px; }
 .servicio p { font-size: .92rem; color: var(--text-soft); flex-grow: 1; }
@@ -27,33 +28,133 @@
 .servicios__nota svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--verde-light); margin-top: 2px; }
 
 /* ============================================================
-   PALEOMUNDO — muestra museológica itinerante (CR-41, 2026-10-13)
-   Bloque de detalle debajo de la grilla de servicios. Sigue el mismo
-   sistema visual que .servicios__nota (glass + borde acento) para no
-   introducir un lenguaje nuevo.
+   PALEOMUNDO — muestra itinerante (CR-41 / CR-49 / CR-50)
+   CR-50 (2026-10-13): el dueño pidió "una presentacion mas estetica, asi no
+   parece algo para ver y entrar". O sea: esto NO debe leerse como una ficha
+   con datos para consultar, sino como una pieza que da ganas de mirar.
+   Cambios de fondo respecto del diseño anterior:
+     - las fotos pasan a ser PROTAGONISTAS (mural, no miniaturas en grilla)
+     - los datos duros (CEPCHILE, costo) dejan de ser lista y pasan a PÍLDORAS
+     - "las 25 vitrinas" pasa de <ul> a TARJETAS con ícono: se ve como muestra,
+       no como texto corrido
    ============================================================ */
 .paleomundo:empty { display: none; }
-.paleomundo { margin-top: 24px; }
-.paleomundo__caja {
-  padding: 30px 34px; border-radius: var(--radius-lg);
-  background: var(--bg-glass); border: 1px solid var(--border-accent);
+.paleomundo { margin-top: 8px; }
+
+/* --- Mural de fotos ---
+   CR-50b (2026-10-13): el dueño reportó que la sección "usa mucho espacio y
+   separa todo en 2". Medido: 1392px de alto en escritorio (1,55 pantallas) y
+   1874px en móvil (2,22 pantallas) — la sección más alta del sitio —, con
+   171px de hueco entre las fotos y el bloque de vitrinas.
+   CR-50c: se comprime todo. Las fotos dejan de ser dos monolitos separados y
+   pasan a un BLOC DE DOS PEGADAS (sin gap entre ellas), con alto acotado.
+   El resultado se lee como una sola pieza, no como dos columnas sueltas. */
+.paleomundo__fotos--destaque {
+  margin: 0 0 clamp(16px, 2vw, 24px);
+  display: grid; gap: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-accent);
+  box-shadow: var(--shadow-xl);
+}
+.paleomundo__fotos--destaque .galeria__foto {
+  border: 0; border-radius: 0; box-shadow: none;
+}
+/* Alto ACOTADO: las fotos acompañan, no se comen la pantalla. */
+.paleomundo__fotos--destaque .galeria__foto img {
+  aspect-ratio: 16 / 10; height: auto;
+}
+/* Escritorio y tablet: las dos fotos van pegadas, lado a lado, formando una
+   sola franja. Ya no hay separación visible entre ellas. */
+@media (min-width: 700px) {
+  .paleomundo__fotos--destaque { grid-template-columns: repeat(2, 1fr); }
+  .paleomundo__fotos--destaque .galeria__foto + .galeria__foto {
+    border-left: 1px solid var(--border-accent);
+  }
+}
+
+/* --- Píldoras de datos ---
+   Los datos duros se leen de un golpe. CR-50c: más juntas y más chicas, para
+   que no se apilen en móvil (antes: 219px de alto solo en sellos). */
+.paleomundo__datos {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 0 0 clamp(16px, 2vw, 24px);
+}
+.paleomundo__pildora {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 15px; border-radius: 999px;
+  background: var(--bg-glass); border: 1px solid var(--border-subtle);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  font-size: .78rem; color: var(--text-soft); line-height: 1.25;
 }
-.paleomundo__caja h3 { font-size: 1.18rem; margin-bottom: 10px; color: var(--text-main); }
-.paleomundo__caja > p { font-size: .92rem; color: var(--text-soft); margin-bottom: 16px; }
-.paleomundo__lista { list-style: none; display: grid; gap: 10px; }
+.paleomundo__pildora svg { width: 15px; height: 15px; color: var(--ocre); flex-shrink: 0; }
+.paleomundo__pildora b { color: var(--text-main); font-weight: 600; }
+
+/* --- Tarjetas de las vitrinas ---
+   CR-50c: padding y aire reducidos. La caja ya no es un panel alto: se aprieta
+   para que la sección entera quepa mejor. */
+.paleomundo__caja {
+  padding: clamp(20px, 2.4vw, 30px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(150deg, rgba(81,173,198,.07), var(--bg-glass) 55%);
+  border: 1px solid var(--border-accent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-xl);
+}
+.paleomundo__caja h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.7vw, 1.35rem);
+  color: var(--ocre-light); margin-bottom: 6px; letter-spacing: .01em;
+}
+.paleomundo__caja > p { font-size: .89rem; color: var(--text-soft); margin-bottom: 18px; max-width: 62ch; }
+
+.paleomundo__lista {
+  list-style: none; display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
 .paleomundo__lista li {
-  position: relative; padding-left: 24px;
-  font-size: .9rem; color: var(--text-soft); line-height: 1.55;
+  position: relative; padding: 12px 14px 12px 40px;
+  border-radius: var(--radius-md);
+  background: rgba(2, 21, 63, .38);
+  border: 1px solid var(--border-subtle);
+  font-size: .84rem; color: var(--text-soft); line-height: 1.45;
+  transition: border-color .3s, transform .3s var(--ease-out-expo);
 }
+.paleomundo__lista li:hover { border-color: var(--border-accent); transform: translateY(-3px); }
 .paleomundo__lista li::before {
-  content: ""; position: absolute; left: 4px; top: .58em;
+  content: ""; position: absolute; left: 17px; top: 17px;
   width: 7px; height: 7px; border-radius: 50%;
-  background: var(--ocre); box-shadow: 0 0 8px var(--ocre-glow);
+  background: var(--ocre); box-shadow: 0 0 10px var(--ocre-glow);
 }
+
 /* Nota de la fila de horario (ej. "Horario de verano") */
 .horario__nota { color: var(--text-muted); font-size: .82em; }
 
-/* CR-45: fotos de la muestra itinerante dentro del bloque PALEOMUNDO
-   (Servicios). Reusa la grilla y la tarjeta de la Galería. */
-.paleomundo__fotos { margin-top: 26px; }
+/* --- Sección propia destacada ---
+   CR-50c: se reduce el padding vertical (el genérico .seccion son 96px arriba
+   y abajo = 192px de aire puro). Esta sección es de presentación: se aprieta
+   para que la pieza se sienta compacta. */
+.paleomundo-sec {
+  position: relative;
+  padding-top: clamp(56px, 6vw, 76px);
+  padding-bottom: clamp(56px, 6vw, 76px);
+  background: linear-gradient(180deg, transparent, rgba(81,173,198,.055), transparent);
+}
+.paleomundo-sec .seccion__titulo { margin-bottom: 12px; }
+.paleomundo-sec .seccion__intro { margin-bottom: 26px; }
+.paleomundo-sec::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(220px, 42%); height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--ocre), transparent);
+  box-shadow: 0 0 18px var(--ocre-glow);
+}
+
+/* CR-49: enlace dentro de una tarjeta de servicio (la de la itinerante apunta
+   a la sección propia PALEOMUNDO). Se ve como acción secundaria, al pie. */
+.servicio__enlace {
+  margin-top: 14px; align-self: flex-start;
+  font-size: .82rem; font-weight: 600; letter-spacing: .04em;
+  color: var(--ocre-light); border-bottom: 1px solid transparent;
+  transition: border-color .25s, color .25s;
+}
+.servicio__enlace:hover { color: var(--ocre); border-bottom-color: var(--ocre); }

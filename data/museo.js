@@ -45,8 +45,20 @@ const MUSEO = {
      Nunca hubo contradicción: el choque era aparente porque los dos números
      hablaban de tiempo. El "más de 20 años" del copy NO se toca.
      ⚠️ Si una sesión futura ve los dos números y piensa que hay que unificarlos:
-     NO. El dueño ya explicó que miden cosas distintas. */
+     NO. El dueño ya explicó que miden cosas distintas.
+
+     CR-46 (2026-10-13): el dueño pidió que el hero muestre DOS TEXTOS
+     SEPARADOS en vez de la frase unida por coma:
+       - línea 1: "Museo Paleontológico de Chile"
+       - línea 2: "40 años trayendo el pasado al presente."
+     Por eso el lema se guarda ahora en DOS campos (`lema` y `lemaB`). El texto
+     sigue siendo exactamente el mismo, sin agregar ni quitar palabras: sólo se
+     deja de unir con la coma. `lema` se mantiene con la frase completa como
+     respaldo para los <meta> y para cualquier consumidor que espere una cadena
+     única. */
   lema: "Museo Paleontológico de Chile, 40 años trayendo el pasado al presente.",
+  lemaA: "Museo Paleontológico de Chile",
+  lemaB: "40 años trayendo el pasado al presente.",
   descripcionCorta:
     "El primer museo chileno que centra su muestra en la paleontología y en los restos fósiles.",
 
@@ -172,31 +184,91 @@ const MUSEO = {
   ]
 };
 
-/* --- Quiénes somos (copy real del sitio) ---
-   DEC-041 (2026-10-13): el dueño ordenó ELIMINAR las tres frases que el agente
-   había inventado (DEC-034) y que quedaron publicadas:
-     - "es una institución independiente, dedicada a la paleontología"
-     - "Trabaja en colaboración con la Municipalidad de Santiago"
-     - "más de 20 años de investigación en terreno y en sala"
-   Sus palabras: "las 3 frases dejalas eliminadas", y antes: "Ninguna de estas
-   cosas es relevante para el Museo... solo hay que mostrar por el momento el
-   funcionamiento del museo, horarios etc.", "No hay autorización para subir
-   datos personales del Museo".
+/* --- Quiénes somos — MODULO CERRADO (CR-48, 2026-10-13) ---
+   El dueño pidió QUITAR la sección del sitio: "el no quiere sacar esa
+   informacion por ahora". Sus palabras: "borremos el quienes somos, pero lo
+   dejamos como modulo cerrado... por si cambia de opinion hagamoslo asi".
 
-   ⚠️ SE ELIMINAN, NO SE REESCRIBEN. La regla del dueño es explícita: se quita el
-   dato y se deja el hueco; no se rellena con prosa plausible. Un agente ya
-   inventó texto acá una vez y el dueño lo detectó.
-   ⚠️ LO QUE NO SE TOCA: el recinto pequeño, "primer museo chileno", la muestra
-   diseñada por investigadores (arquitectos, biólogos, paleontólogos, técnicos
-   museólogos) y el objetivo de difusión. Eso es del museo y sigue vigente. */
+   ⚠️ QUE SIGNIFICA "MODULO CERRADO" ACA — no se borro NADA:
+     - El HTML de la sección sigue en el index.html (envuelto, ver abajo).
+     - El CSS sigue en css/secciones/somos.css.
+     - El render sigue en pintarSomos() de js/render.js.
+     - Este contenido completo sigue aca.
+   Lo unico que cambia es `QUIENES_SOMOS.visible: false`. El render lo lee y
+   esconde la sección, y el CSS la oculta. NADA mas.
+
+   🔓 PARA REACTIVAR: poner `visible: true`. Eso es TODO. (Y si se reactiva,
+   revisar que los `pendientes` de abajo sigan vigentes: eran la lista de datos
+   que el museo tiene que dictar.)
+
+   ⚠️ POR QUE QUEDO CERRADO Y NO BORRADO: el contenido de esta seccion incluye
+   texto institucional que el museo NO autoriza publicar por ahora (pertenencia,
+   quienes estan detras, datos personales). Se cierra para no exponerlo, pero se
+   conserva porque el dueño dijo que podria cambiar de opinion. BORRARLO haria
+   perder trabajo ya dictado y volver a preguntar todo de nuevo. */
 const QUIENES_SOMOS = {
+  /* 🔓 INTERRUPTOR UNICO: false = seccion oculta en el sitio. true = visible.
+     Lo leen pintarSomos() (render.js) y el CSS (.somos--cerrado). */
+  visible: false,
   parrafos: [
     "Su muestra ha sido diseñada y estructurada de acuerdo a criterios expuestos por investigadores del área: arquitectos, biólogos, paleontólogos y la asesoría de técnicos museólogos.",
     "Si bien el recinto para esta muestra es pequeño, se han aprovechado todos los espacios para entregar conocimientos y para que los visitantes puedan apreciar piezas paleontológicas de nuestro país y del mundo.",
     "Es el primer museo chileno que centra su muestra en la paleontología y en restos fósiles, que ayudan a comprender la vida pasada de nuestro país y nuestro planeta.",
     "Su principal objetivo apunta a difundir el conocimiento y protección de la paleontología nacional, acercando a la gente a esta ciencia de gran interés para la comunidad, pero de escasa difusión en los medios."
   ],
-  mision: "Difundir y proteger el patrimonio paleontológico nacional."
+  mision: "Difundir y proteger el patrimonio paleontológico nacional.",
+
+  /* --- MARCADORES DE RELLENO (CR-47, 2026-10-13) ---
+     Pedido del dueño: "en quienes somos pone textos a rellenar para decirle al
+     senior que poner ahi o quiere poner ahi".
+
+     Son HUECOS DECLARADOS: lugares donde el museo TIENE que decidir que va, y
+     que hasta hoy estaban simplemente ausentes (por eso nadie sabia que
+     faltaban). Se pintan VISIBLES en el sitio para que se vea que estan
+     pendientes — no se rellenan con prosa del agente (regla DEC-034: reescribir
+     copy institucional no es trabajo del agente).
+
+     ⚠️ Cuando el dueño dicte el contenido: se escribe el texto en `valor` y se
+     pone `pendiente: false`. Con `pendiente: true` el render lo muestra como
+     recuadro de aviso.
+     ⚠️ ESTOS MARCADORES NO DEBEN QUEDAR EN LA VERSION PUBLICADA si el museo no
+     los quiere mostrar asi: avisar antes de publicar. */
+  pendientes: [
+    {
+      clave: "Pertenece a",
+      nota: "FALTA DEFINIR: de quien depende el museo (o si es independiente) y como se declara. El duenio pidio NO publicar la pertenencia hasta autorizarlo.",
+      valor: "",
+      pendiente: true
+    },
+    {
+      clave: "Quienes estan detras",
+      nota: "FALTA DEFINIR: quienes estan detras del museo hoy y con que cargos (la info anterior era obsoleta). El duenio pidio NO publicar datos personales sin autorizacion.",
+      valor: "",
+      pendiente: true
+    },
+    {
+      clave: "Desde",
+      nota: "FALTA CONFIRMAR: los 40 anos son del museo. Falta el ano exacto de inicio, que el duenio nunca indico.",
+      valor: "",
+      pendiente: true
+    },
+    {
+      clave: "Administracion y curacion",
+      /* CR-49 (2026-10-13): RESUELTO EN CONTRA. El duenio mando el bloque oficial
+         de servicios encabezado por esta linea textual:
+             "No hay autorizacion para subir datos personales del Museo..."
+         justo DEBAJO del nombre del Director y curador (Juan Castillo Cornejo).
+         => Es una RESTRICCION, no un dato a publicar: el Director NO se publica.
+         Interpretacion anterior (creer que "dejalo" lo autorizaba) queda
+         SUPERADA. No se agrega ninguna seccion de "Administracion y curacion"
+         con su nombre mientras no haya autorizacion explicita.
+         ⚠️ No confundir con M.contacto.correos (castillocornejojuan@gmail.com),
+         que SI se mantiene: es el canal de consultas del museo, no un perfil. */
+      nota: "NO SE PUBLICA: el duenio informo que NO hay autorizacion para subir datos personales del museo. El nombre del Director queda fuera hasta que lo autorice.",
+      valor: "",
+      pendiente: true
+    }
+  ]
 };
 
 /* --- Colecciones --- */
@@ -252,18 +324,17 @@ const SERVICIOS = [
     destacado: true
   },
   {
-    /* PALEOMUNDO — muestra museológica itinerante, nombre oficial dictado por
-       el dueño. Datos textuales suyos: "en conjunto con el Centro de Estudios
-       Paleontológicos de Chile y el Museo Paleontológico de Chile", "25 vitrinas"
-       (el pendiente viejo decía 20: el dueño confirmó 25 el 2026-10-13), "llevada
-       a los establecimientos educacionales de Santiago", "cuyo costo se realiza
-       a través del Museo".
-       ⚠️ CEPCHILE SE CONSERVA tal cual: es trayectoria de un proyecto conjunto,
-       NO una dependencia vigente. Regla del dueño 2026-10-12: "INFORMACION
-       OBSOLETA, PERO RESCATABLE". No volver a preguntar por esto. */
-    titulo: "PALEOMUNDO — muestra museológica itinerante",
-    detalle: "Muestra itinerante del Museo Paleontológico de Chile, realizada en conjunto con el Centro de Estudios Paleontológicos de Chile, que se lleva a los establecimientos educacionales de Santiago. El costo se realiza a través del Museo.",
-    icono: "colegio"
+    /* CR-49: PALEOMUNDO ya NO es una tarjeta mas de Servicios — tiene su
+       SECCION PROPIA y destacada (#paleomundo, entre Colecciones y Servicios),
+       por pedido del dueño. Dejarla aca tambien la duplicaba: el mismo bloque
+       aparecia dos veces en la pagina.
+       En su lugar queda un servicio que ENLAZA a la seccion, para que quien
+       llegue por "Servicios" la encuentre igual. */
+    titulo: "Exposición escolar itinerante PALEOMUNDO",
+    detalle: "Llevamos la muestra museológica itinerante a los establecimientos educacionales de Santiago, en conjunto con el Centro de Estudios Paleontológicos de Chile. Ver la sección PALEOMUNDO para el detalle de la muestra.",
+    icono: "colegio",
+    enlace: "#paleomundo",
+    enlaceTexto: "Ver PALEOMUNDO"
   }
 ];
 
@@ -282,8 +353,35 @@ const SERVICIOS_NOTA =
    Vive aparte de SERVICIOS para no saturar la tarjeta; lo pinta el render como
    bloque de detalle. */
 const PALEOMUNDO = {
+  /* --- Encabezado de la SECCION PROPIA (CR-49) ---
+     ⚠️ SIN TITULARES INVENTADOS. El dueño pidio: "no poner titulares, solo las
+     imagenes de la expo y cosas de relleno importantes".
+     Por eso:
+       - `tituloSec` es el NOMBRE oficial de la muestra, que el mismo dicto
+         ("PALEOMUNDO"): no es una frase del agente.
+       - `introSec` es TEXTUAL suyo, copiada de su bloque oficial sin agregar
+         ni cambiar palabras.
+     Si el dueño quiere otro texto, se cambia aca y ya. */
+  tituloSec: "PALEOMUNDO",
+  introSec: "Muestra museológica itinerante que el museo lleva, en conjunto con el Centro de Estudios Paleontológicos de Chile, a los establecimientos educacionales de Santiago. Su costo se realiza a través del Museo.",
+  /* --- Bloque de contenido: lo que LLEVA la muestra (CR-41) ---
+     Titulo e intro abajo son, tambien, redaccion minima de estructura sobre el
+     dato del dueño ("la puesta en valor de 25 vitrinas conteniendo..."). */
   titulo: "Qué lleva PALEOMUNDO",
   intro: "La muestra consiste en la puesta en valor de 25 vitrinas con:",
+  /* --- Píldoras: los datos duros, para leer de un golpe (CR-50) ---
+     ⚠️ Son datos TEXTUALES del dueño, no frases del agente:
+       - "25 vitrinas"            -> confirmado por el ("si, tiene 25 actualmente")
+       - en conjunto con CEPCHILE -> textual de su bloque oficial
+       - costo a traves del Museo -> textual ("cuyo costo se realiza a traves del Museo")
+       - basica y media           -> textual ("alumnos de ensenanza basica y media")
+     Si el dueño quiere otro dato aca, se cambia solo esto. */
+  datos: [
+    { clave: "25", valor: "vitrinas en exhibición", icono: "museo" },
+    { clave: "En conjunto con", valor: "el Centro de Estudios Paleontológicos de Chile", icono: "check" },
+    { clave: "Costo", valor: "a través del Museo", icono: "check" },
+    { clave: "Para", valor: "enseñanza básica y media", icono: "colegio" }
+  ],
   items: [
     "Una colección de fósiles y calcos de fósiles de vertebrados a escala",
     "Corales, minerales, insectos y moluscos",

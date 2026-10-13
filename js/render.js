@@ -27,7 +27,18 @@
       el.textContent = v;
       el.style.display = v ? "" : "none";
     });
-    $$("[data-marca-lema]").forEach(function (el) { el.textContent = M.lema; });
+    /* CR-46 (2026-10-13): el eslogan va en DOS TEXTOS SEPARADOS tambien en el
+       FOOTER (pedido del dueño). Mismo criterio que el hero: se emiten dos
+       spans en bloque y el CSS les da la linea. Si el data viniera viejo (sin
+       lemaA/lemaB), cae al lema completo. */
+    $$("[data-marca-lema]").forEach(function (el) {
+      if (M.lemaA && M.lemaB) {
+        el.innerHTML = '<span class="footer__lemaA">' + esc(M.lemaA) + "</span>" +
+                       '<span class="footer__lemaB">' + esc(M.lemaB) + "</span>";
+      } else {
+        el.textContent = M.lema;
+      }
+    });
   }
 
   /* ---------- Hero ----------
@@ -41,9 +52,28 @@
        sacarlo del <span class="hero__lema">). Si el dato `lema` existe, manda;
        si no, se cae a `descripcionCorta` para que el hero nunca quede vacio.
        `descripcionCorta` NO se borra del data/: la siguen usando los <meta>
-       description / og:description del index.html. */
+       description / og:description del index.html.
+
+       CR-46 (2026-10-13): el dueño pidio el eslogan en DOS TEXTOS SEPARADOS
+       (sin la coma que los unia):
+         "Museo Paleontológico de Chile"
+         "40 años trayendo el pasado al presente."
+       ⚠️ Esto se resuelve ACA y no con un <br> en el HTML: este render pinta el
+       nodo con textContent, asi que cualquier HTML escrito en el <p> del
+       index.html lo SOBRESCRIBE al cargar. Ya paso una vez en este proyecto
+       (ver HANDOFF, DEC-033). Se emiten dos <span> declarados en bloque y el CSS
+       .hero__lemaA / .hero__lemaB les da la linea.
+       Si `lemaA`/`lemaB` faltaran (data viejo), cae al `lema` completo para que
+       el hero nunca quede vacio. */
     var d = $("[data-hero-desc]");
-    if (d) d.textContent = M.lema || M.descripcionCorta;
+    if (d) {
+      if (M.lemaA && M.lemaB) {
+        d.innerHTML = '<span class="hero__lemaA">' + esc(M.lemaA) + "</span>" +
+                      '<span class="hero__lemaB">' + esc(M.lemaB) + "</span>";
+      } else {
+        d.textContent = M.lema || M.descripcionCorta;
+      }
+    }
     var r = $("[data-hero-rango]");
     if (r && window.COLECCIONES) {
       /* CR-43d (2026-10-13): el dueño pidio el rango EN UNA SOLA LINEA:
@@ -124,14 +154,69 @@
     }).join("");
   }
 
-  /* ---------- Quiénes somos ---------- */
+  /* ---------- Quiénes somos ----------
+     CR-48 (2026-10-13): la seccion quedo como MODULO CERRADO. El dueño pidio
+     sacarla del sitio ("el no quiere sacar esa informacion por ahora") pero
+     conservarla por si cambia de opinion.
+     El interruptor es UNO SOLO: QUIENES_SOMOS.visible en el data/.
+       false -> se oculta la seccion completa (y se quita del menu, abajo).
+       true  -> vuelve tal cual estaba.
+     ⚠️ No se borro nada: el HTML sigue en el index.html, el CSS en somos.css y
+     este render sigue pintando todo. Solo se apaga. */
   function pintarSomos() {
+    var seccion = document.getElementById("somos");
+    var abierta = !window.QUIENES_SOMOS || window.QUIENES_SOMOS.visible !== false;
+
+    /* La seccion ocupa lugar en el menu; si esta cerrada, el enlace tambien
+       sale (un enlace a una seccion escondida es un enlace roto). */
+    $$('a[href="#somos"]').forEach(function (a) {
+      var li = a.closest("li");
+      if (li) li.style.display = abierta ? "" : "none";
+      else a.style.display = abierta ? "" : "none";
+    });
+    if (seccion) {
+      seccion.style.display = abierta ? "" : "none";
+      seccion.classList.toggle("somos--cerrado", !abierta);
+      /* El `hidden` del HTML es solo el respaldo anti-parpadeo mientras carga
+         el JS. Una vez que el render decide, se limpia: si no, al reactivar
+         (visible: true) el atributo seguiría escondiendo la sección. */
+      if (abierta) seccion.removeAttribute("hidden");
+    }
+    if (!abierta) return;   // cerrada: no se pinta su contenido, no hace falta
+
     var cont = $("[data-somos-parrafos]"); if (cont && window.QUIENES_SOMOS) {
       cont.innerHTML = window.QUIENES_SOMOS.parrafos.map(function (p) {
         return "<p>" + esc(p) + "</p>"; }).join("");
     }
     var mis = $("[data-somos-mision]");
     if (mis && window.QUIENES_SOMOS) mis.textContent = window.QUIENES_SOMOS.mision;
+
+    /* CR-47 (2026-10-13): marcadores de relleno. Son los huecos que el museo
+       tiene que llenar (a quien pertenece, quienes estan detras, desde cuando,
+       administracion). Hasta hoy esos datos simplemente NO existian en el sitio,
+       asi que el hueco era invisible.
+       Con `pendiente: true` se pinta un aviso VISIBLE para que se vea que falta.
+       Con `pendiente: false` se pinta el `valor` como dato normal, con la misma
+       forma que la ficha de al lado.
+       ⚠️ No se inventa contenido: o hay `valor` dictado por el duenio, o se
+       muestra el aviso de que falta. */
+    var pc = $("[data-somos-pendientes]");
+    if (pc && window.QUIENES_SOMOS && window.QUIENES_SOMOS.pendientes) {
+      pc.innerHTML = window.QUIENES_SOMOS.pendientes.map(function (x) {
+        if (x.pendiente) {
+          return '<div class="ficha__item ficha__item--falta">' +
+                   '<span class="ficha__clave">' + esc(x.clave) + "</span>" +
+                   '<span class="ficha__valor ficha__valor--falta">' +
+                     esc(x.valor || "⚠ A RELLENAR") + "</span>" +
+                   '<span class="ficha__nota">' + esc(x.nota) + "</span>" +
+                 "</div>";
+        }
+        return '<div class="ficha__item">' +
+                 '<span class="ficha__clave">' + esc(x.clave) + "</span>" +
+                 '<span class="ficha__valor">' + esc(x.valor) + "</span>" +
+               "</div>";
+      }).join("");
+    }
   }
 
   /* ---------- Colecciones ---------- */
@@ -170,11 +255,18 @@
   function pintarServicios() {
     var cont = $("[data-servicios]"); if (!cont || !window.SERVICIOS) return;
     cont.innerHTML = window.SERVICIOS.map(function (s) {
+      /* CR-49: un servicio puede traer `enlace` (ej. la tarjeta de la exposicion
+         itinerante apunta a la seccion propia #paleomundo). Sin `enlace`, la
+         tarjeta queda como siempre. */
+      var enlace = s.enlace
+        ? '<a class="servicio__enlace" href="' + esc(s.enlace) + '">' +
+            esc(s.enlaceTexto || "Ver más") + "</a>"
+        : "";
       return '<article class="servicio reveal reveal--zoom' + (s.destacado ? " servicio--destacado" : "") + '">' +
-               (s.destacado ? '<span class="servicio__badge">Más solicitado</span>' : "") +
                '<div class="servicio__ico">' + ico(s.icono) + "</div>" +
                "<h3>" + esc(s.titulo) + "</h3>" +
                "<p>" + esc(s.detalle) + "</p>" +
+               enlace +
              "</article>";
     }).join("");
     var nota = $("[data-servicios-nota]"); if (nota) {
@@ -183,31 +275,64 @@
     pintarPaleomundo();
   }
 
-  /* ---------- PALEOMUNDO (CR-41, 2026-10-13) ----------
-     Detalle de la muestra itinerante: las 25 vitrinas y su contenido, dictado
-     por el dueño. Vive en window.PALEOMUNDO (data/). Si el dato no esta, el
-     contenedor queda VACIO (no se pinta un encabezado huerfano).
-     CR-45: aca tambien van las FOTOS de la muestra montada en establecimientos,
-     que el dueño saco de Galeria y pidio poner en Servicios itinerante. */
+  /* ---------- PALEOMUNDO (CR-41 / CR-49, 2026-10-13) ----------
+     Muestra itinerante. CR-49: tiene SECCION PROPIA (#paleomundo, entre
+     Colecciones y Servicios) y se destaca, por pedido del dueño. Antes su
+     bloque vivia dentro de Servicios.
+     Vive en window.PALEOMUNDO (data/). Si el dato no esta, el contenedor queda
+     VACIO (no se pinta un encabezado huerfano).
+
+     ⚠️ EL TEXTO ES TEXTUAL DEL DUEÑO. No hay titulares ni prosa del agente:
+     el dueño pidio expresamente "no poner titulares". Lo que se pinta son sus
+     propias frases (bajada del bloque oficial) y la lista de las 25 vitrinas.
+     Titulo y bajada salen de PALEOMUNDO.tituloSec / introSec — si estan vacios,
+     los nodos se ocultan en vez de quedar en blanco. */
   function pintarPaleomundo() {
+    /* Encabezado de la seccion propia (nodos del index.html). */
+    var tSec = $("[data-pm-titulo]");
+    if (tSec) {
+      if (window.PALEOMUNDO && window.PALEOMUNDO.tituloSec) tSec.textContent = window.PALEOMUNDO.tituloSec;
+      else tSec.style.display = "none";
+    }
+    var iSec = $("[data-pm-intro]");
+    if (iSec) {
+      if (window.PALEOMUNDO && window.PALEOMUNDO.introSec) iSec.textContent = window.PALEOMUNDO.introSec;
+      else iSec.style.display = "none";
+    }
+
     var cont = $("[data-paleomundo]"); if (!cont) return;
     var p = window.PALEOMUNDO;
     if (!p || !p.items || !p.items.length) { cont.innerHTML = ""; return; }
-    cont.innerHTML =
-      '<div class="paleomundo__caja">' +
+
+    /* CR-49/CR-50: las FOTOS van PRIMERO y grandes — el dueño pidió destacar la
+       exposicion a escuelas ("se debe destacar... solo las imagenes de la expo").
+       CR-50: despues van las PILDORAS (los datos que se leen de un golpe) y
+       recien el bloque de las 25 vitrinas, ahora en tarjetas.
+       Se arma primero el HTML y se inyecta una vez: crear nodos y pintarlos
+       despues obligaba a dos pasadas. */
+    var html = "";
+    if (p.fotos && p.fotos.length) {
+      html += '<div class="paleomundo__fotos paleomundo__fotos--destaque galeria__grid"></div>';
+    }
+    if (p.datos && p.datos.length) {
+      html += '<div class="paleomundo__datos">' +
+        p.datos.map(function (d) {
+          return '<span class="paleomundo__pildora">' + ico(d.icono || "check") +
+                 "<span><b>" + esc(d.clave) + "</b> " + esc(d.valor) + "</span></span>";
+        }).join("") +
+      "</div>";
+    }
+    html += '<div class="paleomundo__caja">' +
         "<h3>" + esc(p.titulo) + "</h3>" +
         "<p>" + esc(p.intro) + "</p>" +
         '<ul class="paleomundo__lista">' +
           p.items.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") +
         "</ul>" +
       "</div>";
-    /* Fotos de la itinerante en colegios. Si no hay fotos, no se crea el
-       contenedor (no queda un bloque vacio). */
+    cont.innerHTML = html;
+
     if (p.fotos && p.fotos.length) {
-      var gal = document.createElement("div");
-      gal.className = "paleomundo__fotos galeria__grid";
-      cont.appendChild(gal);
-      pintarFotos(gal, p.fotos);
+      pintarFotos(cont.querySelector(".paleomundo__fotos"), p.fotos);
     }
   }
 

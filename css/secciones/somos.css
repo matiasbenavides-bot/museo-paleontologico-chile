@@ -19,3 +19,37 @@
 .ficha__valor { color: var(--text-main); font-weight: 500; }
 .ficha__valor a { color: var(--ocre-light); border-bottom: 1px solid transparent; transition: border-color .25s; word-break: break-word; }
 .ficha__valor a:hover { border-bottom-color: var(--ocre); }
+
+/* ============================================================
+   CR-47 — Marcadores de relleno de Quiénes somos
+   Huecos que el museo tiene que definir. Se pintan VISIBLES para que se vea
+   que están pendientes: hasta hoy esos datos simplemente no existían en el
+   sitio, así que el hueco era invisible y nadie sabía que faltaba.
+   Se diferencian por color (salmón = falta definición) sin romper la paleta.
+   ============================================================ */
+.somos__pendientes { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+.somos__pendientes:empty { display: none; }
+
+.ficha__item--falta {
+  padding: 12px 14px; border-radius: var(--radius-sm, 10px);
+  background: rgba(210, 108, 83, .07);
+  border: 1px dashed rgba(210, 108, 83, .45);
+}
+.ficha__valor--falta {
+  color: var(--salmon-light); font-weight: 600;
+  font-size: .82rem; letter-spacing: .04em;
+}
+.ficha__nota {
+  display: block; margin-top: 6px;
+  font-size: .74rem; line-height: 1.45; color: var(--text-muted);
+}
+
+/* ============================================================
+   CR-48 — Módulo cerrado
+   La sección Quiénes somos se oculta del sitio (el museo no autoriza publicar
+   ese contenido por ahora) pero se CONSERVA completa. Nada se borró.
+   El interruptor real es QUIENES_SOMOS.visible en data/museo.js; esta regla es
+   el respaldo para que no se vea ni un parpadeo mientras carga el JS.
+   🔓 Reactivar = poner visible: true. El render limpia esta clase solo.
+   ============================================================ */
+.somos--cerrado { display: none !important; }

@@ -10,6 +10,10 @@
 .footer { padding: 58px 0 30px; background: rgba(12, 10, 7, .55); }
 .footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 44px; margin-bottom: 42px; }
 .footer__marca p { font-size: .89rem; color: var(--text-muted); margin-top: 14px; max-width: 40ch; }
+/* CR-46: el eslogan del footer va en DOS TEXTOS SEPARADOS (pedido del dueño),
+   igual que el hero. Cada uno en su linea; el segundo algo mas marcado. */
+.footer__lemaA, .footer__lemaB { display: block; }
+.footer__lemaB { color: var(--text-muted); }
 .footer h4 { font-family: var(--font-body); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ocre); margin-bottom: 16px; }
 .footer ul { display: flex; flex-direction: column; gap: 10px; }
 .footer ul a, .footer ul li { font-size: .89rem; color: var(--text-soft); transition: color .25s; }

@@ -35,6 +35,13 @@
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .hero__desc { font-size: 1.09rem; color: var(--text-soft); max-width: 56ch; margin-bottom: 34px; }
+/* CR-46 (2026-10-13): el eslogan son DOS TEXTOS SEPARADOS (pedido del dueño),
+   ya no la frase unida por coma. Cada uno en su linea, declarados en bloque.
+   El render los emite (no el HTML): si se escribe esto a mano en el <p>, el JS
+   lo sobrescribe al cargar. */
+.hero__lemaA, .hero__lemaB { display: block; }
+.hero__lemaA { color: var(--text-soft); }
+.hero__lemaB { color: var(--text-main); }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 46px; }
 
 /* CR-30: las tres metricas del hero, medidas y parejas.

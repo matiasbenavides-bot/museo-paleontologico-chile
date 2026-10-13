@@ -93,6 +93,76 @@ del archivo, no el archivo. Verificado midiendo los caracteres en Unicode.
 
 ---
 
+## SESIÓN 2026-10-13 (segunda parte) — CR-46 a CR-51
+
+### ✅ CR-46 — el eslogan va en DOS TEXTOS SEPARADOS
+Pedido del dueño. Antes era una frase unida por coma ("Museo Paleontológico de
+Chile, 40 años trayendo el pasado al presente."). Ahora son dos líneas:
+```
+Museo Paleontológico de Chile
+40 años trayendo el pasado al presente.
+```
+Aplica en el **hero** y en el **footer**. ⚠️ Se resuelve en el **render**, NO con
+un `<br>` en el HTML: el render pinta esos nodos y sobrescribe lo que haya escrito
+a mano (esto ya nos mordió una vez). Datos: `MUSEO.lemaA` / `MUSEO.lemaB`.
+
+### ✅ CR-47 — marcadores de relleno en Quiénes somos
+El dueño pidió "textos a rellenar para decirle al senior qué poner ahí". Se
+declararon 4 huecos visibles (pertenencia, quiénes están detrás, desde cuándo,
+administración). **Nunca se rellenan con prosa del agente.**
+
+### ✅ CR-48 — Quiénes somos queda como MÓDULO CERRADO
+El dueño: *"borremos el quienes somos, pero lo dejamos como modulo cerrado... por
+si cambia de opinion"*. **No se borró nada**: HTML, CSS, render y datos siguen
+completos. El interruptor es **uno solo**: `QUIENES_SOMOS.visible` en el data/.
+- `false` → la sección se oculta y su enlace sale del menú.
+- `true` → vuelve completa.
+**Probado el ciclo real en ambos sentidos.** Verificado: con `false` la sección
+no se ve y el menú queda limpio; con `true` vuelve con sus 4 párrafos.
+
+### 🔴 CR-49 — EL DIRECTOR NO SE PUBLICA (resuelve una duda vieja)
+El dueño mandó el bloque oficial de servicios encabezado por esta línea textual:
+> *"No hay autorización para subir datos personales del Museo..."*
+
+justo **debajo** del nombre del Director y curador (Juan Castillo Cornejo).
+⚠️ **Es una RESTRICCIÓN, no un dato a publicar.** La interpretación anterior
+(creer que un "déjalo" lo autorizaba) queda **superada**. No se agrega ninguna
+sección de "Administración y curación" con su nombre mientras no lo autorice.
+✅ Se mantiene `contacto.correos` (`castillocornejojuan@gmail.com`): es el canal
+de consultas del museo, no un perfil, y el dueño lo confirmó.
+
+### ✅ CR-49/CR-50/CR-51 — PALEOMUNDO tiene SECCIÓN PROPIA
+- **Sección propia** `#paleomundo`, **destacada**, con las 2 fotos de la expo y
+  el detalle de las 25 vitrinas. Antes era un bloque dentro de Servicios.
+- **Ubicación final: ENCIMA DE GALERÍA** (CR-51, pedido textual: *"pone
+  paleomondo encima de galeria"*). Orden: Colecciones → PALEOMUNDO → Galería →
+  Servicios. El menú sigue el mismo orden.
+- **Sin titulares inventados**: el dueño pidió "no poner titulares". `tituloSec`
+  es el nombre oficial ("PALEOMUNDO") y `introSec` es **textual** suyo.
+- **CR-50c — comprimida**: el dueño reportó que "usa mucho espacio y separa todo
+  en 2". Medido: bajó de **1392px** (1,55 pantallas) a **1169px** (1,30) en
+  escritorio, y de **1874px** a **1553px** en móvil. Las 2 fotos pasaron a un
+  bloc pegado (sin gap entre ellas) con alto acotado 16:10.
+- **En Servicios** queda una tarjeta que **ENLAZA** a la sección (no la duplica).
+- **CR-51 — badge eliminado**: se quitó "Más solicitado" de la tarjeta de
+  Servicios profesionales (pedido del dueño). El realce del borde se conserva.
+
+### ⚠️ ERROR DE MEDICIÓN QUE VALE REGISTRAR
+Se reportó al dueño un "hueco de 123px" entre las fotos y la caja de PALEOMUNDO.
+**Era falso**: la medición comparaba las fotos contra la caja **salteándose las
+píldoras** que están en el medio. Los huecos reales son de **16px**. Lección: al
+medir una separación, verificar qué elementos hay ENTRE los dos puntos.
+
+### ⚠️ PENDIENTES ABIERTOS AL CIERRE
+1. **Textos de la Galería y de PALEOMUNDO** — pies de foto: vacíos a propósito,
+   los dicta el dueño.
+2. **Horario de invierno** de Sáb–Dom: solo se informó el de verano (11–19).
+3. **`index.html` se sobrescribió una vez** con una versión vieja (volvió el "7
+   Tipos de piezas" y se perdió el enlace a Galería). Se restauró desde el
+   commit. Si algo "vuelve a aparecer", comparar contra `git show HEAD:index.html`.
+
+---
+
 ## SESIÓN 2026-10-13 — CR-41 a CR-45 (HECHO, pendiente de publicar)
 
 ### ✅ RESUELTO — LAS 3 FRASES INVENTADAS SE ELIMINARON (DEC-041)
