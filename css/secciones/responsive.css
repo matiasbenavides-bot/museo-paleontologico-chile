@@ -90,18 +90,16 @@ img, svg, video { max-width: 100%; height: auto; }
   .hero__cta { flex-direction: column; align-items: stretch; }
   .hero__cta .btn { justify-content: center; }
 
-  /* CR-30: las 3 metricas del hero en celular.
+  /* CR-30: las metricas del hero en celular.
      Antes se apilaban en columna y cada una medía lo suyo, así que el bloque
      quedaba como una lista suelta y a la derecha sobraba media pantalla (el
-     dueño lo reportó como "se ve raro o vacío"). Ahora van SIEMPRE en 3
-     columnas iguales, en dos filas limpias:
-        [Cámbrico →]  [ 7 ]  [Municipalidad]
-        [Cuaternario] [Tipos] [Colaboración]
-     Lo de abajo de cada número son las etiquetas, así que la fila se lee como
-     una ficha y no como tres cosas sueltas. */
+     dueño lo reportó como "se ve raro o vacío"). Se pasó a 3 columnas iguales.
+     CR-42 (2026-10-13): quedó UNA sola metrica (el rango de periodos), asi que
+     la columna tambien es una; se conserva el grid para que el dia que el dueño
+     reponga metricas solo cambie el numero de columnas. */
   .hero__datos {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: clamp(8px, 2.6vw, 18px);
   }
   .hero__dato strong { font-size: clamp(1.02rem, 4.6vw, 1.5rem); line-height: 1.1; }

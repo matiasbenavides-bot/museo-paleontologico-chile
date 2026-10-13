@@ -68,6 +68,7 @@
       <a href="#inicio">Inicio</a>
       <a href="#somos">Quiénes somos</a>
       <a href="#colecciones">Colecciones</a>
+      <a href="#galeria">Galería</a>
       <a href="#servicios">Servicios</a>
       <a href="#visita">Visítanos</a>
       <a href="#contacto">Contacto</a>
@@ -113,22 +114,20 @@
           <div class="hero__dato" data-rango>
             <!-- CR-30: el rango lo pinta render.js en dos lineas ("Cámbrico" /
                  "→ Cuaternario"): en una sola no cabe en la columna de celular
-                 y se montaba encima de la metrica vecina. El conteo de piezas
-                 tambien sale de los datos: decia 6 con 7 piezas. -->
+                 y se montaba encima de la metrica vecina. -->
             <strong data-hero-rango>Cámbrico → Cuaternario</strong>
             <span>Períodos en exhibición</span>
           </div>
-          <div class="hero__dato">
-            <strong data-hero-piezas>7</strong>
-            <span>Tipos de piezas</span>
-          </div>
-          <div class="hero__dato">
-            <!-- DEC-034: aca decia "GRINPACH" (obsoleto). El museo es
-                 independiente y la muni colabora. El dato sale del data/ para
-                 que no vuelva a quedar viejo (DEC-005). -->
-            <strong data-hero-aliado>Municipalidad de Santiago</strong>
-            <span>Colaboración</span>
-          </div>
+          <!-- CR-42 (2026-10-13): se ELIMINO la metrica "Tipos de piezas" (el
+               numero 7), pedido del dueño: "QUITEMOS LOS TIPOS DE PIEZAS EN EL
+               HEADER". No se repone.
+               El conteo de piezas NO se pierde: la tarjeta de la seccion
+               Colecciones sigue mostrando las 7 piezas con su nombre e imagen,
+               que es lo que el dueño pidio conservar ("LA CARTA DONDE SALE LO
+               QUE HAY EN COLECCIONES"). -->
+          <!-- DEC-041: aca vivia la metrica del aliado institucional. Se elimino
+               porque el dueño no autoriza nombrar la municipalidad exacta, y su
+               nodo quedaba vacio dejando un hueco en el layout. -->
         </div>
       </div>
 
@@ -196,6 +195,25 @@
 
   <hr class="separador">
 
+  <!-- ===== GALERÍA (CR-44, 2026-10-13) =====
+       Fotos REALES del museo, autorizadas por el museo.
+       CR-45: las fotos de la muestra ITINERANTE salieron de aca y se fueron a
+       Servicios (bloque PALEOMUNDO) por pedido del dueño. Aca queda SOLO el
+       museo.
+       Las fotos y sus datos viven en data/museo.js (GALERIA); aca solo el
+       esqueleto. Imagenes en assets/img/galeria/. -->
+  <section class="seccion galeria" id="galeria">
+    <div class="contenedor">
+      <span class="etiqueta reveal">Galería</span>
+      <h2 class="seccion__titulo reveal">El museo por dentro</h2>
+      <p class="seccion__intro reveal" data-galeria-intro></p>
+
+      <div class="galeria__grid" data-galeria-museo data-stagger></div>
+    </div>
+  </section>
+
+  <hr class="separador">
+
   <!-- ===== SERVICIOS ===== -->
   <section class="seccion servicios" id="servicios">
     <svg class="adorno adorno--2" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M24 8c9 0 16 7 16 16s-7 16-16 16S8 33 8 24 15 8 24 8z"/><path d="M24 15c5 0 9 4 9 9s-4 9-9 9-9-4-9-9 4-9 9-9z"/><path d="M24 21c2 0 3 1 3 3s-1 3-3 3-3-1-3-3 1-3 3-3z"/></svg>
@@ -203,11 +221,17 @@
       <span class="etiqueta reveal">Servicios</span>
       <h2 class="seccion__titulo reveal">Lo que el museo puede hacer por tu institución</h2>
       <p class="seccion__intro reveal">
-        Más de 20 años de trabajo en terreno y en sala, disponibles para colegios, empresas e instituciones.
+        Ofrecemos charlas de educación, actividades de divulgación, propuestas museográficas y exposiciones temáticas de geología y paleontología a empresas, municipalidades, establecimientos educacionales, sociedades científicas y centros culturales.
       </p>
 
       <div class="servicios__grid" data-servicios data-stagger></div>
       <div class="servicios__nota" data-servicios-nota></div>
+      <!-- DEC-041/CR-41: bloque de detalle de PALEOMUNDO (las 25 vitrinas y su
+           contenido) + las fotos de la muestra montada en establecimientos.
+           Se pinta desde el data/ (PALEOMUNDO); si el dato falta, el render lo
+           deja vacio y no rompe.
+           CR-45: las fotos de escuela viven ACA, no en Galeria. -->
+      <div class="paleomundo" data-paleomundo></div>
     </div>
   </section>
 
@@ -271,6 +295,7 @@
         <ul>
           <li><a href="#somos">Quiénes somos</a></li>
           <li><a href="#colecciones">Colecciones</a></li>
+          <li><a href="#galeria">Galería</a></li>
           <li><a href="#servicios">Servicios</a></li>
           <li><a href="#visita">Visítanos</a></li>
         </ul>

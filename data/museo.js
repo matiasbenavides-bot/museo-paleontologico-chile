@@ -17,14 +17,24 @@ const MUSEO = {
      (data-marca-pertenece, x2: ficha de Quiénes somos + footer). Cambiar el
      NOMBRE de la clave obligaría a tocar render.js y el HTML sin ganar nada;
      lo que cambia es el TEXTO. */
-  pertenece: "Museo independiente, con colaboración de la Municipalidad de Santiago",
-  /* DEC-034: el aliado institucional, para la metrica del hero.
-     Antes esa metrica mostraba "GRINPACH" escrito a mano en el HTML (obsoleto,
-     y ademas violaba DEC-005: dato en el codigo en vez del data/). */
-  aliado: {
-    nombre: "Municipalidad de Santiago",
-    etiqueta: "Colaboración"
-  },
+  /* DEC-041 (2026-10-13): el dueño declaró que la pertenencia institucional, la
+     municipalidad exacta y quiénes están detrás NO se publican: "Ninguna de
+     estas cosas es relevante para el Museo, solo hay que mostrar por el momento
+     el funcionamiento del museo, horarios etc." Y: "No hay autorización para
+     subir datos personales del Museo".
+
+     Esta clave NO se borra del data/ (el render la lee con data-marca-pertenece
+     x2: ficha de Quiénes somos + footer); lo que cambia es el VALOR: queda
+     VACÍA, y el render degrada solo (no pinta la fila si el dato falta).
+     ⚠️ NO rellenar con prosa plausible: el dueño detectó una vez texto inventado
+     acá (DEC-034). Sacar el dato y dejar el hueco es la acción correcta. */
+  pertenece: "",
+  /* DEC-041: el aliado institucional del hero se RETIRA por la misma razón
+     (nombraba la Municipalidad de Santiago exacta, sin autorización).
+     OJO: no confundir con la colaboración real del museo con la muni, que el
+     dueño SÍ reconoció — se retira del sitio por no publicarse, no porque sea
+     falsa. Si algún día la autoriza, se repone acá. */
+  aliado: null,
   /* DEC-033 (2026-10-12): el lema VUELVE, dictado por el dueño:
        "Museo Paleontológico de Chile, 40 años trayendo el pasado al presente."
      Esto levanta DEC-010, que lo había eliminado — pero NO por contradecir el
@@ -96,10 +106,21 @@ const MUSEO = {
     ]
   },
 
-  /* --- Horarios (medido del sitio real) --- */
+  /* --- Horarios (CR-41, 2026-10-13) ---
+         CORREGIDOS contra la información oficial que envió el dueño:
+           "Horario: de martes a viernes de 11 a 17 horas
+            Sábado y domingo de 11 a 19 horas (horario de verano)"
+         ⚠️ ANTES DECÍA Mar-Vie 10:00. El museo abre a las 11:00, no a las
+         10:00 — el sitio mandaba gente una hora antes a la puerta cerrada.
+         El dueño confirmó que el 11:00 es el correcto.
+
+         ⚠️ PENDIENTE ABIERTO (no resuelto, no inventar): el "horario de verano"
+         de Sáb-Dom 11-19. El dueño confirmó el tramo pero NO dijo qué horario
+         rige fuera de verano. Queda 19:00 como el valor vigente informado.
+         → Si el museo informa el horario de invierno, se agrega acá. --- */
   horarios: [
-    { dias: "Martes a viernes", horas: "10:00 – 17:00 hrs.", abierto: true },
-    { dias: "Sábados y domingos", horas: "11:00 – 18:00 hrs.", abierto: true },
+    { dias: "Martes a viernes", horas: "11:00 – 17:00 hrs.", abierto: true },
+    { dias: "Sábados y domingos", horas: "11:00 – 19:00 hrs.", abierto: true, nota: "Horario de verano" },
     { dias: "Lunes", horas: "Cerrado", abierto: false }
   ],
 
@@ -128,9 +149,13 @@ const MUSEO = {
     aviso: "El horario es de referencia del museo; el Parque O'Higgins puede cerrar por eventos o mantención.",
     mensajeWhatsApp: "Hola, quiero confirmar si el museo está abierto hoy.",
     /* Índice por día de semana: 0=Dom ... 6=Sáb. null = cerrado todo el día.
-       Fuente: la lista `horarios` de arriba. */
-    abre:    { 1: null, 2: 600, 3: 600, 4: 600, 5: 600,  6: 660, 0: 660 },
-    cierra:  { 1: null, 2: 1020, 3: 1020, 4: 1020, 5: 1020, 6: 1080, 0: 1080 },
+       Fuente: la lista `horarios` de arriba. CR-41: sincronizado con el horario
+       oficial (Mar-Vie abre 11:00 = 660 min; Sáb-Dom cierra 19:00 = 1140 min).
+       ⚠️ Si se cambia `horarios`, cambiar TAMBIÉN esto: es el mismo dato en dos
+       formas, y si divergen el sitio se contradice solo (dice "abierto" a una
+       hora en que el cartel de arriba dice que está cerrado). */
+    abre:    { 1: null, 2: 660, 3: 660, 4: 660, 5: 660,  6: 660, 0: 660 },
+    cierra:  { 1: null, 2: 1020, 3: 1020, 4: 1020, 5: 1020, 6: 1140, 0: 1140 },
     /* CR-30: fechas SIN atención. Formato YYYY-MM-DD. Vacío = sin cierres informados. */
     excepto: []
   },
@@ -148,25 +173,27 @@ const MUSEO = {
 };
 
 /* --- Quiénes somos (copy real del sitio) ---
-   DEC-034: se REESCRIBIERON los dos parrafos que nombraban a GRINPACH.
-   El museo ya no pertenece al grupo: es INDEPENDIENTE y trabaja con la
-   municipalidad como colaboradora.
+   DEC-041 (2026-10-13): el dueño ordenó ELIMINAR las tres frases que el agente
+   había inventado (DEC-034) y que quedaron publicadas:
+     - "es una institución independiente, dedicada a la paleontología"
+     - "Trabaja en colaboración con la Municipalidad de Santiago"
+     - "más de 20 años de investigación en terreno y en sala"
+   Sus palabras: "las 3 frases dejalas eliminadas", y antes: "Ninguna de estas
+   cosas es relevante para el Museo... solo hay que mostrar por el momento el
+   funcionamiento del museo, horarios etc.", "No hay autorización para subir
+   datos personales del Museo".
 
-   ⚠️ Lo que CAMBIO y lo que NO:
-   - CAMBIA: la pertenencia (ya no es de GRINPACH) y el marco institucional.
-   - NO CAMBIA: el resto del copy — el recinto pequeno, "primer museo chileno",
-     el objetivo de difusion. Eso sigue siendo del museo y no lo toque.
-   - "mas de 20 anos de trabajo del Grupo" -> el dato era DEL GRUPO (por eso
-     convivia sin contradiccion con los 40 anos del museo, que son del museo).
-     Al salir GRINPACH, se reescribe para que hable de la INVESTIGACION del
-     propio museo y no cuelgue de una institucion que ya no lo representa.
-     ⚠️ Si el dato real de anos de investigacion es OTRO, lo corrige el dueño:
-     aca se conservo el "mas de 20" como la cifra que el museo ya publicaba. */
+   ⚠️ SE ELIMINAN, NO SE REESCRIBEN. La regla del dueño es explícita: se quita el
+   dato y se deja el hueco; no se rellena con prosa plausible. Un agente ya
+   inventó texto acá una vez y el dueño lo detectó.
+   ⚠️ LO QUE NO SE TOCA: el recinto pequeño, "primer museo chileno", la muestra
+   diseñada por investigadores (arquitectos, biólogos, paleontólogos, técnicos
+   museólogos) y el objetivo de difusión. Eso es del museo y sigue vigente. */
 const QUIENES_SOMOS = {
   parrafos: [
-    "El Museo Paleontológico de Chile es una institución independiente, dedicada a la paleontología y a los restos fósiles. Trabaja en colaboración con la Municipalidad de Santiago, y su muestra ha sido diseñada y estructurada de acuerdo a criterios expuestos por investigadores del área: arquitectos, biólogos, paleontólogos y la asesoría de técnicos museólogos.",
+    "Su muestra ha sido diseñada y estructurada de acuerdo a criterios expuestos por investigadores del área: arquitectos, biólogos, paleontólogos y la asesoría de técnicos museólogos.",
     "Si bien el recinto para esta muestra es pequeño, se han aprovechado todos los espacios para entregar conocimientos y para que los visitantes puedan apreciar piezas paleontológicas de nuestro país y del mundo.",
-    "Es el primer museo chileno que centra su muestra en la paleontología y en restos fósiles, que ayudan a comprender la vida pasada de nuestro país y nuestro planeta. En su primera etapa expone el resultado de más de 20 años de investigación en terreno y en sala.",
+    "Es el primer museo chileno que centra su muestra en la paleontología y en restos fósiles, que ayudan a comprender la vida pasada de nuestro país y nuestro planeta.",
     "Su principal objetivo apunta a difundir el conocimiento y protección de la paleontología nacional, acercando a la gente a esta ciencia de gran interés para la comunidad, pero de escasa difusión en los medios."
   ],
   mision: "Difundir y proteger el patrimonio paleontológico nacional."
@@ -197,12 +224,26 @@ const COLECCIONES = {
   ]
 };
 
-/* --- Servicios (copy real del sitio) --- */
+/* --- Servicios (copy oficial, CR-41 2026-10-13) ---
+   El dueño envió la descripción oficial de lo que ofrece el museo:
+     "ofrece charlas de educación, actividades de divulgación sobre temáticas
+      geológicas y/o paleontológicas, propuestas museográficas y exposiciones
+      temáticas de geología y/o paleontología a empresas, municipalidades,
+      establecimientos educacionales, sociedades científicas y centros
+      culturales."
+   Se amplió el alcance y se listan los destinatarios REALES que él nombró.
+   ⚠️ El servicio "Exposición escolar itinerante" se REEMPLAZA por PALEOMUNDO
+   (nombre propio de la muestra, dictado por él). Ver nota CEPCHILE abajo. */
 const SERVICIOS = [
   {
-    titulo: "Asesoramiento y colaboración museológica",
-    detalle: "Apoyo técnico y museológico para instituciones que quieren montar o mejorar sus propias muestras paleontológicas.",
+    titulo: "Charlas y divulgación",
+    detalle: "Charlas de educación y actividades de divulgación sobre temáticas geológicas y paleontológicas, para establecimientos educacionales, sociedades científicas y centros culturales.",
     icono: "museo"
+  },
+  {
+    titulo: "Propuestas museográficas y exposiciones",
+    detalle: "Diseño de propuestas museográficas y montaje de exposiciones temáticas de geología y paleontología para empresas, municipalidades, establecimientos educacionales, sociedades científicas y centros culturales.",
+    icono: "colegio"
   },
   {
     titulo: "Servicios profesionales",
@@ -211,8 +252,17 @@ const SERVICIOS = [
     destacado: true
   },
   {
-    titulo: "Exposición escolar itinerante",
-    detalle: "Llevamos la muestra a colegios y establecimientos educacionales, con precios y convenios especiales.",
+    /* PALEOMUNDO — muestra museológica itinerante, nombre oficial dictado por
+       el dueño. Datos textuales suyos: "en conjunto con el Centro de Estudios
+       Paleontológicos de Chile y el Museo Paleontológico de Chile", "25 vitrinas"
+       (el pendiente viejo decía 20: el dueño confirmó 25 el 2026-10-13), "llevada
+       a los establecimientos educacionales de Santiago", "cuyo costo se realiza
+       a través del Museo".
+       ⚠️ CEPCHILE SE CONSERVA tal cual: es trayectoria de un proyecto conjunto,
+       NO una dependencia vigente. Regla del dueño 2026-10-12: "INFORMACION
+       OBSOLETA, PERO RESCATABLE". No volver a preguntar por esto. */
+    titulo: "PALEOMUNDO — muestra museológica itinerante",
+    detalle: "Muestra itinerante del Museo Paleontológico de Chile, realizada en conjunto con el Centro de Estudios Paleontológicos de Chile, que se lleva a los establecimientos educacionales de Santiago. El costo se realiza a través del Museo.",
     icono: "colegio"
   }
 ];
@@ -221,8 +271,79 @@ const SERVICIOS = [
 const SERVICIOS_NOTA =
   "Este trabajo se realiza a través de la alianza con GeoPaleo Ltda., empresa de geólogos y paleontólogos aprobada por el Consejo de Monumentos Nacionales (CMN) para permisos de prospección y excavación, y para estudios en el marco de las exigencias del SEIA.";
 
+/* --- Detalle de PALEOMUNDO (CR-41, 2026-10-13) ---
+   Contenido de la muestra, textual del dueño: "la puesta en valor de 25 vitrinas
+   conteniendo una interesante y hermosa colección de fósiles, calcos de fósiles
+   de vertebrados a escala, corales, minerales, insectos, moluscos y además de una
+   colección de reconstrucciones paleobiológicas de dinosaurios y cráneos de
+   dinosaurios".
+   ⚠️ El pendiente guardado decía 20 vitrinas: el dueño CONFIRMÓ 25 el 2026-10-13
+   ("si, tiene 25 actualmente"). Manda el 25.
+   Vive aparte de SERVICIOS para no saturar la tarjeta; lo pinta el render como
+   bloque de detalle. */
+const PALEOMUNDO = {
+  titulo: "Qué lleva PALEOMUNDO",
+  intro: "La muestra consiste en la puesta en valor de 25 vitrinas con:",
+  items: [
+    "Una colección de fósiles y calcos de fósiles de vertebrados a escala",
+    "Corales, minerales, insectos y moluscos",
+    "Reconstrucciones paleobiológicas de dinosaurios",
+    "Cráneos de dinosaurios",
+    "Material educativo, pedagógico y didáctico de gran interés para alumnos de enseñanza básica y media."
+  ],
+  /* --- Fotos de la muestra itinerante montada en establecimientos ---
+     CR-45 (2026-10-13): el dueño pidio moverlas aca, desde Galeria:
+       "LA DE LOS EXPOSICION EN ESCUELAS NO DEBEN IR EN GALERIA, SI NO EN
+        SERVICIOS ITINERANTES".
+     Son las fotos de la itinerante CON estudiantes. Viven en assets/img/galeria/
+     porque es la carpeta de fotos del sitio (el nombre de la carpeta no cambia
+     por el cambio de seccion).
+     ⚠️ `titulo`/`pie` VACIOS a proposito: los escribe el dueño (DEC-034). */
+  fotos: [
+    { src: "assets/img/galeria/exposicion-escuela-1.jpg", mini: "assets/img/galeria/exposicion-escuela-1-mini.jpg", titulo: "", pie: "" },
+    { src: "assets/img/galeria/exposicion-escuela-2.jpg", mini: "assets/img/galeria/exposicion-escuela-2-mini.jpg", titulo: "", pie: "" }
+  ]
+};
+
+/* --- GALERÍA (CR-44, 2026-10-13) ---
+   Fotos REALES del museo, autorizadas por el dueño: "EL MUSEO AUTORIZA
+   MOSTRARLA".
+
+   ⚠️ LAS FOTOS DE LA MUESTRA ITINERANTE **NO VAN ACA** — el dueño lo corrigio
+   (CR-45): "LA DE LOS EXPOSICION EN ESCUELAS NO DEBEN IR EN GALERIA, SI NO EN
+   SERVICIOS ITINERANTES". Viven en PALEOMUNDO.fotos (mas abajo), que es el
+   bloque de la muestra itinerante dentro de Servicios.
+   Por eso esta galeria tiene SOLO el bloque del museo.
+
+   ⚠️ IMPORTANTE — PROCEDENCIA: hasta hoy el sitio tenia CERO imagenes de
+   terceros (DEC-012 prohibe fotos de piezas sin verificar origen; DEC-027
+   repite la regla). Estas son las PRIMERAS fotos del sitio y entran con
+   autorizacion explicita del dueño del museo. Si en el futuro llegan mas
+   fotos, PREGUNTAR DE DONDE SALIERON antes de publicarlas (la leccion del
+   caso del amonite con copyright sigue vigente).
+
+   ⚠️ TEXTOS: los campos `titulo` / `pie` de cada foto estan VACIOS A PROPOSITO.
+   Los escribe el dueño. El agente NO redacta copy institucional (regla que
+   quedo tras inventar frases en QUIENES_SOMOS, DEC-034). Si un campo va vacio,
+   el render muestra la imagen sin ese texto: no rompe, pero NO se rellena solo.
+
+   Las imagenes viven en assets/img/galeria/ (grande + sufijo -mini para la
+   grilla). Estan optimizadas: 55-124 KB cada una. */
+const GALERIA = {
+  /* Intro de la seccion. VACIA = no se pinta (el render la oculta). */
+  intro: "",
+  museo: [
+    { src: "assets/img/galeria/muestra-1.jpg",      mini: "assets/img/galeria/muestra-1-mini.jpg",      titulo: "", pie: "" },
+    { src: "assets/img/galeria/muestra-2.jpg",      mini: "assets/img/galeria/muestra-2-mini.jpg",      titulo: "", pie: "" },
+    { src: "assets/img/galeria/muestra-3.jpg",      mini: "assets/img/galeria/muestra-3-mini.jpg",      titulo: "", pie: "" },
+    { src: "assets/img/galeria/muestra-4.jpg",      mini: "assets/img/galeria/muestra-4-mini.jpg",      titulo: "", pie: "" },
+    { src: "assets/img/galeria/ninos-en-museo.jpg", mini: "assets/img/galeria/ninos-en-museo-mini.jpg", titulo: "", pie: "" }
+  ]
+};
+
 if (typeof window !== "undefined") {
   window.MUSEO = MUSEO; window.QUIENES_SOMOS = QUIENES_SOMOS;
   window.COLECCIONES = COLECCIONES; window.SERVICIOS = SERVICIOS;
-  window.SERVICIOS_NOTA = SERVICIOS_NOTA;
+  window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.PALEOMUNDO = PALEOMUNDO;
+  window.GALERIA = GALERIA;
 }

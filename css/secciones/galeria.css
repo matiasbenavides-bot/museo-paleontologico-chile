@@ -1,0 +1,57 @@
+/* ============================================================
+   MPCH — Galería (CR-44/CR-45, 2026-10-13)
+   Primera sección del sitio con FOTOGRAFÍA real. Sigue el sistema visual
+   del resto: glass, bordes acento, radius de las variables de root.css.
+   CR-45: la galería quedó SOLO con las fotos del museo; las de la muestra
+   itinerante se fueron a Servicios (bloque PALEOMUNDO), que reusa
+   `.galeria__grid` y `.galeria__foto` desde acá.
+   ============================================================ */
+.galeria { position: relative; }
+
+/* --- Grilla de fotos ---
+   auto-fit + minmax: se acomoda sola de 1 a 3 columnas según el ancho, sin
+   breakpoints extra. `minmax(0, 1fr)` evita que una foto ancha empuje la
+   columna y desborde (mismo criterio que .hero__datos). */
+.galeria__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+}
+
+.galeria__foto {
+  position: relative; margin: 0; overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  transition: transform .35s var(--ease-out-expo),
+              border-color .35s, box-shadow .35s;
+}
+/* El dueño pidió no usar scale en hover (criterio suyo, repetido en el
+   proyecto): se mueve y se ilumina el borde, no se agranda la foto. */
+.galeria__foto:hover {
+  transform: translateY(-5px);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+/* Cuadradas y proporcionadas: el alto sale del ancho, así ninguna foto
+   deforma su contenido aunque las originales sean todas cuadradas. */
+.galeria__foto img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 1 / 1; object-fit: cover;
+  background: var(--bg-elevated);
+}
+
+.galeria__texto {
+  display: block; padding: 14px 18px 16px;
+}
+.galeria__titulo {
+  display: block; font-size: .95rem; color: var(--text-main);
+  font-weight: 600; margin-bottom: 4px;
+}
+.galeria__pie { display: block; font-size: .82rem; color: var(--text-muted); line-height: 1.5; }
+
+/* --- Móvil: una columna, fotos a lo ancho --- */
+@media (max-width: 600px) {
+  .galeria__grid { grid-template-columns: 1fr; }
+}

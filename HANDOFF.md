@@ -93,6 +93,66 @@ del archivo, no el archivo. Verificado midiendo los caracteres en Unicode.
 
 ---
 
+## SESIÓN 2026-10-13 — CR-41 a CR-45 (HECHO, pendiente de publicar)
+
+### ✅ RESUELTO — LAS 3 FRASES INVENTADAS SE ELIMINARON (DEC-041)
+El dueño ordenó, textual: **"las 3 frases dejalas eliminadas"**. Ya no están en
+`QUIENES_SOMOS` ni en la intro de Servicios:
+- ~~"institución independiente, dedicada a la paleontología"~~
+- ~~"Trabaja en colaboración con la Municipalidad de Santiago"~~
+- ~~"más de 20 años de investigación en terreno y en sala"~~
+⚠️ La tercera estaba **HARDCODEADA en el `index.html`** (intro de Servicios), no
+solo en el `data/`. Si se busca "más de 20 años" y no aparece en `museo.js`, es
+porque el resto se corrigió por separado.
+
+### ✅ RESUELTO — LOS HORARIOS ESTABAN MAL (CR-41)
+Información oficial del dueño: **Mar–Vie 11 a 17** · **Sáb–Dom 11 a 19 (verano)**.
+El sitio decía Mar–Vie **10:00** (abría una hora antes de lo real) y Sáb–Dom
+hasta las 18:00. Corregido en `MUSEO.horarios` **y** en `MUSEO.estado.abre/cierra`
+(son el mismo dato en dos formas: si divergen, el sitio se contradice solo).
+
+### ✅ NUEVO — PALEOMUNDO (CR-41)
+La muestra itinerante tiene nombre propio: **PALEOMUNDO**, dictado por el dueño.
+Reemplazó a "Exposición escolar itinerante". Datos oficiales: **25 vitrinas**
+(el pendiente viejo decía 20 — el dueño confirmó **25** textual: "si, tiene 25
+actualmente"), en conjunto con **CEPCHILE**, para colegios de Santiago, costo a
+través del museo. **CEPCHILE se conserva** (material rescatable, no se pregunta
+de nuevo).
+
+### ✅ NUEVO — GALERÍA CON FOTOS REALES (CR-44/CR-45)
+**Primera sección del sitio con fotografía.** Hasta hoy había CERO imágenes de
+terceros (DEC-012/DEC-027). El dueño envió 7 fotos y autorizó: *"EL MUSEO
+AUTORIZA MOSTRARLA"*.
+- **Galería** (`#galeria`, entre Colecciones y Servicios): 5 fotos del museo.
+- **Servicios → itinerante**: las 2 fotos de **exposición en escuela**. ⚠️ El
+  dueño las corrigió: *"NO DEBEN IR EN GALERIA, SI NO EN SERVICIOS ITINERANTES"*.
+- Imágenes en `assets/img/galeria/` (700px mini + grande, 55–124KB, 1.3MB total).
+
+### ✅ NUEVO — HERO (CR-42/CR-43)
+- **"Tipos de piezas" ELIMINADA** del hero, pedido textual. **La sección
+  Colecciones quedó intacta** (el dueño aclaró: *"LA CARTA DONDE SALE LO QUE HAY
+  EN COLECCIONES"* se queda).
+- La métrica del rango quedó **sola** → se rediseñó como placa ancha, con letra
+  más chica y el texto **en una sola línea** (el corte en 2 líneas venía de
+  CR-32, cuando convivía con otras 2 métricas; esa restricción ya no existe).
+
+### ⚠️ PENDIENTES ABIERTOS AL CIERRE DE LA SESIÓN
+1. **Textos de la Galería** — título, intro y pie de cada foto: **VACÍOS a
+   propósito** en `GALERIA` y `PALEOMUNDO.fotos`. Los dicta el dueño. El sitio
+   funciona sin ellos (no pinta el caption vacío).
+2. **Horario de invierno** de Sáb–Dom: solo se informó el de verano (11–19).
+3. **El Director (Juan Castillo Cornejo)**: el dueño dijo "déjalo, es importante
+   para la comunicación", pero **no indicó dónde ni con qué texto**. NO se agregó
+   ninguna sección nueva por eso. El correo del museo se mantiene.
+4. **Resolución de las fotos**: son de 720–900px; en pantallas grandes pueden
+   verse algo blandas.
+
+### ⚠️ SIN PUBLICAR
+Nada de CR-41 a CR-45 estaba en producción al cierre de la sesión. Verificar
+contra el sitio en vivo antes de dar algo por hecho.
+
+---
+
 ## PENDIENTES NUEVOS (2026-10-12) — NO EJECUTADOS, esperan confirmación
 
 ⚠️ **NADA de esta sección está publicado.** Es texto que dictó el dueño y que se

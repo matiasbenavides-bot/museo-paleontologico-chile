@@ -43,34 +43,82 @@
    desalineado y con "hoyos" entre columnas. En celular era peor: el rango
    ("Cambrico -> Cuaternario") se partia en el medio y la flecha quedaba
    colgando. Se paso a grid de 3 columnas iguales y el rango se declara en dos
-   lineas. */
+   lineas.
+/* CR-42 (2026-10-13): quedaron DOS de las tres metricas fuera (el conteo de
+   piezas, a pedido del dueño, y el aliado institucional por DEC-041). Queda
+   UNICA la metrica del rango.
+   CR-43 (2026-10-13): el dueño lo reporto: "DEJEMOSLO MAS ESTETICO Y HACERLO
+   DESTACAR, YA QUE ESTA SOLO". Al quedar sola, la columna se estiraba y el
+   dato flotaba en un espacio vacio (texto a la izquierda, hueco a la derecha).
+   Ahora el dato se envuelve en una PLACA: con marco, fondo y aire interior,
+   para que se lea como una ficha con peso propio y no como texto suelto.
+   El grid se conserva con `justify-items: start` (y no `1fr`) para que la placa
+   se ajuste a su contenido y no se estire; asi, si el dueño repone metricas,
+   solo hay que devolver las columnas. */
 .hero__datos {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: stretch;
   gap: 34px;
+  margin-top: 4px;
 }
 .hero__dato { display: flex; flex-direction: column; min-width: 0; }
+
+/* La placa del rango: el unico dato del hero, asi que lleva presencia.
+   CR-43b: el dueño pidio "HAZLO MAS ANCHO". Ocupa TODO el ancho de su columna
+   (`justify-items: stretch` en el grid), asi que la placa se alinea con el
+   texto de arriba en vez de quedar como un recuadro chico suelto.
+   CR-43c: despues pidio "LETRA CHICA, NO TAN GRANDE, QUE SE VEA BONITO".
+   La letra bajó de 2.15rem a un rango fluido que nunca compite con el titular,
+   y se afinó el aire interior para que la placa se vea esbelta y no maciza. */
+.hero__dato[data-rango] {
+  position: relative;
+  padding: 16px 26px 15px 30px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(81,173,198,.11), var(--bg-glass));
+  border: 1px solid var(--border-accent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+/* Filo luminoso a la izquierda: ancla visual de la placa. */
+.hero__dato[data-rango]::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--ocre-light), var(--ocre-dark));
+  box-shadow: 0 0 16px var(--ocre-glow);
+}
 .hero__dato strong {
-  font-family: var(--font-display); font-size: 1.75rem; color: var(--ocre);
-  line-height: 1.12; letter-spacing: .01em;
+  font-family: var(--font-display); font-size: clamp(1.18rem, 2.2vw, 1.5rem);
+  color: var(--ocre); line-height: 1.18; letter-spacing: .015em; font-weight: 600;
 }
 .hero__dato span {
-  font-size: .76rem; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--text-muted); line-height: 1.35;
+  font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-muted); line-height: 1.35; margin-top: 8px;
 }
-/* El rango ("Cámbrico → Cuaternario") es el UNICO de los tres valores que es
-   largo, y es el que rompia la metrica en celular: medido a 320px, el texto
-   ocupaba 157px dentro de una columna de 90px, asi que se salia de su caja y
-   se montaba encima de "Tipos de piezas". Eso era el "se ve raro".
-   Solucion: el rango se parte en DOS lineas declaradas y la flecha abre la
-   segunda — "Cámbrico" / "→ Cuaternario". Nunca queda un separador colgando
-   ni el texto invadiendo la columna vecina. */
-.hero__rangoA, .hero__rangoB { display: block; }
-.hero__flecha { color: var(--text-muted); margin-right: 6px; font-size: .82em; }
-/* En pantallas donde la columna es angosta, el rango cede tamano antes que
-   desbordar (mismo criterio que el resto de la escala fluida). */
+/* CR-32 (historico): el rango ("Cámbrico → Cuaternario") es el valor mas largo
+   del hero, y cuando convivia con otras DOS metricas rompia su columna: medido
+   a 320px, el texto ocupaba 157px dentro de una columna de 90px y se montaba
+   sobre "Tipos de piezas". Entonces se partio en dos lineas.
+   CR-43d (2026-10-13): ese corte YA NO APLICA — el rango quedo solo y el dueño
+   pidio verlo en UNA SOLA LINEA. Ahora fluye inline dentro de su placa, que le
+   da el ancho completo. Se conserva esta nota para que nadie "restaure" el
+   corte en dos lineas creyendo que arregla un desborde que ya no existe. */
+/* CR-43d: estas reglas eran de cuando el rango se partia en DOS lineas
+   (.hero__rangoA/.hero__rangoB con display:block) porque no cabia junto a las
+   otras dos metricas. El dueño pidio el rango EN UNA SOLA LINEA y esos spans
+   ya no se emiten; las reglas se retiran para no dejar codigo muerto.
+   La flecha se conserva (si se emite) y ahora es un separador inline. */
+.hero__flecha {
+  color: var(--text-muted); font-size: .82em;
+  padding: 0 .35em; /* aire simetrico a los lados de la flecha */
+}
+/* CR-43c: esta regla nacio cuando el rango convivia con otras DOS metricas en
+   una columna de 90px, y por eso bajaba a .82rem. Ahora el rango esta SOLO en
+   toda la fila y la placa le da aire propio, asi que no necesita encogerse
+   tanto: se deja un piso legible, algo menor que el de escritorio. */
 @media (max-width: 480px) {
-  .hero__dato[data-rango] strong { font-size: clamp(.82rem, 3.5vw, 1.02rem); }
+  .hero__dato[data-rango] strong { font-size: clamp(1.05rem, 4.4vw, 1.24rem); }
+  .hero__dato[data-rango] { padding: 14px 20px 13px 24px; }
 }
 
 /* Tarjeta lateral: horario vivo */

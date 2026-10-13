@@ -25,3 +25,35 @@
   font-size: .87rem; color: var(--text-soft); display: flex; gap: 14px; align-items: flex-start;
 }
 .servicios__nota svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--verde-light); margin-top: 2px; }
+
+/* ============================================================
+   PALEOMUNDO — muestra museológica itinerante (CR-41, 2026-10-13)
+   Bloque de detalle debajo de la grilla de servicios. Sigue el mismo
+   sistema visual que .servicios__nota (glass + borde acento) para no
+   introducir un lenguaje nuevo.
+   ============================================================ */
+.paleomundo:empty { display: none; }
+.paleomundo { margin-top: 24px; }
+.paleomundo__caja {
+  padding: 30px 34px; border-radius: var(--radius-lg);
+  background: var(--bg-glass); border: 1px solid var(--border-accent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+.paleomundo__caja h3 { font-size: 1.18rem; margin-bottom: 10px; color: var(--text-main); }
+.paleomundo__caja > p { font-size: .92rem; color: var(--text-soft); margin-bottom: 16px; }
+.paleomundo__lista { list-style: none; display: grid; gap: 10px; }
+.paleomundo__lista li {
+  position: relative; padding-left: 24px;
+  font-size: .9rem; color: var(--text-soft); line-height: 1.55;
+}
+.paleomundo__lista li::before {
+  content: ""; position: absolute; left: 4px; top: .58em;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ocre); box-shadow: 0 0 8px var(--ocre-glow);
+}
+/* Nota de la fila de horario (ej. "Horario de verano") */
+.horario__nota { color: var(--text-muted); font-size: .82em; }
+
+/* CR-45: fotos de la muestra itinerante dentro del bloque PALEOMUNDO
+   (Servicios). Reusa la grilla y la tarjeta de la Galería. */
+.paleomundo__fotos { margin-top: 26px; }

@@ -15,11 +15,18 @@
 
   var M = window.MUSEO;
 
-  /* ---------- Marca en header y footer ---------- */
+  /* ---------- Marca en header y footer ----------
+     DEC-041: `M.pertenece` puede venir VACÍO (el dueño no autoriza publicar la
+     pertenencia institucional). Si viene vacío, el nodo se OCULTA en vez de
+     quedar como una línea en blanco con su separador. */
   function pintarMarca() {
     $$("[data-marca-sigla]").forEach(function (el) { el.textContent = M.sigla; });
     $$("[data-marca-nombre]").forEach(function (el) { el.textContent = M.nombre; });
-    $$("[data-marca-pertenece]").forEach(function (el) { el.textContent = M.pertenece; });
+    $$("[data-marca-pertenece]").forEach(function (el) {
+      var v = M.pertenece || "";
+      el.textContent = v;
+      el.style.display = v ? "" : "none";
+    });
     $$("[data-marca-lema]").forEach(function (el) { el.textContent = M.lema; });
   }
 
@@ -39,34 +46,34 @@
     if (d) d.textContent = M.lema || M.descripcionCorta;
     var r = $("[data-hero-rango]");
     if (r && window.COLECCIONES) {
-      /* CR-32: el CSS define .hero__rangoA / .hero__rangoB (ambos display:block,
-         dos lineas declaradas) pero este render NUNCA los emitia: solo concatenaba
-         el texto, asi que el rango caia en UNA linea y a 768px DESBORDABA su caja
-         (medido: el strong de "Cambrico -> Cuaternario" con scrollWidth mayor que
-         clientWidth). Se envuelve cada parte en su span para que el CSS pueda
-         ponerlas en dos lineas y el rango nunca desborde.
-         En escritorio las dos lineas se ven juntas y compactas; en celular el
-         ancho de la columna manda y baja solo. */
+      /* CR-43d (2026-10-13): el dueño pidio el rango EN UNA SOLA LINEA:
+           "QUE NO SALGA ASI: Cámbrico / →Cuaternario, SI NO ASI: EN UNA SOLA
+            LINEA".
+         Antes se partia en DOS span (hero__rangoA / hero__rangoB) por CR-32,
+         cuando el rango convivia con otras DOS metricas en columnas de ~90px y
+         no cabia. Ya no convive con nada: esta solo en la fila, dentro de su
+         placa, con todo el ancho disponible. Asi que el corte en dos lineas es
+         una restriccion que dejo de existir y se elimina.
+         Se sigue usando la flecha con su propio span (hero__flecha), que solo
+         cambia el color del separador. El CSS ya declara ahora los span como
+         inline. */
       var partes = String(window.COLECCIONES.rango).split("\u2192");
       if (partes.length === 2) {
-        /* Dos lineas declaradas: "Cámbrico" arriba, "→ Cuaternario" abajo.
-           Antes iba todo en un renglon y en celular desbordaba su columna
-           (medido: 157px de texto en 90px de caja a 320px). */
-        r.innerHTML = '<span class="hero__rangoA">' + esc(partes[0].trim()) + "</span>" +
-          '<span class="hero__rangoB"><span class="hero__flecha">\u2192</span>' +
-          esc(partes[1].trim()) + "</span>";
+        r.innerHTML = esc(partes[0].trim()) +
+          ' <span class="hero__flecha">\u2192</span> ' +
+          esc(partes[1].trim());
       } else {
         r.textContent = window.COLECCIONES.rango;
       }
     }
-    var n = $("[data-hero-piezas]");
-    if (n && window.COLECCIONES && window.COLECCIONES.piezas) {
-      n.textContent = window.COLECCIONES.piezas.length;
-    }
-    /* DEC-034: la tercera metrica del hero era "GRINPACH" (obsoleto).
-       Ahora sale del data/: el museo es independiente y la muni colabora. */
-    var a = $("[data-hero-aliado]");
-    if (a && M.aliado) a.textContent = M.aliado.nombre;
+    /* CR-42 (2026-10-13): aca vivia el pintado de la metrica "Tipos de piezas"
+       (escribia COLECCIONES.piezas.length en [data-hero-piezas]) y la del
+       aliado institucional ([data-hero-aliado]). El dueño pidio quitar la de
+       piezas y la del aliado ya se habia retirado (DEC-041). Ambos nodos se
+       eliminaron del index.html, asi que este codigo quedaba MUERTO: calculaba
+       y escribia sobre elementos que ya no existen.
+       Si algun dia se reponen las metricas, el dato sigue en COLECCIONES.piezas
+       y en MUSEO.aliado — no hay que re-inventarlo. */
   }
 
   /* ---------- Horario + estado abierto/cerrado ----------
@@ -84,8 +91,12 @@
     M.horarios.forEach(function (h) {
       var fila = document.createElement("div");
       fila.className = "horario__fila" + (h.abierto ? "" : " cerrado");
+      /* CR-41: la fila puede traer `nota` (ej. "Horario de verano", dato oficial
+         del dueño para Sab-Dom 11-19). Se pinta como sufijo del tramo, en un
+         span propio para que el CSS pueda diferenciarlo de las horas. */
+      var nota = h.nota ? ' <small class="horario__nota">(' + esc(h.nota) + ")</small>" : "";
       fila.innerHTML = '<span class="horario__dias">' + esc(h.dias) + "</span>" +
-                       '<span class="horario__horas">' + esc(h.horas) + "</span>";
+                       '<span class="horario__horas">' + esc(h.horas) + nota + "</span>";
       cont.appendChild(fila);
     });
 
@@ -169,6 +180,85 @@
     var nota = $("[data-servicios-nota]"); if (nota) {
       nota.innerHTML = ico("check") + "<span>" + esc(window.SERVICIOS_NOTA) + "</span>";
     }
+    pintarPaleomundo();
+  }
+
+  /* ---------- PALEOMUNDO (CR-41, 2026-10-13) ----------
+     Detalle de la muestra itinerante: las 25 vitrinas y su contenido, dictado
+     por el dueño. Vive en window.PALEOMUNDO (data/). Si el dato no esta, el
+     contenedor queda VACIO (no se pinta un encabezado huerfano).
+     CR-45: aca tambien van las FOTOS de la muestra montada en establecimientos,
+     que el dueño saco de Galeria y pidio poner en Servicios itinerante. */
+  function pintarPaleomundo() {
+    var cont = $("[data-paleomundo]"); if (!cont) return;
+    var p = window.PALEOMUNDO;
+    if (!p || !p.items || !p.items.length) { cont.innerHTML = ""; return; }
+    cont.innerHTML =
+      '<div class="paleomundo__caja">' +
+        "<h3>" + esc(p.titulo) + "</h3>" +
+        "<p>" + esc(p.intro) + "</p>" +
+        '<ul class="paleomundo__lista">' +
+          p.items.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") +
+        "</ul>" +
+      "</div>";
+    /* Fotos de la itinerante en colegios. Si no hay fotos, no se crea el
+       contenedor (no queda un bloque vacio). */
+    if (p.fotos && p.fotos.length) {
+      var gal = document.createElement("div");
+      gal.className = "paleomundo__fotos galeria__grid";
+      cont.appendChild(gal);
+      pintarFotos(gal, p.fotos);
+    }
+  }
+
+  /* ---------- Galería (CR-44, 2026-10-13) ----------
+     Fotos reales del museo. Datos en window.GALERIA.
+     CR-45: las fotos de la muestra itinerante YA NO van aca — el dueño las
+     movio a Servicios (bloque PALEOMUNDO). Esta galeria pinta SOLO el museo.
+     Un campo de texto vacio NO se pinta: si el dueño aun no dicto el titulo de
+     una foto, la imagen sale sin el. Nunca se rellena con texto inventado
+     (regla DEC-034).
+     Las imagenes usan `loading="lazy"` y `decoding="async"`: no conviene
+     bloquear el pintado del resto del sitio. */
+  function pintarGaleria() {
+    var G = window.GALERIA; if (!G) return;
+
+    var intro = $("[data-galeria-intro]");
+    if (intro) {
+      if (G.intro) { intro.textContent = G.intro; }
+      else { intro.style.display = "none"; }   // sin texto, no queda un hueco
+    }
+
+    /* Reusa el mismo pintor de fotos que PALEOMUNDO (pintarFotos), para no
+       duplicar el HTML de la tarjeta ni el manejo de textos vacios. */
+    pintarFotos($("[data-galeria-museo]"), G.museo);
+  }
+
+  /* ---------- Pintor de fotos compartido (CR-44/CR-45) ----------
+     Lo usan la Galería del museo y el bloque itinerante de Servicios. Cada foto
+     trae `mini` (lo que se carga) y `src` (la grande, en data-grande por si
+     despues se quiere abrir en grande). Titulo y pie son opcionales: si faltan,
+     no se pinta el caption. */
+  function pintarFotos(cont, fotos) {
+    if (!cont) return;
+    if (!fotos || !fotos.length) { cont.innerHTML = ""; return; }
+    cont.innerHTML = fotos.map(function (f) {
+      var alt = f.titulo || "Museo Paleontológico de Chile";
+      var texto = "";
+      if (f.titulo || f.pie) {
+        texto = '<figcaption class="galeria__texto">' +
+          (f.titulo ? '<span class="galeria__titulo">' + esc(f.titulo) + "</span>" : "") +
+          (f.pie ? '<span class="galeria__pie">' + esc(f.pie) + "</span>" : "") +
+        "</figcaption>";
+      }
+      return '<figure class="galeria__foto reveal reveal--zoom">' +
+               '<img src="' + esc(f.mini || f.src) + '" ' +
+                    'data-grande="' + esc(f.src) + '" ' +
+                    'alt="' + esc(alt) + '" loading="lazy" decoding="async" ' +
+                    'width="700" height="700">' +
+               texto +
+             "</figure>";
+    }).join("");
   }
 
   /* ---------- Visítanos ---------- */
@@ -260,7 +350,7 @@
   /* ---------- Ejecutar ---------- */
   function init() {
     pintarMarca(); pintarHero(); pintarHorario(); pintarEras(); pintarSomos();
-    pintarColecciones(); pintarServicios(); pintarVisita();
+    pintarColecciones(); pintarGaleria(); pintarServicios(); pintarVisita();
     pintarContacto(); pintarFooter();
     document.dispatchEvent(new CustomEvent("mpch:pintado"));
   }
