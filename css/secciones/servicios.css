@@ -64,12 +64,20 @@
 .paleomundo__fotos--destaque .galeria__foto img {
   aspect-ratio: 16 / 10; height: auto;
 }
-/* Escritorio y tablet: las dos fotos van pegadas, lado a lado, formando una
-   sola franja. Ya no hay separación visible entre ellas. */
+/* Escritorio y tablet: cuando hay DOS fotos van pegadas lado a lado formando
+   una sola franja. CR-52: ahora queda UNA sola foto — con `:only-child` se
+   centra y se acota el ancho, para que no se estire al doble y se vea
+   desproporcionada. Si el dueño repone la segunda, vuelve el par automático. */
 @media (min-width: 700px) {
   .paleomundo__fotos--destaque { grid-template-columns: repeat(2, 1fr); }
   .paleomundo__fotos--destaque .galeria__foto + .galeria__foto {
     border-left: 1px solid var(--border-accent);
+  }
+  /* Una sola foto: ocupa el ancho disponible pero con tope, centrada. */
+  .paleomundo__fotos--destaque .galeria__foto:only-child {
+    grid-column: 1 / -1;
+    max-width: 760px;
+    margin: 0 auto;
   }
 }
 

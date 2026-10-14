@@ -398,8 +398,14 @@ const PALEOMUNDO = {
      por el cambio de seccion).
      ⚠️ `titulo`/`pie` VACIOS a proposito: los escribe el dueño (DEC-034). */
   fotos: [
-    { src: "assets/img/galeria/exposicion-escuela-1.jpg", mini: "assets/img/galeria/exposicion-escuela-1-mini.jpg", titulo: "", pie: "" },
-    { src: "assets/img/galeria/exposicion-escuela-2.jpg", mini: "assets/img/galeria/exposicion-escuela-2-mini.jpg", titulo: "", pie: "" }
+    /* CR-52 (2026-10-13): se quitó UNA de las dos fotos por pedido del dueño.
+       Primero se sacó la 1ª y el dueño aclaró que era al revés: se queda la
+       PRIMERA (exposicion-escuela-1.jpg) y se va la segunda.
+       ⚠️ El archivo de la que sale NO se borró de assets/img/galeria/: sigue en
+       disco y en el repo, por si la quiere de vuelta. Reactivar = volver a
+       agregar acá su línea `{ src: ..., mini: ... }`. Es lo mismo que se hizo
+       con las piezas en pausa (CR-16): se deja de usar, no se destruye. */
+    { src: "assets/img/galeria/exposicion-escuela-1.jpg", mini: "assets/img/galeria/exposicion-escuela-1-mini.jpg", titulo: "", pie: "" }
   ]
 };
 
