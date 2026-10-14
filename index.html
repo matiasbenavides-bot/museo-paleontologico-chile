@@ -228,9 +228,11 @@
        la expo y cosas de relleno importantes". -->
   <section class="seccion paleomundo-sec" id="paleomundo">
     <div class="contenedor">
-      <span class="etiqueta reveal">Muestra itinerante</span>
-      <h2 class="seccion__titulo reveal" data-pm-titulo></h2>
-      <p class="seccion__intro reveal" data-pm-intro></p>
+      <!-- CR-53 (2026-10-13): el dueño pidió "el titulo centralo y hazlo en una
+           card con la imagen incluida". El título y la bajada salen del flujo
+           general y pasan a vivir DENTRO de la card, junto a la foto.
+           Por eso acá queda solo el ancla vacía y el render (pintarPaleomundo)
+           arma la card completa. -->
       <div class="paleomundo" data-paleomundo></div>
     </div>
   </section>

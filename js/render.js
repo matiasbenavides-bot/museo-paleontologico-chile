@@ -288,32 +288,32 @@
      Titulo y bajada salen de PALEOMUNDO.tituloSec / introSec — si estan vacios,
      los nodos se ocultan en vez de quedar en blanco. */
   function pintarPaleomundo() {
-    /* Encabezado de la seccion propia (nodos del index.html). */
-    var tSec = $("[data-pm-titulo]");
-    if (tSec) {
-      if (window.PALEOMUNDO && window.PALEOMUNDO.tituloSec) tSec.textContent = window.PALEOMUNDO.tituloSec;
-      else tSec.style.display = "none";
-    }
-    var iSec = $("[data-pm-intro]");
-    if (iSec) {
-      if (window.PALEOMUNDO && window.PALEOMUNDO.introSec) iSec.textContent = window.PALEOMUNDO.introSec;
-      else iSec.style.display = "none";
-    }
-
     var cont = $("[data-paleomundo]"); if (!cont) return;
     var p = window.PALEOMUNDO;
     if (!p || !p.items || !p.items.length) { cont.innerHTML = ""; return; }
 
-    /* CR-49/CR-50: las FOTOS van PRIMERO y grandes — el dueño pidió destacar la
-       exposicion a escuelas ("se debe destacar... solo las imagenes de la expo").
-       CR-50: despues van las PILDORAS (los datos que se leen de un golpe) y
-       recien el bloque de las 25 vitrinas, ahora en tarjetas.
-       Se arma primero el HTML y se inyecta una vez: crear nodos y pintarlos
-       despues obligaba a dos pasadas. */
-    var html = "";
+    /* CR-53 (2026-10-13): el dueño pidió "el titulo centralo y hazlo en una
+       card con la imagen incluida". Antes el encabezado (etiqueta + título +
+       bajada) vivía fuera, en el contenedor de la sección, y la foto aparte.
+       Ahora todo eso forma UNA card: título centrado arriba, la foto adentro,
+       y debajo los datos y el detalle.
+       ⚠️ El texto sigue siendo el del dueño: `tituloSec` es el nombre oficial y
+       `introSec` es textual suyo. No se agrega prosa del agente (DEC-034). */
+    var html = '<div class="pm-card reveal">';
+
+    /* Encabezado centrado dentro de la card. */
+    html += '<header class="pm-card__cabeza">' +
+              '<span class="etiqueta">Muestra itinerante</span>' +
+              (p.tituloSec ? '<h2 class="pm-card__titulo">' + esc(p.tituloSec) + "</h2>" : "") +
+              (p.introSec ? '<p class="pm-card__intro">' + esc(p.introSec) + "</p>" : "") +
+            "</header>";
+
+    /* La imagen, dentro de la misma card. */
     if (p.fotos && p.fotos.length) {
-      html += '<div class="paleomundo__fotos paleomundo__fotos--destaque galeria__grid"></div>';
+      html += '<div class="paleomundo__fotos paleomundo__fotos--destaque"></div>';
     }
+
+    /* Los datos duros, en píldoras. */
     if (p.datos && p.datos.length) {
       html += '<div class="paleomundo__datos">' +
         p.datos.map(function (d) {
@@ -322,6 +322,8 @@
         }).join("") +
       "</div>";
     }
+
+    /* Lo que lleva la muestra, en tarjetas. */
     html += '<div class="paleomundo__caja">' +
         "<h3>" + esc(p.titulo) + "</h3>" +
         "<p>" + esc(p.intro) + "</p>" +
@@ -329,6 +331,8 @@
           p.items.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") +
         "</ul>" +
       "</div>";
+
+    html += "</div>";
     cont.innerHTML = html;
 
     if (p.fotos && p.fotos.length) {

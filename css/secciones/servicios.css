@@ -41,52 +41,86 @@
 .paleomundo:empty { display: none; }
 .paleomundo { margin-top: 8px; }
 
-/* --- Mural de fotos ---
-   CR-50b (2026-10-13): el dueño reportó que la sección "usa mucho espacio y
-   separa todo en 2". Medido: 1392px de alto en escritorio (1,55 pantallas) y
-   1874px en móvil (2,22 pantallas) — la sección más alta del sitio —, con
-   171px de hueco entre las fotos y el bloque de vitrinas.
-   CR-50c: se comprime todo. Las fotos dejan de ser dos monolitos separados y
-   pasan a un BLOC DE DOS PEGADAS (sin gap entre ellas), con alto acotado.
-   El resultado se lee como una sola pieza, no como dos columnas sueltas. */
-.paleomundo__fotos--destaque {
-  margin: 0 0 clamp(16px, 2vw, 24px);
-  display: grid; gap: 0;
+/* ============================================================
+   CR-53 — La sección entera es UNA card, con el título centrado
+   El dueño: "el titulo centralo y hazlo en una card con la imagen incluida".
+   Antes el encabezado estaba suelto arriba y la imagen aparte, en otro bloque.
+   Ahora: una caja que contiene encabezado + imagen + datos + detalle, con el
+   título y la bajada centrados.
+   ============================================================ */
+.pm-card {
+  position: relative;
+  padding: clamp(26px, 3.2vw, 44px);
   border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, rgba(81,173,198,.08), var(--bg-glass) 55%);
+  border: 1px solid var(--border-accent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+/* Filo de acento arriba: marca la card como pieza destacada. */
+.pm-card::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(260px, 46%); height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--ocre), transparent);
+  box-shadow: 0 0 18px var(--ocre-glow);
+}
+
+/* Encabezado CENTRADO dentro de la card. */
+.pm-card__cabeza { text-align: center; margin-bottom: clamp(20px, 2.6vw, 30px); }
+.pm-card__cabeza .etiqueta { margin-bottom: 14px; }
+.pm-card__titulo {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.6vw, 3.1rem);
+  line-height: 1.08; letter-spacing: -.01em;
+  color: var(--text-main);
+  margin-bottom: 14px;
+}
+.pm-card__intro {
+  font-size: clamp(.9rem, 1.1vw, 1rem);
+  color: var(--text-soft); line-height: 1.6;
+  max-width: 62ch; margin: 0 auto;
+}
+
+/* --- Mural de fotos (dentro de la card) --- */
+.paleomundo__fotos--destaque {
+  margin: 0 auto clamp(20px, 2.4vw, 28px);
+  display: grid; gap: 0;
+  border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-accent);
   box-shadow: var(--shadow-xl);
+  /* CR-52b: el marco se ajusta a las fotos que HAY. Con una sola foto el
+     borde quedaba de ancho completo y dejaba una franja vacía al lado
+     (medido: 216px a cada lado). `max-content` lo ciñe al contenido. */
+  width: max-content; max-width: 100%;
 }
 .paleomundo__fotos--destaque .galeria__foto {
   border: 0; border-radius: 0; box-shadow: none;
 }
-/* Alto ACOTADO: las fotos acompañan, no se comen la pantalla. */
+/* Alto ACOTADO: la foto acompaña, no se come la pantalla. */
 .paleomundo__fotos--destaque .galeria__foto img {
   aspect-ratio: 16 / 10; height: auto;
 }
-/* Escritorio y tablet: cuando hay DOS fotos van pegadas lado a lado formando
-   una sola franja. CR-52: ahora queda UNA sola foto — con `:only-child` se
-   centra y se acota el ancho, para que no se estire al doble y se vea
-   desproporcionada. Si el dueño repone la segunda, vuelve el par automático. */
+/* Escritorio y tablet: con DOS fotos van pegadas formando una franja.
+   Con UNA sola (caso actual), el grid baja a una columna y se ciñe a 720px. */
 @media (min-width: 700px) {
   .paleomundo__fotos--destaque { grid-template-columns: repeat(2, 1fr); }
   .paleomundo__fotos--destaque .galeria__foto + .galeria__foto {
     border-left: 1px solid var(--border-accent);
   }
-  /* Una sola foto: ocupa el ancho disponible pero con tope, centrada. */
-  .paleomundo__fotos--destaque .galeria__foto:only-child {
-    grid-column: 1 / -1;
-    max-width: 760px;
-    margin: 0 auto;
+  .paleomundo__fotos--destaque:has(.galeria__foto:only-child) {
+    grid-template-columns: minmax(0, 720px);
   }
+  .paleomundo__fotos--destaque .galeria__foto:only-child { max-width: 720px; }
 }
 
 /* --- Píldoras de datos ---
-   Los datos duros se leen de un golpe. CR-50c: más juntas y más chicas, para
-   que no se apilen en móvil (antes: 219px de alto solo en sellos). */
+   Centradas, para que acompañen al encabezado centrado. */
 .paleomundo__datos {
   display: flex; flex-wrap: wrap; gap: 8px;
-  margin: 0 0 clamp(16px, 2vw, 24px);
+  justify-content: center;
+  margin: 0 0 clamp(20px, 2.4vw, 28px);
 }
 .paleomundo__pildora {
   display: inline-flex; align-items: center; gap: 8px;
@@ -138,24 +172,15 @@
 /* Nota de la fila de horario (ej. "Horario de verano") */
 .horario__nota { color: var(--text-muted); font-size: .82em; }
 
-/* --- Sección propia destacada ---
-   CR-50c: se reduce el padding vertical (el genérico .seccion son 96px arriba
-   y abajo = 192px de aire puro). Esta sección es de presentación: se aprieta
-   para que la pieza se sienta compacta. */
+/* --- Sección que aloja la card ---
+   CR-53: la card ya trae su propio padding, así que la sección vuelve a un
+   padding normal (antes se había apretado cuando el encabezado iba suelto). */
 .paleomundo-sec {
   position: relative;
-  padding-top: clamp(56px, 6vw, 76px);
-  padding-bottom: clamp(56px, 6vw, 76px);
   background: linear-gradient(180deg, transparent, rgba(81,173,198,.055), transparent);
 }
-.paleomundo-sec .seccion__titulo { margin-bottom: 12px; }
-.paleomundo-sec .seccion__intro { margin-bottom: 26px; }
-.paleomundo-sec::before {
-  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: min(220px, 42%); height: 2px; border-radius: 2px;
-  background: linear-gradient(90deg, transparent, var(--ocre), transparent);
-  box-shadow: 0 0 18px var(--ocre-glow);
-}
+/* CR-53: el filo de acento se movió a la card (.pm-card::before). Acá NO se
+   repite, para no dejar dos brillos superpuestos. */
 
 /* CR-49: enlace dentro de una tarjeta de servicio (la de la itinerante apunta
    a la sección propia PALEOMUNDO). Se ve como acción secundaria, al pie. */
