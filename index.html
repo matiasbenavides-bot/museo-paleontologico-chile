@@ -138,12 +138,31 @@
       </div>
 
       <aside class="hero__tarjeta glass">
+        <!-- CR-55c (2026-10-15): MINI CURRICULUM del director, ARRIBA DEL
+             HORARIO y dentro del mismo aside de la columna derecha.
+             El dueño lo corrigió dos veces: "que sea una card delgada y ancha,
+             menos texto" y "deberia ser arriba del horario".
+             ⇒ Delgada = FINITA de alto, con el texto resumido.
+             ⇒ Arriba del horario = en la columna derecha, encima del horario.
+             ⚠️ Lo que NO hay que hacer: sacarla a lo ancho de la página. Se
+             intentó (CR-55b) y el dueño lo rechazó: "quedo horrible".
+
+             ⚠️ El contenido NO va escrito acá: lo pinta render.js desde
+             MUSEO.director (DEC-005).
+
+             ⚠️ CONSECUENCIA EN LA ALINEACIÓN: al meter este bloque dentro del
+             aside, la card del horario deja de estar sola y su centro se corre
+             hacia arriba. La bajada de 179px se calculó con el horario solo, así
+             que HAY QUE RE-MEDIRLA contra la placa "Cámbrico → Cuaternario". -->
+
+        <article class="hero__director" data-hero-director></article>
+
         <h3>Horario de atención</h3>
         <p class="nota">Parque O'Higgins · Santiago</p>
         <div class="horario" data-horario></div>
       </aside>
-    </div>
-  </section>
+    </div><!-- /.hero__grid -->
+  </section><!-- /.hero -->
 
   <hr class="separador">
 

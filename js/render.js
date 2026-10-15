@@ -47,6 +47,86 @@
      CR-27). Ahora el numero sale de COLECCIONES.piezas: no puede volver a
      quedar viejo. Tambien se quita la "flecha" del rango largo, que era el
      caracter que hacia ver rara esa metrica en celular. */
+  /* ---------- Mini curriculum del director (CR-55, 2026-10-15) ----------
+     El dueño pidió que el mini currículum del director vaya ARRIBA del horario,
+     en el hero ("el nombre y el curriculum de Juan Castillo Cornejo se publican
+     arriba en el hero"), con un resumen corto y un enlace a una subpágina.
+
+     🔴 ESTE BLOQUE NO INVENTA NI UNA PALABRA. Los datos salen tal cual de
+     MUSEO.director (data/museo.js), donde están las MISMAS palabras que el dueño
+     dictó. Si `M.director` no existe (data viejo), el contenedor queda vacío y
+     el horario sube a su lugar: no se pinta un hueco ni un texto de relleno.
+
+     ⚠️ El <a> a la subpágina sale de `subpagina`, no está escrito acá: la ruta
+     es una coordenada del sitio, igual que `arte` en las piezas. */
+  function pintarDirector() {
+    var cont = $("[data-hero-director]");
+    if (!cont) return;
+
+    var d = M.director;
+    if (!d || !d.nombre) { cont.innerHTML = ""; return; }
+
+    /* CR-55b (2026-10-15): la card es DELGADA Y ANCHA — una franja horizontal,
+       no una tarjeta alta. El dueño lo pidió textual: "que sea una card delgada
+       y ancha, menos texto".
+       ------------------------------------------------------------
+       Layout: 3 columnas en fila (quién es · los datos en línea · el enlace).
+       Antes era una columna con el rol, el nombre y una lista vertical de 4
+       líneas: eso la hacía alta y angosta, que es lo contrario de lo pedido.
+
+       Y MENOS TEXTO: de cada línea del mini se muestra sólo la parte que
+       identifica el logro, separando por la primera coma cuando la hay —
+         "Diplomado en Paleontología y Patrimonio Paleontológico, Universidad
+          Autónoma de Zacatecas (México)."  ->  "Diplomado en Paleontología y
+          Patrimonio Paleontológico"
+       ⚠️ NO se inventa texto nuevo: se RECORTA el que el dueño dictó. La versión
+       íntegra no se pierde — es la que se publica en la subpágina desde
+       `d.completo`. Acá va el resumen y allá el detalle, que es exactamente lo
+       que el dueño pidió ("un resumen corto que llegue a una subpagina").
+       ⚠️ La viñeta la pone el CSS (`::before`), no el JS: así el HTML emitido
+       queda limpio y el punto se alinea con la línea base del texto. */
+    function resumen(t) {
+      var m = String(t || "").split(",")[0].trim();
+      return m.replace(/\.$/, "");
+    }
+
+    var html = "";
+
+    /* 1) Quién es: RETRATO + cargo y nombre en la misma línea. La card tiene que
+       ser finita de alto, así que la foto va al lado del texto, no encima.
+       ⚠️ El retrato es opcional: si `foto` no viene, el bloque se arma igual sin
+       el círculo (no queda un hueco vacío). */
+    var foto = d.foto
+      ? '<img class="hero__director-foto" src="' + esc(d.foto) + '"' +
+        ' width="160" height="160" alt="' + esc(d.nombre) + '" loading="lazy" decoding="async">'
+      : "";
+
+    html += '<div class="hero__director-quien">' +
+              foto +
+              '<div class="hero__director-id">' +
+                '<span class="hero__director-rol">Director y Curador</span>' +
+                '<span class="hero__director-nombre">' + esc(d.nombre) + "</span>" +
+              "</div>" +
+            "</div>";
+
+    /* 2) Los datos: 4 líneas cortas, una por logro. */
+    if (d.mini && d.mini.length) {
+      html += '<ul class="hero__director-lista">' +
+        d.mini.map(function (t) { return "<li>" + esc(resumen(t)) + "</li>"; }).join("") +
+      "</ul>";
+    }
+
+    /* 3) El enlace a la subpágina. */
+    if (d.subpagina) {
+      html += '<a class="hero__director-mas" href="' + esc(d.subpagina) + '">' +
+                "Ver el currículum completo" +
+                '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+              "</a>";
+    }
+
+    cont.innerHTML = html;
+  }
+
   function pintarHero() {
     /* DEC-033: el parrafo del hero AHORA ES EL LEMA (el dueño lo dicto y pidio
        sacarlo del <span class="hero__lema">). Si el dato `lema` existe, manda;
@@ -487,7 +567,7 @@
 
   /* ---------- Ejecutar ---------- */
   function init() {
-    pintarMarca(); pintarHero(); pintarHorario(); pintarEras(); pintarSomos();
+    pintarMarca(); pintarHero(); pintarDirector(); pintarHorario(); pintarEras(); pintarSomos();
     pintarColecciones(); pintarGaleria(); pintarServicios(); pintarVisita();
     pintarContacto(); pintarFooter();
     document.dispatchEvent(new CustomEvent("mpch:pintado"));

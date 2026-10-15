@@ -6,7 +6,12 @@
      no apretarlo contra el borde: 16 -> 18 px arriba y abajo. Se ajusta el
      padding y NO se encoge el logo — misma regla que ya quedó anotada en CR-38
      ("se ajusta el padding en vez de encoger el logo"). */
-  padding: 18px 0;
+  /* CR-55b (2026-10-15): SEGUNDO pedido del dueño sobre el mismo logo —
+     "agranda el logo aun mas". Se sube otra vez, 66 -> 84 px de alto (+27%).
+     La placa mide 790x336 (ratio 2.351, medido del PNG), así que a 84 px de alto
+     el logo queda de 198 px de ancho. Es la MISMA regla de siempre: crece el logo
+     y sube el padding de la barra; el logo NO se encoge nunca (CR-38). */
+  padding: 20px 0;
   transition: padding .35s var(--ease-out-expo), background .35s, border-color .35s, backdrop-filter .35s;
   border-bottom: 1px solid transparent;
 }
@@ -37,17 +42,15 @@
    2. El logo crece en alto (la placa agrega aire), asi que el header necesita
       mas espacio: se ajusta el padding en vez de encoger el logo. */
 .marca__logo {
-  /* CR-54c: 54 -> 66 px de alto, pedido del dueño ("haz el logo mas grande en el
-     footer y nav"). La placa mide 790x336 px (ratio 2.35), así que a 66 px de
-     alto el logo queda de 155 px de ancho (~13% de un header de 1180). Medido
-     contra el nav completo: no desborda ni se come las opciones del menú. */
-  height: 66px; width: auto; flex-shrink: 0;
+  /* CR-55b: 66 -> 84 px de alto, pedido del dueño ("agranda el logo aun mas").
+     A 84 px de alto el logo queda de 198 px de ancho. */
+  height: 84px; width: auto; flex-shrink: 0;
   transition: transform .5s var(--ease-out-back);
 }
 .marca:hover .marca__logo { transform: scale(1.04); }
-/* Footer: 62 -> 78 px. En el footer el logo es el protagonista de su columna y
-   no compite con el menú, así que crece más que el del header. */
-.marca__logo--footer { height: 78px; }
+/* Footer: 78 -> 96 px, en la misma proporción que el header (+27%). En el footer
+   el logo es el protagonista de su columna y no compite con el menú. */
+.marca__logo--footer { height: 96px; }
 
 /* Isotipo suelto (hero, favicon) */
 .marca__iso { width: 44px; height: 44px; flex-shrink: 0; transition: transform .5s var(--ease-out-back); }

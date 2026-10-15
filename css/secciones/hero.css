@@ -14,8 +14,153 @@
     rgba(47,126,130,.05) 130px, rgba(47,126,130,.05) 132px
   );
 }
-.hero__grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 60px; align-items: center; }
-/* CR-54j (2026-10-15) — LA CARD DE HORARIO BAJA, alineada con la placa del rango.
+.hero__grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(40px, 4.5vw, 68px); align-items: center; }
+/* 🔴 CR-55d (2026-10-15) — "PARECE DE CELULAR TODO".
+   Diagnóstico MEDIDO, no impresión: el mini currículum vivía en la columna
+   derecha (456px) y para caber ahí había quedado con letra de 12.48px, más
+   chica que el cuerpo del sitio (16.5px). Eso es exactamente lo que hace que un
+   bloque se lea como pantalla de teléfono.
+   ⇒ Se corrige por los DOS lados, que es lo que faltaba:
+     1. ANCHO: la columna derecha pasa de .85fr a .9fr y el gap usa clamp() en
+        vez de 60px fijos. Con eso la card gana ~40px de ancho útil.
+     2. LETRA: sube a 14px el dato y a ~19px el nombre. Ya no hay texto por
+        debajo del tamaño de cuerpo del sitio.
+   ⚠️ No se toca el título del hero (67px): ese SÍ debe ser grande. La
+   desproporción venía de abajo, no de arriba. */
+
+/* ============================================================================
+   EL HORARIO DEL HERO SE BAJA PARA ALINEARSE CON LA PLACA DEL RANGO.
+
+   QUÉ ALINEA: la ÚLTIMA FILA del horario (Lunes / Cerrado) contra la placa
+   "Cámbrico → Cuaternario" de la columna izquierda ([data-rango]).
+
+   CÓMO: el aside se corre con margin-top (su caja crece hacia ABAJO, así no se
+   come el título del hero) y transform queda en none. NO se usan los dos a la
+   vez: sumados bajaban la card al doble.
+
+   ⚠️ SE USA align-self: end. Sin él, el align-items: center del grid vuelve a
+   centrar el aside ignorando el margen.
+
+   ⚠️ FÓRMULA si hay que re-medir (cambia el alto del mini, el nº de filas del
+   horario, o el tamaño de la placa): medir en el navegador la diferencia de
+   centros de la fila "Lunes" y la placa, y ajustar el margin-top a esa cifra.
+   Medido a 1440px con margen 0: placa centro 654, fila Lunes centro 715.
+   NUNCA se deduce a mano: el dueño ya frenó una vez por un hero desalineado
+   (CR-54j, "queda espacio gigante arriba").
+
+   ⚠️ EN MÓVIL SE ANULA (bloque ≤768px de responsive.css): ahí el grid es una
+   columna y el horario va debajo del texto, sin placa al lado que mirar.
+
+   🔴 HISTORIA DEL BUG, NO REPETIRLO: esta regla estuvo sin aplicar sin que nadie
+   lo notara, porque un comentario anterior tenía una apertura sin cerrar y un
+   cierre de más abajo la dejaba fuera del parseo. Síntoma: el navegador
+   devolvía margin-top: 0px y align-self: auto como si la regla no existiera.
+   AL DEPURAR CSS QUE NO APLICA: verificar PRIMERO que los comentarios estén
+   balanceados (mismas aperturas que cierres). Una apertura huérfana se traga
+   la regla siguiente en silencio.
+   ============================================================================ */
+/* El aside NO se corre: `align-items: center` del grid ya lo centra contra la
+   columna del texto, que es la posicion original y la que el duenio aprobo.
+   ⚠️ NO reponer una bajada con `margin-top` NI con `transform`. Se probaron las
+   dos y las dos empeoran: con `margin-top`, al agrandarse el aside el GRID crece
+   y ARRASTRA la placa del rango consigo (medido: margen 500px -> las dos bajaban
+   a 1527px, diferencia 0 pero todo corrido); con `transform`, la tarjeta se sale
+   del hero y como `.hero` tiene `overflow: hidden`, la ultima fila del horario
+   queda CORTADA.
+   El motivo de fondo es estructural: el aside (572px) es ~200px mas alto que la
+   columna del texto (373px), asi que sus CENTROS no pueden coincidir.
+   → Si algun dia el duenio pide alinearlo, la salida es acortar el contenido del
+   aside, NO correrlo. */
+.hero__grid > aside { align-self: end; }
+
+/* ---------- Mini currículum del director (CR-55) ----------
+   Va ARRIBA del horario, dentro del mismo aside, así que comparte la bajada.
+   El contenido lo pinta `pintarDirector()` desde MUSEO.director.
+   ❌ Si `M.director` no existe, el contenedor queda VACÍO: el `<h3>` del horario
+      queda como primer hijo y el `margin-top` de arriba sobra, pero el layout
+      NO se rompe (el aside sólo baja un poco de más). Es el precio de no
+      duplicar el dato en el HTML, y es preferible a un hueco con texto a medias. */
+/* ============================================================
+   MINI CURRÍCULUM DEL DIRECTOR — arriba del horario (CR-55c, 2026-10-15)
+   El dueño lo pidió así: "que sea una card delgada y ancha, menos texto" y
+   "deberia ser arriba del horario".
+   ------------------------------------------------------------
+   ⚠️ VIVE EN LA COLUMNA DERECHA (dentro del aside del horario), NO a lo ancho de
+   la página. Se intentó la franja ancha (CR-55b) y el dueño la rechazó:
+   "quedo horrible". Por eso acá la card es COMPACTA y su ancho lo da la columna.
+   ⚠️ "DELGADA" = finita de ALTO. El texto es el resumen (el render recorta la
+   institución de cada línea y deja sólo el logro), y va en tipografía chica con
+   interlineado apretado. Sin esto la card volvía a ser alta y se comía el hero.
+   ⚠️ Borde only, SIN fondo propio: hereda el aspecto de la card del horario, que
+   el dueño dejó transparente y sin marco. Lo que la separa del horario es un
+   filete inferior, no una caja distinta: son dos bloques, pero del mismo cuerpo. */
+.hero__director {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+/* Si el JS no corrió o el dato falta, no debe quedar el filete suelto. */
+.hero__director:empty { display: none; padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
+
+/* --- Quién es: retrato + cargo y nombre --- */
+.hero__director-quien {
+  display: flex; align-items: center; flex-wrap: nowrap;
+  gap: 14px; margin-bottom: 14px;
+}
+/* El retrato es un CÍRCULO. Se fija el tamaño acá y no se confía en el
+   width/height del HTML: ese atributo sólo evita el salto de layout mientras
+   carga, pero el tamaño visual lo manda el CSS (si no, la foto sale a 160px). */
+.hero__director-foto {
+  width: 66px; height: 66px; border-radius: 50%;
+  object-fit: cover; flex-shrink: 0;
+  border: 1px solid var(--border-accent);
+  /* Anillo suave en vez de sombra dura: la foto ya tiene su propio contraste y
+     sobre este fondo una sombra marcada la haría parecer un recorte pegado. */
+  box-shadow: 0 0 0 3px rgba(81, 173, 198, .12);
+}
+.hero__director-id { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.hero__director-rol {
+  font-size: .72rem; letter-spacing: .11em; text-transform: uppercase;
+  color: var(--ocre-light);
+}
+/* CR-55d: 17.6 -> 20px. Un nombre de persona es un TÍTULO, y estaba por debajo
+   del h3 de una tarjeta cualquiera. */
+.hero__director-nombre {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.5vw, 1.34rem);
+  line-height: 1.12; letter-spacing: .01em;
+  color: var(--text-main);
+}
+
+/* --- Los datos: una línea por logro ---
+   CR-55d: 12.48 -> 14px. Estaba por DEBAJO del cuerpo del sitio; esa era la
+   causa principal del "parece de celular". El interlineado sube con él para que
+   las cuatro líneas no queden apelmazadas. */
+.hero__director-lista { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+.hero__director-lista li {
+  position: relative; padding-left: 15px;
+  font-size: .875rem; line-height: 1.42; color: var(--text-soft);
+}
+.hero__director-lista li::before {
+  content: ''; position: absolute; left: 0; top: .55em;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--ocre); opacity: .8;
+}
+
+/* --- El enlace --- */
+.hero__director-mas {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: .875rem; font-weight: 600; color: var(--ocre-light);
+  border-bottom: 1px solid var(--border-accent);
+  padding-bottom: 3px;
+  transition: color .25s, border-color .25s, gap .25s;
+}
+.hero__director-mas svg { flex-shrink: 0; transition: transform .25s var(--ease-out-expo); }
+.hero__director-mas:hover { color: var(--text-main); border-color: var(--text-main); gap: 11px; }
+.hero__director-mas:hover svg { transform: translateX(2px); }
+/* CR-54j (2026-10-15) — HISTORIA de la bajada de la card de horario. Ya NO rige:
+   el valor vigente está arriba (CR-55). Se conserva porque explica POR QUÉ se usa
+   `transform` y no `margin` a secas, que es lo que sigue valiendo.
    El dueño lo pidió con sus palabras: "debería estar a la misma altura donde dice:
    Cámbrico → Cuaternario / Períodos en exhibición". Esa placa vive DENTRO del hero,
    en la columna izquierda ([data-rango]).
@@ -24,16 +169,17 @@
    pero no los centros, porque la card mide 277px y la placa 84px). Se reportó como
    "espacio gigante arriba" y "quedó peor". Después se revirtió de más, y el dueño
    aclaró que SÍ quería la bajada ("baja la card como antes").
-   => Lo que funciona, medido: `translateY(97px)`, que es la diferencia exacta
-   entre el centro de la placa (654) y el centro de la card (557) con la card en su
-   alto natural. Se usa `transform` y NO `margin`: `transform` no entra en el
-   cálculo del layout, así que baja la card sin empujar la columna del texto ni
-   cambiar el alto del hero (con `margin` el hero se estiraba y ahí nacía el hueco).
-   ⚠️ Si cambia el contenido de la card (otra fila de horario, otro texto), los
-   97px dejan de ser exactos: re-medir como (centroPlaca − centroCard).
+   => Lo que funcionaba con la card sola: `translateY(-119px)` = centro de la placa
+   (654) − centro de la card (557) en su alto natural. Se usa `transform` y NO
+   `margin` SOLO: `transform` no entra en el cálculo del layout, así que baja el
+   aside sin empujar la columna del texto del hero.
+   ⚠️ CR-55 añade `margin-top` PORQUE hay un motivo nuevo: con el mini currículum
+   el aside crecía hacia ARRIBA y se comía el título del hero. Ver el bloque de
+   arriba. Las dos propiedades conviven y están calculadas juntas.
+   ⚠️ Si cambia el contenido (otra fila de horario, otro texto), los valores dejan
+   de ser exactos: re-medir como (centroPlaca − centroFilaAncla).
    ⚠️ En móvil el grid se vuelve una columna (bloque ≤768px), así que la bajada se
    anula ahí — no aplica. */
-.hero__grid > aside { transform: translateY(179px); }
 
 .hero__lema {
   display: inline-flex; align-items: center; gap: 10px;
@@ -82,7 +228,8 @@
    ("Cambrico -> Cuaternario") se partia en el medio y la flecha quedaba
    colgando. Se paso a grid de 3 columnas iguales y el rango se declara en dos
    lineas.
-/* CR-42 (2026-10-13): quedaron DOS de las tres metricas fuera (el conteo de
+
+   CR-42 (2026-10-13): quedaron DOS de las tres metricas fuera (el conteo de
    piezas, a pedido del dueño, y el aliado institucional por DEC-041). Queda
    UNICA la metrica del rango.
    CR-43 (2026-10-13): el dueño lo reporto: "DEJEMOSLO MAS ESTETICO Y HACERLO
@@ -92,13 +239,28 @@
    para que se lea como una ficha con peso propio y no como texto suelto.
    El grid se conserva con `justify-items: start` (y no `1fr`) para que la placa
    se ajuste a su contenido y no se estire; asi, si el dueño repone metricas,
-   solo hay que devolver las columnas. */
+   solo hay que devolver las columnas.
+
+   🔴 CR-55f — BUG DE PARSEO REPARADO ACÁ (2026-10-15). Este comentario tenía un
+   apertura INTERNA sin cerrar (el de CR-42, en su propia línea), así que el bloque
+   nunca terminaba: el primer cierre que aparecía más abajo cerraba el comentario
+   exterior, y TODO lo que quedaba en el medio —el `.hero__datos` de abajo
+   incluido— quedaba absorbido dentro del comentario y NO se aplicaba.
+   Síntoma que costó la sesión: reglas de MÁS ABAJO en este archivo se
+   comportaban como si no existieran (`margin-top: 0px`, `align-self: auto`),
+   y se persiguió el problema en el HTML, en el orden de `@import` y en el
+   caché del navegador antes de mirar el comentario.
+   ⚠️ REGLA: un comentario CSS NO se anida. Para varios bloques de historia,
+   usar UN solo par de apertura y cierre y separar los hitos con líneas, nunca abrir un
+   apertura dentro de otro. Verificar con:
+     python3: contar cuantas aperturas y cierres hay; deben ser IGUALES.
+   Debe dar 0. */
 .hero__datos {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   justify-items: stretch;
   gap: 34px;
-  margin-top: 4px;
+  margin-top: 0px;
 }
 .hero__dato { display: flex; flex-direction: column; min-width: 0; }
 
@@ -131,7 +293,7 @@
 }
 .hero__dato span {
   font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--text-muted); line-height: 1.35; margin-top: 8px;
+  color: var(--text-muted); line-height: 1.35; margin-top: 0px;
 }
 /* CR-32 (historico): el rango ("Cámbrico → Cuaternario") es el valor mas largo
    del hero, y cuando convivia con otras DOS metricas rompia su columna: medido
@@ -193,12 +355,15 @@
   border: 0;
   border-radius: 0;
 }
-.hero__tarjeta h3 { font-size: 1.05rem; margin-bottom: 6px; color: var(--ocre-light); letter-spacing: .02em; }
-.hero__tarjeta .nota { font-size: .8rem; color: var(--text-muted); margin-bottom: 20px; }
+.hero__tarjeta h3 { font-size: 1.15rem; margin-bottom: 6px; color: var(--ocre-light); letter-spacing: .02em; }
+.hero__tarjeta .nota { font-size: .85rem; color: var(--text-muted); margin-bottom: 20px; }
 .horario { display: flex; flex-direction: column; gap: 12px; }
+/* CR-55d: 14.08 -> 14.9px. El horario es el dato que la gente viene a buscar;
+   no puede ser el texto más chico de la pantalla. Sube junto con el currículum
+   para que la columna derecha entera tenga el mismo peso tipográfico. */
 .horario__fila {
   display: flex; justify-content: space-between; align-items: center; gap: 14px;
-  padding-bottom: 11px; border-bottom: 1px solid var(--border-subtle); font-size: .88rem;
+  padding-bottom: 11px; border-bottom: 1px solid var(--border-subtle); font-size: .93rem;
 }
 .horario__fila:last-child { border-bottom: 0; padding-bottom: 0; }
 .horario__dias { color: var(--text-soft); }

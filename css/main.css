@@ -12,6 +12,10 @@
 @import url("secciones/servicios.css");
 @import url("secciones/visita.css");
 @import url("secciones/footer.css");
+/* CR-55: la subpágina del director (curriculum.html) tiene su propia hoja. Se
+   importa acá, en la cadena única, para que UN solo <link> sirva a las dos
+   páginas — así no hay dos listas de CSS que puedan divergir. */
+@import url("secciones/perfil.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");

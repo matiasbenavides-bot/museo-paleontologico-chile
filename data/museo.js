@@ -152,8 +152,15 @@ const MUSEO = {
     mini: [
       "Diplomado en Paleontología y Patrimonio Paleontológico, Universidad Autónoma de Zacatecas (México).",
       "Diplomado en Diseño y Espacios Expositivos, Universidad Adolfo Ibáñez.",
-      "Más de 30 años de exposiciones y cursos de paleontología en Chile.",
-      "Autor de cuatro libros sobre dinosaurios, megabestias y tiburones fósiles de Chile."
+      "Más de 30 años de exposiciones y cursos de paleontología en Chile."
+      /* CR-55g (2026-10-15): el dueño pidió QUITAR de acá la línea "Autor de
+         cuatro libros..." — textual: "quita lo de autor de 4 libros en el mini
+         curriculum, para hacer espacio".
+         ⇒ Sale del MINI del hero, que es un resumen. NO se pierde el dato: los
+         cuatro libros siguen publicados, con sus títulos, en la subpágina
+         (curriculum.html, desde `libros`). El resumen se acorta, el detalle no.
+         ⚠️ Si se repone, que sea por pedido suyo: la lista del hero tiene que
+         caber junto al horario y cada línea cuenta. */
     ],
 
     /* CURRÍCULUM COMPLETO de la subpágina. Las MISMAS palabras del dueño, con los
@@ -176,7 +183,29 @@ const MUSEO = {
       "Megabestias en Chile y los vertebrados del Cenozoico",
       "Dinosaurios y otros animales prehistóricos en Chile",
       "Tiburones fósiles de Chile y la fauna fósil de Bahía Inglesa"
-    ]
+    ],
+
+    /* CR-55 (2026-10-15): la SUBPÁGINA con el currículum completo.
+       El dueño la pidió textual: "un resumen corto que llegue a una subpagina".
+       ⚠️ Es una RUTA, igual que `arte` en las piezas: vive en el data/ y no
+       escrita a mano en el render, para que el enlace siga a un solo lugar.
+       ⚠️ La subpágina NO trae ninguna frase nueva: repite `completo` y `libros`
+       tal cual, que son las palabras del dueño. El sitio pasa de 1 a 2 páginas. */
+    /* Retrato. Lo mandó el dueño el 2026-10-15 y autorizó publicarlo
+       ("Él la mandó para el sitio: se publica autorizada (igual que el
+       currículum)"). Archivo original: 500x522 px, recortado a CUADRADO
+       centrado (el encuadre se subió 10px porque la cara está alta) y guardado
+       en dos tamaños, porque se usa en dos lugares:
+         -160 : la card del hero (el círculo mide ~72px; 160 da margen para 2x)
+         -520 : la subpágina, donde va más grande
+       ⚠️ NO se sube el original: la foto es de 500px y en la subpágina se vería
+       blanda. Si el dueño consigue una de más resolución, se reemplaza el archivo
+       y listo: la ruta no cambia. */
+    foto: "assets/img/director/director-160.jpg",
+    fotoGrande: "assets/img/director/director-520.jpg",
+
+    /* Destino del enlace "Ver el currículum completo" del mini currículum. */
+    subpagina: "curriculum.html"
   },
 
   /* --- Horarios (CR-41, 2026-10-13) ---

@@ -42,19 +42,17 @@ img, svg, video { max-width: 100%; height: auto; }
   /* El boton que abre el menu (el header lo oculta en escritorio) */
   .menu-toggle { display: block; }
 
-  /* 🔴 CR-54k — LA BAJADA DE LA CARD DE HORARIO SE ANULA EN MÓVIL.
-     En escritorio la card baja 179px para quedar a la altura de la placa
-     "Cámbrico → Cuaternario" (medido: 0px de diferencia de centros).
-     En móvil el grid `hero__grid` se vuelve UNA COLUMNA (`grid-template-columns:
-     1fr`, abajo en este mismo bloque), así que la card ya no tiene una placa al
-     lado que mirar: queda debajo del texto, en su lugar natural.
-     ⚠️ Y el `translateY` seguía aplicándose, con un defecto REAL medido: la card
-     terminaba 123px MÁS ABAJO que el hero, y como `.hero` tiene
-     `overflow: hidden`, la TERCERA fila del horario (Sábados y domingos) quedaba
-     CORTADA — o sea el horario se veía incompleto en celular.
-     => Se anula con `transform: none`. No se toca el `align-self`, que hereda el
-     centrado del grid en columna. */
-  .hero__grid > aside { transform: none; }
+  /* 🔴 CR-54k/CR-55c — EN MÓVIL SE ANULA LA BAJADA DEL HORARIO.
+     En escritorio el aside se corre 179px hacia abajo para alinear la última
+     fila del horario con la placa "Cámbrico → Cuaternario".
+     En móvil el grid `hero__grid` se vuelve UNA COLUMNA, así que el horario ya
+     no tiene una placa al lado que mirar: queda debajo del texto, en su lugar.
+     ⚠️ Con el corrimiento activo se midió un defecto REAL: la card terminaba
+     123px MÁS ABAJO que el hero y, como `.hero` tiene `overflow: hidden`, la
+     TERCERA fila del horario (Sábados y domingos) quedaba CORTADA.
+     => Se anulan las dos propiedades: el `margin-top` (que ahora es el que
+     produce el corrimiento) y el `transform` (por si quedara de antes). */
+  .hero__grid > aside { margin-top: 0; transform: none; }
   /* El menu NO se saca con right:-100% (generaba 27px de scroll lateral.
      Tampoco basta translateX(100%) en un position:fixed: Chrome SIGUE
      contando su area en el scrollWidth del documento (medido: 30px de

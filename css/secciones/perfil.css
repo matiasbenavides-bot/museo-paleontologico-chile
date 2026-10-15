@@ -1,0 +1,154 @@
+/* MPCH — Subpágina del director (curriculum.html)
+   CR-55 (2026-10-15). El sitio pasa de 1 a 2 páginas: la portada y esta ficha.
+   ------------------------------------------------------------
+   ⚠️ Se reusan los tokens de root.css (colores, escala fluida, radios, sombras).
+   No se define ningún color a mano: si cambia la paleta, cambia acá también.
+   ⚠️ La página NO tiene hero: arranca en la ficha, porque es una subpágina de
+   contenido y no una portada. Lo que sí repite es cabecera, fondo y pie, para
+   que no se sienta de otro sitio. */
+
+/* El main necesita aire arriba por la cabecera fija (misma razón que en la
+   portada: `.header` es `position: fixed` y mide ~103px). */
+.perfil { padding-top: clamp(130px, 16vw, 180px); }
+
+/* --- Volver: enlace discreto, arriba de todo --- */
+.perfil__volver {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: .86rem; color: var(--text-soft);
+  margin-bottom: clamp(26px, 4vw, 42px);
+  transition: color .25s, gap .25s;
+}
+.perfil__volver:hover { color: var(--text-main); gap: 13px; }
+.perfil__volver svg { flex-shrink: 0; }
+
+/* --- Encabezado de la ficha ---
+   CR-55e (2026-10-15): el dueño pidió "pon la imagen de un lado y el titulo del
+   otro lado". Antes iban APILADOS (la foto arriba, el nombre abajo), que es lo
+   que hace una ficha de celular.
+   ⇒ Acá van en DOS COLUMNAS: retrato a la izquierda, nombre y cargo a la
+   derecha, alineados por el centro. Es la forma de una ficha de persona en
+   escritorio, y aprovecha el ancho en vez de desperdiciarlo. */
+.perfil__cabeza { margin-bottom: clamp(34px, 5vw, 58px); }
+
+.perfil__encabezado {
+  display: flex; align-items: center;
+  gap: clamp(24px, 3.5vw, 46px);
+  margin-top: 18px;
+}
+/* El retrato: cuadrado con esquinas redondeadas, NO círculo. En la subpágina es
+   el elemento principal de la ficha y un círculo grande recorta el encuadre de
+   una foto que ya es apretada (el original mide 500px). El círculo se reserva
+   para el mini de la card del hero, donde el tamaño es chico. */
+.perfil__foto {
+  width: clamp(120px, 15vw, 176px);
+  height: clamp(120px, 15vw, 176px);
+  object-fit: cover; flex-shrink: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-accent);
+  box-shadow: 0 14px 38px rgba(1, 14, 38, .5);
+}
+/* Si el dato de la foto no viene, el render la saca del DOM y el texto ocupa
+   todo el ancho sin dejar hueco. */
+.perfil__nombre {
+  font-size: var(--fs-h2);
+  line-height: 1.04; letter-spacing: 0;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+/* El cargo va en celeste y en la serif display: mismo tratamiento que el título
+   de sección del Proyecto C.E.C, para que la jerarquía se lea igual en todo el
+   sitio (nombre = blanco, rol = celeste). */
+.perfil__cargo {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.7vw, 1.4rem);
+  line-height: 1.25; letter-spacing: .04em;
+  color: var(--celeste-light);
+}
+
+/* --- Cuerpo: dos columnas (trayectoria / libros) --- */
+.perfil__cuerpo {
+  display: grid; grid-template-columns: 1.35fr .85fr;
+  gap: clamp(30px, 5vw, 62px);
+  align-items: start;
+}
+.perfil__bloque { min-width: 0; }
+.perfil__titulo {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  color: var(--text-main);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* --- Trayectoria: lista con viñeta propia (mismo recurso que el mini del hero,
+   pero acá el texto es más largo, así que la viñeta va alineada arriba) --- */
+.perfil__lista { display: flex; flex-direction: column; gap: 13px; }
+.perfil__lista li {
+  position: relative; padding-left: 20px;
+  font-size: var(--fs-body); line-height: 1.6; color: var(--text-soft);
+}
+.perfil__lista li::before {
+  content: ''; position: absolute; left: 0; top: .6em;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--ocre); opacity: .8;
+}
+
+/* --- Libros: tarjetas, porque son 4 títulos y se leen mejor separados --- */
+.perfil__libros { display: flex; flex-direction: column; gap: 12px; }
+.perfil__libros li {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 15px 17px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--border-accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: .9rem; line-height: 1.45; color: var(--text-soft);
+  transition: border-color .3s, transform .3s var(--ease-out-expo);
+}
+.perfil__libros li:hover {
+  border-left-color: var(--ocre);
+  transform: translateX(3px);
+}
+/* El ícono es el SVG del sitio embebido por el render; se le fija el tamaño
+   porque un SVG inline sin width/height toma 100% del contenedor. */
+.perfil__libro-ico {
+  flex-shrink: 0; width: 17px; height: 17px;
+  color: var(--ocre); margin-top: 1px;
+}
+.perfil__libro-ico svg { width: 100%; height: 100%; display: block; }
+
+/* --- Cierre --- */
+.perfil__cierre {
+  margin-top: clamp(38px, 6vw, 72px);
+  padding: clamp(26px, 4vw, 40px);
+  text-align: center;
+}
+.perfil__cierre p {
+  font-size: var(--fs-body); color: var(--text-soft);
+  margin-bottom: 22px;
+}
+
+/* ============================================================
+   RESPONSIVE — la subpágina tiene su propio bloque
+   ⚠️ Va acá y no en responsive.css: ese archivo está organizado por las
+   secciones de la PORTADA, y mezclar acá una página nueva haría que nadie la
+   encuentre al inventariar los breakpoints.
+   ============================================================ */
+@media (max-width: 900px) {
+  /* Las dos columnas del cuerpo pasan a una: la trayectoria primero (es el
+     contenido), los libros después. */
+  .perfil__cuerpo { grid-template-columns: 1fr; gap: clamp(34px, 7vw, 48px); }
+}
+/* CR-55e: el encabezado SÍ se apila en pantallas chicas — en una columna de
+   390px, foto y título lado a lado dejarían ~200px para un nombre de 20
+   caracteres, que se parte en 3 líneas. Acá el apilado es la decisión correcta,
+   no un descuido. */
+@media (max-width: 620px) {
+  .perfil__encabezado { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .perfil__foto { width: 120px; height: 120px; }
+}
+@media (max-width: 480px) {
+  .perfil__libros li { padding: 13px 14px; font-size: .86rem; }
+  .perfil__lista li { padding-left: 17px; }
+}
