@@ -475,6 +475,31 @@ const PALEOMUNDO = {
          ni cambiar palabras.
      Si el dueño quiere otro texto, se cambia aca y ya. */
   tituloSec: "Proyecto C.E.C",
+  /* --- Logo de la muestra (CR-56, 2026-10-15) ---
+     El dueño entregó el arte de la muestra (Imagen2b.jpg, 1000x400) y pidió
+     sumarlo "como logo arriba de esa seccion".
+
+     🔴 VA TAL CUAL, SIN RECORTE Y SIN PLACA. Palabras del dueño: "va tal cual".
+     Esto es una DECISIÓN EXPLÍCITA y no hay que "mejorarla":
+       - Es JPEG: NO tiene transparencia. Convertirla a PNG para "limpiarla"
+         contradice el pedido y además dejaría un borde duro.
+       - Archivo actual: "Sin título a.jpeg", 864x456 (ratio 1.895), fondo NEGRO
+         parejo — medido: esquinas superiores (0,0,0). Reemplazó a Imagen2b.jpg
+         (1000x400, degradado negro->celeste) por pedido del dueño el mismo día.
+         ⚠️ El nombre de origen NO dice qué contiene ("Sin título a"): si hay que
+         cambiarla otra vez, verificar el tamaño antes de copiar — en esa carpeta
+         hay cuatro archivos anchos que se parecen entre sí.
+     ⚠️ CONSECUENCIA ACEPTADA, y hay que saberla: el fondo de la card es azul
+     marino (--bg-card #0a2a52) y la imagen es NEGRA. Se ven dos tonos distintos,
+     y es lo que el dueño aprobó al decir "va tal cual".
+     NO agregarle placa, borde ni filtro por iniciativa propia.
+     📎 Si algún día pide integrarla, la vía es la MISMA del logo del museo
+     (CR-38: placa de asiento), no un `mix-blend-mode` improvisado. */
+  logo: "assets/img/cec-logo.jpg",
+  /* Texto alternativo del logo. Es DESCRIPTIVO del archivo, no copy nuevo:
+     la sigla ya está en la sección. Si el dueño quiere otro texto, se cambia
+     acá (DEC-005). */
+  logoAlt: "Proyecto C.E.C — Cultura, Educación y Capacitación",
   /* CR-54: el nombre COMPLETO para publicar, con la sigla primero. Se usa como
      bajada bajo el titulo, porque "Proyecto C.E.C" solo no dice de que se trata
      a quien no conoce la sigla. Es el nombre que el dueño confirmo, textual. */

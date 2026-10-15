@@ -87,6 +87,35 @@
    (#51adc6, ratio 7.46) en el final. Los DOS extremos pasan WCAG AA de sobra.
    Se midió, no se estimó. */
 .pm-card__cabeza { text-align: center; margin-bottom: clamp(20px, 2.6vw, 30px); }
+/* ---------- Logo de la muestra (CR-56, 2026-10-15) ----------
+   Va ARRIBA del encabezado, dentro de la card. El dueño pidió "sumar, pero como
+   logo arriba de esa seccion".
+
+   🔴 VA TAL CUAL — palabras del dueño: "va tal cual". Sin recorte, sin placa,
+   sin borde, sin filtro. NO agregar `mix-blend-mode` ni `filter` para "integrar"
+   el fondo: la imagen es una pieza COMPUESTA con degradado de negro a celeste
+   (medido), el pedido fue explícito, y cualquier retoque lo contradice.
+   ⚠️ La consecuencia (dos tonos distintos: café-negro de la imagen contra el azul
+   marino de la card) es ACEPTADA por el dueño. No es un defecto a corregir.
+
+   ⚠️ `aspect-ratio` NO se fija y `object-fit` tampoco: se respeta la proporción
+   real del archivo (1000x400 = 2.5:1). Fijar una caja recortaría el arte, que es
+   exactamente lo que "tal cual" prohíbe.
+   ⚠️ El ancho se acota con `max-width` y se centra: a 1000px de ancho el arte
+   ocupa el 100% de la card de escritorio y se ve como un banner pegado a los
+   bordes. Acotarlo no lo recorta, sólo lo escala proporcionalmente. */
+.pm-card__logo {
+  margin: 0 auto clamp(22px, 3vw, 34px);
+  max-width: min(560px, 100%);
+  /* El arte trae su propio fondo; sin radio propio se ve como un bloque duro.
+     Un radio leve sobre el ARCHIVO (no una placa nueva) es sólo el borde de la
+     caja, no un marco agregado. */
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.pm-card__logo img {
+  display: block; width: 100%; height: auto;
+}
 .pm-card__cabeza .etiqueta { margin-bottom: 14px; }
 .pm-card__titulo {
   font-family: var(--font-display);

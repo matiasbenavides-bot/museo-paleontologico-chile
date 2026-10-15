@@ -13,7 +13,37 @@
 
 /* ---------- 1024px: el layout de 2 columnas se apila ---------- */
 @media (max-width: 1024px) {
-  .hero { min-height: auto; padding: clamp(100px, 14vw, 130px) 0 clamp(56px, 8vw, 80px); }
+  /* 🔴 CR-57b (2026-10-15) — EL TOPE DEL HERO TAMBIÉN SE DERIVA.
+     Defecto medido: este padding era `clamp(100px, 14vw, 130px)` — un valor
+     escrito a mano, calculado cuando el header medía ~100px. El dueño pidió el
+     logo más grande y la barra subió a 125px, así que en celular el título
+     quedó a y=100 contra un header que llega a y=125: **metido 25px dentro de
+     la barra y rozando el logo, que baja hasta y=104**.
+     Síntoma textual del dueño: "notas que el logo roza el titulo?".
+
+     ⚠️ POR QUÉ EN ESCRITORIO NO SE NOTA Y EN CELULAR SÍ: arriba el `.hero`
+     conserva `padding: 140px` y `min-height: 100vh` con el contenido centrado,
+     así que el título queda a ~258px (133px de aire). Acá, en cambio, el
+     `min-height` pasa a `auto` y el padding de 100-130px es TODO el aire que
+     hay: medido 100px de título contra 125px de barra -> solape.
+     ⇒ Con la altura real del header (`--header-h`, la publica el JS en :root)
+     más un respiro propio, el hero se corre solo la próxima vez que el logo
+     cambie de tamaño. Es el MISMO arreglo que el menú móvil (ver el bloque
+     `.nav.abierto`): un solo número vivo, no dos que se desincronizan.
+
+     ⚠️ El respiro es `clamp(20px, 3vw, 40px)` y NO un valor fijo: en pantalla
+     muy angosta conviene menos aire (hay poca altura útil) y en tablet más.
+     ⚠️ El respaldo de `84px` cubre el caso sin JS: el hero queda con su padding
+     de siempre y NUNCA con el título debajo del logo, que es el defecto que se
+     está arreglando. Un `calc()` con variable vacía daría sólo el respiro y
+     devolvería el titulo debajo de la barra — el defecto opuesto y peor.
+     ⚠️ Se CONSERVA el `clamp` viejo como mínimo con `max()`: si la altura real
+     del header fuera menor que antes (por ejemplo, si el dueño encoge el logo),
+     el hero no se aprieta de más. */
+  .hero {
+    min-height: auto;
+    padding: max(clamp(100px, 14vw, 130px), calc(var(--header-h, 84px) + clamp(20px, 3vw, 40px))) 0 clamp(56px, 8vw, 80px);
+  }
   .hero__grid,
   .somos__grid,
   .servicios__grid,
@@ -66,7 +96,32 @@ img, svg, video { max-width: 100%; height: auto; }
     height: 100dvh; width: min(82vw, 320px);
     flex-direction: column;
     align-items: flex-start; justify-content: flex-start;
-    gap: 6px; padding: 100px 30px 40px; z-index: 1050;
+    gap: 6px;
+    /* 🔴 CR-57 (2026-10-15) — EL TOPE DEL MENÚ MÓVIL SE DERIVA, NO SE ESCRIBE.
+       Defecto medido: el padding-top era `100px` FIJO, escrito cuando el header
+       medía ~100px. El dueño pidió el logo más grande y la barra subió a 125px
+       (logo 84 + padding 20+20), pero el padding del nav se quedó en 100.
+       Resultado medido a 390px: el primer enlace («Inicio») caía en y=100 contra
+       un header que llegaba a y=125 -> **25px por debajo, tapado por el logo**.
+       Síntoma con el que lo reportó el dueño: "el logo se ve encima del header".
+
+       => El aire de arriba sale de la ALTURA REAL del header (`--header-h`, la
+       publica el JS en :root) más un respiro propio. Así, la próxima vez que el
+       logo cambie de tamaño, el menú móvil lo sigue SOLO: no hay segundo número
+       que se quede viejo. Es el mismo error de familia que el `100px` del header
+       fijo y el `32px` de la línea de tiempo — un valor medido a mano que
+       sobrevive a su motivo.
+
+       ⚠️ El `+ 14px` es el respiro entre la barra y la primera opción. Sin él, la
+       opción arranca pegada al borde inferior del header y se lee como parte de
+       la barra.
+       ⚠️ El piso de `84px` es el RESPALDO para cuando el JS no corre (o el
+       header no se ha medido todavía): con eso el menú nunca queda debajo del
+       logo, a lo sumo un poco más abajo. Un `calc()` con variable sin definir
+       resolvería a `14px` y el menú se iría DEBAJO del logo — el defecto opuesto
+       y peor. */
+    padding: calc(var(--header-h, 84px) + 14px) 30px 40px;
+    z-index: 1050;
     background: var(--bg-elevated); border-left: 1px solid var(--border-mid);
     box-shadow: var(--shadow-xl);
     overflow-y: auto;

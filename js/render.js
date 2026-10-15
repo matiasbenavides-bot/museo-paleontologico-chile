@@ -381,6 +381,22 @@
        `introSec` es textual suyo. No se agrega prosa del agente (DEC-034). */
     var html = '<div class="pm-card reveal">';
 
+    /* CR-56 (2026-10-15): el LOGO de la muestra, ARRIBA de todo — el dueño pidió
+       "sumar, pero como logo arriba de esa seccion". Va antes del encabezado, no
+       dentro de él: el encabezado está centrado y el logo tiene su propia
+       proporción (1000x400).
+       ⚠️ NO se toca la foto que ya está en la card (p.fotos): esto SUMA. El
+       dueño aclaró "sumar" justamente para no deshacer CR-52, donde pidió que
+       quedara UNA sola foto de la expo.
+       ⚠️ La imagen va tal cual, sin marco ni placa — decisión del dueño.
+       `loading="eager"` NO: va con lazy como el resto de las imágenes del sitio,
+       salvo que su sección esté arriba (no lo está). */
+    if (p.logo) {
+      html += '<figure class="pm-card__logo">' +
+                '<img src="' + esc(p.logo) + '" alt="' + esc(p.logoAlt || p.tituloSec) + '" loading="lazy" decoding="async">' +
+              "</figure>";
+    }
+
     /* Encabezado centrado dentro de la card.
        CR-54 (2026-10-15): el dueño pidió "en el titulo cambia a todo color azul".
        Se emite un <span> propio (`.pm-card__marca`) para poder pintar SOLO el

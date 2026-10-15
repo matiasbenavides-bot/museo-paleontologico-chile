@@ -146,6 +146,37 @@
     function act() { el.classList.toggle("scrolled", window.scrollY > 60); }
     window.addEventListener("scroll", act, { passive: true });
     act();
+    publicarAltoHeader(el);
+  }
+
+  /* CR-57 (2026-10-15) — publica la altura REAL del header en `--header-h`.
+     Motivo, medido: el menu movil reservaba su aire de arriba con un `100px`
+     escrito a mano, que quedo viejo cuando el logo crecio y la barra subio a
+     125px. El primer enlace del menu quedaba 25px por debajo del header, tapado
+     por el logo ("el logo se ve encima del header", textual del dueno).
+     => Con la altura leida del DOM, el menu sigue al header solo.
+
+     ⚠️ Se mide en los DOS estados: el header cambia de padding al scrollear
+     (20px -> 11px al pasar 60px de scroll), asi que la altura NO es constante.
+     Si solo se midiera arriba de todo, al scrollear el menu volveria a quedar
+     desfasado. Se publica el valor del estado en el que se abre el menu:
+     `act()` corre primero y deja la clase puesta, y aca se lee DESPUES.
+     ⚠️ `ResizeObserver` y no solo un evento de scroll: el header tambien cambia
+     de alto si el logo carga tarde o si cambia el ancho de la ventana.
+     ⚠️ Si `ResizeObserver` no existe (navegador viejo), queda el respaldo de
+     `--header-h: 84px` que declara el CSS: el menu sigue usable, solo con menos
+     precision. No se rompe. */
+  function publicarAltoHeader(el) {
+    function medir() {
+      var h = Math.ceil(el.getBoundingClientRect().height);
+      if (h > 0) document.documentElement.style.setProperty("--header-h", h + "px");
+    }
+    medir();
+    if (typeof ResizeObserver !== "undefined") {
+      new ResizeObserver(medir).observe(el);
+    }
+    window.addEventListener("resize", medir, { passive: true });
+    window.addEventListener("orientationchange", function () { setTimeout(medir, 200); });
   }
 
   /* ---------- 7. Aurora reactiva al cursor (hero) ---------- */
