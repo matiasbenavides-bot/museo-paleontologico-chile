@@ -301,10 +301,19 @@
        `introSec` es textual suyo. No se agrega prosa del agente (DEC-034). */
     var html = '<div class="pm-card reveal">';
 
-    /* Encabezado centrado dentro de la card. */
+    /* Encabezado centrado dentro de la card.
+       CR-54 (2026-10-15): el dueño pidió "en el titulo cambia a todo color azul".
+       Se emite un <span> propio (`.pm-card__marca`) para poder pintar SOLO el
+       título con el celeste de la paleta, sin tocar la bajada ni la intro — que
+       siguen en los colores de texto normales. El nombre completo va como bajada
+       porque "Proyecto C.E.C" solo no dice de qué se trata a quien no sabe la
+       sigla, y es el nombre que el dueño confirmó textual. */
     html += '<header class="pm-card__cabeza">' +
               '<span class="etiqueta">Muestra itinerante</span>' +
-              (p.tituloSec ? '<h2 class="pm-card__titulo">' + esc(p.tituloSec) + "</h2>" : "") +
+              (p.tituloSec
+                ? '<h2 class="pm-card__titulo"><span class="pm-card__marca">' + esc(p.tituloSec) + "</span></h2>"
+                : "") +
+              (p.subtituloSec ? '<p class="pm-card__bajada">' + esc(p.subtituloSec) + "</p>" : "") +
               (p.introSec ? '<p class="pm-card__intro">' + esc(p.introSec) + "</p>" : "") +
             "</header>";
 

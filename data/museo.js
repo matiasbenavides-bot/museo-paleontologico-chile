@@ -118,6 +118,67 @@ const MUSEO = {
     ]
   },
 
+  /* --- Dirección del museo (CR-54d, 2026-10-15) ---
+
+     🔴 ESTO LEVANTA UNA RESTRICCIÓN ANTERIOR. LEER ANTES DE REVERTIR.
+
+     DEC-041 (2026-10-13) decía: "No hay autorización para subir datos personales
+     del Museo" — el nombre del Director quedó FUERA del sitio a propósito, y hay
+     un marcador de relleno en QUIENES_SOMOS (`Administracion y curacion`) que lo
+     documenta. NO se borra ese marcador: sigue siendo cierto para esa sección.
+
+     El 2026-10-15 el dueño AUTORIZÓ lo contrario y lo confirmó dos veces:
+       "SI autorizo: el nombre y el curriculum de Juan Castillo Cornejo se
+        publican arriba en el hero"
+       "si, el me dio el consentimiento, un resumen corto que llegue a una
+        subpagina"
+     ⇒ El consentimiento es del propio director ("el me dio el consentimiento"),
+     no solo del dueño del sitio. Es la autorización que faltaba.
+
+     ⚠️ SI UNA SESIÓN FUTURA VE ESTO Y PIENSA QUE CONTRADICE DEC-041: no es un
+     error, es una autorización posterior y explícita. Se registra como DEC-042.
+     ⚠️ El texto NO es redacción del agente en ningún caso: son las MISMAS
+     palabras que el dueño dictó el 2026-10-12 (guardadas en HANDOFF.md), sin
+     agregar ni una frase nueva (regla DEC-034). */
+  director: {
+    /* El nombre va EXACTO como lo dictó el dueño: mayúsculas sostenidas y sin
+       tildes en "CASTILLO CORNEJO" tal cual aparece en su bloque oficial. */
+    nombre: "JUAN CASTILLO CORNEJO",
+    cargo: "Director y Curador del Museo Paleontológico de Chile",
+
+    /* MINI CURRÍCULUM del hero: 4 líneas cortas, pedido textual del dueño
+       ("un resumen corto que llegue a una subpagina"). Es un RESUMEN de lo que
+       él dictó, recortado — no prosa nueva. Los 4 libros van en UNA línea. */
+    mini: [
+      "Diplomado en Paleontología y Patrimonio Paleontológico, Universidad Autónoma de Zacatecas (México).",
+      "Diplomado en Diseño y Espacios Expositivos, Universidad Adolfo Ibáñez.",
+      "Más de 30 años de exposiciones y cursos de paleontología en Chile.",
+      "Autor de cuatro libros sobre dinosaurios, megabestias y tiburones fósiles de Chile."
+    ],
+
+    /* CURRÍCULUM COMPLETO de la subpágina. Las MISMAS palabras del dueño, con los
+       mismos datos que ya estaban guardados en HANDOFF:293-308, SIN agregar nada.
+       ⚠️ Se conservan GRINPACH y CEPCHILE por la regla de 2026-10-12: en la
+       trayectoria de una PERSONA el nombre viejo es HISTORIA, no dato obsoleto,
+       y un currículum no se "actualiza". */
+    completo: [
+      "Diplomado en Paleontología y Patrimonio Paleontológico, Universidad Autónoma de Zacatecas (México).",
+      "Diplomado en Diseño y Espacios Expositivos, Universidad Adolfo Ibáñez.",
+      "Estudios de Ancient Marine Reptile, Universidad de Alberta (Canadá).",
+      "Presidente del Grupo de Investigaciones Paleontológicas de Chile (GRINPACH).",
+      "Profesor asesor del Museo Nacional de Historia Natural en \"Juventudes Científicas de Chile\".",
+      "Paleontólogo en el Museo de Colchagua (Fundación Cardoen).",
+      "Más de 30 años de exposiciones y cursos de paleontología; artículos y ensayos de divulgación; entrevistas en televisión, prensa y revistas.",
+      "Profesor del curso \"Paleontología básica, una introducción al estudio de la vida antigua\"; trabajos en terreno."
+    ],
+    libros: [
+      "Dinosaurios en Chile y los vertebrados del Mesozoico",
+      "Megabestias en Chile y los vertebrados del Cenozoico",
+      "Dinosaurios y otros animales prehistóricos en Chile",
+      "Tiburones fósiles de Chile y la fauna fósil de Bahía Inglesa"
+    ]
+  },
+
   /* --- Horarios (CR-41, 2026-10-13) ---
          CORREGIDOS contra la información oficial que envió el dueño:
            "Horario: de martes a viernes de 11 a 17 horas
@@ -330,11 +391,16 @@ const SERVICIOS = [
        aparecia dos veces en la pagina.
        En su lugar queda un servicio que ENLAZA a la seccion, para que quien
        llegue por "Servicios" la encuentre igual. */
-    titulo: "Exposición escolar itinerante PALEOMUNDO",
-    detalle: "Llevamos la muestra museológica itinerante a los establecimientos educacionales de Santiago, en conjunto con el Centro de Estudios Paleontológicos de Chile. Ver la sección PALEOMUNDO para el detalle de la muestra.",
+    /* CR-54 (2026-10-15): el nombre de la muestra cambió a "Proyecto C.E.C".
+       La tarjeta y su enlace se actualizan junto con la sección: si solo se
+       cambiara la sección, Servicios seguiría mandando a un nombre que ya no
+       existe en la página. El ancla `#paleomundo` NO cambia (ver nota arriba):
+       es la coordenada interna del enlace, no texto visible. */
+    titulo: "Exposición escolar itinerante Proyecto C.E.C",
+    detalle: "Llevamos la muestra museológica itinerante a los establecimientos educacionales de Santiago, en conjunto con el Centro de Estudios Paleontológicos de Chile. Ver la sección Proyecto C.E.C para el detalle de la muestra.",
     icono: "colegio",
     enlace: "#paleomundo",
-    enlaceTexto: "Ver PALEOMUNDO"
+    enlaceTexto: "Ver Proyecto C.E.C"
   }
 ];
 
@@ -342,7 +408,7 @@ const SERVICIOS = [
 const SERVICIOS_NOTA =
   "Este trabajo se realiza a través de la alianza con GeoPaleo Ltda., empresa de geólogos y paleontólogos aprobada por el Consejo de Monumentos Nacionales (CMN) para permisos de prospección y excavación, y para estudios en el marco de las exigencias del SEIA.";
 
-/* --- Detalle de PALEOMUNDO (CR-41, 2026-10-13) ---
+/* --- Detalle de la muestra itinerante (CR-41, 2026-10-13) ---
    Contenido de la muestra, textual del dueño: "la puesta en valor de 25 vitrinas
    conteniendo una interesante y hermosa colección de fósiles, calcos de fósiles
    de vertebrados a escala, corales, minerales, insectos, moluscos y además de una
@@ -351,23 +417,44 @@ const SERVICIOS_NOTA =
    ⚠️ El pendiente guardado decía 20 vitrinas: el dueño CONFIRMÓ 25 el 2026-10-13
    ("si, tiene 25 actualmente"). Manda el 25.
    Vive aparte de SERVICIOS para no saturar la tarjeta; lo pinta el render como
-   bloque de detalle. */
+   bloque de detalle.
+
+   🔴 CR-54 (2026-10-15) — LA MUESTRA SE LLAMA AHORA **PROYECTO C.E.C**.
+     El dueño, textual: "paleomundo se cambia a proyecto C.E.C, proyecto de
+     cultur, educacion y capatizacion". Al pedirle el nombre exacto para publicar
+     (regla de nombres propios: se transcriben como los dicta su dueño) eligió:
+       "Proyecto C.E.C — Cultura, Educación y Capacitación
+        (con la sigla primero, siempre en ese orden)".
+     ⇒ PALEOMUNDO queda SUPERADO como nombre visible. No se usa en el sitio.
+     ⚠️ CEPCHILE SE CONSERVA: el dueño eligió explícitamente que sigue apareciendo
+     donde dice "en conjunto con". Es trayectoria del proyecto, no una dependencia
+     vigente (regla 2026-10-12: "información obsoleta, pero rescatable").
+     ⚠️ La CONSTANTE JS se llamaba `PALEOMUNDO` y `render.js` la lee así
+     (`window.PALEOMUNDO`). Se conserva el nombre de la constante para no tocar el
+     render sin ganar nada; lo que cambia es el TEXTO que el dueño ve. El ancla
+     `#paleomundo` del HTML también se conserva por el mismo motivo (cambiarla
+     obliga a tocar index.html, render y animaciones.js a la vez, y el ancla no
+     se ve en pantalla). */
 const PALEOMUNDO = {
   /* --- Encabezado de la SECCION PROPIA (CR-49) ---
      ⚠️ SIN TITULARES INVENTADOS. El dueño pidio: "no poner titulares, solo las
      imagenes de la expo y cosas de relleno importantes".
      Por eso:
-       - `tituloSec` es el NOMBRE oficial de la muestra, que el mismo dicto
-         ("PALEOMUNDO"): no es una frase del agente.
+       - `tituloSec` es el NOMBRE oficial de la muestra, dictado por el mismo.
+         CR-54: hoy es "Proyecto C.E.C" (antes "PALEOMUNDO").
        - `introSec` es TEXTUAL suyo, copiada de su bloque oficial sin agregar
          ni cambiar palabras.
      Si el dueño quiere otro texto, se cambia aca y ya. */
-  tituloSec: "PALEOMUNDO",
+  tituloSec: "Proyecto C.E.C",
+  /* CR-54: el nombre COMPLETO para publicar, con la sigla primero. Se usa como
+     bajada bajo el titulo, porque "Proyecto C.E.C" solo no dice de que se trata
+     a quien no conoce la sigla. Es el nombre que el dueño confirmo, textual. */
+  subtituloSec: "Cultura, Educación y Capacitación",
   introSec: "Muestra museológica itinerante que el museo lleva, en conjunto con el Centro de Estudios Paleontológicos de Chile, a los establecimientos educacionales de Santiago. Su costo se realiza a través del Museo.",
   /* --- Bloque de contenido: lo que LLEVA la muestra (CR-41) ---
      Titulo e intro abajo son, tambien, redaccion minima de estructura sobre el
      dato del dueño ("la puesta en valor de 25 vitrinas conteniendo..."). */
-  titulo: "Qué lleva PALEOMUNDO",
+  titulo: "Qué lleva el Proyecto C.E.C",
   intro: "La muestra consiste en la puesta en valor de 25 vitrinas con:",
   /* --- Píldoras: los datos duros, para leer de un golpe (CR-50) ---
      ⚠️ Son datos TEXTUALES del dueño, no frases del agente:

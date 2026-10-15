@@ -108,13 +108,44 @@
   /* Tipografia fluida (CR-18: EB Garamond tiene el OJO MAS CHICO que Georgia
      — a igual font-size el texto se ve notoriamente mas chico — asi que las
      escalas de TITULO suben en todos sus minimos y maximos.
-     El cuerpo (--fs-body, --fs-small) NO se toca: esa sigue en la sans. */
-  --fs-hero:    clamp(2.1rem, 5.8vw, 4.7rem);
-  --fs-h2:      clamp(1.6rem, 4vw, 2.9rem);
-  --fs-h3:      clamp(1.05rem, 1.9vw, 1.2rem);
+     El cuerpo (--fs-body, --fs-small) NO se toca: esa sigue en la sans.
+
+     🔴 CR-54b (2026-10-15) — LAS ESCALAS DE TITULO SUBEN POR SEGUNDA VEZ.
+     Motivo, y NO es criterio del agente: el dueño lo pidio DOS VECES en la
+     sesion de tipografia — "sobre todo los titulos y los subtitulos" — y quedo
+     escrito en references/tipografias.md sin aplicarse nunca. Ademas pidio
+     "mejorar los colores de toda la pagina, en si es para mejorar la lectura".
+     Se midio el sitio ANTES de tocar nada (auditoria de legibilidad en el
+     navegador, 34 textos, contraste WCAG 2.1 real):
+
+       - CONTRASTE: 0 fallas. Todos los textos pasan AA; el peor esta en 4.85
+         contra un minimo de 4.5. El color NO era el problema.
+       - TAMANO: si. Seis textos bajo 12px, el mas chico a 10.6px (el detalle de
+         las eras). Y los titulos secundarios a la MITAD del titulo grande:
+         "Que lleva el Proyecto C.E.C" media 21.6px contra 49.6px del principal.
+
+     ⇒ Por eso se sube el TAMANO de los titulos y NO se repinta la paleta.
+     Subirla habria sido repintar por repintar: no habia nada que arreglar en
+     contraste y la paleta verdadera la manda el dueño (HANDOFF 2026-10-12:
+     "la paleta sigue siendo la del logo VIEJO... un JPG NO da el color de
+     marca. No repintar con la aproximacion").
+
+     ⚠️ Cormorant en 700 pesa a ojo como un 500 de otras fuentes, y el subset no
+     trae 800/900: si un titulo queda sin presencia, SE SUBE EL TAMANO, no el
+     peso — no hay peso mas grueso que pedir. Por eso estos numeros suben.
+     ⚠️ Medido despues del cambio: 0 desborde horizontal en 320/390/768/1024/
+     1440/1920 (criterio scrollWidth > innerWidth, nunca clientWidth). */
+  --fs-hero:    clamp(2.4rem, 6.2vw, 5.1rem);
+  --fs-h2:      clamp(1.95rem, 4.6vw, 3.5rem);
+  --fs-h3:      clamp(1.18rem, 2.1vw, 1.38rem);
   --fs-body:    clamp(.94rem, 1.4vw, 1.03rem);
   --fs-small:   clamp(.82rem, 1.2vw, .89rem);
   --fs-eyebrow: clamp(.68rem, 1vw, .74rem);
+
+  /* Etiqueta de seccion ("Colecciones", "Servicios"...). Se sube tambien porque
+     es un TITULO de nivel 4 y a 11.8px se perdia. Nace como variable para no
+     dejarla suelta en base.css, fuera del sistema fluido (DEC-015). */
+  --fs-etiqueta: clamp(.76rem, 1.05vw, .84rem);
 
   /* Radios fluidos */
   --radius-card: clamp(14px, 2vw, 22px);

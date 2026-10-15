@@ -35,15 +35,22 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; font-weight: 7
 /* Etiqueta de sección (eyebrow) */
 .etiqueta {
   display: inline-block; font-family: var(--font-body);
-  font-size: .74rem; font-weight: 700; letter-spacing: .22em;
+  /* CR-54b: .74rem fijo -> variable fluida. A 11.8px medidos era uno de los seis
+     textos mas chicos del sitio, y es un titulo (nivel 4), no un detalle. */
+  font-size: var(--fs-etiqueta); font-weight: 700; letter-spacing: .2em;
   text-transform: uppercase; color: var(--ocre);
   margin-bottom: 14px;
 }
 .etiqueta::before { content: '— '; opacity: .5; }
 
 .seccion { padding: 96px 0; position: relative; }
-.seccion__titulo { font-size: clamp(1.7rem, 3.6vw, 2.6rem); margin-bottom: 16px; }
-.seccion__intro { color: var(--text-soft); max-width: 66ch; font-size: 1.03rem; }
+/* 🔴 CR-54b: ESTOS DOS ESTABAN HARDCODEADOS y por eso subir --fs-h2 no hacia NADA.
+   El h2 de seccion ignoraba la escala fluida de root.css (DEC-015) y tenia su
+   propio clamp escrito a mano, mas chico que el de la variable. Al conectar el
+   sitio a la variable, los cuatro titulos de seccion (Colecciones, Galeria,
+   Servicios, Visitanos) crecen de una sola vez y dejan de poder divergir. */
+.seccion__titulo { font-size: var(--fs-h2); margin-bottom: 16px; }
+.seccion__intro { color: var(--text-soft); max-width: 66ch; font-size: var(--fs-body); }
 
 /* Botones */
 .btn {

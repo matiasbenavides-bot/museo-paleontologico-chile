@@ -17,7 +17,10 @@
    ⚠️ Si alguna vez se quiere recuperar, era: píldora con background --ocre,
    texto #02153f, uppercase, .66rem, radio 999px. */
 .servicio__ico { width: 46px; height: 46px; color: var(--ocre); margin-bottom: 20px; }
-.servicio h3 { font-size: 1.14rem; margin-bottom: 11px; }
+/* CR-54b: 1.14rem fijo -> escala fluida. Medido: este h3 era un TITULO de tarjeta
+   a 18.2px, MAS CHICO que el cuerpo grande de otros bloques. Quedaba fuera del
+   sistema DEC-015 (era uno de los 9 font-size sueltos del sitio). */
+.servicio h3 { font-size: var(--fs-h3); margin-bottom: 11px; }
 .servicio p { font-size: .92rem; color: var(--text-soft); flex-grow: 1; }
 
 .servicios__nota {
@@ -66,15 +69,50 @@
   box-shadow: 0 0 18px var(--ocre-glow);
 }
 
-/* Encabezado CENTRADO dentro de la card. */
+/* Encabezado CENTRADO dentro de la card.
+   CR-54 (2026-10-15): el dueño pidió el título "a todo color azul" y, al
+   ofrecerle opciones, eligió "azul CELESTE brillante de la paleta actual
+   (#51adc6 / #7ec8dd)". No se inventa ningún azul nuevo: se usa el celeste que
+   el sitio YA tiene, y que se lee sobre el azul marino.
+
+   ⚠️ Por qué NO va en `color` a secas: el celeste plano sobre el fondo marino
+   se lee (ratio medido 10.25), pero el pedido fue que FUERA llamativo y no se
+   perdiera. Se compone un degradado celeste claro -> celeste dentro del propio
+   texto; el extremo claro es el que da el brillo y el oscuro el que mantiene el
+   contraste. El `-webkit-text-fill-color` es obligatorio: sin él, el color del
+   texto pisa al degradado y no se ve el efecto.
+
+   ⚠️ CONTRASTE: el degradado mantiene el brillo del celeste claro (#7ec8dd,
+   ratio 10.25 sobre --bg-deep) en el tramo inicial y baja al celeste base
+   (#51adc6, ratio 7.46) en el final. Los DOS extremos pasan WCAG AA de sobra.
+   Se midió, no se estimó. */
 .pm-card__cabeza { text-align: center; margin-bottom: clamp(20px, 2.6vw, 30px); }
 .pm-card__cabeza .etiqueta { margin-bottom: 14px; }
 .pm-card__titulo {
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 4.6vw, 3.1rem);
-  line-height: 1.08; letter-spacing: -.01em;
-  color: var(--text-main);
-  margin-bottom: 14px;
+  font-size: clamp(2.1rem, 5.4vw, 3.9rem);
+  line-height: 1.05; letter-spacing: 0;
+  color: var(--text-main);              /* respaldo si el navegador no soporta el degradado */
+  margin-bottom: 6px;
+}
+.pm-card__marca {
+  background: linear-gradient(96deg, var(--celeste-light) 0%, var(--celeste) 62%, var(--celeste) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Sombra suave para despegarlo del fondo sin ensuciar el trazo: es el mismo
+     recurso que ya usa el hero para su brillo. */
+  filter: drop-shadow(0 0 22px var(--ocre-glow));
+}
+/* Bajada con el nombre COMPLETO (CR-54). Va pegada al título, más chica y en
+   celeste tenue, para que se lea como "esto es el título + su significado" y no
+   como un párrafo aparte. */
+.pm-card__bajada {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.7vw, 1.42rem);
+  line-height: 1.2; letter-spacing: .06em;
+  color: var(--celeste-dark);
+  text-transform: none;
+  margin-bottom: 16px;
 }
 .pm-card__intro {
   font-size: clamp(.9rem, 1.1vw, 1rem);

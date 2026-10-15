@@ -15,6 +15,25 @@
   );
 }
 .hero__grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 60px; align-items: center; }
+/* CR-54j (2026-10-15) — LA CARD DE HORARIO BAJA, alineada con la placa del rango.
+   El dueño lo pidió con sus palabras: "debería estar a la misma altura donde dice:
+   Cámbrico → Cuaternario / Períodos en exhibición". Esa placa vive DENTRO del hero,
+   en la columna izquierda ([data-rango]).
+   ⚠️ Historia de este ajuste, para no repetir el error: primero se intentó con
+   `margin-top` (dejaba aire arriba) y con `align-self: end` (alineaba los bordes
+   pero no los centros, porque la card mide 277px y la placa 84px). Se reportó como
+   "espacio gigante arriba" y "quedó peor". Después se revirtió de más, y el dueño
+   aclaró que SÍ quería la bajada ("baja la card como antes").
+   => Lo que funciona, medido: `translateY(97px)`, que es la diferencia exacta
+   entre el centro de la placa (654) y el centro de la card (557) con la card en su
+   alto natural. Se usa `transform` y NO `margin`: `transform` no entra en el
+   cálculo del layout, así que baja la card sin empujar la columna del texto ni
+   cambiar el alto del hero (con `margin` el hero se estiraba y ahí nacía el hueco).
+   ⚠️ Si cambia el contenido de la card (otra fila de horario, otro texto), los
+   97px dejan de ser exactos: re-medir como (centroPlaca − centroCard).
+   ⚠️ En móvil el grid se vuelve una columna (bloque ≤768px), así que la bajada se
+   anula ahí — no aplica. */
+.hero__grid > aside { transform: translateY(179px); }
 
 .hero__lema {
   display: inline-flex; align-items: center; gap: 10px;
@@ -29,10 +48,22 @@
   font-size: clamp(2.3rem, 6vw, 4.2rem); line-height: 1.06;
   margin-bottom: 22px; letter-spacing: -.02em;
 }
+/* CR-54c (2026-10-15): el dueño pidió "el titulo del header todo blanco en vez
+   de blanco y celeste". El título son DOS nodos: el texto suelto ("Museo
+   Paleontológico", que ya hereda --text-main / blanco) y el <em> con "de Chile",
+   que llevaba un degradado celeste recortado al texto.
+   => Se quita el degradado del <em>, no se toca el <h1>: así las dos partes
+   quedan con el MISMO color heredado y el título se lee como una sola frase.
+   ⚠️ `color: transparent` era OBLIGATORIO para el recorte (`background-clip:
+   text`); si se saca el degradado hay que sacar también el `transparent`, o el
+   texto desaparece. Las tres propiedades del degradado salen juntas.
+   ⚠️ Y el <em> CONSERVA `display: block`: el corte en dos líneas es la
+   maquetación actual del hero, no un efecto de color. */
 .hero__titulo em {
   font-style: normal; display: block;
-  background: linear-gradient(120deg, var(--ocre-light), var(--ocre), var(--ocre-dark));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: inherit;               /* hereda el blanco del <h1>: "todo blanco" */
+  background: none;
+  -webkit-text-fill-color: currentColor;
 }
 .hero__desc { font-size: 1.09rem; color: var(--text-soft); max-width: 56ch; margin-bottom: 34px; }
 /* CR-46 (2026-10-13): el eslogan son DOS TEXTOS SEPARADOS (pedido del dueño),
@@ -128,8 +159,40 @@
   .hero__dato[data-rango] { padding: 14px 20px 13px 24px; }
 }
 
-/* Tarjeta lateral: horario vivo */
-.hero__tarjeta { padding: 34px 30px; position: relative; }
+/* Tarjeta lateral: horario vivo
+   CR-54e (2026-10-15): el dueño pidió dos cosas juntas y relacionadas:
+     "hacer la card de horario transparente y mas abajito, ya que arriba habra
+      un mini curriculum del jefe director del proyecto".
+   O sea: el mini currículum ocupa la parte alta de la columna derecha, así que
+   el horario cede su sitio y baja.
+
+   ⚠️ TRANSPARENTE: la card venía con `.glass` desde el HTML (fondo
+     --bg-glass + blur). Acá se NEUTRALIZA ese fondo en vez de quitar la clase
+     del HTML: la clase `.glass` la comparten otras tarjetas del sitio y sacarla
+     del elemento obligaría a tocar el markup sin ganar nada. El alfa baja a 0
+     (transparente de verdad, deja ver el fondo de ammonites) y el blur se
+     apaga, porque un blur sin fondo no aporta y sí cuesta rendimiento.
+   ⚠️ SE CONSERVA EL BORDE y las esquinas redondeadas: sin nada, el horario
+     flotaría como texto suelto y dejaría de leerse como una ficha. Lo que se
+     quitó es el RELLENO, no el contorno. */
+.hero__tarjeta {
+  padding: 34px 30px; position: relative;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  /* CR-54l (2026-10-15): el dueño pidió "quita el marco de horario". Se quita el
+     borde Y las esquinas redondeadas, que venían de `.glass` (la clase del HTML).
+     ⚠️ Se quitan los TRES: `border` y `border-radius`. Dejar el `border-radius`
+     sin borde no se nota —hasta que alguien mire de cerca el fondo de ammonites,
+     que quedaría recortado en esquinas invisibles—, así que van juntos.
+     ⚠️ Y se conserva el `padding`: el aire interior no es adorno, es lo que
+     separa el título del horario del texto de la columna vecina. Sin padding el
+     contenido se pegaría al borde de la columna.
+     => La card queda como TEXTO SOBRE EL FONDO: sin caja, sin marco, sin relleno.
+     Es coherente con lo que pidió antes ("transparente"). */
+  border: 0;
+  border-radius: 0;
+}
 .hero__tarjeta h3 { font-size: 1.05rem; margin-bottom: 6px; color: var(--ocre-light); letter-spacing: .02em; }
 .hero__tarjeta .nota { font-size: .8rem; color: var(--text-muted); margin-bottom: 20px; }
 .horario { display: flex; flex-direction: column; gap: 12px; }
