@@ -53,21 +53,20 @@
    ============================================================ */
 .pm-card {
   position: relative;
+  /* CR-56c (2026-10-15): LA CAJA SE ELIMINÓ. Tenía background, border,
+     border-radius, backdrop-filter y box-shadow. El dueño reportó que el
+     gradiente "se ve cortado" y la causa era esto: cualquier gradiente dentro de
+     una caja con `border-radius` + `overflow: hidden` termina cortado por las
+     esquinas. Su decisión fue "que no sea card, sino que agarre la página
+     completa". El gradiente y el filo de acento viven ahora en `.paleomundo-sec`.
+     ⚠️ Se conserva el nombre `.pm-card` (lo emite render.js) y el `padding`: el
+     aire interior es maquetación, no caja.
+     ⚠️ NO reponer background/border-radius acá: vuelve el corte. Si alguna vez se
+     quiere una caja de vuelta, el gradiente tiene que salir del interior. */
   padding: clamp(26px, 3.2vw, 44px);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(160deg, rgba(81,173,198,.08), var(--bg-glass) 55%);
-  border: 1px solid var(--border-accent);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  box-shadow: var(--shadow-xl);
-  overflow: hidden;
 }
-/* Filo de acento arriba: marca la card como pieza destacada. */
-.pm-card::before {
-  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: min(260px, 46%); height: 2px; border-radius: 2px;
-  background: linear-gradient(90deg, transparent, var(--ocre), transparent);
-  box-shadow: 0 0 18px var(--ocre-glow);
-}
+/* CR-56c: el filo de acento se movió a `.paleomundo-sec::before`. Acá NO se
+   repite, para no dejar dos brillos superpuestos. */
 
 /* Encabezado CENTRADO dentro de la card.
    CR-54 (2026-10-15): el dueño pidió el título "a todo color azul" y, al
@@ -91,30 +90,33 @@
    Va ARRIBA del encabezado, dentro de la card. El dueño pidió "sumar, pero como
    logo arriba de esa seccion".
 
-   🔴 VA TAL CUAL — palabras del dueño: "va tal cual". Sin recorte, sin placa,
-   sin borde, sin filtro. NO agregar `mix-blend-mode` ni `filter` para "integrar"
-   el fondo: la imagen es una pieza COMPUESTA con degradado de negro a celeste
-   (medido), el pedido fue explícito, y cualquier retoque lo contradice.
-   ⚠️ La consecuencia (dos tonos distintos: café-negro de la imagen contra el azul
-   marino de la card) es ACEPTADA por el dueño. No es un defecto a corregir.
-
-   ⚠️ `aspect-ratio` NO se fija y `object-fit` tampoco: se respeta la proporción
-   real del archivo (1000x400 = 2.5:1). Fijar una caja recortaría el arte, que es
-   exactamente lo que "tal cual" prohíbe.
-   ⚠️ El ancho se acota con `max-width` y se centra: a 1000px de ancho el arte
-   ocupa el 100% de la card de escritorio y se ve como un banner pegado a los
-   bordes. Acotarlo no lo recorta, sólo lo escala proporcionalmente. */
+   🔴 CR-56c: EL GRADIENTE VIVE EN LA SECCIÓN, NO ACÁ.
+   El dueño pidió el gradiente "negro a azul para que la imagen combine con el
+   fondo", se puso en una banda dentro de la card, y lo reportó: **"se ve cortado"**.
+   Tenía razón: la card tenía `border-radius` + `overflow: hidden`, así que el
+   gradiente moría en las esquinas. Su decisión fue **"que no sea card, sino que
+   agarre la página completa en sí"**.
+   ⇒ La caja y la banda se eliminaron; el gradiente está en `.paleomundo-sec`, que
+   es full-bleed (borde a borde de la ventana, sin radio, sin recorte).
+   Acá queda sólo la maquetación del logo.
+   ⚠️ NO reponer un `background` en este selector: vuelve el corte.
+   📎 El cómo y el porqué del PNG con transparencia, en `data/museo.js`. */
 .pm-card__logo {
-  margin: 0 auto clamp(22px, 3vw, 34px);
-  max-width: min(560px, 100%);
-  /* El arte trae su propio fondo; sin radio propio se ve como un bloque duro.
-     Un radio leve sobre el ARCHIVO (no una placa nueva) es sólo el borde de la
-     caja, no un marco agregado. */
-  border-radius: var(--radius-md);
-  overflow: hidden;
+  position: relative;
+  /* CR-56c: la banda propia SE ELIMINÓ junto con la caja de la card. Ahora el
+     gradiente lo lleva la SECCIÓN completa (`.paleomundo-sec`), de borde a borde
+     de la ventana, así que acá NO hay nada que recortar ni que fundir.
+     ⚠️ NO reponer un `background` acá: vuelve el corte en las esquinas y el
+     gradiente se ve como una banda pegada dentro de la sección.
+     Se conserva sólo la maquetación: el aire de arriba y la separación de abajo. */
+  margin: 0 0 clamp(22px, 3vw, 34px);
+  padding: clamp(10px, 2vw, 22px) 0 clamp(8px, 1.6vw, 16px);
 }
 .pm-card__logo img {
-  display: block; width: 100%; height: auto;
+  display: block; height: auto;
+  /* Acotado y centrado: el arte mide 864x456 y a ancho completo de la card se
+     vería como un banner pegado a los bordes. Acotar NO recorta, sólo escala. */
+  width: 100%; max-width: min(560px, 100%); margin: 0 auto;
 }
 .pm-card__cabeza .etiqueta { margin-bottom: 14px; }
 .pm-card__titulo {
@@ -239,15 +241,66 @@
 /* Nota de la fila de horario (ej. "Horario de verano") */
 .horario__nota { color: var(--text-muted); font-size: .82em; }
 
-/* --- Sección que aloja la card ---
-   CR-53: la card ya trae su propio padding, así que la sección vuelve a un
-   padding normal (antes se había apretado cuando el encabezado iba suelto). */
+/* --- Sección que aloja el contenido de Proyecto C.E.C ---
+   🔴 CR-56c (2026-10-15) — LA SECCIÓN ES LA SUPERFICIE, YA NO HAY CARD.
+   Recorrido del pedido, porque acá se corrigió dos veces:
+     1. El dueño pidió el logo "arriba de esa sección" -> era un bloque dentro de
+        la card.
+     2. Después: "gradiente negro a azul para que combine con el fondo" -> se le
+        puso una banda con gradiente DENTRO de la card.
+     3. Y ahí lo reportó: **"se ve cortado"**. Tenía razón y la causa es
+        estructural: la card tiene `border-radius` y `overflow: hidden`, así que
+        CUALQUIER gradiente que viva dentro termina cortado por las esquinas. No
+        es un problema de ajustar el valor: es la card.
+     4. Su decisión: **"o mejor, que no sea card, sino que agarre la página
+        completa en sí"**.
+   ⇒ Se eliminó la CAJA de la card y el gradiente pasó a la SECCIÓN, que es
+   full-bleed: de borde a borde de la ventana, sin radio y sin recorte. Al no
+   haber caja, no hay nada que se corte.
+
+   ⚠️ EL GRADIENTE VA EN LA SECCIÓN, que ocupa el ancho completo. La sección es
+   hermana de `<hr class="separador">`, así que al pintarla se funde con el fondo
+   de la página en sus dos extremos (`transparent` arriba y abajo) igual que el
+   tinte celeste que ya tenía: eso evita que aparezca una franja con bordes duros
+   entre secciones.
+
+   ⚠️ QUÉ SE CONSERVA Y QUÉ SE VA:
+   - SE VA: el `background` de la card, su `border`, su `border-radius`, su
+     `backdrop-filter` y su `box-shadow`. Todo eso ES la caja; sin caja no aplica.
+   - SE CONSERVA: el `padding` (aire interior), el filo de acento de arriba
+     (`.pm-card::before`) porque es una marca de "pieza destacada" y funciona igual
+     sin caja, y la clase `.pm-card` en el HTML/render — renombrarla obligaría a
+     tocar render.js sin ganar nada visible.
+   - ⚠️ `overflow: hidden` TAMBIÉN SE VA: era lo que recortaba, y al no haber
+     radio no hace falta para contener nada.
+
+   ⚠️ CONTRASTE: el contenido de la card (títulos, píldoras, lista) estaba sobre
+   `--bg-glass`. Ahora queda sobre el gradiente oscuro. Se midió igual que siempre
+   (el peor texto del sitio está en 4.85 contra mínimo 4.5): el tramo del texto va
+   sobre `#02102c`–`#0a2a52`, más oscuro que antes, así que el contraste SUBE. */
 .paleomundo-sec {
   position: relative;
-  background: linear-gradient(180deg, transparent, rgba(81,173,198,.055), transparent);
+  /* De negro (arriba, donde vive el logo) al azul profundo del sitio, y de vuelta
+     a transparente en los dos extremos para fundirse con las secciones vecinas.
+     38% es donde el gradiente ya llegó al azul: de ahí para abajo es plano, así
+     el contenido largo no queda sobre una pendiente. */
+  background: linear-gradient(180deg,
+    transparent 0,
+    #000 4%,
+    #02102c 22%,
+    var(--bg-base) 42%,
+    #02102c 74%,
+    transparent 100%);
 }
-/* CR-53: el filo de acento se movió a la card (.pm-card::before). Acá NO se
-   repite, para no dejar dos brillos superpuestos. */
+/* El filo de acento sube a la SECCIÓN: era el de la card y ahí marcaba la pieza
+   destacada. Sin caja sigue haciendo falta, y ahora va al ancho del contenido
+   (no de la ventana) para no cruzar toda la pantalla. */
+.paleomundo-sec::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(260px, 46%); height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--ocre), transparent);
+  box-shadow: 0 0 18px var(--ocre-glow);
+}
 
 /* CR-49: enlace dentro de una tarjeta de servicio (la de la itinerante apunta
    a la sección propia PALEOMUNDO). Se ve como acción secundaria, al pie. */

@@ -479,23 +479,34 @@ const PALEOMUNDO = {
      El dueño entregó el arte de la muestra (Imagen2b.jpg, 1000x400) y pidió
      sumarlo "como logo arriba de esa seccion".
 
-     🔴 VA TAL CUAL, SIN RECORTE Y SIN PLACA. Palabras del dueño: "va tal cual".
-     Esto es una DECISIÓN EXPLÍCITA y no hay que "mejorarla":
-       - Es JPEG: NO tiene transparencia. Convertirla a PNG para "limpiarla"
-         contradice el pedido y además dejaría un borde duro.
-       - Archivo actual: "Sin título a.jpeg", 864x456 (ratio 1.895), fondo NEGRO
-         parejo — medido: esquinas superiores (0,0,0). Reemplazó a Imagen2b.jpg
-         (1000x400, degradado negro->celeste) por pedido del dueño el mismo día.
-         ⚠️ El nombre de origen NO dice qué contiene ("Sin título a"): si hay que
-         cambiarla otra vez, verificar el tamaño antes de copiar — en esa carpeta
-         hay cuatro archivos anchos que se parecen entre sí.
-     ⚠️ CONSECUENCIA ACEPTADA, y hay que saberla: el fondo de la card es azul
-     marino (--bg-card #0a2a52) y la imagen es NEGRA. Se ven dos tonos distintos,
-     y es lo que el dueño aprobó al decir "va tal cual".
-     NO agregarle placa, borde ni filtro por iniciativa propia.
-     📎 Si algún día pide integrarla, la vía es la MISMA del logo del museo
-     (CR-38: placa de asiento), no un `mix-blend-mode` improvisado. */
-  logo: "assets/img/cec-logo.jpg",
+     🔴 CR-56b (2026-10-15) — LA IMAGEN SE CONVIRTIÓ A PNG CON TRANSPARENCIA.
+     El dueño pidió primero "va tal cual" (JPEG, fondo negro) y después pidió
+     "hacer el proyecto CEC con gradiente negro a azul para que la imagen combine
+     con el fondo". Esas dos cosas son incompatibles: un JPEG no tiene
+     transparencia, así que el negro era PINTURA, no vacío, y ningún gradiente
+     detrás lo atraviesa. Con el gradiente puesto, el 84% negro de la imagen
+     habría seguido siendo un rectángulo negro sobre fondo azul — PEOR que antes.
+     ⇒ Autorizado por el dueño ("hazla"), se generó `cec-logo.png` con alfa.
+
+     CÓMO (y por qué así, no recortando el negro):
+     El arte es trazo CLARO sobre negro puro, así que la LUMINANCIA es la
+     cobertura de tinta (alfa). Pero recortar el negro a secas deja HALO: medido,
+     los píxeles de borde tenían luminancia 20 contra 163 del trazo sólido, o sea
+     un filo oscuro sucio que se ve sobre azul. La causa es el ruido de JPEG.
+     ⇒ Se DESCUENTA el fondo (unpremultiply):  observado = color·alfa + negro·(1−alfa)
+        con negro = 0  =>  color = observado / alfa.   Es el caso simple.
+     Medido después: la luminancia del borde pasó de **20 a 233** (toma el color
+     del trazo) y hay **0 píxeles oscuros con alfa alto**. Sin halo.
+
+     ⚠️ EL JPG ORIGINAL SE CONSERVA en `assets/img/cec-logo.jpg`: no se borra, es
+     el archivo que entregó el dueño. Si hay que volver atrás, se revierte esta
+     línea y ya. Regla del proyecto: desactivar reversible > borrar.
+     ⚠️ Peso: el PNG pesa 215 KB (el JPEG 52 KB). No se reduce a 560px porque la
+     card lo muestra a 560px CSS y en pantalla retina eso necesita el doble:
+     bajarlo a 560px reales lo haría ver blando en un celular moderno.
+     ⚠️ Si algún día hay que aligerarlo, la vía es `pngquant`/paleta, NO volver al
+     JPEG: volver al JPEG devuelve el fondo negro y rompe el gradiente. */
+  logo: "assets/img/cec-logo.png",
   /* Texto alternativo del logo. Es DESCRIPTIVO del archivo, no copy nuevo:
      la sigla ya está en la sección. Si el dueño quiere otro texto, se cambia
      acá (DEC-005). */
