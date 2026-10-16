@@ -41,8 +41,8 @@
      - "las 25 vitrinas" pasa de <ul> a TARJETAS con ícono: se ve como muestra,
        no como texto corrido
    ============================================================ */
-.paleomundo:empty { display: none; }
-.paleomundo { margin-top: 8px; }
+.cec-muestra:empty { display: none; }
+.cec-muestra { margin-top: 8px; }
 
 /* ============================================================
    CR-53 — La sección entera es UNA card, con el título centrado
@@ -173,7 +173,7 @@
 }
 
 /* --- Mural de fotos (dentro de la card) --- */
-.paleomundo__fotos--destaque {
+.cec-muestra__fotos--destaque {
   margin: 0 auto clamp(20px, 2.4vw, 28px);
   display: grid; gap: 0;
   border-radius: var(--radius-md);
@@ -185,7 +185,7 @@
      (medido: 216px a cada lado). `max-content` lo ciñe al contenido. */
   width: max-content; max-width: 100%;
 }
-.paleomundo__fotos--destaque .galeria__foto {
+.cec-muestra__fotos--destaque .galeria__foto {
   border: 0; border-radius: 0; box-shadow: none;
 }
 /* Alto ACOTADO: la foto acompaña, no se come la pantalla.
@@ -203,13 +203,13 @@
      una foto cuadrada a ancho completo con tope de 324px quedaba recortada a
      2:1 (666x324) y se veia APLASTADA. El tope existe para que la foto no se
      coma la pantalla, y a pantalla chica el ancho ya la contiene sola. */
-.paleomundo__fotos--destaque .galeria__foto {
+.cec-muestra__fotos--destaque .galeria__foto {
   overflow: hidden;
 }
 @media (max-width: 899px) {
-  .paleomundo__fotos--destaque .galeria__foto img { max-height: 62vh; }
+  .cec-muestra__fotos--destaque .galeria__foto img { max-height: 62vh; }
 }
-.paleomundo__fotos--destaque .galeria__foto img {
+.cec-muestra__fotos--destaque .galeria__foto img {
   width: 100%; height: 100%;
   object-fit: cover; object-position: center;
   aspect-ratio: auto;
@@ -221,22 +221,22 @@
    quedaba 322px más angosta que todos los demás bloques, y eso se veía
    desprolijo. */
 @media (min-width: 700px) {
-  .paleomundo__fotos--destaque { grid-template-columns: repeat(2, 1fr); }
-  .paleomundo__fotos--destaque .galeria__foto + .galeria__foto {
+  .cec-muestra__fotos--destaque { grid-template-columns: repeat(2, 1fr); }
+  .cec-muestra__fotos--destaque .galeria__foto + .galeria__foto {
     border-left: 1px solid var(--border-accent);
   }
-  .paleomundo__fotos--destaque:has(.galeria__foto:only-child) {
+  .cec-muestra__fotos--destaque:has(.galeria__foto:only-child) {
     grid-template-columns: minmax(0, 1fr);
     width: 100%;
   }
-  .paleomundo__fotos--destaque .galeria__foto:only-child { max-width: none; }
+  .cec-muestra__fotos--destaque .galeria__foto:only-child { max-width: none; }
 }
 
 /* --- Enlace a la subpágina del Proyecto C.E.C (CR-62c) ---
    Se emite fuera de las columnas, debajo. Centrado en móvil (donde todo va
    apilado y centrado) y alineado a la izquierda en escritorio, para que
    coincida con el borde de las columnas de arriba. */
-.paleomundo__enlace { margin-top: clamp(20px, 2.6vw, 30px); text-align: center; }
+.cec-muestra__enlace { margin-top: clamp(20px, 2.6vw, 30px); text-align: center; }
 .pm-mas {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 12px 22px; border-radius: 999px;
@@ -253,7 +253,7 @@
 }
 .pm-mas svg { flex: none; transition: transform .3s var(--ease-out-expo); }
 .pm-mas:hover svg { transform: translateX(3px); }
-@media (min-width: 900px) { .paleomundo__enlace { text-align: left; } }
+@media (min-width: 900px) { .cec-muestra__enlace { text-align: left; } }
 
 /* --- Píldoras de datos ---
    Centradas, para que acompañen al encabezado centrado. */
@@ -291,17 +291,17 @@
   }
   .pm-card__logo   { grid-area: logo; }
   .pm-card__cabeza { grid-area: cabeza; }
-  .paleomundo__fotos { grid-area: fotos; margin-bottom: clamp(16px, 2vw, 22px); }
-  .paleomundo__datos { grid-area: datos; margin-bottom: 0; justify-content: flex-start; }
-  .paleomundo__caja  { grid-area: caja; align-self: start; }
-  .paleomundo__enlace { grid-area: enlace; }
+  .cec-muestra__fotos { grid-area: fotos; margin-bottom: clamp(16px, 2vw, 22px); }
+  .cec-muestra__datos { grid-area: datos; margin-bottom: 0; justify-content: flex-start; }
+  .cec-muestra__caja  { grid-area: caja; align-self: start; }
+  .cec-muestra__enlace { grid-area: enlace; }
 
   /* La foto ocupa todo el ancho de SU columna y llena el alto que le da la
      caja de al lado (`align-self: stretch`), así las dos columnas terminan
      parejas en vez de dejar un hueco. */
-  .paleomundo__fotos--destaque { align-self: stretch; }
-  .paleomundo__fotos--destaque .galeria__foto { max-height: none; height: 100%; }
-  .paleomundo__fotos--destaque .galeria__foto img { height: 100%; min-height: 260px; }
+  .cec-muestra__fotos--destaque { align-self: stretch; }
+  .cec-muestra__fotos--destaque .galeria__foto { max-height: none; height: 100%; }
+  .cec-muestra__fotos--destaque .galeria__foto img { height: 100%; min-height: 260px; }
 }
 /* --- Datos duros de la muestra ---
    🔴 CR-62d (2026-10-15): el dueño reportó que "se ven mal las mini card" y pidió
@@ -320,7 +320,7 @@
      PALEOMUNDO.datos (data/museo.js), que es la fuente única (DEC-005).
    ⚠️ La clase `.paleomundo__pildora` se CONSERVA porque la emite render.js. Si
      algún día se renombra, hay que tocar los dos lados. */
-.paleomundo__datos {
+.cec-muestra__datos {
   display: grid; gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 158px), 1fr));
   align-items: stretch;
@@ -338,7 +338,7 @@
      resto del sitio, donde las cajas de dato son `--bg-glass`.
    ⚠️ Si el gradiente de la sección cambiara a un tono MAS CLARO en esa zona,
      hay que volver a medir: el contraste depende de lo que pase por detrás. */
-.paleomundo__pildora {
+.cec-muestra__pildora {
   display: flex; flex-direction: column; gap: 7px;
   padding: 14px 15px;
   border-radius: var(--radius-md);
@@ -355,13 +355,13 @@
   height: clamp(126px, 15.5vh, 152px);
   justify-content: space-between;
 }
-.paleomundo__pildora:hover {
+.cec-muestra__pildora:hover {
   border-color: var(--border-accent); box-shadow: var(--shadow-md);
   background: rgba(255, 255, 255, .06);
 }
-.paleomundo__pildora svg { width: 19px; height: 19px; color: var(--ocre); flex-shrink: 0; }
+.cec-muestra__pildora svg { width: 19px; height: 19px; color: var(--ocre); flex-shrink: 0; }
 /* El valor manda: es el dato que el dueño quiere que se lea de un golpe. */
-.paleomundo__pildora b {
+.cec-muestra__pildora b {
   display: block;
   font-family: var(--font-display);
   font-size: clamp(1.28rem, 2vw, 1.62rem);
@@ -378,7 +378,7 @@
 /* --- Tarjetas de las vitrinas ---
    CR-50c: padding y aire reducidos. La caja ya no es un panel alto: se aprieta
    para que la sección entera quepa mejor. */
-.paleomundo__caja {
+.cec-muestra__caja {
   padding: clamp(20px, 2.4vw, 30px);
   border-radius: var(--radius-lg);
   background: linear-gradient(150deg, rgba(81,173,198,.07), var(--bg-glass) 55%);
@@ -386,18 +386,18 @@
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   box-shadow: var(--shadow-xl);
 }
-.paleomundo__caja h3 {
+.cec-muestra__caja h3 {
   font-family: var(--font-display);
   font-size: clamp(1.1rem, 1.7vw, 1.35rem);
   color: var(--ocre-light); margin-bottom: 6px; letter-spacing: .01em;
 }
-.paleomundo__caja > p { font-size: .89rem; color: var(--text-soft); margin-bottom: 18px; max-width: 62ch; }
+.cec-muestra__caja > p { font-size: .89rem; color: var(--text-soft); margin-bottom: 18px; max-width: 62ch; }
 
-.paleomundo__lista {
+.cec-muestra__lista {
   list-style: none; display: grid; gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
 }
-.paleomundo__lista li {
+.cec-muestra__lista li {
   position: relative; padding: 12px 14px 12px 40px;
   border-radius: var(--radius-md);
   background: rgba(2, 21, 63, .38);
@@ -405,8 +405,8 @@
   font-size: .84rem; color: var(--text-soft); line-height: 1.45;
   transition: border-color .3s, transform .3s var(--ease-out-expo);
 }
-.paleomundo__lista li:hover { border-color: var(--border-accent); transform: translateY(-3px); }
-.paleomundo__lista li::before {
+.cec-muestra__lista li:hover { border-color: var(--border-accent); transform: translateY(-3px); }
+.cec-muestra__lista li::before {
   content: ""; position: absolute; left: 17px; top: 17px;
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--ocre); box-shadow: 0 0 10px var(--ocre-glow);
@@ -452,7 +452,7 @@
    `--bg-glass`. Ahora queda sobre el gradiente oscuro. Se midió igual que siempre
    (el peor texto del sitio está en 4.85 contra mínimo 4.5): el tramo del texto va
    sobre `#02102c`–`#0a2a52`, más oscuro que antes, así que el contraste SUBE. */
-.paleomundo-sec {
+.cec-sec {
   position: relative;
   /* De negro (arriba, donde vive el logo) al azul profundo del sitio, y de vuelta
      a transparente en los dos extremos para fundirse con las secciones vecinas.
@@ -534,7 +534,7 @@
 /* El filo de acento sube a la SECCIÓN: era el de la card y ahí marcaba la pieza
    destacada. Sin caja sigue haciendo falta, y ahora va al ancho del contenido
    (no de la ventana) para no cruzar toda la pantalla. */
-.paleomundo-sec::before {
+.cec-sec::before {
   content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
   width: min(260px, 46%); height: 2px; border-radius: 2px;
   background: linear-gradient(90deg, transparent, var(--ocre), transparent);

@@ -69,10 +69,14 @@
       <a href="#somos">Quiénes somos</a>
       <a href="#colecciones">Colecciones</a>
       <!-- CR-54 (2026-10-15): la muestra se llama Proyecto C.E.C (antes PALEOMUNDO).
-           El ancla `#paleomundo` NO cambia: es la coordenada interna, no texto
-           visible, y renombrarla obligaría a tocar index.html, render.js y
-           animaciones.js a la vez sin ganar nada. -->
-      <a href="#paleomundo">Proyecto C.E.C</a>
+           CR-66 (2026-10-16): el ancla SÍ se cambió, de `#paleomundo` a `#cec`.
+           Antes decía acá que «NO cambia» — y era falso: el ancla ES una URL
+           pública, la que aparece en la barra del navegador y en cada enlace
+           compartido. El nombre viejo se retiró por DERECHOS DE AUTOR, así que
+           dejarlo vivo en la URL era exactamente el riesgo que se quería evitar.
+           ⚠️ Los enlaces YA COMPARTIDOS siguen funcionando: al final de la
+           sección `#cec` hay un `<span id="paleomundo">` de compatibilidad. -->
+      <a href="#cec">Proyecto C.E.C</a>
       <a href="#galeria">Galería</a>
       <a href="#servicios">Servicios</a>
       <a href="#visita">Visítanos</a>
@@ -249,14 +253,26 @@
        dueño: nada redactado por el agente (regla DEC-034). Sin titulares
        inventados — pedido explícito: "no poner titulares, solo las imagenes de
        la expo y cosas de relleno importantes". -->
-  <section class="seccion paleomundo-sec" id="paleomundo">
+  <!-- CR-66 (2026-10-16): ancla de COMPATIBILIDAD. El proyecto se llamaba
+       PALEOMUNDO y cambio de nombre por derechos de autor. Los enlaces YA
+       COMPARTIDOS (index.html#paleomundo en un WhatsApp o un correo) siguen
+       apuntando a ese id, y sin esto abririan la pagina SIN saltar a la
+       seccion, sin ningun error visible.
+       ⚠️ VA JUSTO ANTES DE LA SECCION, no adentro ni al final: medido, si el
+       ancla queda al final de la seccion el salto cae 1661px mas abajo y el
+       visitante ve el bloque cortado en vez de su inicio.
+       Esta es la UNICA aparicion que queda de la palabra: es invisible
+       (aria-hidden) y no se muestra en ningun texto.
+       ⚠️ NO BORRAR sin revisar cuanta gente tiene enlaces guardados. -->
+  <span id="paleomundo" aria-hidden="true"></span>
+  <section class="seccion cec-sec" id="cec">
     <div class="contenedor">
       <!-- CR-53 (2026-10-13): el dueño pidió "el titulo centralo y hazlo en una
            card con la imagen incluida". El título y la bajada salen del flujo
            general y pasan a vivir DENTRO de la card, junto a la foto.
            Por eso acá queda solo el ancla vacía y el render (pintarPaleomundo)
            arma la card completa. -->
-      <div class="paleomundo" data-paleomundo></div>
+      <div class="cec-muestra" data-museo-itinerante></div>
     </div>
   </section>
 
@@ -361,7 +377,7 @@
         <ul>
           <li><a href="#somos">Quiénes somos</a></li>
           <li><a href="#colecciones">Colecciones</a></li>
-          <li><a href="#paleomundo">Proyecto C.E.C</a></li>
+          <li><a href="#cec">Proyecto C.E.C</a></li>
           <li><a href="#galeria">Galería</a></li>
           <li><a href="#servicios">Servicios</a></li>
           <li><a href="#visita">Visítanos</a></li>

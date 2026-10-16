@@ -376,7 +376,7 @@
     var nota = $("[data-servicios-nota]"); if (nota) {
       nota.innerHTML = ico("check") + "<span>" + esc(window.SERVICIOS_NOTA) + "</span>";
     }
-    pintarPaleomundo();
+    pintarMuseoItinerante();
   }
 
   /* ---------- PALEOMUNDO (CR-41 / CR-49, 2026-10-13) ----------
@@ -391,9 +391,9 @@
      propias frases (bajada del bloque oficial) y la lista de las 25 vitrinas.
      Titulo y bajada salen de PALEOMUNDO.tituloSec / introSec — si estan vacios,
      los nodos se ocultan en vez de quedar en blanco. */
-  function pintarPaleomundo() {
-    var cont = $("[data-paleomundo]"); if (!cont) return;
-    var p = window.PALEOMUNDO;
+  function pintarMuseoItinerante() {
+    var cont = $("[data-museo-itinerante]"); if (!cont) return;
+    var p = window.MUSEO_ITINERANTE;
     if (!p || !p.items || !p.items.length) { cont.innerHTML = ""; return; }
 
     /* CR-53 (2026-10-13): el dueño pidió "el titulo centralo y hazlo en una
@@ -439,7 +439,7 @@
 
     /* La imagen, dentro de la misma card. */
     if (p.fotos && p.fotos.length) {
-      html += '<div class="paleomundo__fotos paleomundo__fotos--destaque"></div>';
+      html += '<div class="cec-muestra__fotos cec-muestra__fotos--destaque"></div>';
     }
 
     /* Los datos duros, en TARJETAS (CR-62d).
@@ -449,9 +449,9 @@
        (`.pm-dato__v` y `.pm-dato__d`) para poder darle a cada parte su tamaño;
        con el <b> suelto dentro de un solo span no había forma de separarlos. */
     if (p.datos && p.datos.length) {
-      html += '<div class="paleomundo__datos">' +
+      html += '<div class="cec-muestra__datos">' +
         p.datos.map(function (d) {
-          return '<span class="paleomundo__pildora">' + ico(d.icono || "check") +
+          return '<span class="cec-muestra__pildora">' + ico(d.icono || "check") +
                  '<span class="pm-dato__c">' +
                    '<b class="pm-dato__v">' + esc(d.clave) + "</b>" +
                    '<span class="pm-dato__d">' + esc(d.valor) + "</span>" +
@@ -461,10 +461,10 @@
     }
 
     /* Lo que lleva la muestra, en tarjetas. */
-    html += '<div class="paleomundo__caja">' +
+    html += '<div class="cec-muestra__caja">' +
         "<h3>" + esc(p.titulo) + "</h3>" +
         "<p>" + esc(p.intro) + "</p>" +
-        '<ul class="paleomundo__lista">' +
+        '<ul class="cec-muestra__lista">' +
           p.items.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") +
         "</ul>" +
       "</div>";
@@ -475,7 +475,7 @@
        ⚠️ Se emite como parte del grid (área `enlace`), para que quede debajo de
        las dos columnas y no dentro de una de ellas. */
     if (p.subpagina && p.subpagina.enlace) {
-      html += '<div class="paleomundo__enlace">' +
+      html += '<div class="cec-muestra__enlace">' +
                 '<a class="pm-mas" href="' + esc(p.subpagina.enlace) + '">' +
                   esc(p.subpagina.texto || "Ver más") +
                   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
@@ -489,7 +489,7 @@
     cont.innerHTML = html;
 
     if (p.fotos && p.fotos.length) {
-      pintarFotos(cont.querySelector(".paleomundo__fotos"), p.fotos);
+      pintarFotos(cont.querySelector(".cec-muestra__fotos"), p.fotos);
     }
   }
 

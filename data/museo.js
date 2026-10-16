@@ -429,8 +429,13 @@ const SERVICIOS = [
     /* CR-54 (2026-10-15): el nombre de la muestra cambió a "Proyecto C.E.C".
        La tarjeta y su enlace se actualizan junto con la sección: si solo se
        cambiara la sección, Servicios seguiría mandando a un nombre que ya no
-       existe en la página. El ancla `#paleomundo` NO cambia (ver nota arriba):
-       es la coordenada interna del enlace, no texto visible. */
+       existe en la página. */
+    /* CR-66 (2026-10-16): acá decía que el ancla `#paleomundo` «NO cambia».
+       Es falso y ya no aplica: el ancla SÍ se renombró a `#cec`, porque el
+       nombre viejo se retiró por DERECHOS DE AUTOR y el ancla es una URL
+       pública (barra del navegador + href de cada enlace compartido).
+       ⚠️ Los enlaces viejos siguen funcionando por el `<span id="paleomundo">`
+       de compatibilidad al final de la sección `#cec`. */
     titulo: "Exposición escolar itinerante Proyecto C.E.C",
     detalle: "Llevamos la muestra museológica itinerante a los establecimientos educacionales de Santiago, en conjunto con el Centro de Estudios Paleontológicos de Chile. Ver la sección Proyecto C.E.C para el detalle de la muestra.",
     icono: "colegio",
@@ -470,7 +475,7 @@ const SERVICIOS_NOTA =
      `#paleomundo` del HTML también se conserva por el mismo motivo (cambiarla
      obliga a tocar index.html, render y animaciones.js a la vez, y el ancla no
      se ve en pantalla). */
-const PALEOMUNDO = {
+const MUSEO_ITINERANTE = {
   /* --- Encabezado de la SECCION PROPIA (CR-49) ---
      ⚠️ SIN TITULARES INVENTADOS. El dueño pidio: "no poner titulares, solo las
      imagenes de la expo y cosas de relleno importantes".
@@ -1123,7 +1128,7 @@ const CEC = {
   bajada: "Organización privada dedicada a la educación, la divulgación y la promoción de la paleontología a nivel nacional.",
   volver: {
     "texto": "Volver al inicio",
-    "enlace": "index.html#paleomundo"
+    "enlace": "index.html#cec"
   },
   intro: [
     "El Centro de Estudios Paleontológicos de Chile es una organización privada que surge del interés de personas comprometidas con la Paleontología y que desean trabajar a distintos niveles, centrándose fundamentalmente en la educación, divulgación y promoción de esta ciencia a nivel nacional.",
@@ -1343,6 +1348,6 @@ const CEC = {
 if (typeof window !== "undefined") {
   window.MUSEO = MUSEO; window.QUIENES_SOMOS = QUIENES_SOMOS;
   window.COLECCIONES = COLECCIONES; window.SERVICIOS = SERVICIOS;
-  window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.PALEOMUNDO = PALEOMUNDO;
+  window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.MUSEO_ITINERANTE = MUSEO_ITINERANTE;
   window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES; window.CEC = CEC;
 }
