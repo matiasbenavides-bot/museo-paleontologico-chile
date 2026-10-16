@@ -1,0 +1,220 @@
+/* ============================================================
+   CR-60 (2026-10-15) — Subpágina TRILOBITES (trilobites.html)
+   Segunda subpágina del sitio, después de curriculum.html (CR-55).
+   Sigue las reglas vigentes del proyecto:
+     - tamaños con `clamp()`, nunca px fijos (DEC-015);
+     - animaciones de entrada SOLO en el eje Y (DEC-017);
+     - hover con glow / translateY, NUNCA `scale`;
+     - todo el texto sale de data/museo.js -> TRILOBITES (DEC-005);
+       acá no hay una sola palabra escrita a mano.
+   ============================================================ */
+
+/* ---------- Cabecera de la página ----------
+   CR-60c (2026-10-15): el NAV DE PC TAPABA EL TÍTULO, reportado por el dueño.
+   Causa: el `.header` es `position: fixed` (header.css:3), así que NO reserva
+   espacio en el flujo; el contenido arranca debajo de él. `curriculum.html` se
+   salva porque su `.perfil` lleva `padding-top: clamp(130px,16vw,180px)` — un
+   número A MANO. En la subpágina nueva ese aire no existía.
+
+   ⚠️ NO se copia el número de curriculum.html. Es la lección de CR-57, que ya
+   se pagó en este proyecto: los números de layout escritos a mano quedan VIEJOS
+   cuando cambia el alto del header (pasó al subir el logo). `--header-h` la
+   publica el JS (animaciones.js:172, `pintarHeader`) con la altura REAL medida
+   del header, y el 84px del `var()` es solo el respaldo por si el JS no corre.
+
+   ⇒ MISMO patrón que ya usan `.hero` (responsive.css:45) y
+   `.paleomundo-sec` (servicios.css:379): `calc(var(--header-h, 84px) + aire)`.
+   ⚠️ Se conserva un mínimo con `max()`: si el header fuera más bajo de lo
+   previsto, la sección no se aprieta de más. */
+.tri-cabeza {
+  padding-top: max(clamp(96px, 12vw, 120px),
+                   calc(var(--header-h, 84px) + clamp(18px, 2.6vw, 32px)));
+}
+
+.tri-volver {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: clamp(.78rem, 1.1vw, .84rem); font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--text-muted); text-decoration: none;
+  margin-bottom: clamp(20px, 3vw, 30px);
+  transition: color .3s, gap .3s var(--ease-out-expo);
+}
+.tri-volver:hover { color: var(--ocre); gap: 13px; }
+.tri-volver svg { flex: none; }
+
+.tri-titulo {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: 1.06; color: var(--text-main);
+  margin: 12px 0 14px;
+}
+.tri-bajada {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: var(--text-soft); max-width: 62ch;
+}
+.tri-intro {
+  margin-top: clamp(18px, 2.6vw, 26px);
+  padding-top: clamp(18px, 2.6vw, 26px);
+  border-top: 1px solid var(--border-subtle);
+  max-width: 74ch;
+}
+.tri-intro p {
+  font-size: clamp(.95rem, 1.4vw, 1.03rem);
+  line-height: 1.72; color: var(--text-soft);
+}
+
+/* ---------- Índice de secciones ----------
+   No existía en el sitio: la subpágina es larga (19 secciones) y sin índice
+   el usuario no sabe qué hay abajo. Se arma con los mismos datos que las
+   secciones, así que no puede desincronizarse. */
+.tri-indice {
+  margin-top: clamp(26px, 4vw, 40px);
+  padding: clamp(18px, 2.6vw, 24px);
+  border-radius: var(--radius-md);
+  background: var(--bg-glass); border: 1px solid var(--border-subtle);
+}
+.tri-indice__t {
+  font-family: var(--font-display); font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  color: var(--text-main); margin-bottom: 14px;
+}
+.tri-indice__l {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px 20px; list-style: none; margin: 0; padding: 0;
+}
+.tri-indice__l a {
+  display: block; padding: 5px 0;
+  font-size: clamp(.84rem, 1.2vw, .89rem);
+  color: var(--text-muted); text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .25s, border-color .25s;
+}
+.tri-indice__l a:hover { color: var(--ocre-light); border-bottom-color: var(--border-accent); }
+
+/* ---------- Secciones ---------- */
+.tri-sec { margin-top: var(--space-bloque); scroll-margin-top: 96px; }
+.tri-sec--sub { margin-top: clamp(20px, 3vw, 30px); padding-left: clamp(0px, 2vw, 18px);
+                border-left: 1px solid var(--border-subtle); }
+
+.tri-sec__t {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3vw, 2.05rem);
+  line-height: 1.14; color: var(--text-main);
+  margin-bottom: 14px;
+}
+.tri-sec--sub .tri-sec__t { font-size: clamp(1.2rem, 2.2vw, 1.5rem); }
+
+.tri-sec p {
+  font-size: clamp(.95rem, 1.4vw, 1.02rem);
+  line-height: 1.75; color: var(--text-soft);
+  max-width: 76ch;
+}
+.tri-sec p + p { margin-top: 14px; }
+
+/* ---------- Figuras ----------
+   CR-60b (2026-10-15): las fotos salían GIGANTES y el dueño lo reportó.
+   Causa medida: `width:100%; height:auto` en una grilla `auto-fit` daba a las
+   secciones de UNA sola imagen el ancho completo del contenedor (1130 px), y
+   el material es vertical -> `walliserops` (1400x2239) pintaba 1130x1807 px,
+   o sea DOS pantallas de alto para una foto.
+
+   El arreglo NO es fijar un ancho (rompería la fluidez). Son dos topes:
+     (a) `.tri-figs` lleva un ancho máximo: las secciones de una sola imagen
+         dejan de estirarse a todo el contenedor;
+     (b) `.tri-fig__marco` lleva un ALTO máximo, y la imagen se limita con
+         `max-height` + `width:auto` para que se ajuste sola sin deformarse.
+   ⚠️ Los dos topes son `clamp()`, no px fijos (DEC-015).
+   ⚠️ LA MEDICIÓN MANDA: no alcanza con escribir el clamp. Hay que medir el
+   alto pintado en los 4 anchos y confirmar que ninguna figura pasa de ~1
+   pantalla. Ver `references/cr60-trilobites-subpagina.md`. */
+.tri-figs {
+  display: grid; gap: clamp(16px, 2.4vw, 24px);
+  margin: clamp(20px, 3vw, 28px) 0 0;
+  max-width: min(100%,
+                 clamp(440px, 46vw + 180px, 780px));   /* tope (a) */
+}
+.tri-figs--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.tri-figs--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+
+.tri-fig {
+  margin: 0; border-radius: var(--radius-md); overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  transition: border-color .35s, box-shadow .35s, transform .35s var(--ease-out-expo);
+}
+.tri-fig:hover { border-color: var(--border-accent); box-shadow: var(--shadow-md); }
+/* ⚠️ Sin `scale` en el hover (regla del proyecto). El zoom va SOLO en la
+   imagen de adentro, que es lo que da la sensación sin deformar la caja. */
+.tri-fig__marco {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; overflow: hidden;
+  /* Tope (b): el alto de la CAJA. Lo que no entra, se ajusta la imagen. */
+  max-height: clamp(240px, 42vh, 420px);
+  background: linear-gradient(160deg, var(--bg-elevated), var(--bg-deep));
+}
+.tri-fig__marco img {
+  display: block;
+  /* La imagen se limita por LOS DOS lados: nunca excede la caja ni se deforma.
+     `width:auto` + `height:auto` dejan que el navegador resuelva la proporcion
+     a partir del `max-height`; sin el `width` explicito el <img> se sale. */
+  max-width: 100%; max-height: inherit;
+  width: auto; height: auto;
+  margin: auto;
+  transition: transform .5s var(--ease-out-expo);
+}
+.tri-fig:hover .tri-fig__marco img { transform: scale(1.035); }
+
+.tri-fig figcaption {
+  padding: 12px 14px 14px;
+  font-size: clamp(.78rem, 1.1vw, .83rem);
+  line-height: 1.55; color: var(--text-muted);
+}
+.tri-fig figcaption b { color: var(--text-soft); font-weight: 600; }
+
+/* ---------- Sección de atributos (pedido del dueño) ---------- */
+.tri-creditos {
+  margin-top: var(--space-seccion);
+  padding: clamp(22px, 3.4vw, 34px);
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass); border: 1px solid var(--border-subtle);
+}
+.tri-creditos__t {
+  font-family: var(--font-display); font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  color: var(--text-main); margin-bottom: 10px;
+}
+.tri-creditos__nota {
+  font-size: clamp(.84rem, 1.2vw, .89rem); line-height: 1.65;
+  color: var(--text-muted); max-width: 76ch;
+  padding: 12px 14px; border-radius: var(--radius-sm);
+  background: rgba(81, 173, 198, .07); border-left: 2px solid var(--border-accent);
+  margin-bottom: 20px;
+}
+.tri-creditos__l { list-style: none; margin: 0; padding: 0;
+                   display: grid; gap: 10px;
+                   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.tri-creditos__l li {
+  padding: 11px 13px; border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, .022); border: 1px solid var(--border-subtle);
+  font-size: clamp(.78rem, 1.1vw, .83rem); line-height: 1.55;
+}
+.tri-creditos__a { color: var(--text-soft); font-weight: 600; }
+.tri-creditos__m { color: var(--text-muted); }
+.tri-creditos__lic {
+  display: inline-block; margin-top: 5px; padding: 2px 8px;
+  border-radius: 999px; font-size: .72rem; letter-spacing: .03em;
+  background: rgba(81, 173, 198, .14); color: var(--celeste-light);
+  border: 1px solid var(--border-accent);
+}
+.tri-creditos__fuente { margin-top: 18px; font-size: clamp(.78rem, 1.1vw, .83rem); }
+.tri-creditos__fuente a { color: var(--ocre); text-decoration: none;
+                          border-bottom: 1px solid var(--border-accent); }
+
+/* ---------- Cierre ---------- */
+.tri-cierre {
+  margin-top: var(--space-bloque); text-align: center;
+  padding: clamp(26px, 4vw, 40px);
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass-strong); border: 1px solid var(--border-subtle);
+}
+.tri-cierre p {
+  font-family: var(--font-display); font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  color: var(--text-main); margin-bottom: 18px; max-width: 46ch; margin-inline: auto;
+}

@@ -108,9 +108,30 @@
      de la ventana, así que acá NO hay nada que recortar ni que fundir.
      ⚠️ NO reponer un `background` acá: vuelve el corte en las esquinas y el
      gradiente se ve como una banda pegada dentro de la sección.
-     Se conserva sólo la maquetación: el aire de arriba y la separación de abajo. */
+     Se conserva sólo la maquetación: el aire de arriba y la separación de abajo.
+
+   🔴 CR-59 (2026-10-15) — EL LOGO SE ACERCA AL TÍTULO POR PEDIDO DEL DUEÑO.
+   Medido ANTES (`scripts/mide-cec.js`, que destapa el `loading="lazy"` o mide 0):
+     aire ARRIBA del arte : 170px (1440) / 145px (768) / 140px (390)
+     aire ABAJO  del arte : 93.7px (1440) / 77.9px (768) / 70.6px (390)
+
+   🔴 CR-60 (2026-10-16) — EL FONDO NEGRO VA EN EL SEPARADOR, NO EN UN ELEMENTO NUEVO.
+   El dueño, textual: «quiero un espacio negro o que empiece justo en la linea
+   divisora» y al ver el primer intento: **«ES JUSTO EN EL SEPARADOR, NO CREAR OTRO»**.
+
+   ⚠️ EL ERROR QUE SE COMETIÓ Y NO SE REPITE: se agregó un `::before` con
+   `width: 100vw; background: #000` a ESTA caja para fabricar el negro. Eso **crea
+   un elemento nuevo** — un segundo borde negro que compite con el `<hr class="separador">`
+   que ya existe. El dueño lo rechazó explícitamente.
+   ⇒ El negro lo lleva EL SEPARADOR QUE YA ESTÁ (`hr.separador`, arriba de esta
+   sección). Acá NO se agrega fondo, NO se agrega pseudo-elemento, NO se agrega nada.
+   Este bloque vuelve a ser SÓLO maquetación, como estaba antes de CR-59.
+
+   Medido (`scripts/desglosa-aire.js`): el divisor y la sección ya se tocan, con
+   0px de aire entre medio. Lo que había que tocar era el `padding-top` de la
+   sección, y se toca en `.paleomundo-sec`, más abajo en este archivo. */
   margin: 0 0 clamp(22px, 3vw, 34px);
-  padding: clamp(10px, 2vw, 22px) 0 clamp(8px, 1.6vw, 16px);
+  padding: 0 0 clamp(8px, 1.6vw, 16px);
 }
 .pm-card__logo img {
   display: block; height: auto;
@@ -285,12 +306,77 @@
      38% es donde el gradiente ya llegó al azul: de ahí para abajo es plano, así
      el contenido largo no queda sobre una pendiente. */
   background: linear-gradient(180deg,
-    transparent 0,
-    #000 4%,
+    #000 0,
+    #000 5%,
     #02102c 22%,
     var(--bg-base) 42%,
     #02102c 74%,
     transparent 100%);
+
+  /* 🔴 CR-60b (2026-10-16) — LA RAMPA AZUL DE ARRIBA SE ELIMINA. EL NEGRO
+     ARRANCA PEGADO AL SEPARADOR.
+     El dueño reportó: «sigue el espacio azul entre el gradiente y el separador».
+     Medido con conteo de PÍXELES sobre la captura (`colores-separador.py`), desde
+     el separador hacia abajo, en el borde izquierdo (donde no hay texto):
+        +0 .. +72px   : (0,14,38) -> (0,0,1)   <- RAMPA AZUL, esto es lo que veía
+        +72 .. +105px : (0,0,0.4)             <- negro puro, sólo ~30px
+        +105px en adelante: vuelve a subir a azul (zona del logo)
+     ⇒ EL DEFECTO ERA EL `transparent 0` DEL EXTREMO SUPERIOR. Estaba puesto
+     (CR-56c) para fundir con la sección de arriba, pero el efecto real es que el
+     AZUL de la página se transparentaba justo donde el dueño quiere NEGRO.
+     Se reemplaza por `#000 0` + `#000 5%`: negro pleno desde el primer píxel,
+     y el tramo negro dura ~74px en vez de ~30px.
+     ⚠️ SE CONSERVA `transparent` en el extremo INFERIOR (100%): de ese lado sí
+     hace falta fundir con Galería, y el dueño no reportó nada ahí. */
+  padding-top: 0;
+
+  /* 🔴 CR-60c — LOS 8px FANTASMA ENTRE EL SEPARADOR Y EL NEGRO.
+     Con `padding-top: 0` la sección seguía arrancando 8px debajo del separador.
+     Medido (`capas.js`): `hr_a_seccion: 8px` sin ningún padding ni margin de por
+     medio — la cuenta no daba hasta encontrar la causa real:
+
+     ⚠️ **SON EL `line-height` DE UN NODO WHITESPACE**, no un padding. En
+     `index.html` el `<hr class="separador">` está entre `</section>` y
+     `<section>` con saltos de línea, así que el navegador genera un nodo de texto
+     (el espacio en blanco) que forma una LÍNEA propia. Con `line-height: 1.65`
+     (`css/base/base.css:7`) y el `font-size` base, esa línea mide exactamente
+     8px. **No es un margen: no hay nada que «sacar», hay que compensarlo.**
+
+     ⇒ Se compensa con `margin-top: -8px`, ACOTADO a esta sección.
+     ⚠️ LA ALTERNATIVA DE RAÍZ SE DESCARTA A PROPÓSITO: `display: block` en
+     `.separador` (`base.css`) lo arreglaría para los 4 separadores del sitio, pero
+     es un cambio GLOBAL que altera el layout de Colecciones, Galería y Servicios.
+     Regla del proyecto: la excepción es de esta pieza, no del sistema. Si algún
+     día se quiere el arreglo de raíz, se hace como su propia tarea, midiendo las
+     4 secciones.
+     ⚠️ SI SE CAMBIA EL `line-height` GLOBAL O SE AGREGA UN COMENTARIO HTML ENTRE
+     el `<hr>` y el `<section>`, estos 8px CAMBIAN. Re-medir con `capas.js`. */
+  margin-top: -8px;
+
+  /* 🔴 CR-62 (2026-10-16) — EL NAV TAPABA EL LOGO AL SALTAR CON #paleomundo.
+     El dueño, textual: «el nav de arriba lo tapa a la mitad».
+
+     ⚠️ ES UN EFECTO COLATERAL DE CR-60, y se midió en los 5 anchos:
+       1440px TAPADO 52px · 1280px TAPADO 55px · 1024px TAPADO 63px
+        900px TAPADO 67px ·  390px TAPADO 75px
+     Y SÓLO en #paleomundo: las otras 5 anclas quedan libres con ~28px de aire.
+
+     CAUSA: al anular el `padding-top` (CR-60) el logo quedó pegado al separador,
+     y el `.header` es `position: fixed`, así que flota POR ENCIMA del contenido.
+     Las otras secciones se salvan porque conservan sus 96px de padding natural,
+     que es justo el colchón que el header necesita. Acá ese colchón ya no está.
+
+     ⇒ SE ARREGLA CON `scroll-margin-top`, que es EXACTAMENTE el mecanismo para
+     esto: le dice al navegador cuánto espacio dejar al saltar a esta ancla.
+     ⚠️ NO SE AGREGA PADDING DE VUELTA: eso devolvería el hueco que el dueño pidió
+     sacar (CR-60). `scroll-margin` NO afecta el layout visual: sólo el scroll.
+     ⚠️ EL VALOR SE DERIVA DE `--header-h`, NO SE ESCRIBE A MANO. Es la lección de
+     CR-57: los números de layout escritos a mano quedan VIEJOS en cuanto cambia el
+     alto del header (al agrandar el logo la barra pasó de ~100 a 125px y los
+     números fijos quedaron chicos). `--header-h` la publica el JS en `:root` y ya
+     se usa así en `responsive.css:45` y `:123`.
+     Se suman 16px de aire para que el logo no quede pegado al filo de la barra. */
+  scroll-margin-top: calc(var(--header-h, 84px) + 16px);
 }
 /* El filo de acento sube a la SECCIÓN: era el de la card y ahí marcaba la pieza
    destacada. Sin caja sigue haciendo falta, y ahora va al ancho del contenido

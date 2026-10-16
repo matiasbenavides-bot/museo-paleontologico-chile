@@ -320,11 +320,35 @@
           ' alt="" loading="lazy" decoding="async">'
         : "";
       var llevaIcono = !!arte || (p.conIcono !== false && ico(p.icono));
+      /* CR-60 (2026-10-15): una pieza puede traer `enlace` (hoy: Trilobites ->
+         trilobites.html). Se reusa EXACTAMENTE el patrón de pintarServicios
+         (`enlace` + `enlaceTexto`), que ya estaba resuelto y probado, en vez de
+         inventar un mecanismo nuevo.
+         ⚠️ El <a> envuelve TODO el contenido de la pieza, no un botto suelto: el
+         dueño pidió que se abra "apretando la card". Por eso la clase `pieza--enlace`
+         y no `servicio__enlace`.
+         ⚠️ `aria-label` lleva el nombre de la pieza: el texto visible dice
+         "Conocer los trilobites", que fuera de contexto no identifica la card. */
+      var cuerpo = (llevaIcono ? '<div class="pieza__ico">' + (arte || ico(p.icono)) + '</div>' : '') +
+                   '<h3>' + esc(p.nombre) + '</h3>' +
+                   '<p>' + esc(p.detalle) + '</p>';
+      if (p.enlace) {
+        return '<article class="pieza pieza--enlace reveal reveal--zoom' +
+                 (llevaIcono ? '' : ' pieza--sin-ico') + '">' +
+                 '<a class="pieza__a" href="' + esc(p.enlace) + '"' +
+                   ' aria-label="' + esc(p.nombre + ": " + (p.enlaceTexto || "Ver más")) + '">' +
+                   cuerpo +
+                   '<span class="pieza__mas">' + esc(p.enlaceTexto || "Ver más") +
+                     '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
+                       ' stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                       '<path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+                   '</span>' +
+                 '</a>' +
+               '</article>';
+      }
       return '<article class="pieza reveal reveal--zoom' +
                (llevaIcono ? '' : ' pieza--sin-ico') + '">' +
-               (llevaIcono ? '<div class="pieza__ico">' + (arte || ico(p.icono)) + '</div>' : '') +
-               '<h3>' + esc(p.nombre) + '</h3>' +
-               '<p>' + esc(p.detalle) + '</p>' +
+               cuerpo +
              '</article>';
     }).join("");
     var det = $("[data-colecciones-rango]");

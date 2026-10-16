@@ -16,6 +16,10 @@
    importa acá, en la cadena única, para que UN solo <link> sirva a las dos
    páginas — así no hay dos listas de CSS que puedan divergir. */
 @import url("secciones/perfil.css");
+/* CR-60: la subpágina TRILOBITES (trilobites.html) tiene su propia hoja. Mismo
+   criterio que perfil.css: va en la cadena única para que UN solo <link> sirva
+   a todas las páginas y no existan dos listas de CSS que puedan divergir. */
+@import url("secciones/trilobites.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");

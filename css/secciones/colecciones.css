@@ -180,3 +180,47 @@
    EB Garamond en cuerpos chicos se aprieta; el tracking lo abre. */
 .pieza h3 { font-size: clamp(1.08rem, 2vw, 1.24rem); margin-bottom: 9px; letter-spacing: .005em; }
 .pieza p { font-size: .89rem; color: var(--text-muted); }
+
+/* ============================================================
+   CR-60 (2026-10-15) — La pieza que ABRE SU SUBPÁGINA
+   El dueño pidió que la card de Trilobites se abra "apretando la card".
+   Se reusa el patrón de `.servicio__enlace` (mismo mecanismo en el render),
+   pero acá el <a> envuelve TODA la tarjeta, así que:
+     - el <a> tiene que ocupar todo el alto de la card,
+     - y el foco por teclado tiene que verse, porque ahora la card es un control.
+
+   ⚠️ REGLA DEL PROYECTO (medida, no supuesta): el hover lleva glow y
+   translateY, NUNCA `scale`. Ya se cometió el error de escalar la card.
+   ============================================================ */
+.pieza--enlace { padding: 0; }
+.pieza--enlace .pieza__a {
+  display: flex; flex-direction: column;
+  padding: 28px 26px; border-radius: inherit;
+  color: inherit; text-decoration: none; height: 100%;
+}
+/* El foco visible va en el CONTENEDOR, no en el <a>: el outline del <a> queda
+   tapado por el `overflow: hidden` de la card. */
+.pieza--enlace:focus-within {
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+.pieza--enlace .pieza__a:focus-visible { outline: none; }
+
+/* El enlace, al pie de la card. `margin-top: auto` lo pega abajo incluso cuando
+   las tarjetas de la grilla tienen distinto alto (pasa: los textos difieren). */
+.pieza__mas {
+  margin-top: auto; padding-top: 16px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: clamp(.76rem, 1.1vw, .82rem); font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ocre);
+  transition: gap .3s var(--ease-out-expo), color .3s;
+}
+.pieza__mas svg { flex: none; transition: transform .3s var(--ease-out-expo); }
+.pieza--enlace:hover .pieza__mas { color: var(--ocre-light); gap: 12px; }
+.pieza--enlace:hover .pieza__mas svg { transform: translateX(3px); }
+
+/* La card enlazada conserva el hover de las demás (ya declarado en `.pieza`).
+   Acá solo se asegura que el brillo del borde también se vea al pasar el mouse
+   por el <a>, porque el :hover de `.pieza` sí se dispara (el <a> está dentro). */
+.pieza--enlace:hover { border-color: var(--border-accent); }

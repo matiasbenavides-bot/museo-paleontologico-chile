@@ -376,7 +376,13 @@ const COLECCIONES = {
      pieza trae `arte`, ese dibujo MANDA sobre el SVG de js/iconos.js; el SVG
      queda solo como respaldo. Los 7 SVG siguen intactos. */
   piezas: [
-    { icono: "trilobite", conIcono: true,  arte: "assets/img/pieza-trilobites.png", nombre: "Trilobites",   detalle: "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico." },
+    /* CR-60 (2026-10-15): el dueño pidió que la card de Trilobites ABRA SU SUBPÁGINA.
+       `enlace` es el MISMO mecanismo que usan los servicios (js/render.js,
+       pintarServicios), así que no se inventó nada: la card se vuelve un <a>.
+       ⚠️ `enlaceTexto` es OBLIGATORIO cuando hay `enlace`: si falta, el render pone
+       "Ver más" por defecto, que es texto que NO dictó el dueño. */
+    { icono: "trilobite", conIcono: true,  arte: "assets/img/pieza-trilobites.png", nombre: "Trilobites",   detalle: "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico.",
+      enlace: "trilobites.html", enlaceTexto: "Conocer los trilobites" },
     { icono: "ammonite",  conIcono: true,  arte: "assets/img/pieza-ammonite.png", nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica." },
     { icono: "ambar",     conIcono: true,  arte: "assets/img/pieza-ambar.png", nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
     { icono: "tiburon",   conIcono: true,  arte: "assets/img/pieza-tiburones.png", nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos." },
@@ -597,9 +603,405 @@ const GALERIA = {
   ]
 };
 
+
+/* --- TRILOBITES (subpágina propia) ---
+   CR-60 (2026-10-15): el dueño entregó el documento «Que son los trilobites.docx»
+   (17,6 MB, 38 imágenes) y pidió una SUBPÁGINA que se abra apretando la card de
+   Trilobites en Colecciones.
+
+   ⚠️ TEXTO: es ÍNTEGRO del documento del museo, sin una palabra redactada por el
+   agente (regla DEC-034). Sólo se separó en secciones y se corrigieron dos errores
+   evidentes de tipeo del original (ver `notaTexto` abajo). NO reescribir este texto:
+   si hay que cambiarlo, lo dicta el dueño.
+
+   🔴 IMÁGENES: NO son las del documento. Las 38 del docx se descartaron porque NO
+   tienen procedencia comprobable: el docx no trae crédito, ni autor, ni licencia en
+   ningún punto, y la medición detectó señales de material bajado de terceros (una
+   imagen con fondo rosado de página web, otra con fondo azul plano armado, una foto
+   en blanco y negro de lámina escaneada, dos láminas ya rotuladas en español).
+   Es el mismo caso del ÁMBAR (DEC-027), que estaba medido e integrado y se quedó sin
+   publicar. El dueño autorizó el REEMPLAZO por material de Wikimedia Commons con
+   licencia verificable.
+
+   ✅ PROCEDENCIA: cada imagen de `assets/img/trilobites/` tiene licencia declarada y
+   verificada por API contra Wikimedia Commons (dominio público / CC0 / CC BY / CC BY-SA).
+   La ficha completa —autor, licencia y enlace— está en
+   `assets/img/trilobites/creditos.json`, y el render la publica como SECCIÓN DE
+   ATRIBUTOS al pie de la subpágina (pedido del dueño).
+
+   ⚠️ SON FÓSILES DE OTROS MUSEOS DEL MUNDO (Marruecos, Canadá, Utah, Wisconsin), NO
+   piezas de la muestra del MPCH. Ilustran el capítulo, no la vitrina: no choca con
+   DEC-012, que prohíbe fotografiar las piezas del museo. No presentarlas nunca como
+   parte de la colección propia.
+*/
+const TRILOBITES = {
+  // El nombre de la clave es el mismo que usa MUSEO.director.subpagina.
+  subpagina: "trilobites.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Paleozoico",
+  titulo: "Trilobites",
+  bajada:
+    "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico.",
+  /* La intro es el PRIMER párrafo del documento, textual. */
+  intro:
+    "Los trilobites fueron un grupo común de artrópodos marinos paleozoicos, provistos de un caparazón cuticular dorsal mineralizado en carbonatos (exoesqueleto) y fosilizable, la que permitió que tengan gran representación en el registro fósil. Estuvieron presentes durante 300 millones de años en todos los mares y océanos de la era Paleozoica (que va desde hace 541 a 252 millones de años). Desde que aparecen en el Cámbrico Temprano, su diversidad alcanzó valores elevados en el Cámbrico Tardío y Ordovícico, para decrecer durante el Silúrico-Devónico y reducirse aún más en el Paleozoico Tardío (Carbonífero), antes de extinguirse a fines del Pérmico.",
+
+  /* Secciones. `nivel: 2` = sección principal; `nivel: 3` = subsección de Anatomía. */
+  secciones: [
+    {
+      id: "que-son",
+      titulo: "¿Qué son los trilobites?",
+      nivel: 2,
+      parrafos: [
+        "Los trilobites fueron un grupo común de artrópodos marinos paleozoicos, provistos de un caparazón cuticular dorsal mineralizado en carbonatos (exoesqueleto) y fosilizable, la que permitió que tengan gran representación en el registro fósil. Estuvieron presentes durante 300 millones de años en todos los mares y océanos de la era Paleozoica (que va desde hace 541 a 252 millones de años). Desde que aparecen en el Cámbrico Temprano, su diversidad alcanzó valores elevados en el Cámbrico Tardío y Ordovícico, para decrecer durante el Silúrico-Devónico y reducirse aún más en el Paleozoico Tardío (Carbonífero), antes de extinguirse a fines del Pérmico.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/cefalon-numerado.svg",
+          ancho: 260, alto: 180,
+          alt: "Esquema de las áreas del cefalón de un trilobite, con cada zona numerada y rotulada",
+          pie: "Las tres regiones del cuerpo: cefalón, tórax y pigidio.",
+          credito: "cefalon-numerado"
+        },
+        {
+          src: "assets/img/trilobites/cranidio-numerado.svg",
+          ancho: 230, alto: 160,
+          alt: "Esquema del cranidio de un trilobite con sus elementos numerados",
+          credito: "cranidio-numerado"
+        },
+      ],
+    },
+    {
+      id: "estructura",
+      titulo: "Estructura de los trilobites",
+      nivel: 2,
+      parrafos: [
+        "Los trilobites estaban protegidos por un exoesqueleto dorsal fuertemente calcificado, de simetría bilateral y convexidad variable, que continuaba ventralmente como un doblez marginal angosto. Los trilobites poseen un cuerpo segmentado con un exoesqueleto ovalado o subelíptico en vista dorsal y está dividido longitudinalmente en tres regiones (del latín Tri, tres y lobus, lóbulo = Tres lóbulos). Su exoesqueleto está constituido de cierto número de segmentos a lo largo del cuerpo, un par de surcos axiales divide al exoesqueleto en un lóbulo central (axis, raquis) y dos lóbulos laterales (genas en el céfalo; área o campos pleurales en el tórax-pigidio), a los cuales hace alusión el término «Trilobita o trilobite».",
+        "En ambos extremos del cuerpo los segmentos están unidos y forman un escudo, que en el extremo anterior forma la cabeza o cefalón, en tanto que en el extremo posterior forma el escudo caudal o pigidio. En la región intermedia o tórax está constituida por pleuras articuladas, todos los segmentos están separados. Estas tres partes del cuerpo tienen porciones axiales y pleurales, y, por consiguiente, el cuerpo presenta un aspecto transversalmente dividido en tres zonas.",
+        "El exoesqueleto dorsal está marcado por un par de surcos o estrías que separan la región axial de las pleurales, las que tienen un relieve interno donde se adhieren los músculos que accionan los miembros locomotores. El exoesqueleto ventral es muy delicado, por ello se ha conservado en raras ocasiones, siendo el lugar en donde se sitúan los apéndices.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/suturas-faciales.jpg",
+          ancho: 918, alto: 271,
+          alt: "Diagrama de las suturas faciales del cranidio de un trilobite",
+          pie: "Las suturas faciales dividen el escudo cefálico en tres piezas.",
+          credito: "suturas-faciales"
+        },
+        {
+          src: "assets/img/trilobites/hipostoma.jpg",
+          ancho: 3127, alto: 910,
+          alt: "Tipos de hipostoma de trilobites según su forma de unión",
+          pie: "Tipos de hipostoma, la placa ventral de la boca.",
+          credito: "hipostoma"
+        },
+      ],
+    },
+    {
+      id: "locomocion",
+      titulo: "Locomoción",
+      nivel: 2,
+      parrafos: [
+        "Los miembros encargados de la natación reciben el nombre de exopodito y consta de numerosas uniones o coyunturas que proporcionan un soporte a una serie de estructuras duras y aplanadas, como púas, que en gran número forman un eficiente sistema de nado, que le servía para movilizarse en el medio acuático.",
+        "En otras ocasiones los trilobites caminaban o reptaban en la superficie del fondo, para lo cuál utilizaban otro miembro locomotor llamado endopodito, que estaba constituido por seis fuertes junturas de material quitinoso y que funcionó como una pata y se situaba por debajo del exopodito.",
+        "Por detrás de la base de adherencia de esta pata se sitúa un órgano parecido a una hoja llamado epidodito, que tenía a su cargo la función respiratoria, por lo tanto, funcionaba como una branquia.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/triarthrus.jpg",
+          ancho: 984, alto: 1468,
+          alt: "Vista ventral de un Triarthrus eatoni con los apéndices conservados",
+          pie: "Triarthrus eatoni en vista ventral: exopodito, endopodito y epipodito visibles.",
+          credito: "triarthrus"
+        },
+      ],
+    },
+    {
+      id: "huellas",
+      titulo: "Huellas fósiles de trilobites",
+      nivel: 2,
+      parrafos: [
+        "Las huellas fósiles o icnofósiles son parte de la actividad biológica del desenvolvimiento del trilobite en su ambiente. Estas huellas son a lo menos de tres tipos: Cruziana, Diplichnites y Rusophycus. Normalmente se encuentran como contramoldes, en relieve invertido, en la base (cara inferior) en capas de arenisca o cuarcita.",
+        "Cruziana se interpreta como pistas fósiles debidas a la locomoción y la alimentación de trilobites en el fondo arenoso.",
+        "Diplichnites se interpreta como pistas del desplazamiento rápido sobre la superficie arenosa.",
+        "Rusophycus se interpreta como huellas de reposo (cubichnia) o quizás de alimentación.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/cruziana.jpg",
+          ancho: 585, alto: 267,
+          alt: "Icnofósil Cruziana en arenisca devónica",
+          pie: "Cruziana: locomoción y alimentación en el fondo arenoso.",
+          credito: "cruziana"
+        },
+        {
+          src: "assets/img/trilobites/diplichnites.jpg",
+          ancho: 2000, alto: 1093,
+          alt: "Icnofósil Diplichnites sobre superficie arenosa",
+          pie: "Diplichnites: desplazamiento rápido sobre la superficie.",
+          credito: "diplichnites"
+        },
+        {
+          src: "assets/img/trilobites/rusophycus.jpg",
+          ancho: 1889, alto: 1118,
+          alt: "Icnofósil Rusophycus en roca ordovícica",
+          pie: "Rusophycus: huellas de reposo.",
+          credito: "rusophycus"
+        },
+      ],
+    },
+    {
+      id: "anatomia",
+      titulo: "Anatomía del trilobite",
+      nivel: 2,
+    },
+    {
+      id: "cefalon",
+      titulo: "El cefalón",
+      nivel: 3,
+      parrafos: [
+        "El céfalo (cabeza) o cefalón presenta un contorno variable, subcircular a semielíptico, subtriangular o trapezoidal. La mayoría de las especies posee una región axial elevada, denominada glabela, que está definida anterior y lateralmente por un surco preglabelar y los surcos axiales.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/cefalon-numerado.svg",
+          ancho: 260, alto: 180,
+          alt: "Esquema de las áreas del cefalón de un trilobite, con cada zona numerada y rotulada",
+          credito: "cefalon-numerado"
+        },
+      ],
+    },
+    {
+      id: "torax",
+      titulo: "El tórax",
+      nivel: 3,
+      parrafos: [
+        "Esta es la sección del exoesqueleto es en donde se encuentran los tergitos que es la placa dorsal o porción dorsal de la cubierta de un segmento metamérico (metámero es cada uno de los segmentos que se repiten en ciertos grupos de animales, celomados de simetría bilateral o bilateria), de un artrópodo especialmente en el abdomen), separados. están articulados entre sí para permitir flexibilidad e inserción en el siguiente tergito. El número de segmentos torácicos varía entre dos y hasta cuarenta y dos, con mayor frecuencia en el rango de ocho a quince.",
+      ],
+    },
+    {
+      id: "pigidio",
+      titulo: "La zona caudal o pigidio",
+      nivel: 3,
+      parrafos: [
+        "La zona caudal o pigidio es un elemento involucrado en el sistema natatorio del trilobite, dando impulso al animal en su desplazamiento, el pigidio al igual que el céfalo, es una placa única, constituida por la fusión de los elementos posteriores.",
+        "El contorno del pigidio es generalmente semielíptico, aunque en varios casos adopta otras formas como semicircular, triangular, pentagonal o subcuadrangular. Asimismo, su tamaño relativo varía considerablemente: el trilobite es denominado micropigidio (a), si el pigidio es mucho más pequeño que el céfalo, mesopigidio (b), si ambas placas tienen una tamaño un poco más pequeño o dimensiones similares al cefalón, y macropigidio (c) cuando el pigidio es del mismo tamaño o más grande que el cefalón.",
+      ],
+    },
+    {
+      id: "muda",
+      titulo: "Muda o ecdisis",
+      nivel: 2,
+      parrafos: [
+        "En el exoesqueleto cefálico de la mayoría de los trilobites, existen simétricamente líneas de debilidad llamadas suturas faciales, que suministraban espacios a partir de los cuales el animal se desprendía del viejo e inservible exoesqueleto, que, una vez fuera del cuerpo se denomina exubio. Las otras placas se encontraban articuladas entre sí, por lo cual era fácil su desprendimiento durante la ecdisis. Las más desarrolladas entre los trilobites fueron las suturas faciales o también llamadas dorsales, que permiten dividir el esqueleto cefálico en tres piezas: Una central llamada cranidio y dos laterales llamadas genas libres o librígenas. Durante la ecdisis, lo normal es que las tres piezas del cefalón se deprendieran por separado del tórax.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/suturas-faciales.jpg",
+          ancho: 918, alto: 271,
+          alt: "Diagrama de las suturas faciales del cranidio de un trilobite",
+          credito: "suturas-faciales"
+        },
+      ],
+    },
+    {
+      id: "alimentacion",
+      titulo: "Alimentación en los trilobites",
+      nivel: 2,
+      parrafos: [
+        "El Trilobites se alimentaba triturando el alimento con los apéndices ubicados a los costados del labrum y llevándolos hasta el orificio bucal, y luego a la zona estomacal. Esto sugiere una alimentación llamada tronco-extremidades, el mecanismo que implica la creación de una corriente de alimentación por un movimiento rítmico de las extremidades, en este caso haciendo que las bases del telopodito transportan las partículas de comida a la boca a través del surco alimentario ventral.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/hipostoma.jpg",
+          ancho: 3127, alto: 910,
+          alt: "Tipos de hipostoma de trilobites según su forma de unión",
+          credito: "hipostoma"
+        },
+      ],
+    },
+    {
+      id: "vision",
+      titulo: "Visión de los trilobites",
+      nivel: 2,
+      parrafos: [
+        "Los ojos de los trilobites estaban compuestos por numerosas lentes de composición calcítica, los  lentes estaban hechos de cristales de calcita, que se sitúan en la línea media del caparazón y a los costados de la glabela y son bastante visibles, éstos presentan formas muy variables, algunas  especies son ciegas habitando zonas del fondo fangoso del mar, en tanto que otras especies tienen ojos durante su estado juvenil, los que luego se atrofian hasta desaparecer en el estado de edad avanzada; sin embargo, la mayoría de las especies poseen un sistema visual bastante eficaz. Los ojos son compuestos y consisten en numerosos lentes llamados omatidios, cada uno de los cuales posee una cornea lisa que puede estar levantada o abollada, insertada en los agujeros redondos o poligonales.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/ojo-holocroal.jpg",
+          ancho: 2048, alto: 1536,
+          alt: "Ojo holocroal fosilizado de un trilobite con sus lentes de calcita",
+          pie: "Ojo holocroal: lentes de calcita conservadas en el fósil.",
+          credito: "ojo-holocroal"
+        },
+      ],
+    },
+    {
+      id: "conga",
+      titulo: "Líneas de conga",
+      nivel: 2,
+      parrafos: [
+        "Se han encontrado numerosos ejemplos de abundantes, exoesqueletos de trilobites articulados dispuestos en patrones lineales muy compactos en lugares de esquistos fosilíferos y areniscas de grano fino de la Formación Arenig (Devónico, Floiano) en el sur Marruecos. Estas alineaciones de trilobites son también llamadas “congas”. Los fósiles recientemente descritos capturan grupos de estos animales desfilando por el fondo del océano, tal vez para migrar como grupo o reunirse para aparearse.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/conga.jpg",
+          ancho: 5240, alto: 3300,
+          alt: "Alineación de trilobites Isotellus conservados en fila",
+          pie: "Alineaciones de trilobites, llamadas «congas».",
+          credito: "conga"
+        },
+      ],
+    },
+    {
+      id: "fondo",
+      titulo: "Vida en el fondo",
+      nivel: 2,
+      parrafos: [
+        "Los trilobites, por su forma aplanada, por sus ojos en posición dorsal y la dureza y flexibilidad de su caparazón se deduce que la mayoría eran animales bentónicos (Los organismos bentónicos son aquellos que se asocian a cualquier fondo acuático, viven en contacto o en una dependencia directa con el fondo del mar).  Seguramente eran micrófagos, filtrando el barro del fondo en que vivían para obtener el alimento, algunos carecían de apéndices excavadores o prensiles, así como de piezas bucales trituradoras.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/enrollado.jpg",
+          ancho: 2893, alto: 3464,
+          alt: "Trilobite Drotops armatus enrollado sobre sí mismo",
+          pie: "El enrollamiento protege al animal del ataque de predadores.",
+          credito: "enrollado"
+        },
+      ],
+    },
+    {
+      id: "reproduccion",
+      titulo: "Reproducción y apareamiento",
+      nivel: 2,
+      parrafos: [
+        "Recientes investigaciones han revelado que existe una diferencia entre machos y hembras del trilobite Olenoides serratus, que podría tratarse de un dimorfismo sexual, ya que el macho al parecer presenta adaptaciones para el apareamiento. Se trata de apéndices funcionalmente especializados, que son extremidades análogas a los ganchos, en los endopoditos 10 y 11, que son utilizados por los machos hembra durante el apareamiento.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/olenoides.jpg",
+          ancho: 3020, alto: 3845,
+          alt: "Espécimen de Olenoides inflatus del Cámbrico medio",
+          pie: "Olenoides: en esta especie se describió el dimorfismo sexual.",
+          credito: "olenoides"
+        },
+      ],
+    },
+    {
+      id: "dimorfismo",
+      titulo: "Dimorfismo sexual en trilobites",
+      nivel: 2,
+      parrafos: [
+        "El dimorfismo sexual se refiere a la exhibición de diferencias de apariencia entre machos y hembras de la misma especie, especialmente su tamaño, forma, color u órganos reproductivos sexuales. La mayoría de los artrópodos existentes presentan un fuerte dimorfismo sexual característico entre las especies, especialmente en la forma del cuerpo. Los trilobites exhibieron dimorfismo sexual entre sus especies como los artrópodos existentes, y su estudio es posible dado que los trilobites son uno de los artrópodos marinos extintos más abundantes y antiguos conocidos.",
+        "Bajo alturas similares de especies similares, los machos parecen con su cabeza más aguzada (forma de víbora), en tanto que las hembras tienen una forma ligeramente esférica.",
+        "Los machos tienen longitudes idénticas en ambas antenas, mientras que las hembras tienen longitudes diferentes.",
+        "El cuerpo del macho tiene forma muscular de Hércules o se ve alargado, en tanto que las hembras se aprecian más globoso o gordo. Ejemplo el caso de Crotalocephalus.",
+        "El cuerpo del macho tiene los primeros 6 segmentos del tórax tienen una forma pleural recta, mientras que el de la hembra parece ligeramente esférico.",
+        "El cuerpo del macho tiene los primeros 6 segmentos del tórax tienen una forma pleural recta, mientras que el de la hembra parece ligeramente esférico.",
+        "Los rasgos que diferencian a los morfotipos son diferentes para cada especie, pero incluyen tanto la longitud del pigidio, más corto en los machos, como variaciones en la longitud de algunos segmentos del tórax, presentando las hembras una zona más estrecha en el mismo.",
+        "El área del tórax después de los primeros 6 segmentos del macho suele tener forma de “V” y alargarse hasta el final del   pigidio. Las hembras suelen presentar una estructura en forma de “U” con un pigidio más aplanado.",
+        "Comparación entre macho (izquierda) y hembra (derecha) de Crotalocephalus gibbus de Alnif, Marruecos; y en B/N, Comparación entre macho (izquierda, 5,40 cm) y hembra (derecha, 5,72 cm) de Sokhretia cf solitaria de Tisserdmine, Erfoud, Marruecos.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/acadoparadoxides.jpg",
+          ancho: 5125, alto: 3141,
+          alt: "Espécimen de Acadoparadoxides briareus conservado completo",
+          pie: "Acadoparadoxides: las diferencias entre morfotipos varían en cada especie.",
+          credito: "acadoparadoxides"
+        },
+      ],
+    },
+    {
+      id: "espinas",
+      titulo: "Espinas, tubérculos y tridentes",
+      nivel: 2,
+      parrafos: [
+        "Los trilobites se encontraban entre los invertebrados dominantes en los mares del Paleozoico y exhibían una extraordinaria variedad de morfología exoesquelética, comúnmente tenían protuberancias cefálicas, espinas o bulbos, en su tórax, mostrando una notable variedad de formas. Es probable que su función principal fuera la protección contra depredadores sobre todo en estado de enrollamiento que los haría muy difícil de atacar o para el desplazamiento hidrodinámico. En tanto que otros postulan que eran rasgos sexuales secundarios.",
+        "Dentro de estas características existen algunos trilobites que exhiben un tridente frontal muy extraño, que al parecer es una especie de arma. Walliserops trifurcatus llevaba un tridente único y gigante en la cabeza, cuya finalidad ha sido durante mucho tiempo un misterio. Ahora se piensa que se utilizaba para las peleas entre machos que luchaban por el dominio de las hembras.",
+        "Walliserops trifurcatus",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/walliserops.jpg",
+          ancho: 2310, alto: 3694,
+          alt: "Fósil de Walliserops trifurcatus con su tridente frontal",
+          pie: "Walliserops trifurcatus y su tridente frontal.",
+          credito: "walliserops"
+        },
+      ],
+    },
+    {
+      id: "enrollamiento",
+      titulo: "Enrollamiento de los trilobites",
+      nivel: 2,
+      parrafos: [
+        "Muchos trilobites poseían la capacidad de enrollarse frente a condiciones adversas o para protegerse del ataque de predadores. El exoesqueleto enrollado representa una cápsula parcial o completamente cerrada, con el cefalón y el pigidio en contacto entre sí. Para lograr esta singular disposición es importante el papel que cumplían los extremos de las pleuras, que se imbricaban al nivel de las facetas articulantes para permitir la flexión del tórax.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/enrollado.jpg",
+          ancho: 2893, alto: 3464,
+          alt: "Trilobite Drotops armatus enrollado sobre sí mismo",
+          pie: "El exoesqueleto enrollado forma una cápsula casi cerrada.",
+          credito: "enrollado"
+        },
+      ],
+    },
+    {
+      id: "desarrollo",
+      titulo: "Desarrollo de los trilobites",
+      nivel: 2,
+      parrafos: [
+        "Los trilobites tienen un periodo de desarrollo en que el animal sufre diferentes cambios corporales en su ontogenia, el primer estadio de desarrollo después de eclosionar el huevo es conocido como protaspis (A), en este momento los trilobites presentan un perfil circular y sin segmentos libres, la mejilla se encuentra fija y está dividida solo en pleuras, constituyendo una nueva prueba de la segmentación original de la cabeza.",
+        "El estadio siguiente se caracteriza por una serie de cambios que lleva al Trilobite desde una condición juvenil a la adulta, la que recibe el nombre de meraspis (B), en esta etapa se produce la formación de las zonas torácicas y pigidial, en tanto que en la cabeza se desarrolla la glabela y la región visual. El último estadio en que los trilobites alcanzan su estado de madurez o adulto se denomina holaspis (C), definiendo en este momento las características que el animal tendrá hasta su muerte.",
+      ],
+    },
+    {
+      id: "tamano",
+      titulo: "Tamaño",
+      nivel: 2,
+      parrafos: [
+        "Los trilobites, durante su evolución, alcanzaron diversos tamaños, desde aquellos agnostidos de algunos milímetros, hasta aquellos gigantes como Isotelus rex, que alcanzo un tamaño de más de 70 centímetros. Esta diversidad de tamaños sin duda influyo en la forma de vida de estos formidables artrópodos.",
+        "Trilobites pequeños, izquierda y grande, Acadoparadoxides briareus",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/isotelus.jpg",
+          ancho: 3640, alto: 4340,
+          alt: "Isotelus rex, uno de los trilobites más grandes conocidos, expuesto en el Royal Tyrrell Museum",
+          pie: "Isotelus rex: más de 70 centímetros de largo.",
+          credito: "isotelus"
+        },
+      ],
+    },
+  ],
+
+  /* Aviso de procedencia de las imágenes. Se pinta sobre la sección de atributos. */
+  notaImagenes:
+    "Las imágenes de esta página son de Wikimedia Commons y se reproducen con su licencia. " +
+    "Corresponden a fósiles de otras colecciones del mundo: ilustran el capítulo, no forman " +
+    "parte de la muestra del Museo Paleontológico de Chile.",
+
+  atribucion: {
+    titulo: "Créditos de las imágenes",
+    intro:
+      "Autor y licencia de cada imagen, según su ficha en Wikimedia Commons.",
+    fuente: { texto: "Wikimedia Commons", url: "https://commons.wikimedia.org/" }
+  },
+
+  /* Cierre de la subpágina: devuelve al museo, no a un callejón sin salida. */
+  cierre: {
+    texto: "Los trilobites son una de las siete piezas de la muestra del museo.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones"
+  }
+};
+
 if (typeof window !== "undefined") {
   window.MUSEO = MUSEO; window.QUIENES_SOMOS = QUIENES_SOMOS;
   window.COLECCIONES = COLECCIONES; window.SERVICIOS = SERVICIOS;
   window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.PALEOMUNDO = PALEOMUNDO;
-  window.GALERIA = GALERIA;
+  window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES;
 }
