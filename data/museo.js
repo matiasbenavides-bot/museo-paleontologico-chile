@@ -571,6 +571,39 @@ const MUSEO_ITINERANTE = {
      ⚠️ Es texto de RÓTULO (dice a dónde lleva), no prosa nueva: por eso puede
      escribirlo el agente, igual que los títulos de sección de la subpágina. */
   subpagina: { enlace: "proyecto-cec.html", texto: "Ver el Proyecto C.E.C completo" },
+  /* --- De dónde NACE el proyecto (CR-67, 2026-10-16) ---
+     El dueño reportó que la sección "describe la muestra pero no dice qué es el
+     C.E.C" y pidió tres cosas: de dónde nace el proyecto · quién lo dirige ·
+     que hay un especialista guiando.
+
+     ⇒ ALCANCE REAL DE CADA UNA (y por qué NO hay prosa nueva acá):
+
+       1. «De dónde nace»  -> NO es un texto que falte escribir: el origen YA
+          está publicado en la subpágina, en `CEC.intro` ("surge del interés de
+          personas comprometidas con la Paleontología…") y en `CEC.relacion`.
+          Lo que faltaba era el CAMINO. Se resuelve con este enlace rotulado,
+          que dice a dónde lleva (misma categoría que "Ver el Proyecto C.E.C
+          completo" de más arriba, CR-62c).
+          🔴 NO se redacta un párrafo nuevo acá: DEC-034 prohíbe al agente
+          escribir copy institucional, y el origen ya tiene su texto aprobado.
+
+       2. «Quién lo dirige» -> el nombre y el cargo de `MUSEO.director`
+          (DEC-042 autoriza publicarlos). Lo pinta el render bajo el logo.
+
+       3. «Un especialista guiando» -> YA ESTÁ, y es TEXTUAL del material del
+          Centro: el 3er párrafo de `CEC.museoItinerante`. En la portada, la
+          tarjeta de `datos` siempre lo dijo ("Contamos con un especialista
+          guiando" — verificado en el commit b524765). El texto se acortó DESPUÉS,
+          cuando el dueño pidió priorizar el COSTO (CR-62c), y hoy el dato dice
+          "La muestra cuenta además con la guía explicativa de dos profesionales".
+          ⇒ El hecho sigue publicado; lo que se pierde en celular es la PALABRA
+            «especialista». Eso es lo que hay que hacer visible, no un texto nuevo.
+          ⚠️ Un valor corto está EN CAPACIDAD de ser recortado por el ellipsis de
+          su línea (le pasó a "Museo Paleontológico de Chile" -> "Museo
+          Paleontológico de C…"). Por eso el texto de este enlace se acorta.
+          ⚠️ El párrafo del dato está escrito con «dos profesionales»: si el
+            dueño confirma que es UNO, se corrige ahí (dato suyo, DEC-005). */
+  origen: { texto: "Cómo nace el C.E.C", enlace: "proyecto-cec.html#proyecto-cec" },
   /* --- Fotos de la muestra itinerante montada en establecimientos ---
      CR-45 (2026-10-13): el dueño pidio moverlas aca, desde Galeria:
        "LA DE LOS EXPOSICION EN ESCUELAS NO DEBEN IR EN GALERIA, SI NO EN

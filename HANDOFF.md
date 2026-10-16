@@ -40,6 +40,51 @@ imágenes en celular».
 
 ---
 
+## CR-67 (2026-10-16) — contexto en la zona C.E.C de la portada
+
+Pedido del dueño, textual:
+
+> «Contexto en la zona C.E.C de la portada. La sección hoy describe la muestra
+> pero no dice qué es el C.E.C. Falta: de dónde nace el proyecto · quién lo
+> dirige · que hay un especialista guiando.»
+
+**HECHO (local, sin publicar):**
+
+| Punto | Cómo quedó |
+|---|---|
+| Quién lo dirige | Bloque de tipografía (rótulo «Dirección» + `JUAN CASTILLO CORNEJO` + cargo) **debajo del logo**, pintado desde `MUSEO.director` (DEC-005). Publicable por **DEC-042**. Sin caja, sin foto: una placa con su nombre en la sección de la MUESTRA lo haría ver como responsable del Proyecto C.E.C, y eso el dueño no lo dijo |
+| De dónde nace | **Enlace rotulado** `Cómo nace el C.E.C` → `proyecto-cec.html#proyecto-cec`, a ancho completo bajo el encabezado. **No se redactó prosa nueva** (DEC-034): el origen ya está publicado en `CEC.intro` / `CEC.relacion`; lo que faltaba era el camino |
+| Especialista guiando | 🔴 **NO ESTABA PUBLICADO.** Ver abajo |
+
+**Estado: medido, 0 desborde, 0 fallos de sintaxis, en 9 anchos.** El logo quedó en
+**560 px** (intacto, requisito del dueño). Enlace a la subpágina conservado.
+
+### 🔴 El dato del especialista NUNCA se publicó — y la skill lo daba por hecho
+
+`CEC.museoItinerante.parrafos[2]` **sí** dice, textual del material del Centro:
+*«La muestra cuenta además con la guía explicativa de dos profesionales…»*.
+Pero eso vive en la **subpágina**.
+
+En la **portada**, las 4 tarjetas de dato salen de `MUSEO_ITINERANTE.datos`, y hoy son:
+`25 vitrinas` · `3 días` · `$1.000` · `Para enseñanza básica y media`.
+**Ninguna menciona la guía.** Verificado por sonda: `especialistaVisible = False` en
+los 9 anchos, y `git log -S"especialista" -- data/museo.js` **no devuelve ningún commit**
+(el texto solo vivía en el `HANDOFF.md` viejo, como pendiente no ejecutado).
+
+⇒ **La 3ª cosa que el dueño pide es CONTENIDO NUEVO, no un defecto de layout.**
+No se puede sacar de un dato que no está en el data. **Falta que el dueño lo dicte**
+(cuántos profesionales, nombre/cargo si es publicable, qué hacen durante la muestra).
+Mientras no esté, el enlace al origen es el único camino visible a la guía.
+
+⚠️ **Corregido en la skill `museo-mpch`:** decía que la portada «siempre dijo
+*Contamos con un especialista guiando*». **Es falso** y llevaba a cerrar el pedido
+creyendo que ya estaba resuelto.
+
+📎 Detalle, sonda y asserts: `references/cr67-contexto-cec-portada.md`.
+📎 Sonda reproducible: `scripts/mide-cr67.py` (WebSocket nativo, sin `node_modules`).
+
+---
+
 ## LO PRIMERO QUE HAY QUE SABER
 
 **Leer `/home/logicforgex/.hermes/skills/software-development/museo-mpch/`.**

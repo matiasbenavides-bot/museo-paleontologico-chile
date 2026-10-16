@@ -405,6 +405,33 @@
        `introSec` es textual suyo. No se agrega prosa del agente (DEC-034). */
     var html = '<div class="pm-card reveal">';
 
+    /* CR-67 (2026-10-16): QUIÉN DIRIGE LA MUESTRA, debajo del logo.
+       El dueño reportó: "la sección hoy describe la muestra pero no dice qué es
+       el C.E.C. Falta: de dónde nace el proyecto · quién lo dirige · que hay un
+       especialista guiando".
+       ⚠️ ALCANCE: acá va SÓLO el nombre y el cargo de quien dirige. El punto
+       "de dónde nace el proyecto" NO es texto nuevo: es el eje `intro`/`relacion`
+       de la subpágina, así que se resuelve con un ENLACE ROTULADO bajo el nombre
+       ("Conocer el Proyecto C.E.C completo" -> proyecto-cec.html), en vez de
+       copiar prosa acá. El especialista que guía ya está en el dato `datos`
+       ("La muestra cuenta además con la guía explicativa de dos profesionales",
+       textual del material del Centro) — en celular hay que COMPROBAR que se vea.
+       ⚠️ NO se sube la FOTO del director en esta card: la foto chica del hero
+       (director-160.jpg, 160px) en una caja de 1044 se vería blanda, y una placa
+       con su nombre en la sección de la MUESTRA lo haría aparecer como
+       responsable del Proyecto C.E.C, que es una afirmación que el dueño no hizo.
+       ⚠️ El dato sale de MUSEO.director (DEC-005) y su publicación está
+       autorizada por él mismo (DEC-042). Si el dueño quiere SU foto acá, se sube
+       un archivo nuevo y se agrega el <img>: la ruta vive en el data/. */
+    var dir = window.MUSEO && window.MUSEO.director;
+    if (dir && dir.nombre) {
+      html += '<div class="pm-card__dir">' +
+                '<span class="pm-card__dir-rol">Dirección</span>' +
+                '<p class="pm-card__dir-nombre">' + esc(dir.nombre) + "</p>" +
+                '<p class="pm-card__dir-cargo">' + esc(dir.cargo) + "</p>" +
+              "</div>";
+    }
+
     /* CR-56 (2026-10-15): el LOGO de la muestra, ARRIBA de todo — el dueño pidió
        "sumar, pero como logo arriba de esa seccion". Va antes del encabezado, no
        dentro de él: el encabezado está centrado y el logo tiene su propia
@@ -436,6 +463,24 @@
               (p.subtituloSec ? '<p class="pm-card__bajada">' + esc(p.subtituloSec) + "</p>" : "") +
               (p.introSec ? '<p class="pm-card__intro">' + esc(p.introSec) + "</p>" : "") +
             "</header>";
+
+    /* CR-67 (2026-10-16): el enlace del ORIGEN. Va pegado al encabezado —es
+       parte de "qué es el C.E.C"— y ANTES de la reja de dos columnas, así queda
+       a ancho completo en TODOS los anchos. Si fuera una fila del grid a 900px
+       caería en una columna y quedaría a media pantalla.
+       ⚠️ La clase `.cec-muestra__enlace` NO se repone acá aunque exista su regla
+       en el CSS: la ubicación la decide el grid y duplicarla cambiaría el layout
+       aprobado. El bloque usa `pm-mas--origen`, que sólo ajusta el margen. */
+    if (p.origen && p.origen.enlace) {
+      html += '<div class="pm-card__origen">' +
+                '<a class="pm-mas pm-mas--origen" href="' + esc(p.origen.enlace) + '">' +
+                  esc(p.origen.texto || "Ver el origen del proyecto") +
+                  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
+                  ' stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                  '<path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+                "</a>" +
+              "</div>";
+    }
 
     /* La imagen, dentro de la misma card. */
     if (p.fotos && p.fotos.length) {

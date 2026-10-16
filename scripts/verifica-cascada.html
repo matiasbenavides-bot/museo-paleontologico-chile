@@ -1,0 +1,88 @@
+/* verifica-cascada.html — lamina de medicion: dice QUE REGLA gana en el navegador.
+   No mide propiedades declaradas: le pregunta al navegador cual computo.
+   Abrir en el mismo server:  http://127.0.0.1:8099/scripts/verifica-cascada.html */
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Cascada .tri-fig</title>
+<style>
+  body{font:14px/1.5 monospace;background:#0b1020;color:#dfe7ff;padding:20px}
+  .ok{color:#6ee7a8;font-weight:700}.mal{color:#ff7a7a;font-weight:700}
+  table{border-collapse:collapse;margin-top:10px;width:100%}
+  td,th{border:1px solid #33406b;padding:6px 8px;text-align:left}
+  th{background:#182448}
+</style></head>
+<body>
+<h1>Qué regla GANA en las figuras de Trilobites</h1>
+<p id="estado">mide...</p>
+<table id="t"><thead><tr>
+<th>#</th><th>archivo</th><th>nat (w x h)</th><th>ratio nat</th>
+<th>pintado</th><th>ratio caja</th><th>object-fit computado</th><th>aspect-ratio comp.</th><th>¿recorta?</th>
+</tr></thead><tbody></tbody></table>
+
+<script>
+(async () => {
+  const est = document.getElementById("estado");
+  try {
+    // levantar el sitio: si estamos dentro de /scripts/, subir un nivel
+    const base = location.pathname.includes("/scripts/") ? "../" : "";
+    const html = await (await fetch(base + "trilobites.html")).text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    // clonar al documento para que el CSS del sitio aplique
+    const cont = document.createElement("div");
+    cont.id = "zona-prueba";
+    cont.innerHTML = doc.querySelector("main").innerHTML;
+    document.body.appendChild(cont);
+
+    // cargar las hojas del sitio
+    const links = [...doc.querySelectorAll('link[rel="stylesheet"]')].map(l => l.getAttribute("href"));
+    for (const h of links) {
+      const l = document.createElement("link");
+      l.rel = "stylesheet"; l.href = base + h.replace(/^\.\//, "");
+      document.head.appendChild(l);
+      await new Promise(r => { l.onload = r; l.onerror = r; });
+    }
+    await new Promise(r => setTimeout(r, 600));
+
+    const figs = [...document.querySelectorAll("#zona-prueba .tri-fig")];
+    est.textContent = "figuras encontradas: " + figs.length;
+    if (!figs.length) { est.className = "mal"; return; }
+
+    const tb = document.querySelector("#t tbody");
+    let recortadas = 0;
+    for (let i = 0; i < figs.length; i++) {
+      const fig = figs[i];
+      const img = fig.querySelector("img");
+      if (!img) continue;
+      // esperar decodificacion (pitfall: lazy + sin scroll miente)
+      img.loading = "eager";
+      if (!img.complete) await new Promise(r => { img.onload = r; img.onerror = r; setTimeout(r, 1500); });
+      if (!img.naturalWidth) continue; // NO MEDIDO (regla: no imprimir 0 como si fuera dato)
+
+      const cs = getComputedStyle(img);
+      const r = img.getBoundingClientRect();
+      const nr = img.naturalWidth / img.naturalHeight;
+      const cr = r.width / r.height;
+      // recorta si el ratio pintado difiere del natural (con tolerancia 2%)
+      const recorta = Math.abs(nr - cr) / nr > 0.02;
+      if (recorta) recortadas++;
+
+      const tr = document.createElement("tr");
+      const txt = (s) => document.createTextNode(s);
+      [i, img.getAttribute("src").split("/").pop(),
+       img.naturalWidth + " x " + img.naturalHeight, nr.toFixed(2),
+       Math.round(r.width) + " x " + Math.round(r.height), cr.toFixed(2),
+       cs.objectFit, cs.aspectRatio, recorta ? "SI" : "no"].forEach((v, k) => {
+        const td = document.createElement("td");
+        if (k === 8) td.className = v.startsWith("SI") ? "mal" : "ok";
+        td.appendChild(txt(String(v))); tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    }
+    est.textContent = "RECORTADAS: " + recortadas + " de " + figs.length;
+    est.className = recortadas ? "mal" : "ok";
+  } catch (e) {
+    est.textContent = "ERROR: " + e.message; est.className = "mal";
+  }
+})();
+</script>
+</body></html>

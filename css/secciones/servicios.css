@@ -140,6 +140,51 @@
   width: 100%; max-width: min(560px, 100%); margin: 0 auto;
 }
 .pm-card__cabeza .etiqueta { margin-bottom: 14px; }
+
+/* ---------- Quién DIRIGE la muestra (CR-67, 2026-10-16) ----------
+   Va entre el logo y el encabezado. El dueño pidió que la sección diga "quién
+   lo dirige"; el nombre y el cargo salen de MUSEO.director (DEC-005) y su
+   publicación está autorizada por él mismo (DEC-042).
+
+   ⚠️ Es un GRUPO PROPIO y NO una fila del grid de dos columnas (el grid vive
+   más abajo, `min-width: 900px`): si fuera una fila con área propia, a 900px
+   caería dentro de una columna y quedaría a media pantalla. Acá, al ser un
+   bloque del flujo normal anterior al grid, ocupa el ancho completo en TODOS
+   los anchos.
+
+   ⚠️ SIN caja, SIN fondo y SIN borde, a propósito: un recuadro con su nombre
+   en la sección de la MUESTRA lo haría aparecer como responsable del Proyecto
+   C.E.C, y eso es una afirmación que el dueño no hizo. Sólo tipografía, en el
+   mismo lenguaje que la bajada de arriba.
+
+   ⚠️ NO se sube acá la FOTO del director: la que hay es de 160px y en una caja
+   de 1044 se vería blanda. Si el dueño la quiere, se pide una de más resolución
+   y se agrega el <img> — la ruta vive en el data/. */
+.pm-card__dir {
+  text-align: center;
+  margin: 0 auto clamp(20px, 2.6vw, 30px);
+  /* Se ciñe al ancho del párrafo de intro (62ch) para que el conjunto se lea
+     como un bloque y no como una línea suelta de lado a lado. */
+  max-width: 62ch;
+}
+.pm-card__dir-rol {
+  display: block;
+  font-size: .72rem; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--celeste-dark);
+  margin-bottom: 6px;
+}
+.pm-card__dir-nombre {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.15; letter-spacing: .04em;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+.pm-card__dir-cargo {
+  font-size: clamp(.82rem, 1vw, .92rem);
+  color: var(--text-soft); line-height: 1.4;
+}
 .pm-card__titulo {
   font-family: var(--font-display);
   font-size: clamp(2.1rem, 5.4vw, 3.9rem);
@@ -254,6 +299,15 @@
 .pm-mas svg { flex: none; transition: transform .3s var(--ease-out-expo); }
 .pm-mas:hover svg { transform: translateX(3px); }
 @media (min-width: 900px) { .cec-muestra__enlace { text-align: left; } }
+
+/* ---------- Enlace al ORIGEN del proyecto (CR-67, 2026-10-16) ----------
+   Va pegado al encabezado y NO dentro del grid de dos columnas: se emite antes
+   de la fila `fotos caja`, así que cae a ancho completo en todos los anchos.
+   ⚠️ Centrado en TODOS los anchos, incluso en escritorio: es la continuación
+   del encabezado (que es centrado), no un elemento de las columnas de abajo.
+   Por eso NO hereda el `text-align: left` de arriba. */
+.pm-card__origen { text-align: center; margin: 0 0 clamp(20px, 2.6vw, 30px); }
+.pm-mas--origen { padding: 10px 18px; font-size: clamp(.78rem, 1vw, .85rem); }
 
 /* --- Píldoras de datos ---
    Centradas, para que acompañen al encabezado centrado. */
