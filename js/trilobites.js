@@ -123,22 +123,25 @@
      `ancho`/`alto` van SIEMPRE en el <img>: sin ellos el navegador no reserva
      el espacio y la página da un salto al cargar (CLS). Los valores salen
      medidos del archivo real, están en el data/.
-     `loading="lazy"` porque la página tiene 19 imágenes: sin lazy, se bajan
-     todas antes de mostrar nada. */
+     CR-60d (2026-10-15): `loading="lazy"` se conserva SOLO de la tercera figura
+     en adelante. Medido en celular: con lazy en todas, las últimas (isotelus)
+     quedaban sin cargar y su marco se veía vacío. Las dos primeras se cargan
+     siempre (`eager`), porque son las que el usuario ve al entrar. */
   function figurasHTML(imgs) {
     if (!imgs || !imgs.length) return "";
     var n = imgs.length >= 3 ? 3 : imgs.length;
     return '<div class="tri-figs tri-figs--' + n + '">' +
-      imgs.map(function (im) {
+      imgs.map(function (im, k) {
         var f = FICHAS[im.credito] || {};
         var pie = im.pie ? esc(im.pie) : "";
         var cred = f.autor ? '<span class="tri-fig__cred">' + esc(f.autor) + "</span>" : "";
         var dim = (im.ancho && im.alto)
           ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
+        var carga = k < 2 ? ' loading="eager"' : ' loading="lazy"';
         return '<figure class="tri-fig">' +
                  '<span class="tri-fig__marco">' +
                    '<img src="' + esc(im.src) + '"' + dim +
-                     ' alt="' + esc(im.alt) + '" loading="lazy" decoding="async">' +
+                     ' alt="' + esc(im.alt) + '"' + carga + ' decoding="async">' +
                  "</span>" +
                  (pie || cred
                    ? "<figcaption>" + (pie ? "<b>" + pie + "</b>" : "") +

@@ -131,6 +131,12 @@
   margin: clamp(20px, 3vw, 28px) 0 0;
   max-width: min(100%,
                  clamp(440px, 46vw + 180px, 780px));   /* tope (a) */
+  /* CR-60d (2026-10-15): las tarjetas de una MISMA grilla se estiran a la
+     misma altura (`stretch`, el valor por defecto), y el marco de adentro se
+     estira con `flex: 1`. Sin esto, dos laminas de proporcion distinta quedaban
+     con altos dispares y la fila se veia desordenada en celular (medido:
+     247 vs 207 px, 210 vs 248 px). */
+  align-items: stretch;
 }
 .tri-figs--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .tri-figs--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
@@ -139,6 +145,7 @@
   margin: 0; border-radius: var(--radius-md); overflow: hidden;
   background: var(--bg-card); border: 1px solid var(--border-subtle);
   transition: border-color .35s, box-shadow .35s, transform .35s var(--ease-out-expo);
+  display: flex; flex-direction: column;
 }
 .tri-fig:hover { border-color: var(--border-accent); box-shadow: var(--shadow-md); }
 /* ⚠️ Sin `scale` en el hover (regla del proyecto). El zoom va SOLO en la
@@ -146,8 +153,16 @@
 .tri-fig__marco {
   display: flex; align-items: center; justify-content: center;
   width: 100%; overflow: hidden;
-  /* Tope (b): el alto de la CAJA. Lo que no entra, se ajusta la imagen. */
-  max-height: clamp(240px, 42vh, 420px);
+  /* CR-60d (2026-10-15): alto UNIFORME, no heredado del vecino.
+     Antes usaba min-height + flex:1, y el resultado dependia de que habia al
+     lado: medido en celular, dos laminas de la misma seccion quedaban con
+     marcos de 219 px pero tarjetas de 286 y 267, porque el pie de foto de una
+     medía 65 px y el de la otra 45.
+     => Aca el marco tiene ALTO FIJO (min = max = el mismo clamp). Asi TODAS
+        las laminas del sitio miden igual, en cualquier ancho y en cualquier
+        posicion, con imagen cargada o sin cargar (reserva el espacio siempre:
+        eso resuelve tambien el colapso a 0x0 del loading=lazy). */
+  height: clamp(200px, 30vh, 340px);
   background: linear-gradient(160deg, var(--bg-elevated), var(--bg-deep));
 }
 .tri-fig__marco img {
@@ -166,6 +181,9 @@
   padding: 12px 14px 14px;
   font-size: clamp(.78rem, 1.1vw, .83rem);
   line-height: 1.55; color: var(--text-muted);
+  /* Anclado al fondo de la tarjeta: con tarjetas de igual alto, los pies
+     quedan alineados en la misma linea, no cada uno donde caiga. */
+  margin-top: auto;
 }
 .tri-fig figcaption b { color: var(--text-soft); font-weight: 600; }
 
