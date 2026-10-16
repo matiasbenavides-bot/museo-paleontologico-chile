@@ -152,6 +152,42 @@
     "</div>";
   }
 
+  /* ---------- Leyenda de los numeros del diagrama (CR-65, 2026-10-16) ----------
+     Los SVG vienen de Commons con los numeros DIBUJADOS pero sin los nombres
+     (verificado: `<text>` con "1".."10" y ningun nombre). La leyenda los traduce:
+     numero -> nombre en espanol + nombre en ingles. Datos en `data/museo.js`.
+
+     🔴 POR QUE ES UNA CARD APARTE Y NO VA EN EL <figcaption> (medido, y el dueno
+     lo reporto como «muy grueso»): dentro del pie, la leyenda y la imagen
+     comparten la MISMA caja, y el pie llego a medir el 60% de la card en
+     celular (418px de pie contra 700px de card a 390px de ancho) — el pie
+     terminaba siendo mas grande que la imagen. Como card propia:
+       - la figura vuelve a su alto de antes;
+       - la leyenda usa el ANCHO COMPLETO de la seccion y despliega sus
+         columnas de verdad (medido: 739px de ancho a 1280).
+     ⚠️ Va PEGADA a su figura (el dueno lo pidio asi): el cefalon tiene 10 areas
+       y el cranidio 3, y hay que poder ver cual leyenda es de cual dibujo.
+     ⚠️ Va FUERA del `.tri-figs` (la grilla de figuras), para que no entre como
+       una figura mas de la grilla ni herede su ancho acotado. */
+  function leyendasHTML(imgs) {
+    if (!imgs || !imgs.length) return "";
+    return imgs.map(function (im) {
+      if (!im.leyenda || !im.leyenda.length) return "";
+      return '<aside class="tri-leyenda reveal" aria-label="Numeración del diagrama">' +
+        '<p class="tri-leyenda__t">Numeración del diagrama</p>' +
+        '<ul class="tri-leyenda__lista">' +
+          im.leyenda.map(function (it) {
+            return "<li>" +
+              '<b class="tri-leyenda__n">' + esc(it.n) + "</b>" +
+              '<span class="tri-leyenda__es">' + esc(it.es) + "</span>" +
+              '<span class="tri-leyenda__en">' + esc(it.en) + "</span>" +
+              "</li>";
+          }).join("") +
+        "</ul>" +
+      "</aside>";
+    }).join("");
+  }
+
   /* ---------- Secciones ---------- */
   function pintarSecciones() {
     var cont = $("[data-tri-secciones]");
@@ -166,6 +202,7 @@
                  '</h' + (sub ? "3" : "2") + '>' +
                cuerpo +
                figurasHTML(s.imagenes) +
+               leyendasHTML(s.imagenes) +
              "</section>";
     }).join("");
   }

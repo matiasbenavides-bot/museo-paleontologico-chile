@@ -680,13 +680,43 @@ const TRILOBITES = {
           ancho: 260, alto: 180,
           alt: "Esquema de las áreas del cefalón de un trilobite, con cada zona numerada y rotulada",
           pie: "Las tres regiones del cuerpo: cefalón, tórax y pigidio.",
-          credito: "cefalon-numerado"
+          credito: "cefalon-numerado",
+          /* CR-65 (2026-10-16) — LEYENDA DE LOS NUMEROS DEL DIAGRAMA.
+             El SVG que entrega Commons trae SOLO los numeros 1..10 dibujados:
+             los nombres de cada area no estan dentro del archivo (se verifico:
+             hay 10 <text> con "1".."10" y ningun nombre). Sin esta leyenda, el
+             lector ve numeros sin saber a que corresponden.
+             ORDEN: es el del propio diagrama y el de la descripcion oficial de
+             Commons (la misma que esta en creditos.json). NO se reordena.
+             ESPANOL: los terminos siguen el uso del material del museo, que ya
+             dice "glabela" y "surco preglabelar" (seccion "El cefalón"). No se
+             invento terminologia nueva.
+             ⚠️ Si el dueno corrige un nombre, se cambia SOLO aca. */
+          leyenda: [
+            { n: "1",  es: "Área preocular",        en: "Preocular area" },
+            { n: "2",  es: "Área palpebral",        en: "Palpebral area" },
+            { n: "3",  es: "Área postocular",       en: "Postocular area" },
+            { n: "4",  es: "Proyección posterolateral", en: "Posterolateral projection" },
+            { n: "5",  es: "Anillo occipital",      en: "Occipital ring" },
+            { n: "6",  es: "Glabela",               en: "Glabella" },
+            { n: "7",  es: "Área posterior",        en: "Posterior area" },
+            { n: "8",  es: "Borde lateral",         en: "Lateral border" },
+            { n: "9",  es: "Área librigenal",       en: "Librigenal area" },
+            { n: "10", es: "Área preglabelar",      en: "Preglabellar area" }
+          ]
         },
         {
           src: "assets/img/trilobites/cranidio-numerado.svg",
           ancho: 230, alto: 160,
           alt: "Esquema del cranidio de un trilobite con sus elementos numerados",
-          credito: "cranidio-numerado"
+          credito: "cranidio-numerado",
+          /* CR-65: mismos criterios que la leyenda del cefalón. Este diagrama
+             trae los numeros 1..3 dibujados (verificado: 3 <text>). */
+          leyenda: [
+            { n: "1", es: "Fixigena", en: "Fixigena" },
+            { n: "2", es: "Librigena", en: "Librigena" },
+            { n: "3", es: "Glabela",  en: "Glabella" }
+          ]
         },
       ],
     },
@@ -786,7 +816,24 @@ const TRILOBITES = {
           src: "assets/img/trilobites/cefalon-numerado.svg",
           ancho: 260, alto: 180,
           alt: "Esquema de las áreas del cefalón de un trilobite, con cada zona numerada y rotulada",
-          credito: "cefalon-numerado"
+          credito: "cefalon-numerado",
+          /* CR-65: MISMA leyenda que en la sección «¿Qué son los trilobites?»,
+             porque es el MISMO diagrama (el cefalón se usa dos veces en la
+             página). ⚠️ Son dos entradas distintas del data apuntando al mismo
+             archivo: si el dueño corrige un nombre, hay que corregirlo en LAS
+             DOS o el mismo dibujo queda con dos leyendas diferentes. */
+          leyenda: [
+            { n: "1",  es: "Área preocular",        en: "Preocular area" },
+            { n: "2",  es: "Área palpebral",        en: "Palpebral area" },
+            { n: "3",  es: "Área postocular",       en: "Postocular area" },
+            { n: "4",  es: "Proyección posterolateral", en: "Posterolateral projection" },
+            { n: "5",  es: "Anillo occipital",      en: "Occipital ring" },
+            { n: "6",  es: "Glabela",               en: "Glabella" },
+            { n: "7",  es: "Área posterior",        en: "Posterior area" },
+            { n: "8",  es: "Borde lateral",         en: "Lateral border" },
+            { n: "9",  es: "Área librigenal",       en: "Librigenal area" },
+            { n: "10", es: "Área preglabelar",      en: "Preglabellar area" }
+          ]
         },
       ],
     },

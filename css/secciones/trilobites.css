@@ -234,6 +234,71 @@
 }
 .tri-fig figcaption b { color: var(--text-soft); font-weight: 600; }
 
+/* ---------- Card de la leyenda del diagrama (CR-65, 2026-10-16) ----------
+   Los SVG vienen de Commons con los numeros DIBUJADOS pero sin los nombres.
+   Esta card los traduce: numero -> nombre en espanol + nombre en ingles.
+   Datos en `data/museo.js` (campo `leyenda`), no aca (DEC-005).
+
+   🔴 POR QUE ES CARD APARTE (medido, el dueno lo reporto como «muy grueso»):
+   dentro del <figcaption> el pie llegaba al 60% de la card en celular
+   (418px de pie contra 700px de card a 390px). Como card propia la figura
+   vuelve a su alto y la leyenda usa el ancho completo de la seccion. */
+.tri-leyenda {
+  /* ⚠️ Va FUERA de `.tri-figs`, asi que toma el ancho completo de la seccion:
+     no lleva `max-width` propia — el ancho lo pone el contenedor. */
+  margin: clamp(16px, 2.4vw, 22px) 0 0;
+  padding: clamp(16px, 2.4vw, 22px) clamp(16px, 2.6vw, 24px);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+}
+.tri-leyenda__t {
+  margin: 0 0 10px;
+  font-size: clamp(.72rem, 1vw, .78rem);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.tri-leyenda__lista {
+  list-style: none;
+  margin: 0; padding: 0;
+  /* 3 columnas cuando hay ancho; el navegador reduce solo */
+  columns: 3;
+  column-gap: clamp(18px, 2.6vw, 32px);
+}
+.tri-leyenda__lista li {
+  /* ⚠️ `break-inside: avoid` para que un item no se corte entre columnas */
+  break-inside: avoid;
+  display: grid;
+  grid-template-columns: 1.7em 1fr;   /* el numero en columna fija */
+  align-items: baseline;
+  gap: 0 .4em;
+  padding: 4px 0;
+  font-size: clamp(.78rem, 1.1vw, .84rem);
+  line-height: 1.45;
+}
+.tri-leyenda__n {
+  color: var(--celeste);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;   /* los numeros no bailan */
+  text-align: right;
+}
+.tri-leyenda__es { color: var(--text-soft); }
+/* El ingles va debajo del espanol, en su propia linea: en una columna angosta
+   los dos juntos no caben sin cortarse. */
+.tri-leyenda__en {
+  grid-column: 2;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .tri-leyenda__lista { columns: 2; }
+}
+@media (max-width: 640px) {
+  .tri-leyenda__lista { columns: 1; }
+}
+
 /* ---------- Sección de atributos (pedido del dueño) ---------- */
 .tri-creditos {
   margin-top: var(--space-seccion);
