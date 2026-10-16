@@ -56,8 +56,17 @@ Pedido del dueño, textual:
 | De dónde nace | **Enlace rotulado** `Cómo nace el C.E.C` → `proyecto-cec.html#proyecto-cec`, a ancho completo bajo el encabezado. **No se redactó prosa nueva** (DEC-034): el origen ya está publicado en `CEC.intro` / `CEC.relacion`; lo que faltaba era el camino |
 | Especialista guiando | 🔴 **NO ESTABA PUBLICADO.** Ver abajo |
 
-**Estado: medido, 0 desborde, 0 fallos de sintaxis, en 9 anchos.** El logo quedó en
-**560 px** (intacto, requisito del dueño). Enlace a la subpágina conservado.
+**Estado: PUBLICADO y verificado sobre la URL real** (commit `aaaa816`, rama `master`).
+La dirección del museo se pinta en vivo (nombre y cargo completos, 77 px a 1440 · 87 px a
+390), el enlace del origen apunta a `proyecto-cec.html#proyecto-cec` y el ancla **existe**
+en la subpágina publicada. **0 desborde, 0 errores de consola, logo en 560 px (intacto),
+enlace a la subpágina conservado.** Medido con `scripts/verifica-cr67-vivo.py`, que carga
+**la URL de GitHub Pages**, no el local.
+
+⚠️ **Que el archivo llegue NO es que pinte.** El primer chequeo dio `grep -c` = 4 tanto en
+`render.js` como en `servicios.css` servidos: eso prueba que el **deploy** subió, no que el
+sitio **funcione**. La verificación que vale es cargar la URL y medir el DOM ya pintado
+(`window.MUSEO` definido + el bloque presente).
 
 ### 🔴 El dato del especialista NUNCA se publicó — y la skill lo daba por hecho
 
