@@ -110,6 +110,30 @@
 }
 .tri-sec p + p { margin-top: 14px; }
 
+/* 🔴 CR-60e — NEUTRALIZAR EL RECORTE QUE VIENE DE `galeria.css`
+   La causa raiz del «mal recortadas» NO estaba en esta hoja: `galeria.css:39-41`
+   aplica a TODA `.galeria__foto img` del sitio:
+
+     .galeria__foto img { width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; }
+
+   Las figuras de esta pagina usan la MISMA clase `.galeria__foto`, asi que
+   heredaban el cuadrado forzado + el `cover`, y de ahi el recorte (medido: hasta
+   235% en `walliserops`). Como `galeria.css` se importa para la portada, no se
+   puede tocar alla: se neutraliza ACA, con mas especificidad.
+   ⚠️ Si alguien agrega otra .galeria__foto en una pagina nueva, va a heredar el
+     cuadrado de galeria.css y va a recortar igual. Esa regla es para la GALERIA
+     (que si quiere miniaturas cuadradas), no para figuras de contenido. */
+.tri-fig .galeria__foto img {
+  aspect-ratio: auto;
+  object-fit: none;
+  object-position: center;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  background: transparent;
+}
+
 /* ---------- Figuras ----------
    CR-60b (2026-10-15): las fotos salían GIGANTES y el dueño lo reportó.
    Causa medida: `width:100%; height:auto` en una grilla `auto-fit` daba a las
@@ -153,24 +177,47 @@
 .tri-fig__marco {
   display: flex; align-items: center; justify-content: center;
   width: 100%; overflow: hidden;
-  /* CR-60d (2026-10-15): alto UNIFORME, no heredado del vecino.
-     Antes usaba min-height + flex:1, y el resultado dependia de que habia al
-     lado: medido en celular, dos laminas de la misma seccion quedaban con
-     marcos de 219 px pero tarjetas de 286 y 267, porque el pie de foto de una
-     medía 65 px y el de la otra 45.
-     => Aca el marco tiene ALTO FIJO (min = max = el mismo clamp). Asi TODAS
-        las laminas del sitio miden igual, en cualquier ancho y en cualquier
-        posicion, con imagen cargada o sin cargar (reserva el espacio siempre:
-        eso resuelve tambien el colapso a 0x0 del loading=lazy). */
-  height: clamp(200px, 30vh, 340px);
+  /* 🔴 CR-60e (2026-10-15): ALTO FIJO + `object-fit:cover` RECORTABA las fotos.
+     El dueño lo reportó («las imagenes mal recortadas en formato cel») y la
+     medición lo confirmó, y peor de lo esperado:
+
+       walliserops   marco 531x253 (ratio 2.10)  nat ratio 0.63  -> recorta 235%
+       triarthrus    marco 531x253 (ratio 2.10)  nat ratio 0.67  -> recorta 213%
+       hipostoma     marco 326x253 (ratio 1.29)  nat ratio 3.43  -> recorta  62%
+       enrollado     marco 326x253 (ratio 1.29)  nat ratio 0.84  -> recorta  54%
+
+     O sea: **las 19 figuras estaban recortadas**, y las verticales perdían más
+     del 100% de su alto (el `cover` recorta hasta llenar, y con una caja 2.10
+     contra una foto 0.63 se come la mayor parte).
+
+     ⇒ El marco YA NO impone un alto: **toma la proporcion de la imagen**. Los
+       topes siguen existiendo, pero como MÁXIMO del marco (no `height` fijo), y
+       la imagen se limita con `max-height` + `width:auto`, que ESCALA sin cortar.
+     ⚠️ Se pierde la uniformidad de alturas de CR-60d, y es DELIBERADO: era
+        uniformidad a costa de mutilar las fotos. Entre «todas iguales» y «que se
+        vean completas», manda que se vean completas.
+     ⚠️ El `min-height` se conserva SOLO para que una imagen sin cargar (lazy o
+        lenta) no deje la caja en 0 px — que fue el defecto de CR-60d. */
+  /* CR-60f: los topes de alto subieron porque las VERTICALES quedaban angostas.
+     Medido en 390px: `walliserops` (ratio 0.63) aprovechaba solo el 65% del
+     ancho y `cranidio` el 53% — una tira delgada centrada con huecos a los
+     lados. Al ser altas, el `max-height` las limita y la imagen se achica en
+     ancho. Subiendo el tope ganan ancho y siguen bajo 1 pantalla.
+     ⚠️ El tope sigue existiendo: sin el, `walliserops` (1400x2239) a 358px de
+       ancho pediria 573px de alto. */
+  min-height: clamp(180px, 24vh, 280px);
+  max-height: clamp(280px, 58vh, 620px);
   background: linear-gradient(160deg, var(--bg-elevated), var(--bg-deep));
 }
 .tri-fig__marco img {
   display: block;
-  /* La imagen se limita por LOS DOS lados: nunca excede la caja ni se deforma.
-     `width:auto` + `height:auto` dejan que el navegador resuelva la proporcion
-     a partir del `max-height`; sin el `width` explicito el <img> se sale. */
-  max-width: 100%; max-height: inherit;
+  /* La imagen se limita por LOS DOS lados y **nunca se recorta**:
+     - `max-width:100%` la mantiene dentro del ancho de la caja;
+     - `max-height:100%` la mantiene dentro del alto;
+     - `width/height:auto` dejan que el navegador resuelva la proporcion sola.
+     ⚠️ SIN `object-fit`: eso es lo que recortaba. El `cover` llena la caja
+       cortando; aca la caja se adapta a la imagen, no al reves. */
+  max-width: 100%; max-height: 100%;
   width: auto; height: auto;
   margin: auto;
   transition: transform .5s var(--ease-out-expo);

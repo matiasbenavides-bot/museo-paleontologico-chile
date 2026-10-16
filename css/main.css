@@ -20,6 +20,9 @@
    criterio que perfil.css: va en la cadena única para que UN solo <link> sirva
    a todas las páginas y no existan dos listas de CSS que puedan divergir. */
 @import url("secciones/trilobites.css");
+/* CR-61: la subpágina PROYECTO C.E.C (proyecto-cec.html) tiene su propia hoja.
+   Mismo criterio que perfil.css y trilobites.css: cadena única, un solo <link>. */
+@import url("secciones/cec.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");

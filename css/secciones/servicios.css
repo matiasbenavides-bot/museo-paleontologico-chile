@@ -188,39 +188,192 @@
 .paleomundo__fotos--destaque .galeria__foto {
   border: 0; border-radius: 0; box-shadow: none;
 }
-/* Alto ACOTADO: la foto acompaña, no se come la pantalla. */
+/* Alto ACOTADO: la foto acompaña, no se come la pantalla.
+   🔴 CR-62 (2026-10-15): ACÁ ESTABA EL DEFECTO. Con `aspect-ratio: 16 / 10`
+   sobre una imagen CUADRADA (700x700), el navegador la estiraba a 720x450 y le
+   RECORTABA el 36% del alto. Medido: 'nat 700x700' pintaba '720x450'.
+   ⇒ Se respeta la proporción NATURAL de cada foto. El tope de alto lo pone
+     `max-height`, que escala sin cortar. */
+/* La imagen LLENA el ancho de su caja y el alto lo acota LA CAJA (`overflow`),
+   no la imagen: si el tope se pusiera en la imagen, `width:auto` la encogeria
+   en vez de recortarla (medido: quedaba en 306px dentro de una caja de 1044).
+   La foto es cuadrada (700x700), asi que con `object-fit: cover` llena el marco
+   sin deformarse; el `object-position` centra el encuadre.
+   ⚠️ CR-62b: el tope de alto SOLO aplica a pantallas chicas. Medido en 768px,
+     una foto cuadrada a ancho completo con tope de 324px quedaba recortada a
+     2:1 (666x324) y se veia APLASTADA. El tope existe para que la foto no se
+     coma la pantalla, y a pantalla chica el ancho ya la contiene sola. */
+.paleomundo__fotos--destaque .galeria__foto {
+  overflow: hidden;
+}
+@media (max-width: 899px) {
+  .paleomundo__fotos--destaque .galeria__foto img { max-height: 62vh; }
+}
 .paleomundo__fotos--destaque .galeria__foto img {
-  aspect-ratio: 16 / 10; height: auto;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  aspect-ratio: auto;
 }
 /* Escritorio y tablet: con DOS fotos van pegadas formando una franja.
-   Con UNA sola (caso actual), el grid baja a una columna y se ciñe a 720px. */
+   Con UNA sola (caso actual), el grid baja a una columna y se ciñe al ancho
+   de la caja de contenido, para ALINEAR con el resto de la sección.
+   CR-62: antes se ceñía a 720px mientras el resto iba a 1044px: la foto
+   quedaba 322px más angosta que todos los demás bloques, y eso se veía
+   desprolijo. */
 @media (min-width: 700px) {
   .paleomundo__fotos--destaque { grid-template-columns: repeat(2, 1fr); }
   .paleomundo__fotos--destaque .galeria__foto + .galeria__foto {
     border-left: 1px solid var(--border-accent);
   }
   .paleomundo__fotos--destaque:has(.galeria__foto:only-child) {
-    grid-template-columns: minmax(0, 720px);
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
   }
-  .paleomundo__fotos--destaque .galeria__foto:only-child { max-width: 720px; }
+  .paleomundo__fotos--destaque .galeria__foto:only-child { max-width: none; }
 }
+
+/* --- Enlace a la subpágina del Proyecto C.E.C (CR-62c) ---
+   Se emite fuera de las columnas, debajo. Centrado en móvil (donde todo va
+   apilado y centrado) y alineado a la izquierda en escritorio, para que
+   coincida con el borde de las columnas de arriba. */
+.paleomundo__enlace { margin-top: clamp(20px, 2.6vw, 30px); text-align: center; }
+.pm-mas {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 12px 22px; border-radius: 999px;
+  font-size: clamp(.82rem, 1.15vw, .88rem); font-weight: 600;
+  letter-spacing: .03em;
+  color: var(--text-main); text-decoration: none;
+  background: var(--bg-glass); border: 1px solid var(--border-accent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  transition: gap .3s var(--ease-out-expo), border-color .3s, box-shadow .3s, color .3s;
+}
+.pm-mas:hover {
+  gap: 13px; color: var(--celeste-light);
+  border-color: var(--celeste); box-shadow: var(--shadow-glow);
+}
+.pm-mas svg { flex: none; transition: transform .3s var(--ease-out-expo); }
+.pm-mas:hover svg { transform: translateX(3px); }
+@media (min-width: 900px) { .paleomundo__enlace { text-align: left; } }
 
 /* --- Píldoras de datos ---
    Centradas, para que acompañen al encabezado centrado. */
+/* ---------- El CUERPO de la sección, en DOS COLUMNAS ----------
+   CR-62 (2026-10-15): el dueño reportó que la sección se veía "muy fea" y pidió
+   "agrupá el resto en columnas y alineá la foto (más compacto)".
+
+   ANTES: 5 bloques APILADOS (logo → encabezado → foto → píldoras → caja), con
+   la foto desalineada y la sección midiendo 1725px = 1,9 pantallas.
+   AHORA: el encabezado y el logo quedan arriba, centrados (no se tocan: el logo
+   es intocable por orden del dueño, ver CR-38/CR-56), y DEBAJO la foto y la caja
+   de contenido van lado a lado.
+
+   ⚠️ El marcado lo emite render.js en orden logo → cabeza → fotos → datos →
+   caja, así que las columnas se hacen con GRID: `.pm-card` es el contenedor y
+   las dos piezas se ubican por área usando `:has()`, sin tocar el JS. Si algún
+   día render.js cambia el orden, esto deja de aplicar y la sección vuelve a
+   apilarse sola (degradación segura, no se rompe).
+
+   ⚠️ El logo y las píldoras siguen a ancho completo: el logo porque su tamaño
+   manda sobre el resto, y las píldoras porque son datos cortos que se leen bien
+   en fila. */
+@media (min-width: 900px) {
+  .pm-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);
+    grid-template-areas:
+      "logo    logo"
+      "cabeza  cabeza"
+      "fotos   caja"
+      "datos   caja"
+      "enlace  enlace";
+    column-gap: clamp(24px, 3vw, 40px);
+    align-items: start;
+  }
+  .pm-card__logo   { grid-area: logo; }
+  .pm-card__cabeza { grid-area: cabeza; }
+  .paleomundo__fotos { grid-area: fotos; margin-bottom: clamp(16px, 2vw, 22px); }
+  .paleomundo__datos { grid-area: datos; margin-bottom: 0; justify-content: flex-start; }
+  .paleomundo__caja  { grid-area: caja; align-self: start; }
+  .paleomundo__enlace { grid-area: enlace; }
+
+  /* La foto ocupa todo el ancho de SU columna y llena el alto que le da la
+     caja de al lado (`align-self: stretch`), así las dos columnas terminan
+     parejas en vez de dejar un hueco. */
+  .paleomundo__fotos--destaque { align-self: stretch; }
+  .paleomundo__fotos--destaque .galeria__foto { max-height: none; height: 100%; }
+  .paleomundo__fotos--destaque .galeria__foto img { height: 100%; min-height: 260px; }
+}
+/* --- Datos duros de la muestra ---
+   🔴 CR-62d (2026-10-15): el dueño reportó que "se ven mal las mini card" y pidió
+   una sección "menos generalizada y más realista".
+
+   QUÉ ESTABA MAL, MEDIDO: las 4 píldoras eran chips de UNA línea, con anchos muy
+   distintos (210, 313, 398 y 256 px medidos en 1440px). Al no caber dos juntas,
+   cada una caía en su propia fila y quedaban CUATRO BARRITAS DE LARGO DESIGUAL
+   apiladas, como una lista mal alineada. En celular eran 4 barritas de 3 largos
+   distintos. Un dato con ícono de una línea no es una tarjeta: es un chip suelto.
+
+   ⇒ Ahora son TARJETAS DE DATO de verdad: grid parejo (todas del mismo ancho y
+     alto), el número/valor en grande y el detalle debajo. Eso es lo que hace la
+     sección "más realista": cada dato tiene su lugar, no su renglón.
+   ⚠️ El dato NO cambia: lo que cambia es cómo se presenta. Sigue saliendo de
+     PALEOMUNDO.datos (data/museo.js), que es la fuente única (DEC-005).
+   ⚠️ La clase `.paleomundo__pildora` se CONSERVA porque la emite render.js. Si
+     algún día se renombra, hay que tocar los dos lados. */
 .paleomundo__datos {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  justify-content: center;
-  margin: 0 0 clamp(20px, 2.4vw, 28px);
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 158px), 1fr));
+  align-items: stretch;
 }
+/* CR-62e (2026-10-15): el dueño pidió probar las mini cards TRANSPARENTES.
+   Se midió el contraste antes de decidir (fórmula WCAG, mínimo AA = 4.5):
+
+     SOLIDA  (#0a2a52):  valor 12.72  ·  detalle 4.85   <- el detalle apenas pasaba
+     TRANSPARENTE:       valor 15.80  ·  detalle 6.03   <- MEJOR en los dos
+
+   Por qué mejora: el gradiente de la sección en esa zona es MAS OSCURO que el
+   azul de la tarjeta, asi que al dejar pasar el fondo el texto claro gana
+   contraste. El vidrio no resta legibilidad acá: la suma.
+   ⇒ Se adopta la version transparente (glass), que ademas es coherente con el
+     resto del sitio, donde las cajas de dato son `--bg-glass`.
+   ⚠️ Si el gradiente de la sección cambiara a un tono MAS CLARO en esa zona,
+     hay que volver a medir: el contraste depende de lo que pase por detrás. */
 .paleomundo__pildora {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 15px; border-radius: 999px;
-  background: var(--bg-glass); border: 1px solid var(--border-subtle);
+  display: flex; flex-direction: column; gap: 7px;
+  padding: 14px 15px;
+  border-radius: var(--radius-md);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-mid);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  font-size: .78rem; color: var(--text-soft); line-height: 1.25;
+  transition: border-color .3s, box-shadow .3s, background .3s;
+  /* Alto PAREJO entre las cuatro. Medido: con `min-height` la 4a quedaba en
+     135px contra 140 de las otras (su detalle ocupa una linea menos), asi que
+     se usa ALTO FIJO: la caja no depende de cuanto texto traiga cada una.
+     ⚠️ Es una tarjeta de DATO corto, siempre de 1-2 lineas: el alto fijo no
+     puede cortar texto. Si algun dia un dato trae un texto largo, hay que
+     revisar esto. */
+  height: clamp(126px, 15.5vh, 152px);
+  justify-content: space-between;
 }
-.paleomundo__pildora svg { width: 15px; height: 15px; color: var(--ocre); flex-shrink: 0; }
-.paleomundo__pildora b { color: var(--text-main); font-weight: 600; }
+.paleomundo__pildora:hover {
+  border-color: var(--border-accent); box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, .06);
+}
+.paleomundo__pildora svg { width: 19px; height: 19px; color: var(--ocre); flex-shrink: 0; }
+/* El valor manda: es el dato que el dueño quiere que se lea de un golpe. */
+.paleomundo__pildora b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.28rem, 2vw, 1.62rem);
+  line-height: 1.06; color: var(--text-main); font-weight: 600;
+}
+/* El detalle, debajo y en gris: explica el valor sin competir con él. */
+.pm-dato__c { display: block; min-width: 0; }
+.pm-dato__d {
+  display: block; margin-top: 3px;
+  font-size: clamp(.74rem, 1.05vw, .79rem);
+  line-height: 1.42; color: var(--text-muted);
+}
 
 /* --- Tarjetas de las vitrinas ---
    CR-50c: padding y aire reducidos. La caja ya no es un panel alto: se aprieta

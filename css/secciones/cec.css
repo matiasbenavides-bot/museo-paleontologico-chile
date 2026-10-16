@@ -1,0 +1,316 @@
+/* ============================================================
+   CR-61 (2026-10-15) — Subpágina PROYECTO C.E.C (proyecto-cec.html)
+   Tercera subpágina del sitio. Reglas vigentes:
+     - tamaños con `clamp()`, nunca px fijos (DEC-015);
+     - animaciones de entrada SOLO en eje Y (DEC-017);
+     - hover con glow / translateY, NUNCA `scale` en la caja;
+     - todo el texto sale de data/museo.js -> CEC (DEC-005).
+
+   ⚠️ La lección de CR-60c: el `.header` es `position: fixed` y NO reserva
+   espacio, así que la cabecera de la página tiene que compensar su alto.
+   El aire se DERIVA de `--header-h` (lo publica el JS), NO se escribe a mano.
+   ============================================================ */
+
+/* ---------- Cabecera de la página ---------- */
+.cec-cabeza {
+  padding-top: max(clamp(96px, 12vw, 120px),
+                   calc(var(--header-h, 84px) + clamp(18px, 2.6vw, 32px)));
+}
+
+.cec-volver {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: clamp(.78rem, 1.1vw, .84rem); font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--text-muted); text-decoration: none;
+  margin-bottom: clamp(20px, 3vw, 30px);
+  transition: color .3s, gap .3s var(--ease-out-expo);
+}
+.cec-volver:hover { color: var(--ocre); gap: 13px; }
+.cec-volver svg { flex: none; }
+
+.cec-titulo {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: 1.06; color: var(--text-main);
+  margin: 12px 0 14px;
+  /* El nombre es largo: se acota el ancho para que no cruce toda la pantalla. */
+  max-width: 24ch;
+}
+.cec-bajada {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: var(--text-soft); max-width: 62ch;
+}
+.cec-intro {
+  margin-top: clamp(18px, 2.6vw, 26px);
+  padding-top: clamp(18px, 2.6vw, 26px);
+  border-top: 1px solid var(--border-subtle);
+  max-width: 74ch;
+}
+.cec-intro p {
+  font-size: clamp(.95rem, 1.4vw, 1.03rem);
+  line-height: 1.72; color: var(--text-soft);
+}
+.cec-intro p + p { margin-top: 14px; }
+
+/* ---------- La relación con el museo ----------
+   Es la parte que el dueño tuvo que aclarar (el museo es independiente de la
+   municipalidad y convive con varias empresas). Va destacada. */
+.cec-relacion {
+  margin-top: clamp(24px, 3.6vw, 34px);
+  padding: clamp(20px, 3vw, 28px);
+  border-radius: var(--radius-md);
+  max-width: 74ch;
+}
+.cec-relacion__t {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  color: var(--text-main); margin-bottom: 12px;
+}
+.cec-relacion p {
+  font-size: clamp(.9rem, 1.3vw, .97rem);
+  line-height: 1.7; color: var(--text-soft);
+}
+.cec-relacion__nota {
+  margin-top: 12px; padding: 11px 13px;
+  border-radius: var(--radius-sm);
+  background: rgba(81, 173, 198, .08);
+  border-left: 2px solid var(--border-accent);
+  font-size: clamp(.82rem, 1.2vw, .88rem) !important;
+  color: var(--text-muted) !important;
+}
+
+/* ---------- Cifras destacadas (CR-63) ----------
+   El dueño pidió mejorar "cómo se muestran las cosas". La página era 100% texto
+   (9,1 pantallas, 0 imágenes de contenido). Las cifras dan contexto de un golpe
+   antes de la intro larga: número grande, unidad y detalle.
+   ⚠️ Los valores salen TEXTUALES del material del Centro (CEC.cifras), no son
+     estimaciones del agente. */
+.cec-cifras {
+  margin-top: clamp(24px, 3.6vw, 34px);
+  display: grid; gap: clamp(10px, 1.6vw, 14px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+  align-items: stretch;
+}
+.cec-cifra {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: clamp(15px, 2vw, 19px);
+  border-radius: var(--radius-md);
+  background: var(--bg-glass); border: 1px solid var(--border-mid);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  height: clamp(128px, 15.5vh, 152px);
+  justify-content: space-between;
+  transition: border-color .3s, background .3s, box-shadow .3s;
+}
+.cec-cifra:hover {
+  border-color: var(--border-accent); background: rgba(255, 255, 255, .06);
+  box-shadow: var(--shadow-md);
+}
+.cec-cifra__ico { color: var(--ocre); }
+.cec-cifra__ico svg { width: 19px; height: 19px; }
+.cec-cifra__num {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1; color: var(--text-main); font-weight: 600;
+  display: block;
+}
+.cec-cifra__ud {
+  font-family: var(--font-body);
+  font-size: clamp(.68rem, .95vw, .74rem);
+  font-weight: 500; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ocre-light); margin-left: 6px;
+}
+.cec-cifra__det {
+  display: block; margin-top: auto;
+  font-size: clamp(.73rem, 1.02vw, .78rem);
+  line-height: 1.4; color: var(--text-muted);
+}
+
+/* ---------- Índice ---------- */
+.cec-indice {
+  margin-top: clamp(26px, 4vw, 40px);
+  padding: clamp(18px, 2.6vw, 24px);
+  border-radius: var(--radius-md);
+  background: var(--bg-glass); border: 1px solid var(--border-subtle);
+}
+.cec-indice__t {
+  font-family: var(--font-display); font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  color: var(--text-main); margin-bottom: 14px;
+}
+.cec-indice__l {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px 20px; list-style: none; margin: 0; padding: 0;
+}
+.cec-indice__l a {
+  display: flex; align-items: center; gap: 9px;
+  padding: 5px 0;
+  font-size: clamp(.84rem, 1.2vw, .89rem);
+  color: var(--text-muted); text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .25s, border-color .25s;
+}
+.cec-indice__ico { flex: none; display: inline-flex; color: var(--ocre); }
+.cec-indice__ico svg { width: 16px; height: 16px; }
+.cec-indice__l a:hover { color: var(--ocre-light); border-bottom-color: var(--border-accent); }
+
+/* ---------- Bloques ---------- */
+.cec-bloque { margin-top: var(--space-seccion); scroll-margin-top: 110px; }
+.cec-bloque:first-child { margin-top: 0; }
+
+/* El título del bloque lleva SU ícono al lado. Rompe la monotonía de cinco
+   bloques que antes se veían todos iguales, sin agregar una sola palabra. */
+.cec-bloque__t {
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 3.1vw, 2.15rem);
+  line-height: 1.14; color: var(--text-main);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: clamp(11px, 1.4vw, 16px);
+}
+.cec-bloque__ico {
+  flex: none; display: inline-flex;
+  width: clamp(38px, 4vw, 46px); height: clamp(38px, 4vw, 46px);
+  align-items: center; justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(81, 173, 198, .1);
+  border: 1px solid var(--border-accent);
+  color: var(--ocre);
+}
+.cec-bloque__ico svg { width: 60%; height: 60%; }
+.cec-bloque__sub {
+  font-size: clamp(.82rem, 1.2vw, .88rem);
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ocre); margin-bottom: 16px;
+}
+.cec-bloque p {
+  font-size: clamp(.95rem, 1.4vw, 1.02rem);
+  line-height: 1.75; color: var(--text-soft);
+  max-width: 76ch;
+}
+.cec-bloque p + p { margin-top: 14px; }
+.cec-bloque__intro {
+  color: var(--text-muted) !important;
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+/* ---------- Actividades: LISTA ESCANEABLE (CR-64) ----------
+   El dueño reportó que la página "se ve como si fuera de celular" en PC.
+   MEDIDO: cada actividad era una tarjeta de 363px de ancho con 300-800
+   caracteres (537px de texto en columna angosta); las 10 sumaban 2211px.
+   Columnas altas y angostas = sensación de móvil.
+
+   ⇒ LISTA de filas a ancho completo: NOMBRE a la izquierda en columna fija,
+     texto a la derecha. El ojo barre los nombres; el detalle queda al lado,
+     no debajo. El texto NO se recorta (DEC-034).
+   ⚠️ El bloque NO es una card por actividad: es UNA lista con filas separadas
+     por un filo. Menos cajas, menos ruido, más fácil de recorrer. */
+.cec-actividades {
+  list-style: none; margin: 0; padding: 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.cec-actividad {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 46px);
+  padding: clamp(20px, 2.6vw, 28px) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background .3s;
+}
+.cec-actividad:hover { background: rgba(81, 173, 198, .035); }
+.cec-actividad__cab { display: flex; gap: 13px; align-items: baseline; }
+.cec-actividad__n {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: clamp(.86rem, 1.2vw, .95rem);
+  color: var(--ocre); line-height: 1.3;
+  /* El número va alineado con la primera línea del título, no con su caja. */
+  padding-top: 3px;
+}
+.cec-actividad__t {
+  font-family: var(--font-display);
+  font-size: clamp(1.14rem, 1.95vw, 1.4rem);
+  line-height: 1.24; color: var(--text-main);
+  letter-spacing: .005em; margin: 0;
+}
+.cec-actividad__cuerpo { min-width: 0; max-width: 72ch; }
+.cec-actividad p {
+  font-size: clamp(.88rem, 1.28vw, .94rem) !important;
+  line-height: 1.68; color: var(--text-muted);
+  margin: 0;
+}
+.cec-actividad__detalle { color: var(--text-soft) !important; }
+.cec-actividad p + p { margin-top: 11px; }
+
+/* En pantallas angostas la lista se apila: nombre arriba, texto debajo.
+   El número se conserva porque ordena la lectura. */
+@media (max-width: 760px) {
+  .cec-actividad { grid-template-columns: 1fr; gap: 10px; }
+  .cec-actividad__cuerpo { max-width: none; }
+}
+
+/* ---------- Publicaciones ----------
+   Lista bibliográfica: año a la izquierda, ficha a la derecha. */
+.cec-pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: pub; }
+.cec-pub {
+  display: grid; grid-template-columns: clamp(58px, 6vw, 74px) 1fr;
+  gap: clamp(12px, 2vw, 20px);
+  align-items: start;
+  padding: clamp(15px, 2.2vw, 20px);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, .022);
+  border: 1px solid var(--border-subtle);
+  transition: border-color .3s, background .3s;
+}
+.cec-pub:hover { border-color: var(--border-accent); background: rgba(255, 255, 255, .04); }
+.cec-pub__anio {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.7vw, 1.22rem);
+  color: var(--ocre); line-height: 1.2;
+}
+.cec-pub__cuerpo { min-width: 0; }
+/* CR-63: ficha compacta en 2 líneas en vez de 3 párrafos.
+   Antes: 22 <p> para 7 artículos. Ahora: título + una línea de metadatos. */
+.cec-pub__titulo {
+  display: block;
+  font-size: clamp(.92rem, 1.35vw, .99rem);
+  line-height: 1.45; color: var(--text-main);
+}
+.cec-pub__meta {
+  display: block; margin-top: 5px;
+  font-size: clamp(.76rem, 1.06vw, .81rem);
+  line-height: 1.5; color: var(--text-muted);
+}
+.cec-pub__autores { color: var(--text-soft); letter-spacing: .02em; }
+.cec-pub__sep { color: var(--border-accent); margin: 0 2px; }
+.cec-pub__fuente { font-style: italic; }
+
+/* ---------- Difusión ---------- */
+.cec-medios { list-style: none; margin: 0; padding: 0; display: grid;
+              gap: clamp(12px, 2vw, 16px);
+              grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.cec-medios li {
+  padding: clamp(15px, 2.2vw, 19px);
+  border-radius: var(--radius-md);
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--border-accent);
+}
+.cec-medio {
+  display: block;
+  font-size: clamp(.86rem, 1.25vw, .92rem); font-weight: 600;
+  color: var(--celeste-light); margin-bottom: 7px;
+}
+.cec-medio__detalle {
+  display: block;
+  font-size: clamp(.82rem, 1.18vw, .87rem);
+  line-height: 1.62; color: var(--text-muted);
+}
+
+/* ---------- Cierre ---------- */
+.cec-cierre {
+  margin-top: var(--space-seccion); text-align: center;
+  padding: clamp(26px, 4vw, 40px);
+  border-radius: var(--radius-lg);
+}
+.cec-cierre p {
+  font-family: var(--font-display); font-size: clamp(1.12rem, 2.1vw, 1.45rem);
+  color: var(--text-main); margin-bottom: 18px;
+  max-width: 52ch; margin-inline: auto;
+}

@@ -442,12 +442,20 @@
       html += '<div class="paleomundo__fotos paleomundo__fotos--destaque"></div>';
     }
 
-    /* Los datos duros, en píldoras. */
+    /* Los datos duros, en TARJETAS (CR-62d).
+       Antes eran chips de una línea con anchos desiguales, y el dueño reportó
+       que "se ven mal las mini card". Ahora cada dato es una tarjeta pareja:
+       ícono, valor grande y detalle debajo. El markup va en dos <span> SEPARADOS
+       (`.pm-dato__v` y `.pm-dato__d`) para poder darle a cada parte su tamaño;
+       con el <b> suelto dentro de un solo span no había forma de separarlos. */
     if (p.datos && p.datos.length) {
       html += '<div class="paleomundo__datos">' +
         p.datos.map(function (d) {
           return '<span class="paleomundo__pildora">' + ico(d.icono || "check") +
-                 "<span><b>" + esc(d.clave) + "</b> " + esc(d.valor) + "</span></span>";
+                 '<span class="pm-dato__c">' +
+                   '<b class="pm-dato__v">' + esc(d.clave) + "</b>" +
+                   '<span class="pm-dato__d">' + esc(d.valor) + "</span>" +
+                 "</span></span>";
         }).join("") +
       "</div>";
     }
@@ -460,6 +468,22 @@
           p.items.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") +
         "</ul>" +
       "</div>";
+
+    /* CR-62c (2026-10-15): enlace a la subpágina del Proyecto C.E.C. El dueño
+       pidió el enlace "con el respectivo link": la sección de la portada es el
+       resumen, y el detalle completo vive en `proyecto-cec.html`.
+       ⚠️ Se emite como parte del grid (área `enlace`), para que quede debajo de
+       las dos columnas y no dentro de una de ellas. */
+    if (p.subpagina && p.subpagina.enlace) {
+      html += '<div class="paleomundo__enlace">' +
+                '<a class="pm-mas" href="' + esc(p.subpagina.enlace) + '">' +
+                  esc(p.subpagina.texto || "Ver más") +
+                  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
+                  ' stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                  '<path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+                "</a>" +
+              "</div>";
+    }
 
     html += "</div>";
     cont.innerHTML = html;

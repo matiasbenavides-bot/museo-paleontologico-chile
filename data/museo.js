@@ -434,7 +434,7 @@ const SERVICIOS = [
     titulo: "Exposición escolar itinerante Proyecto C.E.C",
     detalle: "Llevamos la muestra museológica itinerante a los establecimientos educacionales de Santiago, en conjunto con el Centro de Estudios Paleontológicos de Chile. Ver la sección Proyecto C.E.C para el detalle de la muestra.",
     icono: "colegio",
-    enlace: "#paleomundo",
+    enlace: "proyecto-cec.html",
     enlaceTexto: "Ver Proyecto C.E.C"
   }
 ];
@@ -521,7 +521,21 @@ const PALEOMUNDO = {
      bajada bajo el titulo, porque "Proyecto C.E.C" solo no dice de que se trata
      a quien no conoce la sigla. Es el nombre que el dueño confirmo, textual. */
   subtituloSec: "Cultura, Educación y Capacitación",
-  introSec: "Muestra museológica itinerante que el museo lleva, en conjunto con el Centro de Estudios Paleontológicos de Chile, a los establecimientos educacionales de Santiago. Su costo se realiza a través del Museo.",
+  /* CR-62c (2026-10-15): el dueño reportó que la sección "parece como si fuera
+     gratis". Tenía razón: la píldora decía sólo "Costo: a través del Museo", que
+     es tan vago que se lee como que no se paga.
+
+     El material que entregó el dueño SÍ trae el dato concreto, textual:
+       "no tiene cargo para el establecimiento educacional ya que el costo es de
+        cargo del alumno ($ 1000 por alumno) sólo requiriéndose de parte del
+        establecimiento educacional que provea de una sala segura y con llave
+        que permita mantener la muestra segura y bien resguardada durante los
+        días que dure la exposición (2 o tres días)."
+     ⇒ Se publica ese dato tal como lo escribió el dueño. NO se inventa precio ni
+       condición: el monto y la modalidad son suyos.
+     ⚠️ El texto ANTERIOR ("Su costo se realiza a través del Museo") no se borra
+       de la historia: lo reemplaza este, que dice lo mismo pero con el monto. */
+  introSec: "Muestra museológica itinerante que el museo lleva, en conjunto con el Centro de Estudios Paleontológicos de Chile, a los establecimientos educacionales de Santiago. No tiene cargo para el establecimiento: el costo es de cargo del alumno, y sólo se requiere que el establecimiento provea una sala segura y con llave durante los días que dure la exposición.",
   /* --- Bloque de contenido: lo que LLEVA la muestra (CR-41) ---
      Titulo e intro abajo son, tambien, redaccion minima de estructura sobre el
      dato del dueño ("la puesta en valor de 25 vitrinas conteniendo..."). */
@@ -536,8 +550,8 @@ const PALEOMUNDO = {
      Si el dueño quiere otro dato aca, se cambia solo esto. */
   datos: [
     { clave: "25", valor: "vitrinas en exhibición", icono: "museo" },
-    { clave: "En conjunto con", valor: "el Centro de Estudios Paleontológicos de Chile", icono: "check" },
-    { clave: "Costo", valor: "a través del Museo", icono: "check" },
+    { clave: "3 días", valor: "se presenta en el establecimiento", icono: "check" },
+    { clave: "$1.000", valor: "por alumno · sin cargo para el establecimiento", icono: "check" },
     { clave: "Para", valor: "enseñanza básica y media", icono: "colegio" }
   ],
   items: [
@@ -547,6 +561,11 @@ const PALEOMUNDO = {
     "Cráneos de dinosaurios",
     "Material educativo, pedagógico y didáctico de gran interés para alumnos de enseñanza básica y media."
   ],
+  /* CR-61/CR-62c: enlace a la subpágina del Proyecto C.E.C, que reúne el
+     detalle completo (quiénes son, publicaciones, actividades, difusión).
+     ⚠️ Es texto de RÓTULO (dice a dónde lleva), no prosa nueva: por eso puede
+     escribirlo el agente, igual que los títulos de sección de la subpágina. */
+  subpagina: { enlace: "proyecto-cec.html", texto: "Ver el Proyecto C.E.C completo" },
   /* --- Fotos de la muestra itinerante montada en establecimientos ---
      CR-45 (2026-10-13): el dueño pidio moverlas aca, desde Galeria:
        "LA DE LOS EXPOSICION EN ESCUELAS NO DEBEN IR EN GALERIA, SI NO EN
@@ -999,9 +1018,284 @@ const TRILOBITES = {
   }
 };
 
+
+/* --- PROYECTO C.E.C (subpágina propia) ---
+   CR-61 (2026-10-15): el dueño entregó el material de C.E.C (16 años de actividad,
+   ~40 bloques) y pidió una SUBPÁGINA propia agrupada por EJES.
+
+   ⚠️ TEXTO: es del material que entregó el dueño, TRANSCRITO Y ORGANIZADO por ejes.
+   El agente no redacta prosa (regla DEC-034). Lo único escrito por el agente son
+   los títulos de los ejes y las bajadas de una línea, que son rótulos, no contenido.
+
+   ✅ RELACIÓN CON EL MUSEO, aclarada por el dueño el 2026-10-15, textual:
+      «nooo, el museo es independiente de la municipalidad, el museo convive con
+       varias empresas»
+   ⇒ NO hay contradicción con DEC-034 («se volvió independiente»): son DOS EJES
+     DISTINTOS. Independiente = independiente DE LA MUNICIPALIDAD; no significa
+     «solo». El museo trabaja con varias organizaciones y C.E.C es una de ellas.
+   🔴 Si una sesión futura lee «organización privada» y cree que contradice DEC-034:
+      no contradice. C.E.C se presenta como entidad COLABORADORA, nunca como dueña
+      del museo. El museo conserva su declaración de independencia tal cual.
+
+   🔴 LO QUE NO ENTRA, y por qué:
+     1. Ilustraciones de Jorge Aragón Palacios. El material las marca «copyrights»
+        y el dueño confirmó el 2026-10-15: «por ahora no hay autorización». Es el
+        mismo caso del ÁMBAR (DEC-027), que estaba medido e integrado y se quedó sin
+        publicar. Su NOMBRE puede mencionarse como colaborador en el texto; sus
+        OBRAS no se publican sin permiso.
+     2. `cepchile@gmail.com`. El sitio lo declaró OBSOLETO (CR-04: el museo lo dio de
+        baja). El material lo trae como contacto principal, pero publicarlo
+        contradiría al sitio. El contacto va por el del museo.
+     3. Nombres de personas de terceros: alumnos certificados, profesionales de la
+        salud, colaboradores externos. DEC-041: datos personales sin autorización.
+        Se conservan instituciones y los autores de los artículos científicos, que
+        son públicos con su publicación.
+     4. Alianzas comerciales y pertenencia institucional (DEC-041).
+*/
+const CEC = {
+  /* CIFRAS (CR-63). TODAS salen TEXTUALES del material que entregó el dueño.
+     No hay una sola inventada. De dónde sale cada una:
+       "1.000.000+ visitas / 16 años"  -> "Durante el año 2024 se recibieron
+          aproximadamente 70.000 visitas en nuestro website, sumando a la fecha y
+          después de 16 años de trabajo, más de 1.000.000 visitas"
+       "7 publicaciones"               -> la bibliografía del material (7 trabajos)
+       "4 ediciones en Isurus"         -> "ha participado en cuatro ediciones de la
+          Revista Isurus"
+       "Desde 2011"                    -> el artículo más antiguo de la lista
+     ⚠️ Si el dueño quiere actualizar el conteo de visitas, se cambia SÓLO acá. */
+  cifras: [
+    {"valor": "16", "unidad": "años", "detalle": "de trabajo continuo en divulgación",
+     "icono": "reloj"},
+    {"valor": "7", "unidad": "publicaciones", "detalle": "científicas en Chile y el extranjero",
+     "icono": "recon"},
+    {"valor": "4", "unidad": "ediciones", "detalle": "en la Revista Isurus, España",
+     "icono": "terreno"}
+  ],
+  etiqueta: "Proyecto C.E.C",
+  titulo: "Centro de Estudios Paleontológicos de Chile",
+  bajada: "Organización privada dedicada a la educación, la divulgación y la promoción de la paleontología a nivel nacional.",
+  volver: {
+    "texto": "Volver al inicio",
+    "enlace": "index.html#paleomundo"
+  },
+  intro: [
+    "El Centro de Estudios Paleontológicos de Chile es una organización privada que surge del interés de personas comprometidas con la Paleontología y que desean trabajar a distintos niveles, centrándose fundamentalmente en la educación, divulgación y promoción de esta ciencia a nivel nacional.",
+    "El Centro de Estudios Paleontológicos de Chile busca desarrollar estrategias que fomenten la difusión del estudio y conservación del Patrimonio Paleontológico Nacional. Asimismo, buscamos promover la investigación científica a nivel nacional y utilizar la divulgación como una herramienta educativa para que la comunidad en general comprenda el valor que tienen los fósiles y su estudio."
+  ],
+  /* CR-63b (2026-10-15): el dueño marcó DOS redundancias acá, y las dos eran
+     ciertas:
+       1. «independiente de la municipalidad»: es una aclaración INTERNA entre
+          nosotros. En el sitio público nadie preguntó, y nombrar a la muni la
+          trae al tema sin motivo — justo lo que DEC-041 pide no publicar.
+       2. La frase repetía lo mismo dos veces (texto y nota). Una sola basta.
+     ⇒ Queda SOLO el hecho publicable: que trabajan en conjunto, con GeoPaleo
+       como patrocinador (empresa, no dato personal).
+     ⚠️ La independencia del museo NO se borra del proyecto: sigue en DEC-034 y en
+       `MUSEO.pertenece`. Lo que se saca es mencionarla ACÁ, donde no aporta. */
+  relacion: {
+    "titulo": "Su relación con el museo",
+    "texto": "El Museo Paleontológico de Chile y el Centro de Estudios Paleontológicos de Chile trabajan en conjunto: ambas entidades desarrollan el Proyecto C.E.C, con el patrocinio de la empresa GeoPaleo Ltda."
+  },
+  museoItinerante: {
+    "icono": "museo",
+      "titulo": "El museo itinerante",
+    "subtitulo": "Museo Itinerante de Historia Natural",
+    /* CR-63b: el dueño marcó el texto como redundante y tenía razón en más de
+       lo que él señaló. Los párrafos 2 y 4 de esta lista decían LO MISMO con
+       otras palabras: los dos enumeraban réplicas, fósiles, restos de
+       vertebrados, moluscos, minerales y meteoritos.
+       ⇒ Se conserva UNO (el de las 20 vitrinas, que es el más completo y trae
+         además el dato de los fósiles originales de Marruecos y Estados Unidos,
+         que el otro no tenía). No se pierde ningún dato: se funde en uno.
+       ⚠️ El texto sigue siendo del material del Centro; sólo se eliminó la
+         repetición, no se redactó prosa nueva (DEC-034). */
+    "parrafos": [
+      "El Museo Itinerante de Historia Natural es un proyecto educativo conjunto del Museo Paleontológico de Chile y el Centro de Estudios Paleontológicos de Chile que cuenta además con el patrocinio de la Empresa GeoPaleo Ltda. y que constituye una iniciativa de divulgación y enseñanza que busca llevar la Paleontología y el estudio de los fósiles, así como también la historia natural, a los colegios y establecimientos educacionales de la Región Metropolitana de Chile.",
+      "Comprende más de 20 vitrinas con réplicas a escala de dinosaurios, reconstrucciones paleobiológicas de dinosaurios y animales extintos, réplicas y calcos de fósiles, fósiles originales traídos del extranjero (principalmente Marruecos y Estados Unidos), restos de vertebrados actuales, modelos anatómicos, insectos, moluscos e invertebrados marinos, minerales y meteoritos.",
+      "La muestra cuenta además con la guía explicativa de dos profesionales relacionados con la paleontología y el estudio de los fósiles, lo cual aporta mayor valor educativo al proyecto.",
+      "La exposición se presenta durante 3 días en los establecimientos educacionales, permitiendo que todos los alumnos participen de ella. Se solicita al establecimiento una sala segura y con llave que permita resguardar la muestra durante los días que dure la exposición."
+    ]
+  },
+  actividades: {
+    "icono": "colegio",
+      "titulo": "Actividades y programas",
+    "intro": "Programas de educación y divulgación que el Centro desarrolla en establecimientos educacionales, centros culturales y sociedades científicas.",
+    "items": [
+      {
+        "titulo": "Introducción a los Dinosaurios",
+        "detalle": "Charla de 90 minutos que se imparte en establecimientos educacionales de Santiago, a fin de acercar a los estudiantes al mundo de la Paleontología, los dinosaurios y los fósiles.",
+        "parrafos": [
+          "La actividad traslada a los estudiantes al pasado profundo de la Era Mesozoica (± 200 - 65 millones de años), época en que la Tierra era regida por los dinosaurios, permitiendo conocer aspectos generales de estos animales: su origen, biología, clasificación, desarrollo e hipótesis de extinción.",
+          "La charla se acompaña con una serie de réplicas de dinosaurios y elementos relacionados, a fin de aportar mayor valor educativo a la actividad. Una actividad especial para desarrollar en establecimientos educacionales y entre estudiantes interesados en la Paleontología, Geología y ciencias afines."
+        ]
+      },
+      {
+        "titulo": "Taller de Paleontología",
+        "detalle": "Clase semanal de una hora, durante un período a convenir con el establecimiento (3 meses, 6 meses o un año).",
+        "parrafos": [
+          "Permite a los alumnos de enseñanza básica (5° a 8° año), preferentemente, conocer conceptos teóricos sobre el método científico, evolución, paleontología y fósiles, así como también realizar actividades didácticas y entretenidas relacionadas con la historia natural y la paleontología: dibujo de dinosaurios y animales extintos, reconstrucción de fósiles en plasticina, yeso y otros materiales.",
+          "Esta actividad se ha realizado en organizaciones de educación como Fundación Mundo Ideal, SIP Red de Colegios y Escuela Brasilia de Padre Hurtado."
+        ]
+      },
+      {
+        "titulo": "Seminario Dinosaurios",
+        "detalle": "Cuatro charlas de 90 minutos cada una que introducen al estudio de los dinosaurios y sus rasgos más característicos.",
+        "parrafos": [
+          "¿Cómo se estudian los dinosaurios? ¿Cómo se diferencian entre ellos? ¿Cuál es su origen? ¿Cuáles son los dinosaurios más característicos? ¿Se convirtieron en aves? ¿Están con nosotros?",
+          "Un proyecto para establecimientos educacionales y estudiantes de enseñanza básica y media, así como centros culturales y sociedades científicas o agrupaciones de interesados en la paleontología y el estudio de los fósiles."
+        ]
+      },
+      {
+        "titulo": "Seminario Medicina Evolutiva y la Evolución de las Enfermedades",
+        "detalle": "Cuatro charlas de 90 minutos sobre el desarrollo de patologías relacionadas con el proceso evolutivo del hombre.",
+        "parrafos": [
+          "¿Por qué nos enfermamos? ¿Por qué los seres humanos sufrimos de obesidad, diabetes, hipertensión arterial o hipercolesterolemia? ¿Por qué nos da gota? ¿Por qué muchas mujeres sufren de incontinencia urinaria?",
+          "Saber cuál es nuestro lugar en la cadena evolutiva y de dónde venimos como especie permite comprender el origen y desarrollo de muchas enfermedades que sufrimos hoy en día, y orienta sobre cómo prevenirlas."
+        ]
+      },
+      {
+        "titulo": "Charlas de evolución humana",
+        "detalle": "Ciclo de charlas sobre el proceso de hominización y la relación filogenética del ser humano con los primates.",
+        "parrafos": [
+          "El ciclo entrega información general sobre el proceso de hominización por medio del cual el ser humano se ha ido desarrollando a través de millones de años a partir de primates ancestrales. Se ha impartido en establecimientos educacionales de enseñanza media, además del Museo Fonck de Viña del Mar y otras instituciones relacionadas con la cultura y las ciencias."
+        ]
+      },
+      {
+        "titulo": "Charlas de anatomía comparada, filogenia y clasificación biológica",
+        "detalle": "Ponencia sobre los fundamentos de la anatomía comparada y su papel en la interpretación filogenética.",
+        "parrafos": [
+          "La anatomía comparada es la disciplina de las ciencias biológicas que estudia las semejanzas y diferencias en la organización estructural de los seres vivos. La presentación da a conocer su nomenclatura y términos asociados, y explica el papel de la paleontología, la filogenia, la taxonomía, la sistemática y la cladística en la comprensión del mundo natural."
+        ]
+      },
+      {
+        "titulo": "Origen y evolución de los dinosaurios",
+        "detalle": "Charla sobre la aparición en el registro fósil de este linaje de saurópsidos arcosaurianos.",
+        "parrafos": [
+          "Describe de manera pormenorizada los cambios adaptativos que el grupo fue experimentando durante millones de años hasta llegar a ser uno de los más exitosos que la historia de la Biología conoce. Ha sido impartida en la Sociedad Paleontológica de Chile, el Museo Fonck y la Universidad Metropolitana de Ciencias de la Educación."
+        ]
+      },
+      {
+        "titulo": "Sobre el corazón y su evolución",
+        "detalle": "Charla sobre la evolución del corazón en los vertebrados y su relación con las patologías cardíacas del hombre actual.",
+        "parrafos": [
+          "La evolución del corazón en los vertebrados interesa no sólo para establecer los aspectos secuenciales de su estructura anatómica, sino que además, desde el punto de vista filogenético, logra explicar diversas patologías que afectan al hombre de hoy, incursionando de esta manera también en el campo de la Medicina Evolutiva.",
+          "El estudio y comprensión de cómo fue evolucionando el corazón en los vertebrados considera que algunos fenómenos en medicina encuentran una mejor explicación bajo el marco de la evolución, tal es el caso de algunas patologías congénitas o las enfermedades cardiovasculares (por ejemplo, hipertensión arterial), estas últimas la primera causa de muerte en Chile y el mundo."
+        ]
+      },
+      {
+        "titulo": "Talleres de paleoarte",
+        "detalle": "Taller dirigido a los más pequeños, enfocado en la ilustración de dinosaurios y animales extintos.",
+        "parrafos": [
+          "El taller se ha impartido en el Centro Comunitario Padre Hurtado de la comuna de Las Condes, con actividades de dibujo de dinosaurios y reconstrucción de fósiles en distintos materiales, además de charlas para incentivar la participación de niños y niñas."
+        ]
+      },
+      {
+        "titulo": "Curso Intermedio de Paleontología",
+        "detalle": "Curso certificado, dictado de forma virtual, dirigido a personas mayores de edad con educación media aprobada.",
+        "parrafos": [
+          "El Centro auspició esta actividad desarrollada a través de una plataforma de videoconferencia, que entrega certificado a quienes completan el curso y rinden satisfactoriamente los exámenes requeridos."
+        ]
+      }
+    ]
+  },
+  publicaciones: {
+    "icono": "recon",
+      "titulo": "Publicaciones científicas",
+    "intro": "Trabajos de divulgación e investigación publicados en medios nacionales y extranjeros. Los artículos temáticos han aparecido en la Revista Isurus, publicación de la Asociación Paleontológica Alcoyana Isurus, de España.",
+    "items": [
+      {
+        "autores": "DÍAZ, R.",
+        "anio": "2011",
+        "titulo": "Las aves del terror (Ralliformes: Phorusrhacidae)",
+        "fuente": "Revista Isurus N° 4, p. 38-45. ISSN 1888-9441. España."
+      },
+      {
+        "autores": "DÍAZ, R.",
+        "anio": "2012",
+        "titulo": "El origen de los dinosaurios (Dinosauria: Saurischia – Ornithischia)",
+        "fuente": "Revista Isurus N° 5, p. 12-25. ISSN 1888-9441. España."
+      },
+      {
+        "autores": "DÍAZ, R.",
+        "anio": "2012",
+        "titulo": "Paleontology and the fossil record: new answer to old question about the loneliness of human been as specie",
+        "fuente": "Journal of Technological Possibilism, Vol. 1, N° 2, p. 20-33. ISSN 0719-174X."
+      },
+      {
+        "autores": "DÍAZ, R.",
+        "anio": "2014",
+        "titulo": "Evolución del corazón en los vertebrados",
+        "fuente": "Revista Isurus N° 7, Año 7, p. 56-69. ISSN 1888-9441. España."
+      },
+      {
+        "autores": "DÍAZ, R.; FERNÁNDEZ, L.D.",
+        "anio": "2015",
+        "titulo": "The Great American Biotic Interchange: Intercontinental migration of big predators",
+        "fuente": "The Quaternary Period, p. 9-24. Academy Publish, Cheyenne, USA."
+      },
+      {
+        "autores": "CASTILLO, J.; DÍAZ, R.",
+        "anio": "2021",
+        "titulo": "Taxonomía de los gonfoterios en Chile: necesidad de una revisión",
+        "fuente": "Revista Isurus N° 13, Año 13. ISSN 1888-9441. España."
+      },
+      {
+        "autores": "DÍAZ, R.",
+        "anio": "2022",
+        "titulo": "El origen y evolución de las vértebras",
+        "fuente": "Revista Isurus N° 14, p. 12-28. ISSN 1888-9441. España."
+      }
+    ]
+  },
+  difusion: {
+    "icono": "check",
+      "titulo": "Difusión y reconocimiento",
+    "intro": "Trabajos del Centro destacados en portales y repositorios de acceso abierto, nacionales e internacionales.",
+    "items": [
+      {
+        "medio": "DIALNET — Universidad de La Rioja, España",
+        "detalle": "Uno de los mayores portales de difusión de producción científica hispana. Ha destacado las publicaciones del Centro."
+      },
+      {
+        "medio": "La Referencia — Red de Repositorios de Acceso Abierto a la Ciencia",
+        "detalle": "Destacó un artículo del Centro sobre las Aves del Terror, grupo de aves extintas que habitaron principalmente en Sudamérica."
+      },
+      {
+        "medio": "STUDOCU",
+        "detalle": "Destacó el artículo «Origen y evolución de las vértebras», publicado en la Revista Isurus N° 14 de 2022, como parte de un programa formativo de Biología del Instituto Superior de Formación Docente N° 29 Graciela Gil, de Buenos Aires, Argentina."
+      },
+      {
+        "medio": "Repositorio Institucional de la Universidad de Alicante, España",
+        "detalle": "Pone a disposición del público y de la comunidad científica mundial los ejemplares de la Revista Isurus, donde el Centro ha publicado artículos temáticos."
+      },
+      {
+        "medio": "Prensa internacional",
+        "detalle": "La prensa de Uruguay informó sobre el hallazgo de fósiles de aves del terror en San José, citando trabajos del Centro relacionados con el tema."
+      }
+    ]
+  },
+  avesDelTerror: {
+    "icono": "hueso",
+      "titulo": "Las aves del terror",
+    "subtitulo": "Los dinosaurios avianos",
+    "parrafos": [
+      "Tras la extinción de los dinosaurios no avianos, como los muy conocidos Tyrannosaurus, Velociraptor o Triceratops, el mundo quedó poblado por un grupo de dinosaurios muy particulares: las aves. Dentro de este amplio grupo, algunos de ellos alcanzando grandes tamaños se dispersaron por Sudamérica, parte de Norteamérica e incluso África.",
+      "Estas aves de la Familia Phorusrhacidae llegaron a ser temidas no sólo por su gran tamaño, sino porque además eran feroces depredadoras, llegando a ser conocidas en el ámbito paleontológico como las Aves del Terror.",
+      "Las aves forusrácidas, hoy clasificadas en la moderna sistemática como dinosaurios avianos, se posicionaron como los depredadores por excelencia en Sudamérica hasta hace aproximadamente 3 millones de años, cuando el bloque continental de Norteamérica se unió con Sudamérica a través del cordón terrestre de América Central, dando origen a un único gran continente y permitiendo la dispersión desde Norteamérica de otros depredadores en competencia, como los félidos, los úrsidos y los caninos.",
+      "Un nuevo hallazgo de fósiles de aves del terror fue reportado en Uruguay. Los restos fueron encontrados en San José y se cree que corresponden a un ejemplar que vivió hace aproximadamente 60 millones de años, el inicio de la Era Cenozoica en Sudamérica. Este linaje se desarrolló de manera preferente en Sudamérica, siendo reportado y estudiado especialmente en Argentina, Uruguay y Brasil, aunque tras el surgimiento del puente terrestre que une a Sudamérica con Norteamérica se reportan también restos de estas aves en Estados Unidos, con dataciones posteriores a los 3 millones de años."
+    ]
+  },
+  alianzas: null,
+  cierre: {
+    "texto": "El Proyecto C.E.C reúne las actividades de divulgación y educación que el Centro de Estudios Paleontológicos de Chile y el Museo Paleontológico de Chile desarrollan en conjunto.",
+    "boton": "Ver la muestra del museo",
+    "enlace": "index.html#colecciones"
+  },
+};
+
 if (typeof window !== "undefined") {
   window.MUSEO = MUSEO; window.QUIENES_SOMOS = QUIENES_SOMOS;
   window.COLECCIONES = COLECCIONES; window.SERVICIOS = SERVICIOS;
   window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.PALEOMUNDO = PALEOMUNDO;
-  window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES;
+  window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES; window.CEC = CEC;
 }

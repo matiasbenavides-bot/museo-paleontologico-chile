@@ -1,6 +1,6 @@
 # HANDOFF — Museo Paleontológico de Chile (MPCH)
 
-Fecha: 2026-10-11 (sesión 3)
+Fecha: 2026-10-15 (sesión 6)
 Ruta local: `/mnt/c/dev/museo-mpch/`
 **En línea:** https://matiasbenavides-bot.github.io/museo-paleontologico-chile/
 Repo: https://github.com/matiasbenavides-bot/museo-paleontologico-chile (rama `master`)
@@ -8,43 +8,83 @@ Abrir local: doble clic en `index.html` — estático, sin backend, sin build, s
 
 ---
 
-## ESTADO ACTUAL (verificado, no supuesto)
+## 🔴 AVISO: ESTE DOCUMENTO VA ATRASADO. LA SKILL ES LA QUE MANDA.
 
-- **7 piezas**, de las cuales **solo la primera (Trilobites) muestra icono**; las otras 6 van solo con texto
-- **2 imágenes** en todo el sitio: los dos logos del museo. **0 imágenes de terceros** (ver CR-14)
-- 0 errores de consola · 0 desborde horizontal (probado 320px→2560px) · menú móvil funcionando
-- GitHub Pages: `status: built`
+Este handoff quedó desactualizado en varios puntos (decía «40 años», `cepchile@`,
+teléfono viejo, «sin git», «solo Trilobites muestra icono»). La skill
+`museo-mpch` y sus `references/` son la fuente de verdad donde haya choque.
+
+## ESTADO ACTUAL al 2026-10-15 (verificado por medición)
+
+**El sitio tiene CUATRO páginas:**
+
+| Página | Estado |
+|---|---|
+| `index.html` | publicado, funcionando |
+| `curriculum.html` | publicado (subpágina del director, CR-55) |
+| `trilobites.html` | publicado `c9e1840` (CR-60) |
+| `proyecto-cec.html` | ⚠️ **HECHO PERO SIN PUBLICAR** (CR-61/63/64) |
+
+**Último commit en vivo:** `c9e1840` — «CR-60d: arregla el desorden de las
+imágenes en celular».
+
+⚠️ **Hay trabajo LOCAL sin commitear** (el dueño pidió «no publiques»):
+`proyecto-cec.html`, `js/cec.js`, `css/secciones/cec.css`, `data/museo.js`,
+`css/main.css`, `js/render.js`, `css/secciones/servicios.css`.
+**Preguntar antes de publicar.**
+
+**Datos corregidos:**
+- **7 piezas**, las 7 **con** icono (el handoff viejo decía que solo la primera).
+- 15 imágenes de Commons en la subpágina de Trilobites + las fotos del museo.
+- 0 errores de consola · 0 desborde horizontal en las 4 páginas.
 
 ---
 
 ## LO PRIMERO QUE HAY QUE SABER
 
-**Los iconos de las piezas están EN PAUSA.** El dueño encargó a una ilustradora
-(es su novia) los dibujos personalizados, porque los generados por código no lo
-convencían.
+**Leer `/home/logicforgex/.hermes/skills/software-development/museo-mpch/`.**
 
-**No se borró nada.** Los 7 SVG siguen en `js/iconos.js`. En `data/museo.js`
-cada pieza lleva un campo `conIcono`:
+Referencias por sesión (las más nuevas primero):
+- `cr61-64-proyecto-cec.md` — **subpágina C.E.C sin publicar** + las redundancias
+  + el caso «se ve de celular»
+- `cr60-trilobites-subpagina.md` — subpágina de Trilobites, el criterio de
+  licencias de Commons y las 4 causas de defecto (fotos gigantes, nav tapando,
+  fondos, desorden en celular)
+- `pendientes-abiertos-2026-10-15.md`
 
-```js
-{ icono: "trilobite", conIcono: true,  nombre: "Trilobites", ... }   // muestra icono
-{ icono: "ammonite",  conIcono: false, nombre: "Ammonites",  ... }   // solo texto
-```
-
-**Reactivar una pieza = poner `conIcono: true`.** Eso es todo.
+**Trampas que ya se pagaron, no repetir:**
+1. **`node --check data/museo.js` después de CADA edición.** Romperlo deja
+   `window.MUSEO` sin definir y **el sitio entero en blanco**.
+2. **Los números de layout se DERIVAN de `--header-h`**, no se escriben a mano
+   (el header real mide **125 px**, no los 84 del respaldo).
+3. **No recortar márgenes de material que no dibujamos**: borra texto.
+4. **PNG con alfa → JPEG pierde la transparencia** (la rellena de negro).
+5. **Láminas con texto van con fondo BLANCO** (si no, texto negro sobre azul).
+6. **Un test que no puede fallar no mide**: verificar el umbral antes de creer
+   un FAIL.
 
 ---
 
 ## PENDIENTES REALES
 
-1. **Integrar los dibujos personalizados** cuando la ilustradora los entregue.
-   - Datos útiles para pasarle: cada icono se muestra a **65px** en tarjeta y
-     hasta **68px** en pantallas grandes. **A ese tamaño tienen que leerse**:
-     trazo simple rinde mejor que detalle fino.
-   - Si las ilustraciones son con volumen/sombra (no línea), va a hacer falta
-     ajustar `.pieza__ico` en `css/secciones/colecciones.css`.
-   - Formato ideal: **SVG** (escala sin pixelarse). Si entrega PNG, pedirlo
-     **grande** (1024px+) para que no se vea borroso a tamaño chico.
+1. **PUBLICAR (o no) el Proyecto C.E.C.** Está terminado y verificado en local.
+   Falta el OK del dueño.
+2. **Sin autorización de Jorge Aragón Palacios** para sus ilustraciones → la
+   subpágina de C.E.C **no tiene ninguna imagen**. Es su límite de calidad actual.
+   No inventar material: pedir foto al museo o esperar la autorización.
+3. **`cepchile@gmail.com` sigue OBSOLETO** (CR-04). El material de C.E.C lo trae
+   como contacto: NO publicarlo.
+
+---
+
+## NOTA VIEJA (se conserva por si vuelve la ilustradora)
+
+Si en algún momento se retoman los dibujos de las piezas, el dato útil es:
+formato ideal **SVG** (escala sin pixelarse); si entrega PNG, pedirlo **grande**
+(1024px+) para que no se vea borroso a tamaño chico. Cada icono se muestra a
+~65px en tarjeta, así que **a ese tamaño tiene que leerse**: trazo simple rinde
+mejor que detalle fino. Los 7 SVG originales siguen intactos en `js/iconos.js`
+como respaldo de cada pieza.
 
 2. **Revisar el fondo de ammonites.** Es lo único que NUNCA se pudo verificar
    con el dueño (arrastra desde el primer chat). Ahora usa un SVG propio, no el
