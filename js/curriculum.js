@@ -80,16 +80,61 @@
       }).join("");
     }
 
-    /* Los libros llevan un ícono propio (el mismo "check" de las píldoras del
-       sitio) para que no se lean como una lista más de la trayectoria: son
-       cuatro títulos, no cuatro cargos. */
+    /* --- Libros publicados: GRILLA DE PORTADAS (2026-10-17) ---
+       Antes acá se pintaba una lista de texto con un ícono "check". El dueño
+       entregó las portadas de los cinco libros y pidió publicarlas, así que
+       cada libro pasa a ser una FIGURA: la portada + el título debajo.
+
+       ⚠️ El data migró de `string[]` a `{titulo, portada, alt, ancho}[]`. Acá
+       se leen las DOS formas: si el elemento es un string se usa tal cual y no
+       hay portada. Eso deja el render a prueba de una sesión que revierta el
+       data a la forma vieja, en vez de imprimir "undefined".
+
+       ⚠️ `ancho: true` marca una portada APAISADA (el libro ilustrado). Esas NO
+       entran a la grilla de 2 columnas: van en fila propia al final, con su
+       propia clase. Si se mezclaran, quedaría un rectángulo acostado entre
+       cuatro retratos y la grilla se vería rota.
+
+       ⚠️ `loading="lazy"` + `width`/`height` declarados: la subpágina no debe
+       reservar 0px y saltar cuando las portadas llegan. El aspect-ratio real
+       de cada archivo lo pone el CSS con `object-fit`, no hace falta hardcodear
+       cada medida en el HTML. */
     var lib = $("[data-perfil-libros]");
     if (lib) {
-      var ico = (window.ICONOS && window.ICONOS["check"]) || "";
-      lib.innerHTML = (d.libros || []).map(function (t) {
-        return '<li><span class="perfil__libro-ico" aria-hidden="true">' + ico + "</span>" +
-               "<span>" + esc(t) + "</span></li>";
+      var lista = (d.libros || []).map(function (l) {
+        var titulo = (typeof l === "string") ? l : (l.titulo || "");
+        var portada = (typeof l === "string") ? "" : (l.portada || "");
+        var alt = (typeof l === "string") ? ("Portada del libro " + titulo) : (l.alt || ("Portada del libro " + titulo));
+        var esAncho = (typeof l === "object" && l && l.ancho === true);
+
+        /* Sin portada: cae al comportamiento viejo (sólo el título). Nunca se
+           pinta un <img> con src vacío: eso deja el ícono de imagen rota. */
+        var media = portada
+          ? '<span class="libro__marco' + (esAncho ? " libro__marco--ancho" : "") + '">' +
+              '<img class="libro__portada" src="' + esc(portada) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async">' +
+            "</span>"
+          : "";
+
+        return '<li class="libro' + (esAncho ? " libro--ancho" : "") + (portada ? " libro--con-portada" : "") + '">' +
+                 media +
+                 '<span class="libro__titulo">' + esc(titulo) + "</span>" +
+               "</li>";
       }).join("");
+
+      /* Si NINGÚN libro trae portada (data revertido a string[]), se conserva el
+         ícono "check" de antes para que el bloque no se vea a medio hacer. */
+      var hayPortadas = (d.libros || []).some(function (l) {
+        return typeof l === "object" && l && l.portada;
+      });
+      lib.className = "perfil__libros" + (hayPortadas ? " perfil__libros--portadas" : "");
+      if (!hayPortadas) {
+        var ico = (window.ICONOS && window.ICONOS["check"]) || "";
+        lista = (d.libros || []).map(function (t) {
+          return '<li><span class="perfil__libro-ico" aria-hidden="true">' + ico + "</span>" +
+                 "<span>" + esc(typeof t === "string" ? t : t.titulo) + "</span></li>";
+        }).join("");
+      }
+      lib.innerHTML = lista;
     }
   }
 

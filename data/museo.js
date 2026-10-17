@@ -178,11 +178,65 @@ const MUSEO = {
       "Más de 30 años de exposiciones y cursos de paleontología; artículos y ensayos de divulgación; entrevistas en televisión, prensa y revistas.",
       "Profesor del curso \"Paleontología básica, una introducción al estudio de la vida antigua\"; trabajos en terreno."
     ],
+    /* --- LIBROS: con PORTADA (2026-10-17) ---
+       🔴 CAMBIO DE FORMA. Antes era un arreglo de 4 strings (solo títulos).
+       Ahora es un arreglo de OBJETOS {titulo, portada}: las portadas que el
+       dueño entregó ese día van junto a cada título.
+
+       ⚠️ El cambio de forma lo tolera `js/curriculum.js` (pintarPerfil lee
+       `l.titulo` y si no existe usa el string tal cual). NO rompe si otra
+       sesión deja un string suelto acá.
+
+       ⚠️ El MAPPING se tomó del NOMBRE DE ARCHIVO que dictó el dueño, no de
+       parecido visual: tres de las cinco portadas no decían su título y dos
+       eran de dinosaurios. El nombre es la única fuente de verdad que hubo.
+       Archivos originales en OneDrive/Desktop/libros; las copias normalizadas
+       viven en assets/img/libros/ (520px de ancho los retratos, 900px el
+       ilustrado apaisado). NO se sube el original de 2560px.
+
+       5.º LIBRO (2026-10-17): el dueño entregó una QUINTA portada, "Libro
+       ilustrado de los dinosaurios y los animales prehistóricos de Chile",
+       que NO estaba en el currículum. Él eligió publicarla (opción "a"), así
+       que el sitio pasa a decir CINCO libros y se actualizaron las dos metas
+       de curriculum.html, que decían "cuatro". La portada de este va apaisada
+       (2560x2047 original): entra en su propia fila al final, sin recortar. */
     libros: [
-      "Dinosaurios en Chile y los vertebrados del Mesozoico",
-      "Megabestias en Chile y los vertebrados del Cenozoico",
-      "Dinosaurios y otros animales prehistóricos en Chile",
-      "Tiburones fósiles de Chile y la fauna fósil de Bahía Inglesa"
+      {
+        titulo: "Dinosaurios en Chile y los vertebrados del Mesozoico",
+        portada: "assets/img/libros/dinosaurios-vertebrados-mesozoico.jpg",
+        alt: "Portada del libro Dinosaurios en Chile y los vertebrados del Mesozoico"
+      },
+      {
+        /* ⚠️ El archivo entregado se llama "dinosaurios en chile.jpg", que NO
+           dice "Megabestias". El dueño asignó los nombres él mismo: se respeta
+           su asignación y se deja anotada la discrepancia por si hay que
+           corregirla. */
+        titulo: "Megabestias en Chile y los vertebrados del Cenozoico",
+        portada: "assets/img/libros/megabestias-vertebrados-cenozoico.jpg",
+        alt: "Portada del libro Megabestias en Chile y los vertebrados del Cenozoico"
+      },
+      {
+        titulo: "Dinosaurios y otros animales prehistóricos en Chile",
+        portada: "assets/img/libros/dinosaurios-animales-prehistoricos-chile.jpg",
+        alt: "Portada del libro Dinosaurios y otros animales prehistóricos en Chile"
+      },
+      {
+        titulo: "Tiburones fósiles de Chile y la fauna fósil de Bahía Inglesa",
+        portada: "assets/img/libros/tiburones-fosiles-bahia-inglesa.jpg",
+        alt: "Portada del libro Tiburones fósiles de Chile y la fauna fósil de Bahía Inglesa"
+      },
+      {
+        /* Quinto libro, agregado el 2026-10-17. `ancho: true` = portada
+           APAISADA (900x720). El render la saca de la grilla de 2 columnas y
+           la pinta en una fila propia de ancho completo: si entrara a la
+           grilla, quedaría un rectángulo acostado entre cuatro retratos.
+           NO se recorta a proporción de libro: recortar una portada es
+           inventar el arte del autor. */
+        titulo: "Libro ilustrado de los dinosaurios y los animales prehistóricos de Chile",
+        portada: "assets/img/libros/libro-ilustrado-dinosaurios-chile.jpg",
+        alt: "Portada del libro ilustrado de los dinosaurios y los animales prehistóricos de Chile",
+        ancho: true
+      }
     ],
 
     /* CR-55 (2026-10-15): la SUBPÁGINA con el currículum completo.

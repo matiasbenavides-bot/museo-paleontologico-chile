@@ -97,6 +97,60 @@ daba **101 car/línea a 1440 y 117 a 1024**. El tope quedó en **px**: `min(100%
 
 ---
 
+## CR-69 (2026-10-17) — las portadas de los libros en el currículum
+
+Pedido del dueño, textual: «pongamos en el curriculum de juan castillo cornejo
+sus portadas de libros». Después: «autorizo, ya le puse nombre a todas las
+portadas con el titulo real, son 5 en total. como tu desees y consideres mas
+estetico».
+
+**HECHO (local, sin publicar):**
+
+| Archivo | Qué se hizo |
+|---|---|
+| `assets/img/libros/` | 5 portadas normalizadas (520x750 · 520x795 · 520x779 · 520x789 retratos; 900x720 el ilustrado). 492 KB las cinco. Los originales quedan en `OneDrive/Desktop/libros/` |
+| `data/museo.js` | `director.libros` pasó de `string[]` a `{titulo, portada, alt, ancho}[]` con **5** entradas |
+| `curriculum.html` | las 2 metas (`description` y `og:description`) decían «**cuatro** libros» → «**cinco**» |
+| `js/curriculum.js` | `pintarPerfil()` pinta grilla de portadas; tolera `string[]` y elementos sin `portada` |
+| `css/secciones/perfil.css` | grilla 2 col · marco de libro · hover con `--border-accent`+`--ocre-glow` (sin `scale`) · responsive 1 col ≤620px |
+| `scripts/mide-libros.py` | sonda NUEVA: mide la geometría de la grilla a un ancho dado |
+| `scripts/captura-libros.py` | sonda NUEVA: PNG del bloque al escritorio REAL, forzando el `lazy` antes de capturar |
+
+**MEDIDO (no supuesto):**
+
+- 1440px: grilla **2 columnas reales** de 273px, portada 257x385, bloque 1376px de alto.
+- 390px: 1 columna, portada 224x336, apaisado 314x251.
+- Capturas de PÍXELES: fila 1 en y=92-462, fila 2 en y=559-943, apaisado en
+  y=1034-1356; manchas en x=31-286 y x=326-578 (apaisado x=31-434). O sea:
+  dos columnas alineadas y el apaisado en fila propia, como se diseñó.
+- `0` errores de consola · `0` imágenes rotas · `0` desborde horizontal.
+
+**DOS DEFECTOS ENCONTRADOS Y CORREGIDOS (para que no se repitan):**
+
+1. `.perfil__libros { display: flex }` (la regla vieja, para el modo sin
+   portadas) estaba DESPUÉS de la regla de la grilla y la PISABA — misma
+   especificidad, gana la última. La grilla de 2 columnas no se aplicaba nunca y
+   cada portada se estiraba a 549x824. ⇒ Se acotó a
+   `.perfil__libros:not(.perfil__libros--portadas)`.
+2. `.perfil__cuerpo` era `1.35fr .85fr`: la columna de libros quedaba en 413px y
+   el bloque medía **2995px** (tres pantallas de scroll). ⇒ Se invirtió a
+   `1fr 1.12fr`, porque los libros pasaron de ser 4 líneas de texto a ser el
+   contenido VISUAL de la columna.
+
+**CONTROL NEGATIVO hecho:** con el data revertido a `string[]` (archivo temporal,
+ya borrado) el render cae al modo viejo — `display: flex`, íconos «check», cero
+`undefined`. La tolerancia del render está probada, no supuesta.
+
+**PENDIENTE / A CONFIRMAR:**
+
+- ⚠️ La portada de **Megabestias** viene del archivo `dinosaurios en chile.jpg`,
+  que no dice su título. Se respetó la asignación del dueño pero queda anotado.
+- ⚠️ El libro **ilustrado** (quinto) NO estaba en `director.completo`; hoy sólo
+  aparece en la lista de libros. No se agregó prosa al currículum sin dictado.
+- ⚠️ Sin publicar. El sitio en vivo NO tiene las portadas todavía.
+
+---
+
 ## CR-67 (2026-10-16) — contexto en la zona C.E.C de la portada
 
 Pedido del dueño, textual:

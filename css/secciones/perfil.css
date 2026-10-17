@@ -67,7 +67,14 @@
 
 /* --- Cuerpo: dos columnas (trayectoria / libros) --- */
 .perfil__cuerpo {
-  display: grid; grid-template-columns: 1.35fr .85fr;
+  /* 1.35fr .85fr era correcto para dos columnas de TEXTO (trayectoria + 4
+     títulos en lista). Con las PORTADAS deja de servir: la columna de libros
+     queda en 413px y una portada de 2:3 ahí mide 397x596px — cinco de esas
+     apiladas hacen un bloque de 3000px, o sea tres pantallas de scroll para
+     ver los libros. Medido a 1440 con scripts/mide-libros.py.
+     ⇒ Se invierte el peso: los libros son ahora el contenido VISUAL y necesitan
+     ancho; la trayectoria es texto y se lee bien a ~600px. */
+  display: grid; grid-template-columns: 1fr 1.12fr;
   gap: clamp(30px, 5vw, 62px);
   align-items: start;
 }
@@ -94,9 +101,101 @@
   background: var(--ocre); opacity: .8;
 }
 
-/* --- Libros: tarjetas, porque son 4 títulos y se leen mejor separados --- */
-.perfil__libros { display: flex; flex-direction: column; gap: 12px; }
-.perfil__libros li {
+/* --- Libros: GRILLA DE PORTADAS (2026-10-17) --------------------------------
+   Antes eran 4 filas de texto. Ahora son 5 portadas reales.
+
+   ESTRUCTURA .perfil__libros--portadas (sólo cuando el render encuentra
+   portadas; si el data vuelve a string[], quedan las reglas viejas de abajo):
+     .libro             -> figura: marco de la portada + título
+     .libro--ancho      -> portada APAISADA: ocupa las 2 columnas, fila propia
+   ========================================================================= */
+.perfil__libros--portadas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px 20px;
+  /* La lista NO lleva viñetas ni padding heredado del <ul> del reset. */
+  list-style: none;
+}
+.perfil__libros--portadas .libro {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  min-width: 0;
+}
+.perfil__libros--portadas .libro--ancho {
+  grid-column: 1 / -1;   /* fila propia, ancho completo */
+}
+
+/* El marco es lo que hace que la portada se lea como LIBRO y no como imagen
+   suelta: fondo de papel, borde fino y una sombra corta. */
+.libro__marco {
+  display: block;
+  position: relative;
+  padding: 7px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm, 6px);
+  box-shadow: 0 10px 22px -14px rgba(0, 0, 0, .85), 0 1px 0 rgba(255, 255, 255, .04) inset;
+  transition: border-color .3s, box-shadow .3s var(--ease-out-expo);
+}
+/* La portada llena el marco; el alto lo fija la proporción de LIBRO (2:3).
+   ⚠️ `object-fit: contain` y no `cover`: recortar una portada es inventar el
+   arte del autor. Las cuatro retratos son ~2:3 y entran casi exactas; lo que
+   sobre (centésimas) queda como aire del marco. */
+.libro__portada {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: contain;
+  background: var(--bg-elevated);   /* detrás de las centésimas que no llenan */
+  border-radius: 2px;
+}
+/* El apaisado NO se fuerza a 2:3: mantiene su proporción real (900x720 = 5:4)
+   y se limita el ancho para que no se coma la columna en pantallas grandes. */
+.libro__marco--ancho .libro__portada {
+  aspect-ratio: auto;
+  width: 100%;
+  height: auto;
+}
+.libro__marco--ancho {
+  /* 420px: el apaisado tiene que verse como un libro MÁS, no robarse la
+     columna entera. A 565px de ancho (el ancho de la grilla) medía 439px de
+     alto, o sea más que dos portadas retrato juntas. */
+  max-width: 420px;
+}
+
+/* Hover: se enciende el borde con el acento del sitio + el glow ya definido en
+   root.css (--ocre-glow). NO se inventa un color: `--ocre` es alias de
+   `--celeste` (#51adc6) en este proyecto, y hay un `--ocre-glow` oficial.
+   SIN `scale` ni `translate` sobre la portada (regla del sitio: el movimiento
+   es del borde, no del contenido). */
+.perfil__libros--portadas .libro:hover .libro__marco {
+  border-color: var(--border-accent);
+  box-shadow: 0 14px 30px -16px rgba(1, 14, 38, .9),
+              0 0 0 1px var(--border-accent),
+              0 0 22px -4px var(--ocre-glow);
+}
+
+/* El título va DEBAJO de la portada, alineado al marco. Es el título exacto
+   del libro, así que puede partirse en 2-3 líneas: por eso line-height corto y
+   nada de recortes (`-webkit-line-clamp` escondería el nombre completo). */
+.libro__titulo {
+  font-size: .83rem;
+  line-height: 1.38;
+  color: var(--text-soft);
+  letter-spacing: .01em;
+}
+
+/* --- Libros SIN portada (respaldo de la forma vieja) ---
+   Estas reglas se mantienen: si el data vuelve a ser string[], el bloque se
+   pinta igual que antes.
+   ⚠️ El `display: flex` va acotado con `:not(.perfil__libros--portadas)`.
+   Antes era `.perfil__libros { display: flex }` a secas y, al estar DESPUÉS de
+   la regla de la grilla en el mismo archivo, la PISABA (misma especificidad,
+   gana la última): la grilla de 2 columnas nunca se aplicaba y cada portada se
+   estiraba a 549x824. Medido, no supuesto. */
+.perfil__libros:not(.perfil__libros--portadas) { display: flex; flex-direction: column; gap: 12px; }
+.perfil__libros:not(.perfil__libros--portadas) li {
   display: flex; align-items: flex-start; gap: 12px;
   padding: 15px 17px;
   background: var(--bg-card);
@@ -106,7 +205,7 @@
   font-size: .9rem; line-height: 1.45; color: var(--text-soft);
   transition: border-color .3s, transform .3s var(--ease-out-expo);
 }
-.perfil__libros li:hover {
+.perfil__libros:not(.perfil__libros--portadas) li:hover {
   border-left-color: var(--ocre);
   transform: translateX(3px);
 }
@@ -139,6 +238,17 @@
   /* Las dos columnas del cuerpo pasan a una: la trayectoria primero (es el
      contenido), los libros después. */
   .perfil__cuerpo { grid-template-columns: 1fr; gap: clamp(34px, 7vw, 48px); }
+}
+/* Portadas: en una sola columna de página (≤900px) la grilla de 2 aguanta
+   todavía en tablets, pero por debajo de 620px cada portada quedaría de ~150px
+   y el título en 3 líneas. A partir de ahí, 1 columna: la portada toma el ancho
+   completo y se lee. */
+@media (max-width: 620px) {
+  .perfil__libros--portadas { grid-template-columns: 1fr; gap: 22px; }
+  /* En 1 columna el apaisado mantiene su tope, por la misma razón. */
+  /* Y las retratos no se estiran a lo ancho de la pantalla: una portada de
+     360px de ancho sería un póster de 540px de alto. Se acota a 240px. */
+  .perfil__libros--portadas .libro:not(.libro--ancho) .libro__marco { max-width: 240px; }
 }
 /* CR-55e: el encabezado SÍ se apila en pantallas chicas — en una columna de
    390px, foto y título lado a lado dejarían ~200px para un nombre de 20
