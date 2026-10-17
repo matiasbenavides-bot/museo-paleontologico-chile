@@ -207,18 +207,29 @@ const MUSEO = {
         alt: "Portada del libro Dinosaurios en Chile y los vertebrados del Mesozoico"
       },
       {
-        /* ⚠️ El archivo entregado se llama "dinosaurios en chile.jpg", que NO
-           dice "Megabestias". El dueño asignó los nombres él mismo: se respeta
-           su asignación y se deja anotada la discrepancia por si hay que
-           corregirla. */
-        titulo: "Megabestias en Chile y los vertebrados del Cenozoico",
+        /* TÍTULO CORREGIDO POR EL DUEÑO (2026-10-17, CR-70).
+           Antes decía "Megabestias en Chile y los vertebrados del Cenozoico".
+           El dueño corrigió: "Megabestias... no es el nombre correcto, es
+           dinosaurios en chile". El libro NO es de megabestias.
+           ⚠️ El ARCHIVO de la portada conserva el nombre viejo
+           (megabestias-vertebrados-cenozoico.jpg) a propósito: renombrar el
+           archivo obligaría a tocar la ruta publicada sin ganar nada. Lo que
+           manda es `titulo`; la ruta es sólo dónde vive la imagen. */
+        titulo: "Dinosaurios en Chile",
         portada: "assets/img/libros/megabestias-vertebrados-cenozoico.jpg",
-        alt: "Portada del libro Megabestias en Chile y los vertebrados del Cenozoico"
+        alt: "Portada del libro Dinosaurios en Chile"
       },
       {
-        titulo: "Dinosaurios y otros animales prehistóricos en Chile",
+        /* TÍTULO CORREGIDO POR EL DUEÑO (2026-10-17, CR-70).
+           Antes decía "Dinosaurios y otros animales prehistóricos en Chile".
+           El nombre real es "Todo sobre... los dinosaurios y los animales
+           prehistóricos de Chile" — el título EMPIEZA con "Todo sobre…".
+           ⚠️ El archivo entregado por el dueño se llama "todo sobre.. los
+           dinosaurios ...": coincide con su corrección, lo que confirma el
+           mapeo. */
+        titulo: "Todo sobre… los dinosaurios y los animales prehistóricos de Chile",
         portada: "assets/img/libros/dinosaurios-animales-prehistoricos-chile.jpg",
-        alt: "Portada del libro Dinosaurios y otros animales prehistóricos en Chile"
+        alt: "Portada del libro Todo sobre los dinosaurios y los animales prehistóricos de Chile"
       },
       {
         titulo: "Tiburones fósiles de Chile y la fauna fósil de Bahía Inglesa",
