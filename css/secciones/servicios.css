@@ -159,19 +159,44 @@
 
    ⚠️ NO se sube acá la FOTO del director: la que hay es de 160px y en una caja
    de 1044 se vería blanda. Si el dueño la quiere, se pide una de más resolución
-   y se agrega el <img> — la ruta vive en el data/. */
+   y se agrega el <img> — la ruta vive en el data/.
+
+   🔴 CR-68 (2026-10-16) — DOS DEFECTOS MEDIDOS Y CORREGIDOS ACÁ.
+   El dueño reportó «se ven mal algunas partes» y la sonda lo confirmó:
+
+   (a) DESALINEADO. Medido a 1440: el bloque arrancaba en **x=260** mientras
+       TODOS los demás bloques de la card (logo, encabezado, foto, datos, caja,
+       enlace) arrancan en **x=193** → **67 px de sangría**.
+       Causa: `margin: 0 auto` + `max-width: 62ch`. El `auto` centra el bloque
+       DENTRO de la card, así que su borde izquierdo deja de coincidir con el de
+       sus vecinos. `62ch` además es una medida de TEXTO (≈35em): a 16px son
+       ~560px, o sea una caja mucho más angosta que la card, y el ojo lee el
+       desfase como desprolijidad (es el defecto clásico de CR-62).
+
+   (b) CONTRASTE BAJO. El rótulo «Dirección» usaba `--celeste-dark` (#2f7e82)
+       sobre el fondo real de la sección (#010e26): **ratio 4,05**, bajo el
+       mínimo **4,5** de WCAG AA. Es TEXTO CHICO (11,5 px), donde el contraste
+       importa más, así que no alcanzaba con el argumento de «es decorativo».
+
+   ⇒ El arreglo alinea el bloque con la card y sube el contraste sin inventar un
+     color nuevo: se usa `--celeste` (#51adc6), que YA es de la paleta y que la
+     propia sección usa para el título.
+
+   ✅ Medido después: bloque en **x=193** (alineado con los 7 vecinos) y ratio
+      **7,46** (pasa AA con margen). Detalle en `references/cr68-css-cec.md`. */
 .pm-card__dir {
+  /* CR-68: SIN `margin: 0 auto` ni `max-width`. El bloque ocupa el ancho de la
+     card, igual que sus vecinos. El aire lateral ya lo da el `padding` de
+     `.pm-card` (44px a 1440), así que el texto respira sin desalinearse. */
   text-align: center;
-  margin: 0 auto clamp(20px, 2.6vw, 30px);
-  /* Se ciñe al ancho del párrafo de intro (62ch) para que el conjunto se lea
-     como un bloque y no como una línea suelta de lado a lado. */
-  max-width: 62ch;
+  margin: 0 0 clamp(20px, 2.6vw, 30px);
 }
 .pm-card__dir-rol {
   display: block;
   font-size: .72rem; font-weight: 600; letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--celeste-dark);
+  /* CR-68: era `--celeste-dark` (#2f7e82) → ratio 4,05, bajo AA. */
+  color: var(--celeste);
   margin-bottom: 6px;
 }
 .pm-card__dir-nombre {
@@ -202,12 +227,23 @@
 }
 /* Bajada con el nombre COMPLETO (CR-54). Va pegada al título, más chica y en
    celeste tenue, para que se lea como "esto es el título + su significado" y no
-   como un párrafo aparte. */
+   como un párrafo aparte.
+
+   🔴 CR-68 (2026-10-16): el color NO pasaba contraste. `--celeste-dark` (#2f7e82)
+   sobre el fondo real de la sección (#010e26) da **ratio 4,05**, bajo el mínimo
+   **4,5** de WCAG AA — y esta bajada es MÁS CHICA que el título (17,4 px a 1024),
+   así que no aplica el margen de 3,0 para texto grande.
+   ⇒ Se sube a `--celeste` (#51adc6), de la MISMA paleta (no se inventa color):
+     **ratio 7,46**. Es además el tono que el título ya usa, así que el par
+     título+bajada queda coherente en vez de dos celestes peleando.
+
+   ⚠️ El texto NO cambia: sigue siendo "Cultura, Educación y Capacitación",
+     dictado por el dueño. Sólo cambia el tono, y por una razón medida. */
 .pm-card__bajada {
   font-family: var(--font-display);
   font-size: clamp(1rem, 1.7vw, 1.42rem);
   line-height: 1.2; letter-spacing: .06em;
-  color: var(--celeste-dark);
+  color: var(--celeste);
   text-transform: none;
   margin-bottom: 16px;
 }
@@ -305,8 +341,32 @@
    de la fila `fotos caja`, así que cae a ancho completo en todos los anchos.
    ⚠️ Centrado en TODOS los anchos, incluso en escritorio: es la continuación
    del encabezado (que es centrado), no un elemento de las columnas de abajo.
-   Por eso NO hereda el `text-align: left` de arriba. */
-.pm-card__origen { text-align: center; margin: 0 0 clamp(20px, 2.6vw, 30px); }
+   Por eso NO hereda el `text-align: left` de arriba.
+
+   ⚠️ CR-68 (2026-10-16) — ESTE ERA EL OTRO DESALINEADO. Medido a 1440: el botón
+   arrancaba en **x=750** (o sea pegado a la COLUMNA DERECHA) mientras los
+   bloques a ancho completo de la card arrancan en x=193. El `text-align:
+   center` no lo centraba en la CARD, porque a ≥900 px su contenedor hereda el
+   ancho de una de las columnas del grid.
+
+   🔴 LA CAUSA RAÍZ (no obvia, y vale para CUALQUIER bloque nuevo de esta card):
+   `.pm-card` **es un grid** a ≥900 px (`grid-template-areas` en la regla de más
+   abajo). Un hijo directo **sin `grid-area`** NO se queda a ancho completo: el
+   `auto-placement` lo mete en la **primera celda libre**, o sea una **columna de
+   517 px**. Le pasó a `.pm-card__dir` (517 px) y a `.pm-card__origen` (487 px).
+   `width: 100%` NO lo arregla: el 100% es de ESA celda, no de la card (probado).
+   ⇒ Lo correcto es darle **fila propia con `grid-area`**, igual que el logo, la
+     cabeza y el enlace. Ver la regla del grid más abajo, donde se declaran
+     `dir` y `origen` con fila completa.
+
+   ⚠️ `grid-column: 1 / -1` tampoco alcanzaba por sí solo: resuelve el ANCHO pero
+     el ítem sigue siendo auto-colocado, así que puede quedar en un ORDEN
+     inesperado respecto del encabezado. Con `grid-template-areas` el orden es
+     explícito y se lee de un golpe. */
+.pm-card__origen {
+  text-align: center;
+  margin: 0 0 clamp(20px, 2.6vw, 30px);
+}
 .pm-mas--origen { padding: 10px 18px; font-size: clamp(.78rem, 1vw, .85rem); }
 
 /* --- Píldoras de datos ---
@@ -334,9 +394,21 @@
   .pm-card {
     display: grid;
     grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);
+    /* 🔴 CR-68 (2026-10-16): `dir` y `origen` se AGREGAN acá. Son hijos directos
+       sin `grid-area`, y en un grid eso NO significa «ancho completo»: el
+       auto-placement los mete en la primera celda libre, o sea en una COLUMNA
+       (medido: dir 517px, origen 487px, con el resto de los bloques a 1044).
+       Al declararlos con fila propia, el orden queda explícito y el ancho es el
+       de la card, igual que logo / cabeza / enlace.
+       ⚠️ El orden de las áreas ES el orden visual: logo → dir → cabeza → origen
+         → (fotos|caja) → datos → enlace.
+       ⚠️ Si algún día se agrega OTRO bloque a esta card, hay que declararlo
+         acá: si no, cae en una columna y se ve desalineado. */
     grid-template-areas:
       "logo    logo"
+      "dir     dir"
       "cabeza  cabeza"
+      "origen  origen"
       "fotos   caja"
       "datos   caja"
       "enlace  enlace";
@@ -344,7 +416,9 @@
     align-items: start;
   }
   .pm-card__logo   { grid-area: logo; }
+  .pm-card__dir    { grid-area: dir; }
   .pm-card__cabeza { grid-area: cabeza; }
+  .pm-card__origen { grid-area: origen; }
   .cec-muestra__fotos { grid-area: fotos; margin-bottom: clamp(16px, 2vw, 22px); }
   .cec-muestra__datos { grid-area: datos; margin-bottom: 0; justify-content: flex-start; }
   .cec-muestra__caja  { grid-area: caja; align-self: start; }
@@ -374,9 +448,26 @@
      PALEOMUNDO.datos (data/museo.js), que es la fuente única (DEC-005).
    ⚠️ La clase `.paleomundo__pildora` se CONSERVA porque la emite render.js. Si
      algún día se renombra, hay que tocar los dos lados. */
+/* 🔴 CR-68 (2026-10-16) — LAS 4 TARJETAS CAÍAN 3+1, NO EN UNA FILA PAREJA.
+   Medido a 1440: la columna donde viven los datos mide **517 px**, y con
+   `minmax(158px, 1fr)` entran **3** columnas de 166 → la cuarta tarjeta se iba
+   SOLA a una segunda fila, dejando 2 huecos vacíos al lado. El dueño lo reportó
+   como «5 tarjetas 4+1 en vez de fila pareja» (son 4 tarjetas).
+
+   ⚠️ La causa NO es el `minmax` de 158: es que **517 px no da para 2 columnas de
+   158 + gap**, así que el `auto-fit` decide 3 y desborda la cuarta. Subir el
+   mínimo a 240 px fuerza **2 columnas parejas** de 253, y las 4 tarjetas quedan
+   en una **grilla 2×2** sin huecos. Se probó también bajar a 100 px (daría 4
+   columnas de 121): las tarjetas quedan demasiado angostas para su detalle de
+   2 líneas y el texto se aprieta.
+
+   ⚠️ El `align-items: stretch` ya estaba y se conserva: con la grilla 2×2 las
+     alturas parejas siguen siendo el objetivo.
+   ⚠️ En móvil esto no cambia nada: `min(100%, 240px)` con una columna de ~330 px
+     sigue dando 1 columna, como antes. */
 .cec-muestra__datos {
   display: grid; gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 158px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   align-items: stretch;
 }
 /* CR-62e (2026-10-15): el dueño pidió probar las mini cards TRANSPARENTES.
@@ -447,11 +538,92 @@
 }
 .cec-muestra__caja > p { font-size: .89rem; color: var(--text-soft); margin-bottom: 18px; max-width: 62ch; }
 
+/* --- Las 5 viñetas «Qué lleva el Proyecto C.E.C» ---
+   🔴 CR-68 (2026-10-16) — CINCO FILAS DE ALTURA DESIGUAL, no una grilla pareja.
+   Medido a 1440: `alturas=[65, 45, 45, 45, 65]`.
+
+   ⚠️ Y la causa NO era el stretch (que igual se necesitaba, ver abajo): era que
+   el `minmax` de **220 px no dejaba entrar dos columnas**. La lista vive dentro de
+   `.cec-muestra__caja`, que a 1440 mide **487 px** y tras su `padding` deja **427
+   útiles**; dos columnas de 220 + el gap de 10 piden **450 > 427**, así que el
+   `auto-fit` caía a **UNA columna de 427** y las 5 viñetas se apilaban en 5
+   filas de 65/45/45/45/65. El ojo lee esa columna larga y dentada como
+   desprolijidad, no como lista.
+
+   ⇒ Bajar el mínimo a **195 px** permite 2 columnas de 208 + gap = **426 ≤ 427**.
+     Resultado medido: **grilla 2×2 + la 5ª a lo ancho**, con las alturas de cada
+     fila igualadas. (195 es el mayor entero que entra: con 200 ya daría 420+10 =
+     430 > 427 y volvería a 1 columna. Si cambia el `padding` de la caja o el
+     ancho de la columna del grid, HAY QUE VOLVER A MEDIR esto.)
+
+   ⇒ El mínimo se fija por **número de columnas deseado**, no por el ancho de la
+     caja, porque el ancho disponible CAMBIA de forma no monótona con el viewport
+     (la caja es una columna del grid de la card a ≥900px, y a <900px es ancho
+     completo). Medido, `auto-fit` con un mínimo fijo da resultados INESTABLES:
+
+       viewport   línea útil de la caja   columnas con minmax(195)   columnas que queremos
+       ─────────  ──────────────────────  ─────────────────────────  ────────────────────
+        1440        427 px                 2  ✔                      2
+        1024        371 px                 1  ✘ (20 car/línea)        2
+         900        323 px                 1  ✘                      1  (apilado)
+         899        738 px (full)          3  ✘ (dentado)            2
+         768        616 px (full)          3  ✘ (dentado)            2
+         390        264 px (full)          1  ✔                      1
+
+     ⇒ **Se declara el número de columnas en cada rango**, que es predecible y se
+       lee de un golpe, en vez de confiar en un `auto-fit` que a 1024px da 1 y a
+       899px da 3 (dos regresiones a la vez por el mismo `minmax`).
+     ⚠️ 1024 es el caso que importa: con 1 columna de 371px el texto quedaba a
+       **20 caracteres por línea**, el ancho de una columna de celular — el
+       defecto de CR-64 («se ve de celular»).
+
+   ⚠️ `align-items: stretch` Y `display: block` en el `li` también hacen falta:
+     sin ellos, aun con 2 columnas, el ítem corto no se estira a la altura de su
+     fila. `display: list-item` **no se estira** en un grid (medido: seguía en 45
+     contra 65 de su vecino). El `list-style: none` del `ul` ya está, así que
+     cambiar el display del `li` no quita nada.
+   ⚠️ NO se usa `height` fijo: el texto viene del material del Centro y puede
+     crecer; un alto fijo RECORTARÍA una viñeta larga. `height: 100%` tampoco: en
+     grid el ítem ya se estira solo. */
 .cec-muestra__lista {
   list-style: none; display: grid; gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+}
+/* 2 columnas mientras la línea útil aguante ≥160px por viñeta.
+   🔴 CR-68: el corte NO puede ser el mismo que el del grid de la card (900px).
+   Medido, en el tramo 900-1023 la caja es una COLUMNA del grid (línea útil 323 a
+   371) y 2 columnas darían **156-181px**: el texto salta a 5-8 líneas y las
+   alturas se desmadran (143/143/84/84/201 medido a 900px).
+   ⇒ En ese tramo va **1 columna**; las 2 columnas entran recién cuando la línea
+   útil da ≥420px, que es a partir de 1150px (medido). Abajo de 900 la caja es
+   ancho completo (línea útil 738 a 47) y 1 columna es lo correcto.
+
+   viewport    línea útil   columnas   viñeta
+   ──────────  ───────────  ─────────  ───────────────
+    1440        427          2          208  ✔
+    1280        429          2          210  ✔
+    1150+       ≥420         2          ≥205 ✔
+    1024        371          1          371  (a lo ancho)
+     900        323          1          323  (a lo ancho)
+     899        738          1          738  (a lo ancho)
+     390        264          1          264  ✔
+*/
+@media (min-width: 1150px) {
+  .cec-muestra__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Con 2 columnas y un nº IMPAR de viñetas, la última queda SOLA y se ve como una
+   tira angosta y alta (medido: 208x143 contra las de 208x104 de arriba). Se la
+   hace ocupar las DOS columnas para que cierre la grilla.
+   ⚠️ Sólo matchea si la última cae en columna IMPAR, que es justo cuando quedaría
+   sola: con un nº PAR de viñetas la regla no aplica y no hay hueco. */
+@media (min-width: 1150px) {
+  .cec-muestra__lista li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 .cec-muestra__lista li {
+  /* CR-68: `display: block` (no `list-item`) para que el grid lo estire.
+     Ver el comentario largo de arriba: con `list-item` el stretch no aplica. */
+  display: block;
   position: relative; padding: 12px 14px 12px 40px;
   border-radius: var(--radius-md);
   background: rgba(2, 21, 63, .38);
@@ -459,6 +631,13 @@
   font-size: .84rem; color: var(--text-soft); line-height: 1.45;
   transition: border-color .3s, transform .3s var(--ease-out-expo);
 }
+/* CR-68: cuando el nº de viñetas es IMPAR, la última queda SOLA en su fila y se ve
+   como una tira angosta y alta (medido: 208x143 contra las de 208x104 de arriba).
+   Se la hace ocupar las DOS columnas para que cierre la grilla.
+   ⚠️ Sólo aplica si la última cae en columna IMPAR, que es exactamente cuando
+   quedaría sola: con un nº PAR de viñetas la regla no matchea y no hay hueco.
+   ⚠️ Va declarada dentro de `@media (min-width: 1024px)` más arriba, junto a la
+   grilla de 2 columnas, para que las dos decisiones se lean juntas. */
 .cec-muestra__lista li:hover { border-color: var(--border-accent); transform: translateY(-3px); }
 .cec-muestra__lista li::before {
   content: ""; position: absolute; left: 17px; top: 17px;

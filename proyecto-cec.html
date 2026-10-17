@@ -80,20 +80,40 @@
         <span data-cec-volver-texto>Volver al inicio</span>
       </a>
 
+      <!-- ===== COLUMNA DE TEXTO (CR-68) =====
+           Los bloques de texto de la cabeza van DENTRO de `.cec-cabeza__texto`,
+           que acota la columna a ~88ch y la CENTRA. Antes cada bloque traía su
+           propio `max-width` (24ch el título, 62ch la bajada, 74ch la intro y la
+           relación): cuatro anchos que no coincidían y dejaban la página medio
+           vacía en escritorio — el «se ve de celular» de CR-64.
+           ⚠️ El `<a>` de volver y la etiqueta quedan AFUERA a propósito: son
+           navegación y rótulo, no texto de lectura, y se alinean con el borde de
+           la sección.
+           ⚠️ El render NO necesita cambios: pinta por `data-*`, y el envoltorio
+           no altera ningún selector. -->
       <span class="etiqueta reveal" data-cec-etiqueta>Proyecto C.E.C</span>
       <h1 class="cec-titulo reveal" data-cec-titulo></h1>
-      <p class="cec-bajada reveal" data-cec-bajada></p>
 
-      <div class="cec-intro reveal" data-cec-intro></div>
+      <div class="cec-cabeza__texto">
+        <p class="cec-bajada reveal" data-cec-bajada></p>
+
+        <div class="cec-intro reveal" data-cec-intro></div>
+      </div>
 
       <!-- Cifras destacadas (CR-63). Se pintan desde CEC.cifras, que sale del
-           material del Centro. Dan contexto de un golpe antes del texto largo. -->
+           material del Centro. Dan contexto de un golpe antes del texto largo.
+           CR-68: van a ANCHO COMPLETO (fuera de la columna de texto) porque son
+           tarjetas de dato, no prosa: acotarlas a 88ch las apretaría sin motivo. -->
       <div class="cec-cifras reveal" data-cec-cifras></div>
 
       <!-- La relación con el museo: es la parte que el dueño tuvo que aclarar
            (el museo es independiente de la municipalidad y convive con varias
-           empresas). Va destacada, no enterrada al final. -->
-      <div class="cec-relacion glass reveal" data-cec-relacion></div>
+           empresas). Va destacada, no enterrada al final.
+           CR-68: vuelve a la columna de texto — es prosa, y debe coincidir con
+           la bajada y la intro. -->
+      <div class="cec-cabeza__texto">
+        <div class="cec-relacion glass reveal" data-cec-relacion></div>
+      </div>
 
       <nav class="cec-indice reveal" data-cec-indice aria-label="Secciones de esta página"></nav>
     </div>

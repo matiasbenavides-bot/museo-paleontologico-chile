@@ -12,6 +12,56 @@
    ============================================================ */
 
 /* ---------- Cabecera de la página ---------- */
+/* ============================================================
+   🔴 CR-68 (2026-10-16) — UNA SOLA MEDIDA DE COLUMNA PARA TODA LA CABEZA.
+   El dueño reportó «se ven mal algunas partes» en la subpágina. Medido a 1440
+   (contenedor útil 1132 px), cada bloque tenía su propio ancho y NINGUNO
+   coincidía: título **24ch**, bajada **62ch**, intro **74ch**, relación **74ch**.
+
+   Dos consecuencias, las dos visibles:
+
+   (a) DESALINEACIÓN EN ESCALERA: el borde derecho de cada bloque cae en un
+       lugar distinto (24ch ≈ 432px, 62ch ≈ 496px, 74ch ≈ 592px), así que la
+       columna de texto se lee «escalonada». Es el defecto clásico que el propio
+       proyecto ya registró en CR-62: **un bloque que no coincide con el ancho de
+       sus vecinos se lee como desprolijidad**, aunque cada uno esté «bien».
+
+   (b) «SE VE DE CELULAR» (CR-64): 74ch sobre 1132 px usa apenas la **mitad** del
+       ancho, y el resto queda vacío. El umbral de CR-64 es de **≥55 caracteres
+       por línea**; acá la línea quedaba corta no por el ancho de línea en sí, sino
+       porque la COLUMNA no aprovecha la página.
+
+   ⇒ Se define `--cec-col` (una sola variable) y TODOS los bloques de texto de la
+     cabeza la usan. El ancho se elige por LEGIBILIDAD, no por gusto. Medido: con
+     `88ch` la línea quedaba a **101 car/linea a 1440** y **117 a 1024** — pasado
+     el rango cómodo (un libro usa 60-75; en pantalla se tolera hasta ~90), y a
+     1024 el `ch` además crece porque la tipografía escala con el viewport.
+   ⇒ El tope se fija en **660px**, que con la métrica medida (8.2 px/car a
+     16px) da **~80 caracteres por línea** en todos los anchos, y de paso es
+     estable: un tope en PX no se mueve cuando cambia la fuente.
+   ⚠️ Por qué px y no `ch`: `ch` depende del `font-size` del contenedor, que acá
+     es fluido (`clamp`), así que el mismo `ch` da líneas de largo distinto en
+     cada ancho. Un tope en px mantiene la MEDIDA DE LECTURA constante, que es lo
+     que importa. No viola DEC-015: la escala fluida sigue en tipografía y aire;
+     esto es la medida de la columna.
+
+   ⚠️ El `margin-inline: auto` es lo que centra; sin él, el `max-width` dejaría
+     la columna pegada a la izquierda con TODO el vacío a la derecha, que es peor
+     que el problema que se está arreglando.
+   ⚠️ El título NO lleva `--cec-col`: su `max-width: 24ch` es a propósito (un
+     titular de 660px cruzaría la pantalla y se leería mal). Lo que se corrige es
+     que su BORDE izquierdo coincida con el del resto. */
+.cec-cabeza .contenedor {
+  --cec-col: min(100%, 660px);
+}
+/* La columna de texto: acotada y centrada. Todo lo que va dentro comparte el
+   mismo ancho, así que sus bordes coinciden. */
+.cec-cabeza__texto {
+  width: 100%;
+  max-width: var(--cec-col);
+  margin-inline: auto;
+}
+
 .cec-cabeza {
   padding-top: max(clamp(96px, 12vw, 120px),
                    calc(var(--header-h, 84px) + clamp(18px, 2.6vw, 32px)));
@@ -33,18 +83,27 @@
   font-size: var(--fs-h2);
   line-height: 1.06; color: var(--text-main);
   margin: 12px 0 14px;
-  /* El nombre es largo: se acota el ancho para que no cruce toda la pantalla. */
+  /* CR-68: el titular SE ACOTA a 24ch a propósito (un h1 de 88ch cruzaría toda
+     la pantalla y se leería mal). No lleva `--cec-col`: el título es el ÚNICO
+     bloque que no comparte el ancho, y está bien que así sea.
+     ⚠️ Su borde IZQUIERDO sí coincide con el del resto (los dos arrancan en el
+     mismo x dentro de la columna centrada). Lo que NO coincide es el derecho, y
+     eso es correcto: un titular corto y un párrafo largo tienen largos distintos
+     por naturaleza. */
   max-width: 24ch;
 }
 .cec-bajada {
   font-size: clamp(1rem, 1.6vw, 1.15rem);
-  color: var(--text-soft); max-width: 62ch;
+  color: var(--text-soft);
+  /* CR-68: SIN max-width propio. Hereda el ancho de la columna, para que su
+     borde coincida con el de la intro y la relación. Antes eran 62/74/74ch:
+     tres anchos distintos que se leían escalonados. */
 }
 .cec-intro {
   margin-top: clamp(18px, 2.6vw, 26px);
   padding-top: clamp(18px, 2.6vw, 26px);
   border-top: 1px solid var(--border-subtle);
-  max-width: 74ch;
+  /* CR-68: SIN max-width propio (era 74ch). Mismo motivo que la bajada. */
 }
 .cec-intro p {
   font-size: clamp(.95rem, 1.4vw, 1.03rem);
@@ -59,7 +118,8 @@
   margin-top: clamp(24px, 3.6vw, 34px);
   padding: clamp(20px, 3vw, 28px);
   border-radius: var(--radius-md);
-  max-width: 74ch;
+  /* CR-68: SIN `max-width: 74ch`. La columna la fija `.cec-cabeza__texto`, así
+     que este bloque coincide con la bajada y la intro. */
 }
 .cec-relacion__t {
   font-family: var(--font-display);

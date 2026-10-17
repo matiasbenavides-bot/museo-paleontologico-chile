@@ -7,3 +7,4 @@ desktop.ini
 # Capturas de trabajo (no son parte del sitio)
 _capturas/
 *.log
+__pycache__/
