@@ -40,6 +40,63 @@ imágenes en celular».
 
 ---
 
+## CR-68 (2026-10-16) — CSS de las dos páginas de C.E.C
+
+> «Mejoremos el css de esa seccion, se ven mal algunas partes, de la pagina principal
+> area c.e.c y pagina sub de c.e.c»
+
+⚠️ **«Se ven mal algunas partes» es un síntoma.** Se midió antes de tocar nada, con una sonda
+propia (`scripts/audita-css-cec.py`) que busca **defectos de clase**: desborde,
+truncamiento, alturas dispares, desalineación, ancho de línea, contraste WCAG y solapes.
+Salieron **6 defectos**, cada uno con su causa raíz. **PUBLICADO y verificado en vivo**
+(`96647af`).
+
+### Los 6, en una línea cada uno
+
+| # | Defecto medido | Causa raíz |
+|---|---|---|
+| 1 | «Dirección» y el enlace del origen desalineados (517 y 487 px contra 1044) | 🔴 **Un hijo de `.pm-card` sin `grid-area` NO queda a ancho completo**: la card ES un grid y el auto-placement lo mete en una columna. `width: 100%` no lo arregla |
+| 2 | Lista de 5 viñetas con alturas 65/45/45/45/65 | **`display: list-item` no se estira en un grid**, ni con `align-items: stretch` → `display: block` |
+| 3 | Misma lista: 2 columnas a 1440, **1** a 1024 (texto a **20 car/línea**), **3** a 899/768 | 🔴 **`auto-fit` da columnas NO monótonas** porque la caja cambia de contexto → declarar columnas por rango |
+| 4 | 5ª viñeta sola, como tira angosta y alta | `li:last-child:nth-child(odd){grid-column:1/-1}` |
+| 5 | 4 tarjetas de dato en 3+1 | `minmax(158px)` en columna de 517 daba 3 → **240** da 2×253 parejas |
+| 6 | «Dirección» y la bajada con contraste **4,05** (mínimo AA 4,5) | `--celeste-dark` no sirve para texto chico → **`--celeste`** = **7,46** |
+
+### La subpágina: 4 anchos de texto distintos
+
+Título **24ch**, bajada **62ch**, intro **74ch**, relación **74ch** — desalineados en escalera y
+la mitad de la página vacía en escritorio (el «se ve de celular» de CR-64). Ahora hay **UNA**
+variable (`--cec-col`) dentro de `.cec-cabeza__texto`, acotada y **centrada**.
+
+⚠️ **`88ch` NO sirvió**: `ch` se resuelve contra un `font-size` que acá es **fluido**, así que
+daba **101 car/línea a 1440 y 117 a 1024**. El tope quedó en **px**: `min(100%, 660px)` →
+**80-86 car/línea** estable.
+
+### 🔴 Las 3 trampas de medición (todas costaron vueltas)
+
+1. **CACHÉ.** El navegador servía el CSS viejo: la regla existía en disco y en el HTTP pero
+   `getComputedStyle` devolvía `max-width: none`. **Siempre** `Network.setCacheDisabled` +
+   `?v=<timestamp>`. *Un cambio «que no se aplica» puede ser la caché, no el CSS.*
+2. **El TEST, no la página.** El assert daba FAIL porque buscaba `.pm-card__enlace` cuando la
+   clase real es **`.cec-muestra__enlace`**. Los 5 bloques estaban perfectamente alineados.
+3. **«Vacío» vs «vacío a propósito».** `data-galeria-intro` está vacío **por decisión del
+   dueño**: se filtró lo `display:none`. Un test que no distingue las dos cosas inventa trabajo.
+
+### Resultado medido en vivo
+
+- **Portada**: los 5 bloques de ancho completo coinciden (`x=193, w=1044` a 1440 / `x=42,
+  w=306` a 390); 4 tarjetas de dato idénticas; lista con anchos parejos.
+- **Subpágina**: columna 660 px, línea 80-86 car, bajada/intro/relación con el **mismo borde
+  derecho** (1045 / 837 / 374).
+- **0 desborde · 0 imágenes rotas · 0 bloques sin pintar · las 4 páginas sanas en 2 anchos.**
+
+📎 Detalle completo, tabla de `auto-fit` por viewport y las 3 trampas:
+`references/cr68-css-cec.md` (skill `museo-mpch`).
+📎 Sondas: `audita-css-cec.py`, `mide-geometria-cec.py`, `verifica-no-regresion.py`,
+`verifica-cr68-vivo.py`, `captura-cec-secciones.py` (todas `.py`, sin `node_modules`).
+
+---
+
 ## CR-67 (2026-10-16) — contexto en la zona C.E.C de la portada
 
 Pedido del dueño, textual:
