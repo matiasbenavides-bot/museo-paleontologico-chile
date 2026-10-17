@@ -143,11 +143,28 @@ ya borrado) el render cae al modo viejo — `display: flex`, íconos «check», 
 
 **PENDIENTE / A CONFIRMAR:**
 
-- ⚠️ La portada de **Megabestias** viene del archivo `dinosaurios en chile.jpg`,
-  que no dice su título. Se respetó la asignación del dueño pero queda anotado.
 - ⚠️ El libro **ilustrado** (quinto) NO estaba en `director.completo`; hoy sólo
   aparece en la lista de libros. No se agregó prosa al currículum sin dictado.
-- ⚠️ Sin publicar. El sitio en vivo NO tiene las portadas todavía.
+
+**CORRECCIÓN CR-70 (mismo día).** El dueño corrigió dos títulos:
+«Megabestias en Chile y los vertebrados del Cenozoico» → **«Dinosaurios en
+Chile»** (no es un libro de megabestias), y «Dinosaurios y otros animales
+prehistóricos en Chile» → **«Todo sobre… los dinosaurios y los animales
+prehistóricos de Chile»**.
+
+⚠️ Lección: yo había asignado el mapa archivo→título y **en ese mapa metí dos
+títulos del data que no correspondían a esas portadas**. El nombre del archivo
+(`todo sobre.. los dinosaurios ...`) ya lo delataba y no lo seguí. Regla que
+queda: si el nombre del archivo contradice el título del data, **preguntar**
+antes de publicar; el archivo que entrega el dueño suele ser más fiel que la
+lista vieja del sitio.
+
+- La portada de «Dinosaurios en Chile» conserva el archivo
+  `megabestias-vertebrados-cenozoico.jpg` (la ruta publicada no se renombró).
+- `og:description` perdió «megabestias»: afirmaba un libro que no existe.
+
+**PUBLICADO:** `f832dfa` — 5/5 portadas cargan en vivo, 5 títulos correctos,
+0 rastro de los nombres viejos en el HTML publicado.
 
 ---
 
