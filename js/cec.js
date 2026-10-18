@@ -123,23 +123,50 @@
        Se pintan en la cabecera, antes de la intro larga: es lo que da contexto
        de un golpe a quien llega sin saber qué es el Centro. */
     var cif = $("[data-cec-cifras]");
-    if (cif && C.cifras && C.cifras.length) {
-      cif.innerHTML = C.cifras.map(function (c) {
-        return '<div class="cec-cifra">' +
-                 '<span class="cec-cifra__ico" aria-hidden="true">' + ico(c.icono) + "</span>" +
-                 '<span class="cec-cifra__num">' + esc(c.valor) +
-                   '<span class="cec-cifra__ud">' + esc(c.unidad) + "</span></span>" +
-                 '<span class="cec-cifra__det">' + esc(c.detalle) + "</span>" +
-               "</div>";
-      }).join("");
+    if (cif) {
+      if (C.cifras && C.cifras.length) {
+        cif.innerHTML = C.cifras.map(function (c) {
+          return '<div class="cec-cifra">' +
+                   '<span class="cec-cifra__ico" aria-hidden="true">' + ico(c.icono) + "</span>" +
+                   '<span class="cec-cifra__num">' + esc(c.valor) +
+                     '<span class="cec-cifra__ud">' + esc(c.unidad) + "</span></span>" +
+                   '<span class="cec-cifra__det">' + esc(c.detalle) + "</span>" +
+                 "</div>";
+        }).join("");
+      } else {
+        /* CR-72: sin cifras en el data (el Word del dueño no las trae), se RETIRA
+           el contenedor. Medido: quedaba como una caja de 1132x0 px, o sea una
+           franja vacía que empujaba el resto de la cabecera. */
+        cif.remove();
+      }
     }
 
+    /* ⚠️ CR-72 (2026-10-17): si NO hay `relacion` en el data, hay que RETIRAR el
+       nodo, no dejarlo vacío.
+       El div vive en proyecto-cec.html con la clase `glass` (fondo, borde,
+       desenfoque). Sin contenido queda una CAJA VACÍA pintada en la página — el
+       dueño la vio y la reportó: «hay una card vacia ahi». Con sólo «no pintar
+       nada» el hueco se queda. Se quita del DOM.
+       Hoy `CEC.relacion` es null porque el Word ya dice en su primera frase
+       quién desarrolla el proyecto (Museo + GeoPaleo): repetirlo era decir dos
+       veces lo mismo. */
     var rel = $("[data-cec-relacion]");
-    if (rel && C.relacion) {
-      rel.innerHTML =
-        '<h2 class="cec-relacion__t">' + esc(C.relacion.titulo) + "</h2>" +
-        "<p>" + esc(C.relacion.texto) + "</p>" +
-        (C.relacion.nota ? '<p class="cec-relacion__nota">' + esc(C.relacion.nota) + "</p>" : "");
+    if (rel) {
+      if (C.relacion) {
+        rel.innerHTML =
+          '<h2 class="cec-relacion__t">' + esc(C.relacion.titulo) + "</h2>" +
+          "<p>" + esc(C.relacion.texto) + "</p>" +
+          (C.relacion.nota ? '<p class="cec-relacion__nota">' + esc(C.relacion.nota) + "</p>" : "");
+      } else {
+        /* Se retira el nodo Y su envoltorio `.cec-cabeza__texto`, que existe
+           sólo para darle columna de texto: si quedara, sería otro div vacío. */
+        var caja = rel.parentElement;
+        if (caja && caja.classList.contains("cec-cabeza__texto") && caja.children.length === 1) {
+          caja.remove();
+        } else {
+          rel.remove();
+        }
+      }
     }
   }
 
@@ -159,13 +186,18 @@
   /* Los ejes de la página, en orden. Cada uno arrastra su ícono desde el data/,
      así el índice y el título del bloque muestran SIEMPRE el mismo dibujo. */
   function bloques() {
-    return [
-      { id: "museo-itinerante", titulo: C.museoItinerante.titulo, icono: C.museoItinerante.icono },
-      { id: "actividades",      titulo: C.actividades.titulo,      icono: C.actividades.icono },
-      { id: "publicaciones",    titulo: C.publicaciones.titulo,    icono: C.publicaciones.icono },
-      { id: "aves-del-terror",  titulo: C.avesDelTerror.titulo,    icono: C.avesDelTerror.icono },
-      { id: "difusion",         titulo: C.difusion.titulo,         icono: C.difusion.icono }
-    ];
+    /* CR-72: la lista se arma sólo con las secciones que EXISTEN en el data.
+       Antes estaba escrita a mano con las cinco de siempre, y el Word nuevo no
+       trae publicaciones / aves del terror / difusión: el índice habría
+       linkeado a anclas inexistentes. */
+    var l = [];
+    if (C.actividades)      l.push({ id: "actividades",      titulo: C.actividades.titulo,      icono: C.actividades.icono });
+    if (C.museoItinerante) l.push({ id: "museo-itinerante", titulo: C.museoItinerante.titulo, icono: C.museoItinerante.icono });
+    if (C.establecimientos) l.push({ id: "establecimientos", titulo: C.establecimientos.titulo, icono: C.establecimientos.icono });
+    if (C.publicaciones)   l.push({ id: "publicaciones",    titulo: C.publicaciones.titulo,    icono: C.publicaciones.icono });
+    if (C.avesDelTerror)   l.push({ id: "aves-del-terror",  titulo: C.avesDelTerror.titulo,    icono: C.avesDelTerror.icono });
+    if (C.difusion)        l.push({ id: "difusion",         titulo: C.difusion.titulo,         icono: C.difusion.icono });
+    return l;
   }
 
   function pintarIndice() {
@@ -220,12 +252,35 @@
                      '<h3 class="cec-actividad__t">' + esc(a.titulo) + "</h3>" +
                    "</div>" +
                    '<div class="cec-actividad__cuerpo">' +
-                     '<p class="cec-actividad__detalle">' + esc(a.detalle) + "</p>" +
+                     /* CR-72: el data nuevo trae `texto`; se acepta también
+                        `detalle` (forma vieja) para no romper si vuelve. */
+                     '<p class="cec-actividad__detalle">' + esc(a.texto || a.detalle || "") + "</p>" +
                      (a.parrafos || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
                    "</div>" +
                  "</li>";
         }).join("") +
       "</ol>" +
+    "</section>";
+  }
+
+  /* ---------- Bloque: dónde se ha realizado (CR-72, nuevo) ----------
+     El último párrafo del Word del dueño nombra los establecimientos donde el
+     proyecto ya se hizo. Se pinta como lista de nombres, no como párrafo
+     corrido: es lo que un colegio busca («¿ya fueron a algún lado?»).
+     ⚠️ El «etc.» del Word se conserva como nota al pie: el dueño no cerró la
+     enumeración y completarla sería inventar establecimientos. */
+  function htmlEstablecimientos() {
+    var d = C.establecimientos;
+    return '<section class="cec-bloque reveal" id="establecimientos">' +
+      tituloBloque(d) +
+      (d.intro ? '<p class="cec-bloque__intro">' + esc(d.intro) + "</p>" : "") +
+      '<ul class="cec-establecimientos">' +
+        d.items.map(function (n) {
+          return '<li><span class="cec-establecimientos__ico" aria-hidden="true">' +
+                   ico(d.icono || "check") + "</span><span>" + esc(n) + "</span></li>";
+        }).join("") +
+      "</ul>" +
+      (d.nota ? '<p class="cec-bloque__nota">' + esc(d.nota) + "</p>" : "") +
     "</section>";
   }
 
@@ -287,12 +342,24 @@
   function pintarBloques() {
     var cont = $("[data-cec-bloques]");
     if (!cont) return;
+    /* CR-72 (2026-10-17): cada bloque se pinta SÓLO si su dato existe.
+       El Word del dueño no trae publicaciones, difusión ni aves del terror, así
+       que esas claves quedaron en `null`. Sin estos guardas, la página
+       reventaría al leer `.titulo` de null.
+       ⚠️ El orden es el del DOCUMENTO del dueño:
+          muestra itinerante -> programas -> la muestra -> dónde se ha realizado
+       (antes era otro orden, el del material viejo del Centro). */
+    /* ⚠️ ORDEN = el del DOCUMENTO del dueño (CR-72):
+         programas (las 5 líneas) -> la muestra -> dónde se ha realizado
+       ⚠️ El índice se arma de la MISMA lista (ver `bloques()`), así que estos
+       dos órdenes no pueden divergir; si se cambia uno, cambian los dos. */
     cont.innerHTML =
-      htmlItinerante() +
-      htmlActividades() +
-      htmlPublicaciones() +
-      htmlAves() +
-      htmlDifusion();
+      (C.actividades ? htmlActividades() : "") +
+      (C.museoItinerante ? htmlItinerante() : "") +
+      (C.establecimientos ? htmlEstablecimientos() : "") +
+      (C.publicaciones ? htmlPublicaciones() : "") +
+      (C.avesDelTerror ? htmlAves() : "") +
+      (C.difusion ? htmlDifusion() : "");
   }
 
   function pintarCierre() {

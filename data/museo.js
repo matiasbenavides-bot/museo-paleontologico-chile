@@ -541,7 +541,7 @@ const SERVICIOS_NOTA =
    ⚠️ `proyecto-cec.html` está publicada en GitHub Pages: dejar de enlazarla NO
    la saca del público, porque responde igual por URL directa. Por eso el
    archivo NO se borra pero SÍ se hace rebotar. */
-const CEC_SUBPAGINA = { visible: false };
+const CEC_SUBPAGINA = { visible: true };
 
 /* --- Detalle de la muestra itinerante (CR-41, 2026-10-13) ---
    Contenido de la muestra, textual del dueño: "la puesta en valor de 25 vitrinas
@@ -635,12 +635,20 @@ const MUSEO_ITINERANTE = {
        condición: el monto y la modalidad son suyos.
      ⚠️ El texto ANTERIOR ("Su costo se realiza a través del Museo") no se borra
        de la historia: lo reemplaza este, que dice lo mismo pero con el monto. */
-  introSec: "Muestra museológica itinerante que el museo lleva, en conjunto con el Centro de Estudios Paleontológicos de Chile, a los establecimientos educacionales de Santiago. No tiene cargo para el establecimiento: el costo es de cargo del alumno, y sólo se requiere que el establecimiento provea una sala segura y con llave durante los días que dure la exposición.",
+  /* 🔴 CR-72 (2026-10-17): introSec REESCRITA con el Word del dueño.
+     El texto anterior hablaba del «Centro de Estudios Paleontológicos de Chile»
+     y del precio por alumno. El Word dice ahora que el proyecto lo desarrollan
+     el Museo JUNTO CON GEOPALEO LTDA., y no menciona precio.
+     ⇒ Se transcribe el Word: quiénes lo hacen y a quién va dirigida la muestra
+       itinerante. NO se agrega ni se quita nada (DEC-034).
+     ⚠️ El precio por alumno SE QUITÓ por decisión explícita del dueño
+       («si no está en el Word, no va»). Sigue en el historial (daf09df). */
+  introSec: "Proyecto desarrollado por el Museo Paleontológico de Chile junto con GeoPaleo Ltda. La muestra museológica itinerante es llevada a los establecimientos educacionales de Santiago y, bajo ciertas circunstancias de financiamiento, también puede ser llevada a las distintas regiones de Chile.",
   /* --- Bloque de contenido: lo que LLEVA la muestra (CR-41) ---
      Titulo e intro abajo son, tambien, redaccion minima de estructura sobre el
      dato del dueño ("la puesta en valor de 25 vitrinas conteniendo..."). */
   titulo: "Qué lleva el Proyecto C.E.C",
-  intro: "La muestra consiste en la puesta en valor de 25 vitrinas con:",
+  intro: "La muestra consiste en la puesta en valor de 20 vitrinas con:",
   /* --- Píldoras: los datos duros, para leer de un golpe (CR-50) ---
      ⚠️ Son datos TEXTUALES del dueño, no frases del agente:
        - "25 vitrinas"            -> confirmado por el ("si, tiene 25 actualmente")
@@ -649,23 +657,39 @@ const MUSEO_ITINERANTE = {
        - basica y media           -> textual ("alumnos de ensenanza basica y media")
      Si el dueño quiere otro dato aca, se cambia solo esto. */
   datos: [
-    { clave: "25", valor: "vitrinas en exhibición", icono: "museo" },
+    /* CR-72 (2026-10-17): VITRINAS 25 -> 20. El dueño entregó un Word nuevo que
+       dice «20 vitrinas» y eligió «reemplaza todo». El 25 venía de una
+       confirmación suya anterior (CR-41) y queda SUPERADA por su propio
+       documento. Manda el Word. */
+    { clave: "20", valor: "vitrinas en exhibición", icono: "museo" },
     { clave: "3 días", valor: "se presenta en el establecimiento", icono: "check" },
-    { clave: "$1.000", valor: "por alumno · sin cargo para el establecimiento", icono: "check" },
+    /* 🔴 CR-72: AQUÍ ESTABA EL PRECIO («$1.000 por alumno · sin cargo para el
+       establecimiento») Y SE QUITÓ. El Word nuevo no lo menciona, y el dueño
+       eligió explícitamente: «si no está en el Word, no va».
+       ⚠️ El dato NO se perdió: sigue en el historial (daf09df) y en HANDOFF.
+         Si mañana quiere volver a publicarlo, se repone esta línea tal cual.
+       ⚠️ Se reemplazó por las REGIONES, que el Word sí dice («bajo ciertas
+         circunstancias de financiamiento también puede ser llevada a las
+         distintas regiones de Chile») — así el bloque no queda con 3 píldoras. */
+    { clave: "Santiago", valor: "y también regiones, según financiamiento", icono: "terreno" },
     { clave: "Para", valor: "enseñanza básica y media", icono: "colegio" }
   ],
+  /* 🔴 CR-72: la lista reproduce el CONTENIDO del Word, en su orden.
+     Antes decía «fósiles y calcos de fósiles de vertebrados a escala» y no
+     mencionaba METEORITOS ni distinguía «reales y réplicas», que es lo que el
+     Word del dueño dice ahora. Se transcribe su enumeración, sin inventar
+     categorías (DEC-034). */
   items: [
-    "Una colección de fósiles y calcos de fósiles de vertebrados a escala",
-    "Corales, minerales, insectos y moluscos",
-    "Reconstrucciones paleobiológicas de dinosaurios",
-    "Cráneos de dinosaurios",
-    "Material educativo, pedagógico y didáctico de gran interés para alumnos de enseñanza básica y media."
+    "Una interesante y hermosa colección de fósiles reales y réplicas",
+    "Corales, minerales, meteoritos, insectos y moluscos",
+    "Una colección de reconstrucciones paleobiológicas de dinosaurios",
+    "Material educativo, pedagógico y didáctico de gran interés especialmente para los alumnos de enseñanza básica y media del sistema educacional chileno."
   ],
   /* CR-61/CR-62c: enlace a la subpágina del Proyecto C.E.C, que reúne el
      detalle completo (quiénes son, publicaciones, actividades, difusión).
      ⚠️ Es texto de RÓTULO (dice a dónde lleva), no prosa nueva: por eso puede
      escribirlo el agente, igual que los títulos de sección de la subpágina. */
-  subpagina: { enlace: "proyecto-cec.html", texto: "Ver el Proyecto C.E.C completo", visible: false },
+  subpagina: { enlace: "proyecto-cec.html", texto: "Ver el Proyecto C.E.C completo", visible: true },
   /* --- De dónde NACE el proyecto (CR-67, 2026-10-16) ---
      El dueño reportó que la sección "describe la muestra pero no dice qué es el
      C.E.C" y pidió tres cosas: de dónde nace el proyecto · quién lo dirige ·
@@ -698,7 +722,19 @@ const MUSEO_ITINERANTE = {
           Paleontológico de C…"). Por eso el texto de este enlace se acorta.
           ⚠️ El párrafo del dato está escrito con «dos profesionales»: si el
             dueño confirma que es UNO, se corrige ahí (dato suyo, DEC-005). */
-  origen: { texto: "Cómo nace el C.E.C", enlace: "proyecto-cec.html#proyecto-cec", visible: false },
+  /* 🔴 CR-72 (2026-10-17): EL ENLACE «CÓMO NACE EL C.E.C» SE RETIRA.
+     El dueño lo pidió explícitamente: «quita el que dice como nace c.e.c en la
+     landing tambien». Era un enlace de la portada hacia la subpágina
+     (`proyecto-cec.html#proyecto-cec`), es decir un cuarto camino a la subpágina
+     además de los tres que ya apagaba CR-71.
+     Hasta acá estaba apagado con `visible: false`; ahora se retira el DATO, que
+     es lo definitivo: no vuelve solo si alguien pone el interruptor en true.
+     ⚠️ `MUSEO_ITINERANTE.origen` queda en `null` y `js/render.js` salta el bloque
+       sin pintar nada (`if (cecSubVisible && p.origen && p.origen.enlace)`), así
+       que no queda ni un <div> vacío.
+     ⚠️ SI SE QUIERE REPONER: el texto y el destino están en el historial de git
+       (`git show 3e2daf6:data/museo.js`). */
+  origen: null,
   /* --- Fotos de la muestra itinerante montada en establecimientos ---
      CR-45 (2026-10-13): el dueño pidio moverlas aca, desde Galeria:
        "LA DE LOS EXPOSICION EN ESCUELAS NO DEBEN IR EN GALERIA, SI NO EN
@@ -1233,244 +1269,162 @@ const TRILOBITES = {
      4. Alianzas comerciales y pertenencia institucional (DEC-041).
 */
 const CEC = {
-  /* CIFRAS (CR-63). TODAS salen TEXTUALES del material que entregó el dueño.
-     No hay una sola inventada. De dónde sale cada una:
-       "1.000.000+ visitas / 16 años"  -> "Durante el año 2024 se recibieron
-          aproximadamente 70.000 visitas en nuestro website, sumando a la fecha y
-          después de 16 años de trabajo, más de 1.000.000 visitas"
-       "7 publicaciones"               -> la bibliografía del material (7 trabajos)
-       "4 ediciones en Isurus"         -> "ha participado en cuatro ediciones de la
-          Revista Isurus"
-       "Desde 2011"                    -> el artículo más antiguo de la lista
-     ⚠️ Si el dueño quiere actualizar el conteo de visitas, se cambia SÓLO acá. */
-  cifras: [
-    {"valor": "16", "unidad": "años", "detalle": "de trabajo continuo en divulgación",
-     "icono": "reloj"},
-    {"valor": "7", "unidad": "publicaciones", "detalle": "científicas en Chile y el extranjero",
-     "icono": "recon"},
-    {"valor": "4", "unidad": "ediciones", "detalle": "en la Revista Isurus, España",
-     "icono": "terreno"}
-  ],
-  etiqueta: "Proyecto C.E.C",
-  titulo: "Centro de Estudios Paleontológicos de Chile",
-  bajada: "Organización privada dedicada a la educación, la divulgación y la promoción de la paleontología a nivel nacional.",
-  volver: {
-    "texto": "Volver al inicio",
-    "enlace": "index.html#cec"
-  },
+  /* ==================================================================
+     PROYECTO C.E.C — CONTENIDO REESCRITO DESDE EL WORD DEL DUEÑO
+     (CR-72, 2026-10-17)
+
+     🔴 ESTE BLOQUE REEMPLAZA TODO LO ANTERIOR. El dueño entregó
+     `Proyecto CEC.docx` (Descargas, 2026-10-17 22:54) y eligió: «si,
+     reemplaza todo». O sea: lo que sigue son SUS palabras, y lo que había
+     antes en esta constante se retira.
+
+     ⚠️ LO QUE SE FUE CON EL REEMPLAZO (no se borró por descuido, lo pidió él):
+        · `cifras` (16 años, 7 publicaciones, 4 ediciones en Isurus)
+        · `titulo` «Centro de Estudios Paleontológicos de Chile» como titular
+        · `intro` (2 párrafos del Centro)
+        · `publicaciones` (las 7 fichas bibliográficas)
+        · `difusion` (DIALNET, La Referencia, STUDOCU, Universidad de Alicante)
+        · `avesDelTerror` (4 párrafos de divulgación)
+        · `actividades` (las 10 fichas)
+     ⚠️ EL ARCHIVO NO SE PIERDE: todo eso sigue en el historial de git. Para
+        recuperar cualquier bloque: `git show daf09df:data/museo.js`. Está
+        anotado acá para que una sesión futura no crea que se perdió.
+     ⚠️ Tampoco se borró el WORD original: vive en Descargas del dueño.
+
+     🔴 CINCO DATOS DEL WORD QUE CONTRADICEN LO PUBLICADO (manda el Word):
+        1. VITRINAS: 20, no 25. El 25 venía de una confirmación previa del
+           dueño (CR-41) y quedó SUPERADA por su propio documento nuevo.
+        2. FÓSILES: «fósiles reales y réplicas» (el sitio decía «fósiles y
+           calcos de vertebrados»).
+        3. METEORITOS: aparecen en el Word y no estaban en el listado.
+        4. GeoPaleo Ltda. pasa a ser CO-DESARROLLADOR del proyecto («El Museo
+           Paleontológico de Chile junto con GeoPaleo Ltda., han desarrollado
+           un proyecto denominado Proyecto C.E.C.»), no sólo patrocinador.
+        5. SE RETIRA EL PRECIO: el Word no menciona el $1.000 por alumno. El
+           dueño eligió explícitamente quitarlo («si no está en el Word, no
+           va»). ⚠️ Por eso NO hay campo de precio en esta constante, y la
+           píldora de precio de la portada también se quita (ver
+           MUSEO_ITINERANTE.datos).
+
+     ⚠️ NADA DE ESTO ES REDACCIÓN DEL AGENTE: los textos son los del Word.
+        Sólo se separaron en los campos que la página ya sabía pintar
+        (DEC-034: el agente no escribe copy institucional).
+     ================================================================== */
+
+  /* 🔴 TÍTULO (CR-72b, 2026-10-17). El <h1> es el NOMBRE PROPIO: «Proyecto
+     C.E.C», tal como lo dictó el dueño y como se llama en toda la portada.
+     ⚠️ ACÁ HABÍA UN ERROR MÍO: puse de título «Proyecto de Cultura, Educación y
+       Capacitación», que el Word NO dice así — el Word escribe «Proyecto C.E.C.
+       (Proyecto de Cultura, Educación y Capacitación)», o sea el nombre propio
+       MÁS su expansión entre paréntesis. Convertir la expansión en titular y
+       cambiarle el sustantivo es reescribir material del dueño (DEC-034).
+     ⇒ El titular es el nombre; la expansión va en la bajada, que es donde se
+       lee. Además el título largo se partía en 3 líneas y desalineaba la
+       cabecera (medido: arrancaba en x=69 frente a x=241 del resto). */
+  etiqueta: "Cultura, Educación y Capacitación",
+  titulo: "Proyecto C.E.C",
+  /* La bajada responde las dos preguntas de entrada del colegio: QUÉ es (la
+     expansión del nombre, textual del Word, con su paréntesis) y QUIÉN lo hace.
+     El Word dice «Proyecto de Cultura, Educación y Capacitación»: se copia tal
+     cual, sin cambiarle palabras. */
+  bajada: "Proyecto de Cultura, Educación y Capacitación, desarrollado por el Museo Paleontológico de Chile junto con GeoPaleo Ltda.",
+  volver: { texto: "Volver al inicio", enlace: "index.html#cec" },
+
+  /* INTRO: el párrafo de apertura del Word, textual, incluido su objetivo.
+     ⚠️ El Word dice «proyecto denominado Proyecto C.E.C.» (redundante, pero es
+     su redacción): NO se corrige. */
   intro: [
-    "El Centro de Estudios Paleontológicos de Chile es una organización privada que surge del interés de personas comprometidas con la Paleontología y que desean trabajar a distintos niveles, centrándose fundamentalmente en la educación, divulgación y promoción de esta ciencia a nivel nacional.",
-    "El Centro de Estudios Paleontológicos de Chile busca desarrollar estrategias que fomenten la difusión del estudio y conservación del Patrimonio Paleontológico Nacional. Asimismo, buscamos promover la investigación científica a nivel nacional y utilizar la divulgación como una herramienta educativa para que la comunidad en general comprenda el valor que tienen los fósiles y su estudio."
+    "El Museo Paleontológico de Chile junto con GeoPaleo Ltda., han desarrollado un proyecto denominado Proyecto C.E.C. (Proyecto de Cultura, Educación y Capacitación), cuyo objetivo es desarrollar programas, educativos como:"
   ],
-  /* CR-63b (2026-10-15): el dueño marcó DOS redundancias acá, y las dos eran
-     ciertas:
-       1. «independiente de la municipalidad»: es una aclaración INTERNA entre
-          nosotros. En el sitio público nadie preguntó, y nombrar a la muni la
-          trae al tema sin motivo — justo lo que DEC-041 pide no publicar.
-       2. La frase repetía lo mismo dos veces (texto y nota). Una sola basta.
-     ⇒ Queda SOLO el hecho publicable: que trabajan en conjunto, con GeoPaleo
-       como patrocinador (empresa, no dato personal).
-     ⚠️ La independencia del museo NO se borra del proyecto: sigue en DEC-034 y en
-       `MUSEO.pertenece`. Lo que se saca es mencionarla ACÁ, donde no aporta. */
-  relacion: {
-    "titulo": "Su relación con el museo",
-    "texto": "El Museo Paleontológico de Chile y el Centro de Estudios Paleontológicos de Chile trabajan en conjunto: ambas entidades desarrollan el Proyecto C.E.C, con el patrocinio de la empresa GeoPaleo Ltda."
-  },
-  museoItinerante: {
-    "icono": "museo",
-      "titulo": "El museo itinerante",
-    "subtitulo": "Museo Itinerante de Historia Natural",
-    /* CR-63b: el dueño marcó el texto como redundante y tenía razón en más de
-       lo que él señaló. Los párrafos 2 y 4 de esta lista decían LO MISMO con
-       otras palabras: los dos enumeraban réplicas, fósiles, restos de
-       vertebrados, moluscos, minerales y meteoritos.
-       ⇒ Se conserva UNO (el de las 20 vitrinas, que es el más completo y trae
-         además el dato de los fósiles originales de Marruecos y Estados Unidos,
-         que el otro no tenía). No se pierde ningún dato: se funde en uno.
-       ⚠️ El texto sigue siendo del material del Centro; sólo se eliminó la
-         repetición, no se redactó prosa nueva (DEC-034). */
-    "parrafos": [
-      "El Museo Itinerante de Historia Natural es un proyecto educativo conjunto del Museo Paleontológico de Chile y el Centro de Estudios Paleontológicos de Chile que cuenta además con el patrocinio de la Empresa GeoPaleo Ltda. y que constituye una iniciativa de divulgación y enseñanza que busca llevar la Paleontología y el estudio de los fósiles, así como también la historia natural, a los colegios y establecimientos educacionales de la Región Metropolitana de Chile.",
-      "Comprende más de 20 vitrinas con réplicas a escala de dinosaurios, reconstrucciones paleobiológicas de dinosaurios y animales extintos, réplicas y calcos de fósiles, fósiles originales traídos del extranjero (principalmente Marruecos y Estados Unidos), restos de vertebrados actuales, modelos anatómicos, insectos, moluscos e invertebrados marinos, minerales y meteoritos.",
-      "La muestra cuenta además con la guía explicativa de dos profesionales relacionados con la paleontología y el estudio de los fósiles, lo cual aporta mayor valor educativo al proyecto.",
-      "La exposición se presenta durante 3 días en los establecimientos educacionales, permitiendo que todos los alumnos participen de ella. Se solicita al establecimiento una sala segura y con llave que permita resguardar la muestra durante los días que dure la exposición."
-    ]
-  },
+
+  /* El Word presenta 5 LÍNEAS DE TRABAJO. Se pintan como el bloque `actividades`,
+     con el mismo componente que ya existía (lista escaneable, no tarjetas: ver
+     CR-64 sobre el efecto «se ve de celular»).
+     ⚠️ LOS TEXTOS SON LOS DEL WORD, en su orden. La única intervención es
+     cortar el título de cada línea (lo que va antes de los dos puntos) para que
+     la lista se pueda barrer de un vistazo, y dejar el detalle en `texto`.
+     Los títulos son palabras del propio Word, no rótulos inventados. */
   actividades: {
-    "icono": "colegio",
-      "titulo": "Actividades y programas",
-    "intro": "Programas de educación y divulgación que el Centro desarrolla en establecimientos educacionales, centros culturales y sociedades científicas.",
-    "items": [
+    icono: "colegio",
+    titulo: "Programas educativos",
+    intro: null,
+    items: [
       {
-        "titulo": "Introducción a los Dinosaurios",
-        "detalle": "Charla de 90 minutos que se imparte en establecimientos educacionales de Santiago, a fin de acercar a los estudiantes al mundo de la Paleontología, los dinosaurios y los fósiles.",
-        "parrafos": [
-          "La actividad traslada a los estudiantes al pasado profundo de la Era Mesozoica (± 200 - 65 millones de años), época en que la Tierra era regida por los dinosaurios, permitiendo conocer aspectos generales de estos animales: su origen, biología, clasificación, desarrollo e hipótesis de extinción.",
-          "La charla se acompaña con una serie de réplicas de dinosaurios y elementos relacionados, a fin de aportar mayor valor educativo a la actividad. Una actividad especial para desarrollar en establecimientos educacionales y entre estudiantes interesados en la Paleontología, Geología y ciencias afines."
-        ]
+        titulo: "Capacitación especializada a personal de empresas",
+        texto: "Capacitación especializada a personal de empresas relacionado con el componente paleontológico mediante cursos de capacitación con código SENCE según Norma Chilena 2728 dando posibilidad a las empresas de primera categoría de capacitar a sus empleados y a la vez acceder a franquicias tributarias de capacitación, esto es empresas comerciales, industriales, mineras y otras."
       },
       {
-        "titulo": "Taller de Paleontología",
-        "detalle": "Clase semanal de una hora, durante un período a convenir con el establecimiento (3 meses, 6 meses o un año).",
-        "parrafos": [
-          "Permite a los alumnos de enseñanza básica (5° a 8° año), preferentemente, conocer conceptos teóricos sobre el método científico, evolución, paleontología y fósiles, así como también realizar actividades didácticas y entretenidas relacionadas con la historia natural y la paleontología: dibujo de dinosaurios y animales extintos, reconstrucción de fósiles en plasticina, yeso y otros materiales.",
-          "Esta actividad se ha realizado en organizaciones de educación como Fundación Mundo Ideal, SIP Red de Colegios y Escuela Brasilia de Padre Hurtado."
-        ]
+        titulo: "Cursos básicos y avanzados de Paleontología",
+        texto: "Capacitación a través de cursos básicos y avanzados de Paleontología a público general."
       },
       {
-        "titulo": "Seminario Dinosaurios",
-        "detalle": "Cuatro charlas de 90 minutos cada una que introducen al estudio de los dinosaurios y sus rasgos más característicos.",
-        "parrafos": [
-          "¿Cómo se estudian los dinosaurios? ¿Cómo se diferencian entre ellos? ¿Cuál es su origen? ¿Cuáles son los dinosaurios más característicos? ¿Se convirtieron en aves? ¿Están con nosotros?",
-          "Un proyecto para establecimientos educacionales y estudiantes de enseñanza básica y media, así como centros culturales y sociedades científicas o agrupaciones de interesados en la paleontología y el estudio de los fósiles."
-        ]
+        titulo: "Charlas de inducción y divulgación",
+        texto: "Charlas de inducción, actividades de divulgación sobre temáticas geológicas y/o paleontológicas."
       },
       {
-        "titulo": "Seminario Medicina Evolutiva y la Evolución de las Enfermedades",
-        "detalle": "Cuatro charlas de 90 minutos sobre el desarrollo de patologías relacionadas con el proceso evolutivo del hombre.",
-        "parrafos": [
-          "¿Por qué nos enfermamos? ¿Por qué los seres humanos sufrimos de obesidad, diabetes, hipertensión arterial o hipercolesterolemia? ¿Por qué nos da gota? ¿Por qué muchas mujeres sufren de incontinencia urinaria?",
-          "Saber cuál es nuestro lugar en la cadena evolutiva y de dónde venimos como especie permite comprender el origen y desarrollo de muchas enfermedades que sufrimos hoy en día, y orienta sobre cómo prevenirlas."
-        ]
+        titulo: "Propuestas museográficas y exposiciones temáticas",
+        texto: "Propuestas museográficas y exposiciones temáticas de geología y/o paleontología a empresas, municipalidades, establecimientos educacionales, sociedades científicas y centros culturales."
       },
       {
-        "titulo": "Charlas de evolución humana",
-        "detalle": "Ciclo de charlas sobre el proceso de hominización y la relación filogenética del ser humano con los primates.",
-        "parrafos": [
-          "El ciclo entrega información general sobre el proceso de hominización por medio del cual el ser humano se ha ido desarrollando a través de millones de años a partir de primates ancestrales. Se ha impartido en establecimientos educacionales de enseñanza media, además del Museo Fonck de Viña del Mar y otras instituciones relacionadas con la cultura y las ciencias."
-        ]
-      },
-      {
-        "titulo": "Charlas de anatomía comparada, filogenia y clasificación biológica",
-        "detalle": "Ponencia sobre los fundamentos de la anatomía comparada y su papel en la interpretación filogenética.",
-        "parrafos": [
-          "La anatomía comparada es la disciplina de las ciencias biológicas que estudia las semejanzas y diferencias en la organización estructural de los seres vivos. La presentación da a conocer su nomenclatura y términos asociados, y explica el papel de la paleontología, la filogenia, la taxonomía, la sistemática y la cladística en la comprensión del mundo natural."
-        ]
-      },
-      {
-        "titulo": "Origen y evolución de los dinosaurios",
-        "detalle": "Charla sobre la aparición en el registro fósil de este linaje de saurópsidos arcosaurianos.",
-        "parrafos": [
-          "Describe de manera pormenorizada los cambios adaptativos que el grupo fue experimentando durante millones de años hasta llegar a ser uno de los más exitosos que la historia de la Biología conoce. Ha sido impartida en la Sociedad Paleontológica de Chile, el Museo Fonck y la Universidad Metropolitana de Ciencias de la Educación."
-        ]
-      },
-      {
-        "titulo": "Sobre el corazón y su evolución",
-        "detalle": "Charla sobre la evolución del corazón en los vertebrados y su relación con las patologías cardíacas del hombre actual.",
-        "parrafos": [
-          "La evolución del corazón en los vertebrados interesa no sólo para establecer los aspectos secuenciales de su estructura anatómica, sino que además, desde el punto de vista filogenético, logra explicar diversas patologías que afectan al hombre de hoy, incursionando de esta manera también en el campo de la Medicina Evolutiva.",
-          "El estudio y comprensión de cómo fue evolucionando el corazón en los vertebrados considera que algunos fenómenos en medicina encuentran una mejor explicación bajo el marco de la evolución, tal es el caso de algunas patologías congénitas o las enfermedades cardiovasculares (por ejemplo, hipertensión arterial), estas últimas la primera causa de muerte en Chile y el mundo."
-        ]
-      },
-      {
-        "titulo": "Talleres de paleoarte",
-        "detalle": "Taller dirigido a los más pequeños, enfocado en la ilustración de dinosaurios y animales extintos.",
-        "parrafos": [
-          "El taller se ha impartido en el Centro Comunitario Padre Hurtado de la comuna de Las Condes, con actividades de dibujo de dinosaurios y reconstrucción de fósiles en distintos materiales, además de charlas para incentivar la participación de niños y niñas."
-        ]
-      },
-      {
-        "titulo": "Curso Intermedio de Paleontología",
-        "detalle": "Curso certificado, dictado de forma virtual, dirigido a personas mayores de edad con educación media aprobada.",
-        "parrafos": [
-          "El Centro auspició esta actividad desarrollada a través de una plataforma de videoconferencia, que entrega certificado a quienes completan el curso y rinden satisfactoriamente los exámenes requeridos."
-        ]
+        titulo: "Muestra Museológica Itinerante",
+        texto: "Muestra Museológica Itinerante la que es llevada a los establecimientos educacionales de Santiago y que bajo ciertas circunstancias de financiamiento también puede ser llevada a las distintas regiones de Chile."
       }
     ]
   },
-  publicaciones: {
-    "icono": "recon",
-      "titulo": "Publicaciones científicas",
-    "intro": "Trabajos de divulgación e investigación publicados en medios nacionales y extranjeros. Los artículos temáticos han aparecido en la Revista Isurus, publicación de la Asociación Paleontológica Alcoyana Isurus, de España.",
-    "items": [
-      {
-        "autores": "DÍAZ, R.",
-        "anio": "2011",
-        "titulo": "Las aves del terror (Ralliformes: Phorusrhacidae)",
-        "fuente": "Revista Isurus N° 4, p. 38-45. ISSN 1888-9441. España."
-      },
-      {
-        "autores": "DÍAZ, R.",
-        "anio": "2012",
-        "titulo": "El origen de los dinosaurios (Dinosauria: Saurischia – Ornithischia)",
-        "fuente": "Revista Isurus N° 5, p. 12-25. ISSN 1888-9441. España."
-      },
-      {
-        "autores": "DÍAZ, R.",
-        "anio": "2012",
-        "titulo": "Paleontology and the fossil record: new answer to old question about the loneliness of human been as specie",
-        "fuente": "Journal of Technological Possibilism, Vol. 1, N° 2, p. 20-33. ISSN 0719-174X."
-      },
-      {
-        "autores": "DÍAZ, R.",
-        "anio": "2014",
-        "titulo": "Evolución del corazón en los vertebrados",
-        "fuente": "Revista Isurus N° 7, Año 7, p. 56-69. ISSN 1888-9441. España."
-      },
-      {
-        "autores": "DÍAZ, R.; FERNÁNDEZ, L.D.",
-        "anio": "2015",
-        "titulo": "The Great American Biotic Interchange: Intercontinental migration of big predators",
-        "fuente": "The Quaternary Period, p. 9-24. Academy Publish, Cheyenne, USA."
-      },
-      {
-        "autores": "CASTILLO, J.; DÍAZ, R.",
-        "anio": "2021",
-        "titulo": "Taxonomía de los gonfoterios en Chile: necesidad de una revisión",
-        "fuente": "Revista Isurus N° 13, Año 13. ISSN 1888-9441. España."
-      },
-      {
-        "autores": "DÍAZ, R.",
-        "anio": "2022",
-        "titulo": "El origen y evolución de las vértebras",
-        "fuente": "Revista Isurus N° 14, p. 12-28. ISSN 1888-9441. España."
-      }
+
+  /* LA MUESTRA: el bloque que en el Word sigue a la itinerante. Va en su propia
+     sección porque es lo que el colegio necesita saber para decidir.
+     ⚠️ 20 VITRINAS es el dato del Word y manda sobre el 25 anterior. */
+  museoItinerante: {
+    icono: "museo",
+    /* ⚠️ CR-72: el título NO es "La muestra" (a secas). Ese nombre ya existe en
+       la portada como tituloSec de la sección #cec, y repetirlo acá haría que
+       dos páginas del mismo sitio titulen distinto la misma cosa. Se usa el
+       nombre del Word: «Muestra Museológica Itinerante». */
+    titulo: "Muestra Museológica Itinerante",
+    subtitulo: "Lo que lleva la exposición",
+    parrafos: [
+      "La muestra, consiste en la puesta en valor de 20 vitrinas conteniendo una interesante y hermosa colección de fósiles reales y réplicas, corales, minerales, meteoritos, insectos, moluscos y además de una colección de reconstrucciones paleobiológicas de dinosaurios, que hace de esta muestra un material educativo, pedagógico y didáctico de gran interés especialmente para los alumnos de enseñanza básica y media del sistema educacional chileno."
     ]
   },
-  difusion: {
-    "icono": "check",
-      "titulo": "Difusión y reconocimiento",
-    "intro": "Trabajos del Centro destacados en portales y repositorios de acceso abierto, nacionales e internacionales.",
-    "items": [
-      {
-        "medio": "DIALNET — Universidad de La Rioja, España",
-        "detalle": "Uno de los mayores portales de difusión de producción científica hispana. Ha destacado las publicaciones del Centro."
-      },
-      {
-        "medio": "La Referencia — Red de Repositorios de Acceso Abierto a la Ciencia",
-        "detalle": "Destacó un artículo del Centro sobre las Aves del Terror, grupo de aves extintas que habitaron principalmente en Sudamérica."
-      },
-      {
-        "medio": "STUDOCU",
-        "detalle": "Destacó el artículo «Origen y evolución de las vértebras», publicado en la Revista Isurus N° 14 de 2022, como parte de un programa formativo de Biología del Instituto Superior de Formación Docente N° 29 Graciela Gil, de Buenos Aires, Argentina."
-      },
-      {
-        "medio": "Repositorio Institucional de la Universidad de Alicante, España",
-        "detalle": "Pone a disposición del público y de la comunidad científica mundial los ejemplares de la Revista Isurus, donde el Centro ha publicado artículos temáticos."
-      },
-      {
-        "medio": "Prensa internacional",
-        "detalle": "La prensa de Uruguay informó sobre el hallazgo de fósiles de aves del terror en San José, citando trabajos del Centro relacionados con el tema."
-      }
-    ]
+
+  /* DÓNDE YA SE HIZO: el último párrafo del Word.
+     ⚠️ El Word cierra la lista con «etc.» — se conserva tal cual: él no quiso
+     cerrar la enumeración, y completarla sería inventar establecimientos.
+     ⚠️ Los nombres van EXACTOS como el Word: «Liceo Tajamar», «Campus College»,
+     «Liceo Juan Pablo Duarte», «Complejo Educacional Nido de Águilas»,
+     «Liceo María Carvajal». */
+  establecimientos: {
+    icono: "check",
+    titulo: "Dónde se ha realizado",
+    intro: "El proyecto ha sido realizado con éxito en diferentes establecimientos educacionales como:",
+    items: [
+      "Liceo Tajamar",
+      "Campus College",
+      "Liceo Juan Pablo Duarte",
+      "Complejo Educacional Nido de Águilas",
+      "Liceo María Carvajal"
+    ],
+    nota: "Entre otros establecimientos."
   },
-  avesDelTerror: {
-    "icono": "hueso",
-      "titulo": "Las aves del terror",
-    "subtitulo": "Los dinosaurios avianos",
-    "parrafos": [
-      "Tras la extinción de los dinosaurios no avianos, como los muy conocidos Tyrannosaurus, Velociraptor o Triceratops, el mundo quedó poblado por un grupo de dinosaurios muy particulares: las aves. Dentro de este amplio grupo, algunos de ellos alcanzando grandes tamaños se dispersaron por Sudamérica, parte de Norteamérica e incluso África.",
-      "Estas aves de la Familia Phorusrhacidae llegaron a ser temidas no sólo por su gran tamaño, sino porque además eran feroces depredadoras, llegando a ser conocidas en el ámbito paleontológico como las Aves del Terror.",
-      "Las aves forusrácidas, hoy clasificadas en la moderna sistemática como dinosaurios avianos, se posicionaron como los depredadores por excelencia en Sudamérica hasta hace aproximadamente 3 millones de años, cuando el bloque continental de Norteamérica se unió con Sudamérica a través del cordón terrestre de América Central, dando origen a un único gran continente y permitiendo la dispersión desde Norteamérica de otros depredadores en competencia, como los félidos, los úrsidos y los caninos.",
-      "Un nuevo hallazgo de fósiles de aves del terror fue reportado en Uruguay. Los restos fueron encontrados en San José y se cree que corresponden a un ejemplar que vivió hace aproximadamente 60 millones de años, el inicio de la Era Cenozoica en Sudamérica. Este linaje se desarrolló de manera preferente en Sudamérica, siendo reportado y estudiado especialmente en Argentina, Uruguay y Brasil, aunque tras el surgimiento del puente terrestre que une a Sudamérica con Norteamérica se reportan también restos de estas aves en Estados Unidos, con dataciones posteriores a los 3 millones de años."
-    ]
-  },
+
+  /* ⚠️ `relacion` estaba y se retira: el Word ya dice en su PRIMERA frase quién
+     desarrolla el proyecto (Museo + GeoPaleo). Repetirlo aparte era decir dos
+     veces lo mismo, que es exactamente lo que el dueño marcó en CR-63b. */
+  relacion: null,
+
+  /* Sin las secciones que no están en el Word (publicaciones, difusión, aves
+     del terror). El render las salta si faltan — ver js/cec.js. */
+  publicaciones: null,
+  difusion: null,
+  avesDelTerror: null,
   alianzas: null,
+
   cierre: {
-    "texto": "El Proyecto C.E.C reúne las actividades de divulgación y educación que el Centro de Estudios Paleontológicos de Chile y el Museo Paleontológico de Chile desarrollan en conjunto.",
-    "boton": "Ver la muestra del museo",
-    "enlace": "index.html#colecciones"
-  },
+    texto: "El Proyecto C.E.C reúne las actividades de educación, divulgación y capacitación que el Museo Paleontológico de Chile y GeoPaleo Ltda. desarrollan en conjunto.",
+    boton: "Ver la muestra del museo",
+    enlace: "index.html#colecciones"
+  }
 };
 
 if (typeof window !== "undefined") {

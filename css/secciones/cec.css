@@ -251,6 +251,49 @@
   margin-bottom: clamp(20px, 3vw, 28px);
 }
 
+/* ---------- Dónde se ha realizado (CR-72, nuevo) ----------
+   Lista de establecimientos. Se pintan como FILAS COMPACTAS con un ícono
+   chico al lado del nombre: es una enumeración de colegios, no una galería.
+   🔴 DEFECTO QUE ESTO ARREGLA (medido el 2026-10-17): la clase
+   `.cec-establecimientos__ico` se creó SIN tamaño y el SVG inline tomó el
+   100% del contenedor — cada ícono salía de 1132x1132 px, la lista medía
+   5792px de alto y los nombres quedaban empujados fuera de la pantalla.
+   Un SVG inline sin `width`/`height` hereda el ancho del padre; hay que
+   fijárselo SIEMPRE (mismo caso que `.perfil__libro-ico`, CR-69).
+   ⇒ El tamaño vive acá y NO en el markup: 16px, el mismo que usan los demás
+     íconos de lista del sitio. */
+.cec-establecimientos {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px clamp(16px, 2.5vw, 30px);
+}
+.cec-establecimientos li {
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--border-accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: .92rem; line-height: 1.35; color: var(--text-soft);
+  min-width: 0;
+}
+.cec-establecimientos__ico {
+  flex: 0 0 auto;
+  width: 16px; height: 16px;          /* ← el tamaño que faltaba */
+  color: var(--ocre);
+  display: block;
+}
+.cec-establecimientos__ico svg {
+  width: 100%; height: 100%; display: block;
+}
+.cec-bloque__nota {
+  margin-top: 14px;
+  font-size: .82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 /* ---------- Actividades: LISTA ESCANEABLE (CR-64) ----------
    El dueño reportó que la página "se ve como si fuera de celular" en PC.
    MEDIDO: cada actividad era una tarjeta de 363px de ancho con 300-800

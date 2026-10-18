@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proyecto C.E.C — Centro de Estudios Paleontológicos de Chile | Museo Paleontológico de Chile</title>
-<meta name="description" content="El Centro de Estudios Paleontológicos de Chile: educación, divulgación y promoción de la paleontología. Publicaciones científicas, actividades educativas y el museo itinerante, junto al Museo Paleontológico de Chile.">
+<title>Proyecto C.E.C — Cultura, Educación y Capacitación | Museo Paleontológico de Chile</title>
+<meta name="description" content="Proyecto C.E.C — Cultura, Educación y Capacitación. Capacitación con código SENCE, cursos de paleontología, charlas, propuestas museográficas y muestra museológica itinerante, desarrollado por el Museo Paleontológico de Chile junto con GeoPaleo Ltda.">
 <meta name="theme-color" content="#02153f">
 
 <!-- Open Graph (el enlace que se comparte por WhatsApp) -->
 <meta property="og:type" content="article">
-<meta property="og:title" content="Proyecto C.E.C — Centro de Estudios Paleontológicos de Chile">
-<meta property="og:description" content="Educación, divulgación y promoción de la paleontología a nivel nacional. Publicaciones, actividades y el museo itinerante.">
+<meta property="og:title" content="Proyecto C.E.C — Cultura, Educación y Capacitación">
+<meta property="og:description" content="Capacitación, cursos, charlas, propuestas museográficas y muestra museológica itinerante. Proyecto del Museo Paleontológico de Chile junto con GeoPaleo Ltda.">
 <meta property="og:locale" content="es_CL">
 
 <!-- Mismos favicons que la portada: es el mismo sitio -->
@@ -92,9 +92,19 @@
            ⚠️ El render NO necesita cambios: pinta por `data-*`, y el envoltorio
            no altera ningún selector. -->
       <span class="etiqueta reveal" data-cec-etiqueta>Proyecto C.E.C</span>
-      <h1 class="cec-titulo reveal" data-cec-titulo></h1>
 
       <div class="cec-cabeza__texto">
+        <!-- 🔴 CR-72b (2026-10-17): el <h1> SE MUEVE ADENTRO de la columna.
+             Antes vivía afuera, y como `.cec-cabeza__texto` es el que impone la
+             columna de lectura (max-width: var(--cec-col) + margin auto), el
+             título arrancaba pegado al borde de la sección y el resto del texto
+             corría 170px a la derecha. MEDIDO: h1 en x=69, etiqueta/bajada/intro
+             en x=241 y x=305. El dueño lo vio como «el título se ve chueco».
+             ⚠️ La ETIQUETA se queda afuera a propósito: es un rótulo de sección,
+             no texto de lectura, y alinea con el borde de la sección (igual que
+             el enlace de volver). -->
+        <h1 class="cec-titulo reveal" data-cec-titulo></h1>
+
         <p class="cec-bajada reveal" data-cec-bajada></p>
 
         <div class="cec-intro reveal" data-cec-intro></div>
@@ -121,7 +131,10 @@
 
   <hr class="separador">
 
-  <section class="seccion" aria-label="Información del Centro de Estudios Paleontológicos de Chile">
+  <!-- CR-72: el aria-label decía «Información del Centro de Estudios
+       Paleontológicos de Chile», nombre que el Word del dueño ya no usa como
+       titular. Queda el nombre propio del proyecto. -->
+  <section class="seccion" aria-label="Información del Proyecto C.E.C">
     <div class="contenedor">
       <div data-cec-bloques></div>
 
