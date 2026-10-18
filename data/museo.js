@@ -783,7 +783,15 @@ const GALERIA = {
   /* Intro de la seccion. VACIA = no se pinta (el render la oculta). */
   intro: "",
   museo: [
-    { src: "assets/img/galeria/muestra-1.jpg",      mini: "assets/img/galeria/muestra-1-mini.jpg",      titulo: "", pie: "" },
+    /* 🔴 CR-74 (2026-10-17): SE ELIMINA LA PRIMERA FOTO (`muestra-1`).
+       Pedido del dueño: «borremos la primera foto en la seccion museo por
+       dentro». En la grilla es la que ocupa la esquina superior izquierda
+       (medida: x=69, y=3446, primera de la fila), o sea muestra-1.
+       ⚠️ Se retira del data, NO se borra el archivo: `assets/img/galeria/
+         muestra-1.jpg` y su `-mini` siguen en el repo. Si vuelve a quererla,
+         se repone esta línea y listo.
+       ⚠️ La línea original decía:
+           { src: "assets/img/galeria/muestra-1.jpg", mini: "...", titulo: "", pie: "" }, */
     { src: "assets/img/galeria/muestra-2.jpg",      mini: "assets/img/galeria/muestra-2-mini.jpg",      titulo: "", pie: "" },
     { src: "assets/img/galeria/muestra-3.jpg",      mini: "assets/img/galeria/muestra-3-mini.jpg",      titulo: "", pie: "" },
     { src: "assets/img/galeria/muestra-4.jpg",      mini: "assets/img/galeria/muestra-4-mini.jpg",      titulo: "", pie: "" },
@@ -1351,7 +1359,11 @@ const CEC = {
     items: [
       {
         titulo: "Capacitación especializada a personal de empresas",
-        texto: "Capacitación especializada a personal de empresas relacionado con el componente paleontológico mediante cursos de capacitación con código SENCE según Norma Chilena 2728 dando posibilidad a las empresas de primera categoría de capacitar a sus empleados y a la vez acceder a franquicias tributarias de capacitación, esto es empresas comerciales, industriales, mineras y otras."
+        texto: "Capacitación especializada a personal de empresas relacionado con el componente paleontológico mediante cursos de capacitación con código SENCE según Norma Chilena 2728 dando posibilidad a las empresas de primera categoría de capacitar a sus empleados y a la vez acceder a franquicias tributarias de capacitación, esto es empresas comerciales, industriales, mineras y otras.",
+        /* CR-73: foto que el dueño entregó EN ESTE MISMO LUGAR del Word (va
+           justo después de este párrafo), así que respeta su orden. */
+        foto: "assets/img/cec/capacitacion-empresas.jpg",
+        fotoAlt: "Personal de una empresa en una reunión de capacitación sobre el componente paleontológico"
       },
       {
         titulo: "Cursos básicos y avanzados de Paleontología",
@@ -1405,7 +1417,30 @@ const CEC = {
       "Complejo Educacional Nido de Águilas",
       "Liceo María Carvajal"
     ],
-    nota: "Entre otros establecimientos."
+    nota: "Entre otros establecimientos.",
+    /* --- FOTOS DE LA MUESTRA EN COLEGIOS (CR-73, 2026-10-17) ---
+       Las 5 fotos que cierran el Word del dueño. Él confirmó que tiene
+       AUTORIZACIÓN para publicar las caras (DEC-76), incluidas las de menores:
+       son la evidencia visual de lo que este bloque afirma («el proyecto se ha
+       realizado en establecimientos»), así que van acá y no en la galería
+       general del museo.
+       ⚠️ Los `alt` los dictó el dueño con el NOMBRE DE CADA ARCHIVO; acá se
+         expanden a una frase descriptiva sin inventar contenido: describen lo
+         que el propio nombre afirma.
+       ⚠️ La 7ª imagen del Word (la portada 400x198) NO se publica: el dueño
+         escribió en su nombre «NO ES NECESARIA». */
+    fotos: [
+      { src: "assets/img/cec/estudiantes-senior-explicando.jpg",
+        alt: "Estudiantes escuchando la explicación del especialista frente a la muestra" },
+      { src: "assets/img/cec/ninos-visitando-exposicion.jpg",
+        alt: "Niños junto al especialista observando las vitrinas de la exposición" },
+      { src: "assets/img/cec/exposicion-vitrina-1.jpg",
+        alt: "Vitrina de la muestra paleontológica en un establecimiento educacional" },
+      { src: "assets/img/cec/exposicion-vitrina-2.jpg",
+        alt: "Vitrina con fósiles y réplicas de la exposición itinerante" },
+      { src: "assets/img/cec/exposicion-vitrina-3.jpg",
+        alt: "Detalle de una vitrina de la muestra en el establecimiento" }
+    ]
   },
 
   /* ⚠️ `relacion` estaba y se retira: el Word ya dice en su PRIMERA frase quién

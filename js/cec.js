@@ -256,6 +256,13 @@
                         `detalle` (forma vieja) para no romper si vuelve. */
                      '<p class="cec-actividad__detalle">' + esc(a.texto || a.detalle || "") + "</p>" +
                      (a.parrafos || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+                     /* CR-73: foto opcional del programa. `loading=lazy` porque
+                        están más abajo del pliegue. */
+                     (a.foto
+                       ? '<figure class="cec-actividad__fig">' +
+                           '<img class="cec-actividad__img" src="' + esc(a.foto) + '" alt="' + esc(a.fotoAlt || "") + '" loading="lazy" decoding="async">' +
+                         "</figure>"
+                       : "") +
                    "</div>" +
                  "</li>";
         }).join("") +
@@ -281,6 +288,18 @@
         }).join("") +
       "</ul>" +
       (d.nota ? '<p class="cec-bloque__nota">' + esc(d.nota) + "</p>" : "") +
+      /* CR-73: galería de la muestra en colegios. Va DEBAJO de la lista de
+         nombres, no intercalada: el dato primero (¿vinieron a algún lado?), la
+         evidencia después. `loading=lazy` en todas. */
+      (d.fotos && d.fotos.length
+        ? '<div class="cec-galeria">' +
+            d.fotos.map(function (f) {
+              return '<figure class="cec-galeria__fig">' +
+                       '<img class="cec-galeria__img" src="' + esc(f.src) + '" alt="' + esc(f.alt || "") + '" loading="lazy" decoding="async">' +
+                     "</figure>";
+            }).join("") +
+          "</div>"
+        : "") +
     "</section>";
   }
 
