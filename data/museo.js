@@ -504,6 +504,11 @@ const SERVICIOS = [
     titulo: "Exposición escolar itinerante Proyecto C.E.C",
     detalle: "Llevamos la muestra museológica itinerante a los establecimientos educacionales de Santiago, en conjunto con el Centro de Estudios Paleontológicos de Chile. Ver la sección Proyecto C.E.C para el detalle de la muestra.",
     icono: "colegio",
+    /* CR-71 (2026-10-17): el enlace a la subpágina se apaga con el interruptor.
+       Si `CEC_SUBPAGINA.visible` es false, esta tarjeta se pinta SIN enlace
+       (no queda un link muerto a una página rebotada).
+       ⚠️ El texto sigue nombrando la sección `#cec` de la portada, que NO se
+       oculta: la muestra se sigue contando ahí. */
     enlace: "proyecto-cec.html",
     enlaceTexto: "Ver Proyecto C.E.C"
   }
@@ -512,6 +517,31 @@ const SERVICIOS = [
 /* --- Nota legal de los servicios profesionales --- */
 const SERVICIOS_NOTA =
   "Este trabajo se realiza a través de la alianza con GeoPaleo Ltda., empresa de geólogos y paleontólogos aprobada por el Consejo de Monumentos Nacionales (CMN) para permisos de prospección y excavación, y para estudios en el marco de las exigencias del SEIA.";
+
+/* --- SUBPÁGINA DEL PROYECTO C.E.C: OCULTA DEL PÚBLICO (2026-10-17, CR-71) ---
+
+   El dueño pidió: «borremos c.e.c o quitemos del publico, hare cambios».
+   Eligió OCULTAR, no borrar.
+
+   🔓 INTERRUPTOR ÚNICO: `visible: false` ⇒
+      · los enlaces que apuntan a `proyecto-cec.html` NO se pintan (ver
+        `subpagina`, tarjeta de SERVICIOS y `origen` más abajo);
+      · el archivo `proyecto-cec.html` sigue en el repo, pero al abrirlo por
+        URL directa NO muestra la subpágina: rebota al inicio (lo hace
+        `js/cec.js`, leyendo este mismo interruptor).
+
+   ✅ PARA REACTIVAR: poner `visible: true`. Eso es TODO. No hay nada borrado.
+
+   ⚠️ POR QUÉ OCULTA Y NO BORRA (misma razón que QUIENES_SOMOS): el contenido
+   de esa página es material dictado por el dueño (CEC.intro, CEC.relacion,
+   publicaciones, actividades, difusión). Borrarla obligaría a volver a pedir
+   todo. Y el dueño dijo que HARÁ CAMBIOS: cuando estén, se reemplaza el
+   contenido y se prende el interruptor.
+
+   ⚠️ `proyecto-cec.html` está publicada en GitHub Pages: dejar de enlazarla NO
+   la saca del público, porque responde igual por URL directa. Por eso el
+   archivo NO se borra pero SÍ se hace rebotar. */
+const CEC_SUBPAGINA = { visible: false };
 
 /* --- Detalle de la muestra itinerante (CR-41, 2026-10-13) ---
    Contenido de la muestra, textual del dueño: "la puesta en valor de 25 vitrinas
@@ -635,7 +665,7 @@ const MUSEO_ITINERANTE = {
      detalle completo (quiénes son, publicaciones, actividades, difusión).
      ⚠️ Es texto de RÓTULO (dice a dónde lleva), no prosa nueva: por eso puede
      escribirlo el agente, igual que los títulos de sección de la subpágina. */
-  subpagina: { enlace: "proyecto-cec.html", texto: "Ver el Proyecto C.E.C completo" },
+  subpagina: { enlace: "proyecto-cec.html", texto: "Ver el Proyecto C.E.C completo", visible: false },
   /* --- De dónde NACE el proyecto (CR-67, 2026-10-16) ---
      El dueño reportó que la sección "describe la muestra pero no dice qué es el
      C.E.C" y pidió tres cosas: de dónde nace el proyecto · quién lo dirige ·
@@ -668,7 +698,7 @@ const MUSEO_ITINERANTE = {
           Paleontológico de C…"). Por eso el texto de este enlace se acorta.
           ⚠️ El párrafo del dato está escrito con «dos profesionales»: si el
             dueño confirma que es UNO, se corrige ahí (dato suyo, DEC-005). */
-  origen: { texto: "Cómo nace el C.E.C", enlace: "proyecto-cec.html#proyecto-cec" },
+  origen: { texto: "Cómo nace el C.E.C", enlace: "proyecto-cec.html#proyecto-cec", visible: false },
   /* --- Fotos de la muestra itinerante montada en establecimientos ---
      CR-45 (2026-10-13): el dueño pidio moverlas aca, desde Galeria:
        "LA DE LOS EXPOSICION EN ESCUELAS NO DEBEN IR EN GALERIA, SI NO EN
@@ -1445,6 +1475,11 @@ const CEC = {
 
 if (typeof window !== "undefined") {
   window.MUSEO = MUSEO; window.QUIENES_SOMOS = QUIENES_SOMOS;
+  /* CR-71: el interruptor de la subpágina tiene que viajar al `window` igual
+     que el resto: `const` en el ámbito del archivo NO crea propiedad global, y
+     sin esta línea `window.CEC_SUBPAGINA` es undefined y los enlaces no se
+     apagan (defecto medido, no supuesto). */
+  window.CEC_SUBPAGINA = CEC_SUBPAGINA;
   window.COLECCIONES = COLECCIONES; window.SERVICIOS = SERVICIOS;
   window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.MUSEO_ITINERANTE = MUSEO_ITINERANTE;
   window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES; window.CEC = CEC;

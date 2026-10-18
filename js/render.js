@@ -9,11 +9,27 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var ico = function (n) { return (window.ICONOS && window.ICONOS[n]) || ""; };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
-    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+  }); };
 
+  /* --- CR-71 (2026-10-17): INTERRUPTOR DE LA SUBPÁGINA DEL PROYECTO C.E.C ---
+     El dueño pidió «borremos c.e.c o quitemos del publico, hare cambios» y
+     eligió OCULTAR. `CEC_SUBPAGINA.visible === false` apaga, en TODA la
+     portada, los enlaces que llevan a `proyecto-cec.html`:
+       · el «Ver el Proyecto C.E.C completo» de la sección #cec
+       · el «Cómo nace el C.E.C» del encabezado de esa sección
+       · la tarjeta de Servicios «Exposición escolar itinerante»
+     ⚠️ Va acá, en el ámbito del módulo, y NO dentro de un pintor: lo usan tres.
+     ⚠️ La página NO se borra: `proyecto-cec.html` sigue en el repo y rebota al
+     inicio por su cuenta (js/cec.js). Cuando el dueño termine sus cambios se
+     pone `visible: true` y todo vuelve. */
   if (!window.MUSEO) { console.error("[MPCH] Falta data/museo.js"); return; }
 
   var M = window.MUSEO;
+
+  /* CR-71: el interruptor, ya con `MUSEO` disponible. Encendido salvo que el
+     data diga explícitamente `visible: false` (así un data viejo no cambia). */
+  var cecSubVisible = !(window.CEC_SUBPAGINA && window.CEC_SUBPAGINA.visible === false);
 
   /* ---------- Marca en header y footer ----------
      DEC-041: `M.pertenece` puede venir VACÍO (el dueño no autoriza publicar la
@@ -115,6 +131,13 @@
         d.mini.map(function (t) { return "<li>" + esc(resumen(t)) + "</li>"; }).join("") +
       "</ul>";
     }
+
+    /* CR-71 (2026-10-17): el interruptor de la SUBPÁGINA del Proyecto C.E.C.
+       ⚠️ Vive en el ámbito del MÓDULO (`cecSubVisible`, arriba), no acá: lo
+       usan TRES pintores (director, servicios y museo itinerante). Si se
+       declarara dentro de este, `pintarServicios` no lo vería y reventaría.
+       Se lee como "encendido salvo que diga explícitamente lo contrario",
+       para que un data viejo (sin el interruptor) siga funcionando igual. */
 
     /* 3) El enlace a la subpágina. */
     if (d.subpagina) {
@@ -361,8 +384,14 @@
     cont.innerHTML = window.SERVICIOS.map(function (s) {
       /* CR-49: un servicio puede traer `enlace` (ej. la tarjeta de la exposicion
          itinerante apunta a la seccion propia #paleomundo). Sin `enlace`, la
-         tarjeta queda como siempre. */
-      var enlace = s.enlace
+         tarjeta queda como siempre.
+         CR-71: si el enlace apunta a `proyecto-cec.html` y ese interruptor está
+         apagado, la tarjeta pierde el enlace. Se compara por la RUTA y no por
+         un flag en el servicio: así el servicio no necesita saber nada de la
+         subpágina, y si mañana otro servicio enlaza ahí, también se apaga. */
+      var esSubCec = s.enlace && s.enlace.indexOf("proyecto-cec.html") === 0;
+      var mostrar = !(esSubCec && !cecSubVisible);
+      var enlace = (s.enlace && mostrar)
         ? '<a class="servicio__enlace" href="' + esc(s.enlace) + '">' +
             esc(s.enlaceTexto || "Ver más") + "</a>"
         : "";
@@ -471,7 +500,9 @@
        ⚠️ La clase `.cec-muestra__enlace` NO se repone acá aunque exista su regla
        en el CSS: la ubicación la decide el grid y duplicarla cambiaría el layout
        aprobado. El bloque usa `pm-mas--origen`, que sólo ajusta el margen. */
-    if (p.origen && p.origen.enlace) {
+    /* CR-71: si la subpágina está oculta, este enlace no se pinta. El `&&` del
+       `if` original se mantiene, sólo se le agrega la condición. */
+    if (cecSubVisible && p.origen && p.origen.enlace) {
       html += '<div class="pm-card__origen">' +
                 '<a class="pm-mas pm-mas--origen" href="' + esc(p.origen.enlace) + '">' +
                   esc(p.origen.texto || "Ver el origen del proyecto") +
@@ -519,7 +550,9 @@
        resumen, y el detalle completo vive en `proyecto-cec.html`.
        ⚠️ Se emite como parte del grid (área `enlace`), para que quede debajo de
        las dos columnas y no dentro de una de ellas. */
-    if (p.subpagina && p.subpagina.enlace) {
+    /* CR-71: idem que el enlace del origen — si la subpágina está oculta, este
+       enlace tampoco se pinta. */
+    if (cecSubVisible && p.subpagina && p.subpagina.enlace) {
       html += '<div class="cec-muestra__enlace">' +
                 '<a class="pm-mas" href="' + esc(p.subpagina.enlace) + '">' +
                   esc(p.subpagina.texto || "Ver más") +

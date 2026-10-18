@@ -31,6 +31,27 @@
   var C = window.CEC;
   if (!M || !C) return;
 
+  /* ---------- CR-71 (2026-10-17): LA SUBPÁGINA ESTÁ OCULTA ----------
+     El dueño pidió «borremos c.e.c o quitemos del publico, hare cambios» y
+     eligió OCULTAR (reversible). `CEC_SUBPAGINA.visible = false` hace DOS
+     cosas: la portada deja de enlazar acá (lo hace js/render.js) y esta página
+     rebota al inicio cuando alguien entra por URL directa o por un enlace
+     viejo compartido.
+
+     ⚠️ POR QUE REBOTAR Y NO SOLO DESENLAZAR: el sitio es GitHub Pages y este
+     archivo sigue publicado. Dejar de enlazarlo NO lo saca del público: la URL
+     responde igual. Si sólo se quitaran los enlaces, la página seguiría
+     visible para cualquiera que tuviera el enlace guardado.
+     ⚠️ POR QUE `replace` Y NO `href=`: `location.replace` no deja la
+     subpágina en el historial, así que el botón "atrás" del visitante no lo
+     devuelve a una página que ya no debe verse.
+     🔓 PARA REACTIVAR: `CEC_SUBPAGINA.visible: true` en data/museo.js y listo:
+     este bloque deja de ejecutarse y la página se pinta normal otra vez. */
+  if (window.CEC_SUBPAGINA && window.CEC_SUBPAGINA.visible === false) {
+    window.location.replace("index.html");
+    return;
+  }
+
   /* ---------- Marca y footer (mismo comportamiento que curriculum.js) ---------- */
   function pintarMarca() {
     $$("[data-marca-lema]").forEach(function (el) {
