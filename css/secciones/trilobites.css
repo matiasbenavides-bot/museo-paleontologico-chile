@@ -164,6 +164,14 @@
 }
 .tri-figs--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .tri-figs--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+/* 🔴 CR-81 (2026-10-19): el Word trae un bloque de CUATRO imágenes seguidas
+   (image14..17, en «La zona caudal o pigidio»). Con `--3` la cuarta se caía a
+   una fila propia y quedaba huérfana. Medido: el render hace
+   `n = imgs.length >= 3 ? 3 : imgs.length`, así que un bloque de 4 pedía
+   `tri-figs--3` y no existía `--4`.
+   ⚠️ `minmax` más chico que en `--3` para que las 4 entren en una fila sin
+     desbordar en escritorio y caigan a 2×2 en tablet. En celular, 1 por fila. */
+.tri-figs--4 { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
 
 .tri-fig {
   margin: 0; border-radius: var(--radius-md); overflow: hidden;

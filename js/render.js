@@ -571,6 +571,67 @@
     }
   }
 
+  /* ---------- Entidades que apoyan el museo (CR-80, 2026-10-19) ----------
+     Sección NUEVA de la portada. Datos en window.ENTIDADES, que vienen ÍNTEGROS
+     del Word del museo («Entidades que apoyan el Museo.docx»).
+
+     🔴 EL TEXTO NO SE TOCA ACÁ. Se pinta tal cual llega del data. Si alguien
+       "mejora" la redacción en el render, el sitio pasa a decir algo distinto al
+       documento del museo — y esto lo leen paleontólogos. Lo único que se hace es
+       `esc()` para escapar HTML, nada más.
+
+     ⚠️ EL LOGO VA EN UNA CAJA BLANCA, y no es decoración: los 5 logos son JPEG
+       con fondo propio (no son PNG transparentes) y el sitio es azul oscuro. Sin
+       la caja, un logo con texto oscuro se pierde. Y NO se les quita el fondo:
+       es regla dura del proyecto («no quites los fondos de las imágenes»).
+     ⚠️ `object-fit: contain` + el ratio REAL de cada logo: los originales van de
+       1.23 a 3.32, así que cualquier caja cuadrada los recortaría. Acá la imagen
+       ENTERA se ve, sin recortar. */
+  function pintarEntidades() {
+    var E = window.ENTIDADES; if (!E) return;
+
+    var titulo = $("[data-entidades-titulo]");
+    if (titulo) {
+      if (E.tituloSec) titulo.textContent = E.tituloSec;
+      else titulo.style.display = "none";
+    }
+    var bajada = $("[data-entidades-bajada]");
+    if (bajada) {
+      if (E.bajada) bajada.textContent = E.bajada;
+      else bajada.style.display = "none";   // sin texto, no queda un hueco
+    }
+
+    var cont = $("[data-entidades]");
+    if (!cont) return;
+    if (!E.lista || !E.lista.length) { cont.innerHTML = ""; return; }
+
+    cont.innerHTML = E.lista.map(function (e) {
+      var dim = (e.ancho && e.alto)
+        ? ' width="' + e.ancho + '" height="' + e.alto + '"' : "";
+      /* 🔴 CR-80b (2026-10-19) — BUG MEDIDO: con `loading="lazy"` los 5 logos
+         NO CARGABAN hasta hacer scroll. Medido en vivo: la sección está a
+         6920 px del viewport, los 5 <img> con `currentSrc` VACÍO y
+         `naturalWidth: 0`; al hacer scroll, los 5 cargan. El dueño lo reportó
+         como «no carga la sección nueva».
+         ⚠️ Además, al no cargar, `object-fit:contain` no tenía imagen que
+           ajustar y el <img> colapsaba a 0×0.
+         ⇒ `eager`: los logos son 5 archivos de 42-57 KB (246 KB en total) y
+           esta sección es el cierre de la portada. Cargarlos de entrada es más
+           barato que la sección rota. NO volver a poner `lazy` acá sin medir
+           el scroll. */
+      return '<article class="entidad reveal">' +
+               '<div class="entidad__caja">' +
+                 '<img class="entidad__logo" src="' + esc(e.logo) + '"' + dim +
+                   ' alt="' + esc(e.nombre) + '" loading="eager" decoding="async">' +
+               "</div>" +
+               (e.nombre
+                 ? '<h3 class="entidad__nombre">' + esc(e.nombre) + "</h3>" : "") +
+               (e.texto
+                 ? '<p class="entidad__texto">' + esc(e.texto) + "</p>" : "") +
+             "</article>";
+    }).join("");
+  }
+
   /* ---------- Galería (CR-44, 2026-10-13) ----------
      Fotos reales del museo. Datos en window.GALERIA.
      CR-45: las fotos de la muestra itinerante YA NO van aca — el dueño las
@@ -711,6 +772,7 @@
   function init() {
     pintarMarca(); pintarHero(); pintarDirector(); pintarHorario(); pintarEras(); pintarSomos();
     pintarColecciones(); pintarGaleria(); pintarServicios(); pintarVisita();
+    pintarEntidades();
     pintarContacto(); pintarFooter();
     document.dispatchEvent(new CustomEvent("mpch:pintado"));
   }

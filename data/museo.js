@@ -800,6 +800,94 @@ const GALERIA = {
 };
 
 
+/* --- ENTIDADES QUE APOYAN EL MUSEO (sección de la portada) ---
+   CR-80 (2026-10-19): el dueño entregó «Entidades que apoyan el Museo.docx» y
+   pidió una SECCIÓN NUEVA en la portada, antes del pie de página.
+
+   🔴 REGLA QUE MANDA ACÁ — es texto CIENTÍFICO, lo van a leer paleontólogos:
+     el `texto` de cada entidad es ÍNTEGRO del Word, sin redactar ni resumir
+     (DEC-034). Sólo se aplicaron DOS correcciones, aprobadas por el dueño:
+       1. Entidad 2: se quitó un DOBLE ESPACIO («es  una» → «es una»).
+       2. Entidad 5: «Libros» → «libros» (mayúscula al medio de una lista).
+     ⚠️ NO se tocó nada más. En particular se DEJARON tal cual, a propósito:
+       - `GEOPALEO LTDA. es una empresa…` (sin mayúscula tras el punto, como
+         lo escribió el museo);
+       - `PROYECTO C.E.C. Este Proyecto educacional, está destinado…` (el punto
+         corta la frase, pero así está en el Word y es legible);
+       - los nombres propios en MAYÚSCULAS, exactos como los dictó el dueño.
+     ⇒ Si alguien «mejora» estos párrafos, está introduciendo texto distinto al
+       del museo. No lo hagas sin pedido explícito.
+
+   ⚠️ LOS LOGOS salen DEL PROPIO DOCX (word/media/*), copiados byte a byte, sin
+     recomprimir y SIN recortar el fondo (regla del proyecto: jamás quitar
+     fondos). Son JPEG con fondo propio, por eso en el render van dentro de una
+     CAJA BLANCA: sobre el azul del sitio un logo con texto oscuro desaparece.
+   ⚠️ RESOLUCIÓN PENDIENTE: los originales del Word miden 415-667 px de ancho.
+     Sirven en pantalla pero son flojos en retina. El dueño pedirá versiones
+     grandes a cada entidad: cuando lleguen, se REEMPLAZA EL ARCHIVO con el
+     mismo nombre y no hay que tocar ni este data ni el CSS.
+   ⚠️ `ancho`/`alto` son los REALES de cada archivo (reservan espacio, evitan CLS). */
+const ENTIDADES = {
+  tituloSec: "Entidades que apoyan el museo",
+  bajada: "",
+  lista: [
+    {
+      nombre: "GEOPALEO LTDA.",
+      texto:
+        "GEOPALEO LTDA. es una empresa que brinda asesoría en Geología y " +
+        "Paleontología, orientada al análisis y evaluación de impacto al medioambiente " +
+        "relacionado con las áreas de patrimonio, paleontología y Geociencias, constituida " +
+        "por un grupo multidisciplinario de geólogos, paleontólogos y otros profesionales " +
+        "que ofrecen un servicio oportuno y calificado en relación a la conservación y " +
+        "protección del patrimonio paleontológico, natural y cultural de Chile.",
+      logo: "assets/img/entidades/geopaleo-ltda.jpg",
+      ancho: 574, alto: 173
+    },
+    {
+      nombre: "CENTRO DE ESTUDIOS PALEONTOLÓGICOS DE CHILE",
+      texto:
+        "El CENTRO DE ESTUDIOS PALEONTOLÓGICOS DE CHILE, es una organización privada, que " +
+        "busca desarrollar estrategias que fomenten la difusión del estudio y conservación " +
+        "del Patrimonio Paleontológico Nacional. Asimismo, buscamos promover la investigación " +
+        "científica a nivel nacional y utilizar la divulgación como una herramienta educativa " +
+        "para que la comunidad en general comprenda el valor que tienen los fósiles y su estudio.",
+      logo: "assets/img/entidades/centro-estudios-paleontologicos.jpg",
+      ancho: 573, alto: 334
+    },
+    {
+      nombre: "GRUPO DE AMIGOS DEL MUSEO PALEONTOLÓGICO",
+      texto:
+        "GRUPO DE AMIGOS DEL MUSEO PALEONTOLÓGICO, es una comunidad de personas que " +
+        "colaboran, con trabajo y recursos tanto en terreno como en el Museo Paleontológico " +
+        "de Chile, en las diferentes exposiciones con logística y conocimientos en el área " +
+        "museológica.",
+      logo: "assets/img/entidades/grupo-amigos-museo.jpg",
+      ancho: 415, alto: 337
+    },
+    {
+      nombre: "PROYECTO C.E.C.",
+      texto:
+        "PROYECTO C.E.C. Este Proyecto educacional, está destinado a promover proyectos " +
+        "culturales y educacionales enfocados a la capacitación en áreas de servicios " +
+        "paleontológicos y geológicos para empresas, museos, municipalidades o colegios, " +
+        "que busquen preparar a personas en estas áreas.",
+      logo: "assets/img/entidades/proyecto-cec.jpg",
+      ancho: 667, alto: 352
+    },
+    {
+      nombre: "PALEO STORE",
+      texto:
+        "PALEO STORE, es una tienda virtual de GeoPaleo Ltda. y del Museo Paleontológico " +
+        "de Chile, que busca poner a disposición de quien quiera comprar réplicas de " +
+        "fósiles, minerales, libros de paleontología, geología y de ciencia en general, " +
+        "poleras, juguetes relacionados con el área, etc.",
+      logo: "assets/img/entidades/paleo-store.jpg",
+      ancho: 602, alto: 229
+    }
+  ]
+};
+
+
 /* --- TRILOBITES (subpágina propia) ---
    CR-60 (2026-10-15): el dueño entregó el documento «Que son los trilobites.docx»
    (17,6 MB, 38 imágenes) y pidió una SUBPÁGINA que se abra apretando la card de
@@ -831,18 +919,39 @@ const GALERIA = {
    parte de la colección propia.
 */
 const TRILOBITES = {
-  // El nombre de la clave es el mismo que usa MUSEO.director.subpagina.
   subpagina: "trilobites.html",
   volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
   etiqueta: "Colecciones · Paleozoico",
   titulo: "Trilobites",
   bajada:
     "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico.",
-  /* La intro es el PRIMER párrafo del documento, textual. */
   intro:
     "Los trilobites fueron un grupo común de artrópodos marinos paleozoicos, provistos de un caparazón cuticular dorsal mineralizado en carbonatos (exoesqueleto) y fosilizable, la que permitió que tengan gran representación en el registro fósil. Estuvieron presentes durante 300 millones de años en todos los mares y océanos de la era Paleozoica (que va desde hace 541 a 252 millones de años). Desde que aparecen en el Cámbrico Temprano, su diversidad alcanzó valores elevados en el Cámbrico Tardío y Ordovícico, para decrecer durante el Silúrico-Devónico y reducirse aún más en el Paleozoico Tardío (Carbonífero), antes de extinguirse a fines del Pérmico.",
 
-  /* Secciones. `nivel: 2` = sección principal; `nivel: 3` = subsección de Anatomía. */
+  /* ============================================================
+     CR-81 (2026-10-19) — REHECHO DESDE EL WORD DEL MUSEO.
+
+     FUENTE: «Que son los trilobites.docx» (17,6 MB, 38 imágenes).
+     El dueño autorizó el uso de TODAS las imágenes:
+       «ya se solucionó lo del copyright ya que eran cosas hechas por el mismo».
+
+     🔴 EL ORDEN DE LAS IMÁGENES ES EL DEL WORD, LITERAL.
+       Pedido explícito del dueño: «sin cambiar órdenes de imágenes».
+       Los archivos se numeran 01..38 según su posición en el documento,
+       así que un `01.jpg` significa «primera imagen del Word», no «la más
+       linda». NO reordenar por tamaño, por proporción ni por criterio
+       visual: rompe la correspondencia imagen ↔ párrafo.
+
+     ⚠️ PROCEDENCIA: al ser material del museo, las figuras YA NO llevan
+       `credito` ni entran en creditos.json — ese archivo describía las 15
+       imágenes de Wikimedia Commons de la versión anterior. Sigue en disco
+       por si se repone alguna, pero NINGUNA de estas 38 lo usa.
+     ⚠️ PNG CON ALFA: 25 de las 38 son PNG RGBA. Se conservan en PNG porque
+       pasarlas a JPEG RELLENA DE NEGRO lo transparente (error ya cometido
+       en CR-60 y revertido). No convertir.
+     ⚠️ TEXTO: íntegro del Word, sin redactar (DEC-034).
+     ============================================================ */
+
   secciones: [
     {
       id: "que-son",
@@ -853,47 +962,14 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/cefalon-numerado.svg",
-          ancho: 260, alto: 180,
-          alt: "Esquema de las áreas del cefalón de un trilobite, con cada zona numerada y rotulada",
-          pie: "Las tres regiones del cuerpo: cefalón, tórax y pigidio.",
-          credito: "cefalon-numerado",
-          /* CR-65 (2026-10-16) — LEYENDA DE LOS NUMEROS DEL DIAGRAMA.
-             El SVG que entrega Commons trae SOLO los numeros 1..10 dibujados:
-             los nombres de cada area no estan dentro del archivo (se verifico:
-             hay 10 <text> con "1".."10" y ningun nombre). Sin esta leyenda, el
-             lector ve numeros sin saber a que corresponden.
-             ORDEN: es el del propio diagrama y el de la descripcion oficial de
-             Commons (la misma que esta en creditos.json). NO se reordena.
-             ESPANOL: los terminos siguen el uso del material del museo, que ya
-             dice "glabela" y "surco preglabelar" (seccion "El cefalón"). No se
-             invento terminologia nueva.
-             ⚠️ Si el dueno corrige un nombre, se cambia SOLO aca. */
-          leyenda: [
-            { n: "1",  es: "Área preocular",        en: "Preocular area" },
-            { n: "2",  es: "Área palpebral",        en: "Palpebral area" },
-            { n: "3",  es: "Área postocular",       en: "Postocular area" },
-            { n: "4",  es: "Proyección posterolateral", en: "Posterolateral projection" },
-            { n: "5",  es: "Anillo occipital",      en: "Occipital ring" },
-            { n: "6",  es: "Glabela",               en: "Glabella" },
-            { n: "7",  es: "Área posterior",        en: "Posterior area" },
-            { n: "8",  es: "Borde lateral",         en: "Lateral border" },
-            { n: "9",  es: "Área librigenal",       en: "Librigenal area" },
-            { n: "10", es: "Área preglabelar",      en: "Preglabellar area" }
-          ]
+          src: "assets/img/trilobites/word/01.jpg",
+          ancho: 533, alto: 800,
+          alt: "¿Qué son los trilobites? — imagen 1 del documento del museo"
         },
         {
-          src: "assets/img/trilobites/cranidio-numerado.svg",
-          ancho: 230, alto: 160,
-          alt: "Esquema del cranidio de un trilobite con sus elementos numerados",
-          credito: "cranidio-numerado",
-          /* CR-65: mismos criterios que la leyenda del cefalón. Este diagrama
-             trae los numeros 1..3 dibujados (verificado: 3 <text>). */
-          leyenda: [
-            { n: "1", es: "Fixigena", en: "Fixigena" },
-            { n: "2", es: "Librigena", en: "Librigena" },
-            { n: "3", es: "Glabela",  en: "Glabella" }
-          ]
+          src: "assets/img/trilobites/word/02.jpg",
+          ancho: 900, alto: 900,
+          alt: "¿Qué son los trilobites? — imagen 2 del documento del museo"
         },
       ],
     },
@@ -908,18 +984,19 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/suturas-faciales.jpg",
-          ancho: 918, alto: 271,
-          alt: "Diagrama de las suturas faciales del cranidio de un trilobite",
-          pie: "Las suturas faciales dividen el escudo cefálico en tres piezas.",
-          credito: "suturas-faciales"
+          src: "assets/img/trilobites/word/03.png",
+          ancho: 1351, alto: 558,
+          alt: "Estructura de los trilobites — imagen 3 del documento del museo"
         },
         {
-          src: "assets/img/trilobites/hipostoma.jpg",
-          ancho: 3127, alto: 910,
-          alt: "Tipos de hipostoma de trilobites según su forma de unión",
-          pie: "Tipos de hipostoma, la placa ventral de la boca.",
-          credito: "hipostoma"
+          src: "assets/img/trilobites/word/04.png",
+          ancho: 1350, alto: 788,
+          alt: "Estructura de los trilobites — imagen 4 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/05.jpg",
+          ancho: 1013, alto: 946,
+          alt: "Estructura de los trilobites — imagen 5 del documento del museo"
         },
       ],
     },
@@ -931,14 +1008,18 @@ const TRILOBITES = {
         "Los miembros encargados de la natación reciben el nombre de exopodito y consta de numerosas uniones o coyunturas que proporcionan un soporte a una serie de estructuras duras y aplanadas, como púas, que en gran número forman un eficiente sistema de nado, que le servía para movilizarse en el medio acuático.",
         "En otras ocasiones los trilobites caminaban o reptaban en la superficie del fondo, para lo cuál utilizaban otro miembro locomotor llamado endopodito, que estaba constituido por seis fuertes junturas de material quitinoso y que funcionó como una pata y se situaba por debajo del exopodito.",
         "Por detrás de la base de adherencia de esta pata se sitúa un órgano parecido a una hoja llamado epidodito, que tenía a su cargo la función respiratoria, por lo tanto, funcionaba como una branquia.",
+        "Triarthrus becki, Trilobites en vista dorsal an: Antena; ca: Cabeza; o: Ojo; s.f: sutura facial;  c.fi: Cara fija;  c.li; Cara libre;  gl: Glabela;  ag: Angulo genal;  pi: Pigidio; hi: Hipostoma; bo: Boca o labrum; ex: Exopodito; en: Endopodito; ep: Epipodito.",
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/triarthrus.jpg",
-          ancho: 984, alto: 1468,
-          alt: "Vista ventral de un Triarthrus eatoni con los apéndices conservados",
-          pie: "Triarthrus eatoni en vista ventral: exopodito, endopodito y epipodito visibles.",
-          credito: "triarthrus"
+          src: "assets/img/trilobites/word/06.jpg",
+          ancho: 971, alto: 790,
+          alt: "Locomoción — imagen 6 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/07.png",
+          ancho: 649, alto: 1067,
+          alt: "Locomoción — imagen 7 del documento del museo"
         },
       ],
     },
@@ -954,25 +1035,24 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/cruziana.jpg",
-          ancho: 585, alto: 267,
-          alt: "Icnofósil Cruziana en arenisca devónica",
-          pie: "Cruziana: locomoción y alimentación en el fondo arenoso.",
-          credito: "cruziana"
+          src: "assets/img/trilobites/word/08.png",
+          ancho: 741, alto: 284,
+          alt: "Huellas fósiles de trilobites — imagen 8 del documento del museo"
         },
         {
-          src: "assets/img/trilobites/diplichnites.jpg",
-          ancho: 2000, alto: 1093,
-          alt: "Icnofósil Diplichnites sobre superficie arenosa",
-          pie: "Diplichnites: desplazamiento rápido sobre la superficie.",
-          credito: "diplichnites"
+          src: "assets/img/trilobites/word/09.jpg",
+          ancho: 551, alto: 290,
+          alt: "Huellas fósiles de trilobites — imagen 9 del documento del museo"
         },
         {
-          src: "assets/img/trilobites/rusophycus.jpg",
-          ancho: 1889, alto: 1118,
-          alt: "Icnofósil Rusophycus en roca ordovícica",
-          pie: "Rusophycus: huellas de reposo.",
-          credito: "rusophycus"
+          src: "assets/img/trilobites/word/10.png",
+          ancho: 348, alto: 226,
+          alt: "Huellas fósiles de trilobites — imagen 10 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/11.png",
+          ancho: 1076, alto: 300,
+          alt: "Huellas fósiles de trilobites — imagen 11 del documento del museo"
         },
       ],
     },
@@ -980,6 +1060,7 @@ const TRILOBITES = {
       id: "anatomia",
       titulo: "Anatomía del trilobite",
       nivel: 2,
+      parrafos: [],
     },
     {
       id: "cefalon",
@@ -990,27 +1071,9 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/cefalon-numerado.svg",
-          ancho: 260, alto: 180,
-          alt: "Esquema de las áreas del cefalón de un trilobite, con cada zona numerada y rotulada",
-          credito: "cefalon-numerado",
-          /* CR-65: MISMA leyenda que en la sección «¿Qué son los trilobites?»,
-             porque es el MISMO diagrama (el cefalón se usa dos veces en la
-             página). ⚠️ Son dos entradas distintas del data apuntando al mismo
-             archivo: si el dueño corrige un nombre, hay que corregirlo en LAS
-             DOS o el mismo dibujo queda con dos leyendas diferentes. */
-          leyenda: [
-            { n: "1",  es: "Área preocular",        en: "Preocular area" },
-            { n: "2",  es: "Área palpebral",        en: "Palpebral area" },
-            { n: "3",  es: "Área postocular",       en: "Postocular area" },
-            { n: "4",  es: "Proyección posterolateral", en: "Posterolateral projection" },
-            { n: "5",  es: "Anillo occipital",      en: "Occipital ring" },
-            { n: "6",  es: "Glabela",               en: "Glabella" },
-            { n: "7",  es: "Área posterior",        en: "Posterior area" },
-            { n: "8",  es: "Borde lateral",         en: "Lateral border" },
-            { n: "9",  es: "Área librigenal",       en: "Librigenal area" },
-            { n: "10", es: "Área preglabelar",      en: "Preglabellar area" }
-          ]
+          src: "assets/img/trilobites/word/12.png",
+          ancho: 1394, alto: 601,
+          alt: "El cefalón — imagen 12 del documento del museo"
         },
       ],
     },
@@ -1021,6 +1084,13 @@ const TRILOBITES = {
       parrafos: [
         "Esta es la sección del exoesqueleto es en donde se encuentran los tergitos que es la placa dorsal o porción dorsal de la cubierta de un segmento metamérico (metámero es cada uno de los segmentos que se repiten en ciertos grupos de animales, celomados de simetría bilateral o bilateria), de un artrópodo especialmente en el abdomen), separados. están articulados entre sí para permitir flexibilidad e inserción en el siguiente tergito. El número de segmentos torácicos varía entre dos y hasta cuarenta y dos, con mayor frecuencia en el rango de ocho a quince.",
       ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/word/13.png",
+          ancho: 738, alto: 392,
+          alt: "El tórax — imagen 13 del documento del museo"
+        },
+      ],
     },
     {
       id: "pigidio",
@@ -1029,6 +1099,28 @@ const TRILOBITES = {
       parrafos: [
         "La zona caudal o pigidio es un elemento involucrado en el sistema natatorio del trilobite, dando impulso al animal en su desplazamiento, el pigidio al igual que el céfalo, es una placa única, constituida por la fusión de los elementos posteriores.",
         "El contorno del pigidio es generalmente semielíptico, aunque en varios casos adopta otras formas como semicircular, triangular, pentagonal o subcuadrangular. Asimismo, su tamaño relativo varía considerablemente: el trilobite es denominado micropigidio (a), si el pigidio es mucho más pequeño que el céfalo, mesopigidio (b), si ambas placas tienen una tamaño un poco más pequeño o dimensiones similares al cefalón, y macropigidio (c) cuando el pigidio es del mismo tamaño o más grande que el cefalón.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/word/14.png",
+          ancho: 763, alto: 324,
+          alt: "La zona caudal o pigidio — imagen 14 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/15.png",
+          ancho: 800, alto: 383,
+          alt: "La zona caudal o pigidio — imagen 15 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/16.png",
+          ancho: 644, alto: 431,
+          alt: "La zona caudal o pigidio — imagen 16 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/17.png",
+          ancho: 454, alto: 275,
+          alt: "La zona caudal o pigidio — imagen 17 del documento del museo"
+        },
       ],
     },
     {
@@ -1040,10 +1132,9 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/suturas-faciales.jpg",
-          ancho: 918, alto: 271,
-          alt: "Diagrama de las suturas faciales del cranidio de un trilobite",
-          credito: "suturas-faciales"
+          src: "assets/img/trilobites/word/18.png",
+          ancho: 748, alto: 346,
+          alt: "Muda o ecdisis — imagen 18 del documento del museo"
         },
       ],
     },
@@ -1056,10 +1147,9 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/hipostoma.jpg",
-          ancho: 3127, alto: 910,
-          alt: "Tipos de hipostoma de trilobites según su forma de unión",
-          credito: "hipostoma"
+          src: "assets/img/trilobites/word/19.png",
+          ancho: 1369, alto: 508,
+          alt: "Alimentación en los trilobites — imagen 19 del documento del museo"
         },
       ],
     },
@@ -1072,11 +1162,14 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/ojo-holocroal.jpg",
-          ancho: 2048, alto: 1536,
-          alt: "Ojo holocroal fosilizado de un trilobite con sus lentes de calcita",
-          pie: "Ojo holocroal: lentes de calcita conservadas en el fósil.",
-          credito: "ojo-holocroal"
+          src: "assets/img/trilobites/word/20.png",
+          ancho: 920, alto: 313,
+          alt: "Visión de los trilobites — imagen 20 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/21.png",
+          ancho: 890, alto: 285,
+          alt: "Visión de los trilobites — imagen 21 del documento del museo"
         },
       ],
     },
@@ -1089,11 +1182,9 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/conga.jpg",
-          ancho: 5240, alto: 3300,
-          alt: "Alineación de trilobites Isotellus conservados en fila",
-          pie: "Alineaciones de trilobites, llamadas «congas».",
-          credito: "conga"
+          src: "assets/img/trilobites/word/22.png",
+          ancho: 897, alto: 497,
+          alt: "Líneas de conga — imagen 22 del documento del museo"
         },
       ],
     },
@@ -1106,11 +1197,14 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/enrollado.jpg",
-          ancho: 2893, alto: 3464,
-          alt: "Trilobite Drotops armatus enrollado sobre sí mismo",
-          pie: "El enrollamiento protege al animal del ataque de predadores.",
-          credito: "enrollado"
+          src: "assets/img/trilobites/word/23.png",
+          ancho: 1166, alto: 668,
+          alt: "Vida en el fondo — imagen 23 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/24.jpg",
+          ancho: 800, alto: 600,
+          alt: "Vida en el fondo — imagen 24 del documento del museo"
         },
       ],
     },
@@ -1123,11 +1217,14 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/olenoides.jpg",
-          ancho: 3020, alto: 3845,
-          alt: "Espécimen de Olenoides inflatus del Cámbrico medio",
-          pie: "Olenoides: en esta especie se describió el dimorfismo sexual.",
-          credito: "olenoides"
+          src: "assets/img/trilobites/word/25.png",
+          ancho: 1120, alto: 548,
+          alt: "Reproducción y apareamiento — imagen 25 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/26.png",
+          ancho: 801, alto: 250,
+          alt: "Reproducción y apareamiento — imagen 26 del documento del museo"
         },
       ],
     },
@@ -1148,11 +1245,19 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/acadoparadoxides.jpg",
-          ancho: 5125, alto: 3141,
-          alt: "Espécimen de Acadoparadoxides briareus conservado completo",
-          pie: "Acadoparadoxides: las diferencias entre morfotipos varían en cada especie.",
-          credito: "acadoparadoxides"
+          src: "assets/img/trilobites/word/27.png",
+          ancho: 842, alto: 613,
+          alt: "Dimorfismo sexual en trilobites — imagen 27 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/28.png",
+          ancho: 498, alto: 538,
+          alt: "Dimorfismo sexual en trilobites — imagen 28 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/29.png",
+          ancho: 499, alto: 487,
+          alt: "Dimorfismo sexual en trilobites — imagen 29 del documento del museo"
         },
       ],
     },
@@ -1167,11 +1272,14 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/walliserops.jpg",
-          ancho: 2310, alto: 3694,
-          alt: "Fósil de Walliserops trifurcatus con su tridente frontal",
-          pie: "Walliserops trifurcatus y su tridente frontal.",
-          credito: "walliserops"
+          src: "assets/img/trilobites/word/30.png",
+          ancho: 687, alto: 341,
+          alt: "Espinas, tubérculos y tridentes — imagen 30 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/31.png",
+          ancho: 737, alto: 316,
+          alt: "Espinas, tubérculos y tridentes — imagen 31 del documento del museo"
         },
       ],
     },
@@ -1184,11 +1292,14 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/enrollado.jpg",
-          ancho: 2893, alto: 3464,
-          alt: "Trilobite Drotops armatus enrollado sobre sí mismo",
-          pie: "El exoesqueleto enrollado forma una cápsula casi cerrada.",
-          credito: "enrollado"
+          src: "assets/img/trilobites/word/32.png",
+          ancho: 831, alto: 411,
+          alt: "Enrollamiento de los trilobites — imagen 32 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/33.png",
+          ancho: 983, alto: 502,
+          alt: "Enrollamiento de los trilobites — imagen 33 del documento del museo"
         },
       ],
     },
@@ -1199,6 +1310,13 @@ const TRILOBITES = {
       parrafos: [
         "Los trilobites tienen un periodo de desarrollo en que el animal sufre diferentes cambios corporales en su ontogenia, el primer estadio de desarrollo después de eclosionar el huevo es conocido como protaspis (A), en este momento los trilobites presentan un perfil circular y sin segmentos libres, la mejilla se encuentra fija y está dividida solo en pleuras, constituyendo una nueva prueba de la segmentación original de la cabeza.",
         "El estadio siguiente se caracteriza por una serie de cambios que lleva al Trilobite desde una condición juvenil a la adulta, la que recibe el nombre de meraspis (B), en esta etapa se produce la formación de las zonas torácicas y pigidial, en tanto que en la cabeza se desarrolla la glabela y la región visual. El último estadio en que los trilobites alcanzan su estado de madurez o adulto se denomina holaspis (C), definiendo en este momento las características que el animal tendrá hasta su muerte.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/trilobites/word/34.png",
+          ancho: 621, alto: 451,
+          alt: "Desarrollo de los trilobites — imagen 34 del documento del museo"
+        },
       ],
     },
     {
@@ -1211,37 +1329,48 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
-          src: "assets/img/trilobites/isotelus.jpg",
-          ancho: 3640, alto: 4340,
-          alt: "Isotelus rex, uno de los trilobites más grandes conocidos, expuesto en el Royal Tyrrell Museum",
-          pie: "Isotelus rex: más de 70 centímetros de largo.",
-          credito: "isotelus"
+          src: "assets/img/trilobites/word/35.png",
+          ancho: 744, alto: 520,
+          alt: "Tamaño — imagen 35 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/36.jpg",
+          ancho: 720, alto: 720,
+          alt: "Tamaño — imagen 36 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/37.png",
+          ancho: 351, alto: 467,
+          alt: "Tamaño — imagen 37 del documento del museo"
+        },
+        {
+          src: "assets/img/trilobites/word/38.jpg",
+          ancho: 1014, alto: 1357,
+          alt: "Tamaño — imagen 38 del documento del museo"
         },
       ],
     },
   ],
 
-  /* Aviso de procedencia de las imágenes. Se pinta sobre la sección de atributos. */
+  /* 🔴 CR-81: la nota de procedencia CAMBIA. La versión anterior decía que
+     todas las imágenes eran de Wikimedia Commons y de otras colecciones;
+     eso ya es FALSO: las 38 son material del museo. Dejar la nota vieja
+     habría sido atribuir al museo lo ajeno y desmentir lo propio. */
   notaImagenes:
-    "Las imágenes de esta página son de Wikimedia Commons y se reproducen con su licencia. " +
-    "Corresponden a fósiles de otras colecciones del mundo: ilustran el capítulo, no forman " +
-    "parte de la muestra del Museo Paleontológico de Chile.",
+    "Las imágenes de esta página son material del Museo Paleontológico de Chile " +
+    "y se publican con su autorización.",
 
-  atribucion: {
-    titulo: "Créditos de las imágenes",
-    intro:
-      "Autor y licencia de cada imagen, según su ficha en Wikimedia Commons.",
-    fuente: { texto: "Wikimedia Commons", url: "https://commons.wikimedia.org/" }
-  },
+  /* CR-81: la sección de créditos de Commons SE RETIRA (queda vacía a propósito).
+     `js/trilobites.js` no pinta nada si está vacía. Si vuelve a haber imágenes
+     de terceros, se repone acá y se rehace creditos.json. */
+  atribucion: null,
 
-  /* Cierre de la subpágina: devuelve al museo, no a un callejón sin salida. */
   cierre: {
     texto: "Los trilobites son una de las siete piezas de la muestra del museo.",
     boton: "Ver la colección completa",
     enlace: "index.html#colecciones"
   }
 };
-
 
 /* --- PROYECTO C.E.C (subpágina propia) ---
    CR-61 (2026-10-15): el dueño entregó el material de C.E.C (16 años de actividad,
@@ -1472,4 +1601,7 @@ if (typeof window !== "undefined") {
   window.COLECCIONES = COLECCIONES; window.SERVICIOS = SERVICIOS;
   window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.MUSEO_ITINERANTE = MUSEO_ITINERANTE;
   window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES; window.CEC = CEC;
+  /* CR-80: `const` no crea propiedad global — sin esta línea ENTIDADES es
+     undefined en el render (misma trampa que documentó CR-71 con CEC_SUBPAGINA). */
+  window.ENTIDADES = ENTIDADES;
 }

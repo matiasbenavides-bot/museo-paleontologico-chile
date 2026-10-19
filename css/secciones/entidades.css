@@ -1,0 +1,141 @@
+/* ============================================================
+   ENTIDADES QUE APOYAN EL MUSEO — CR-80 (2026-10-19)
+   Sección NUEVA de la portada, antes del CTA final y el pie.
+
+   Estructura que pinta js/render.js (`pintarEntidades`):
+     <article class="entidad">
+       <div class="entidad__caja"><img class="entidad__logo" …></div>
+       <h3 class="entidad__nombre">…</h3>
+       <p  class="entidad__texto">…</p>
+     </article>
+
+   🔴 POR QUÉ EL LOGO VA EN UNA CAJA BLANCA:
+   los 5 logos se extrajeron del Word del museo y son JPEG con fondo propio.
+   NO son PNG transparentes y NO se les puede quitar el fondo (regla dura del
+   proyecto: «no quites los fondos de las imágenes»). Sobre el azul del sitio
+   (#010e26) un logo con texto oscuro desaparece. La caja blanca no es un
+   adorno: es lo que hace legible el logo.
+
+   🔴 POR QUÉ `object-fit: contain` Y NO `cover`:
+   los ratios reales van de 1.23 (Grupo de Amigos) a 3.32 (GeoPaleo). Cualquier
+   caja de proporción fija los recortaría — y recortar un logo es mutilarlo.
+   Con `contain` la imagen ENTERA se ve, sin importar el ratio.
+
+   ⚠️ El alto de la caja NO es fijo: cada logo manda con su propio ratio, así
+     que todas las cajas comparten altura (por `align-items: stretch` del grid)
+     pero la imagen se ajusta dentro sin deformarse.
+   ⚠️ Las versiones grandes de los logos (pendientes) se cambian REEMPLAZANDO EL
+     ARCHIVO: este CSS no necesita tocarse. El `width`/`height` del <img> viene
+     del data y solo reserva espacio (evita el salto de carga).
+   ============================================================ */
+
+.entidades {
+  /* Sin fondo propio: usa el del sitio. Solo se separa con aire. */
+  padding-block: var(--space-seccion);
+
+  /* 🔴 CR-80c (medido): el `.header` es `position: fixed` (107 px de alto), así
+     que al saltar con el ancla del nav el título quedaba TAPADO detrás de la
+     barra. Medido tras el clic: `#entidades` con `top: 0` y header de 107 px.
+     ⇒ `scroll-margin-top` es el mecanismo del proyecto para esto (mismo patrón
+       que servicios.css:765). NO se agrega padding: eso movería el layout.
+     ⚠️ El valor se DERIVA de `--header-h` (que el JS publica en `:root`), no se
+       escribe a mano: la lección de CR-57 es que los números fijos quedan viejos
+       cuando cambia el alto del header. +16 px de aire bajo el filo. */
+  scroll-margin-top: calc(var(--header-h, 84px) + 16px);
+}
+
+.entidades__grid {
+  display: grid;
+  gap: clamp(16px, 2.2vw, 26px);
+  margin-top: clamp(22px, 3vw, 32px);
+
+  /* auto-fit con minmax en rem para que respete el zoom del usuario (DEC-015).
+     2 columnas en escritorio, 1 en móvil, sin media query. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+
+  /* CR-80: las tarjetas de una misma fila se estiran a la misma altura. Como
+     los párrafos tienen largo distinto, sin esto la fila queda dentada. */
+  align-items: stretch;
+}
+
+.entidad {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: clamp(16px, 1.8vw, 22px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  transition: border-color .35s, box-shadow .35s;
+}
+/* ⚠️ Sin `scale` en el hover (regla del proyecto: el hover NO agranda). */
+.entidad:hover {
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Caja del logo ---------- */
+.entidad__caja {
+  /* BLANCO SÓLIDO, no transparente: es lo que hace legible el logo. */
+  background: #ffffff;
+  border-radius: calc(var(--radius-card) - 4px);
+  padding: clamp(12px, 1.4vw, 18px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Alto acotado: suficiente para que el logo se lea, sin dominar la tarjeta.
+     Es un MÁXIMO, no un alto fijo — el logo manda con su propio ratio. */
+  min-height: clamp(88px, 8vw, 112px);
+  margin-bottom: clamp(14px, 1.6vw, 18px);
+  overflow: hidden;
+}
+
+.entidad__logo {
+  display: block;
+  /* contain = se ve la imagen ENTERA. Nunca `cover`: recortaría el logo. */
+  object-fit: contain;
+  /* 🔴 CR-80 (medido): con `width:100%` TODOS los logos salían pintados con
+     ratio 3.29 (el de la caja) en vez de su ratio real — o sea APLASTADOS.
+     Medido: natural 1.23 / 1.72 / 1.89 / 2.63 / 3.32 → pintado 3.29 en los cinco.
+     El `width:100%` obligaba a la caja y `max-height` recortaba el alto.
+     ⇒ Ahora la imagen NO se estira: manda su tamaño intrínseco, acotado por
+       `max-width` y `max-height`, y el navegador respeta el ratio solo. */
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: clamp(72px, 6.6vw, 96px);
+  /* Las versiones del Word son pequeñas (415-667 px). `image-rendering:auto`
+     deja que el navegador las suavice al escalar: se ven mejor que con
+     pixelado. Cuando lleguen los originales grandes, esto sigue sirviendo. */
+  image-rendering: auto;
+}
+
+/* ---------- Nombre y párrafo ---------- */
+.entidad__nombre {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-main);
+  margin: 0 0 clamp(8px, 1vw, 12px);
+  /* Los nombres del Word vienen en MAYÚSCULAS largas: que no desborden. */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.entidad__texto {
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: var(--text-soft);
+  margin: 0;
+  /* Medido: el ancho de línea se mantiene legible dentro de la tarjeta. */
+  max-width: 62ch;
+}
+
+/* En móvil la caja del logo no necesita tanto aire. */
+@media (max-width: 600px) {
+  .entidad__caja { min-height: 80px; padding: 10px; }
+  .entidad__logo { max-height: 64px; }
+}

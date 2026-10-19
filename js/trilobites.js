@@ -129,7 +129,13 @@
      siempre (`eager`), porque son las que el usuario ve al entrar. */
   function figurasHTML(imgs) {
     if (!imgs || !imgs.length) return "";
-    var n = imgs.length >= 3 ? 3 : imgs.length;
+    /* 🔴 CR-81 (2026-10-19): el tope era 3, pero el Word del museo trae un
+       bloque de CUATRO imágenes (image14..17, en «La zona caudal o pigidio»).
+       Con el tope en 3, la cuarta salía en una fila propia y suelta.
+       Ahora se respeta el número real de imágenes del bloque (máximo 4, que es
+       lo que existe en el documento). Si algún día un bloque trae 5, hay que
+       agregar `.tri-figs--5` en el CSS. */
+    var n = imgs.length >= 4 ? 4 : imgs.length;
     return '<div class="tri-figs tri-figs--' + n + '">' +
       imgs.map(function (im, k) {
         var f = FICHAS[im.credito] || {};

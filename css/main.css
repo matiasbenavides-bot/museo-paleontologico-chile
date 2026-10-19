@@ -23,6 +23,9 @@
 /* CR-61: la subpágina PROYECTO C.E.C (proyecto-cec.html) tiene su propia hoja.
    Mismo criterio que perfil.css y trilobites.css: cadena única, un solo <link>. */
 @import url("secciones/cec.css");
+/* CR-80: sección «Entidades que apoyan el museo» de la portada. Va en la cadena
+   única, antes de fondo-ammonite para que el fondo no la pise. */
+@import url("secciones/entidades.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");
