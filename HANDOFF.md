@@ -623,3 +623,76 @@ museo-mpch/
 - DEC-014 horario sin redundancia · DEC-015 responsive fluido con clamp()
 - DEC-016 fondo con contenedor de recorte · DEC-017 reveals solo en eje Y
 - DEC-018 iconos de piezas en pausa hasta los dibujos personalizados
+
+---
+
+## CR-75 a CR-81 (2026-10-19) — fotos del museo, Entidades y Trilobites rehecho
+
+**Commit `91f0063`, publicado y verificado sobre la URL real.**
+
+### Lo que cambió
+
+| CR | Qué |
+|---|---|
+| CR-75 | «Tamaño» en `trilobites.html`: las 2 fotos del dueño (pequeños + gigante) reemplazan a `isotelus.jpg` (Commons) |
+| CR-76 | «Líneas de conga»: foto del museo reemplaza a `conga.jpg` |
+| CR-77/79 | «Enrollamiento»: PRIMERA foto del dueño (la eligió él) |
+| CR-78 | «Vida en el fondo»: SEGUNDA foto, con archivo propio `enrollado-museo-2.jpg` |
+| CR-80 | Sección NUEVA «Entidades que apoyan el museo» en la portada: 5 entidades del Word, texto íntegro, 5 logos extraídos del docx |
+| CR-80b | Bug: los logos no cargaban con `loading=lazy` (sección a 7000 px). → `eager` |
+| CR-80c | «Entidades» al nav de las 4 páginas + `scroll-margin-top` |
+| CR-81 | **`trilobites.html` REHECHO** desde el Word: 19 secciones, 38 imágenes en orden literal |
+
+### 🔴 DECISIONES QUE MANDAN DE AHORA EN ADELANTE
+
+- **DEC-012 queda exceptuada para material del museo**: el dueño autorizó textual
+  «son autorizadas, todas» y «ya se solucionó lo del copyright ya que eran cosas
+  hechas por el mismo». Las fotos e imágenes del museo SÍ se publican.
+  La prohibición general de usar imágenes de TERCEROS sin licencia sigue vigente.
+- **DEC-82 — el orden de las imágenes es el del documento del museo, LITERAL.**
+  Pedido del dueño: «sin cambiar órdenes de imágenes». Los archivos se numeran
+  `01..38` por posición en el Word. **No reordenar por tamaño ni por criterio
+  visual**: rompe la correspondencia imagen ↔ párrafo.
+- **DEC-83 — `trilobites.html` ya NO tiene créditos de Wikimedia Commons.**
+  `atribucion: null` y `notaImagenes` reescrita. `creditos.json` sigue en disco
+  pero NINGUNA de las 38 imágenes lo usa. Si vuelve material de terceros, se
+  repone la sección y se rehace ese archivo.
+
+### ⚠️ TRAMPAS MEDIDAS EN ESTA SESIÓN (no repetirlas)
+
+1. **`loading="lazy"` en secciones lejanas = imágenes que NUNCA cargan.** Medido:
+   sección a 6920 px del viewport, los 5 `<img>` con `currentSrc` vacío y
+   `naturalWidth: 0`. El dueño lo reportó como «no carga». Y como `object-fit`
+   no tenía imagen que ajustar, el `<img>` colapsaba a 0×0.
+   ⇒ **Medir SIEMPRE desde `scrollY: 0`**, no después de scrollear. Mi primera
+   medición dio 5/5 falsamente porque ya había scrolleado.
+2. **`@import` de CSS se cachea aparte del HTML.** Un cambio de CSS puede no
+   aparecer aunque se recargue la página. Verificar con Ctrl+F5, o abriendo el
+   `.css` directo. Medido: `main.css` servía la regla y el navegador tenía la
+   versión vieja del `@import`.
+3. **PNG con alfa + fondo oscuro = imagen invisible.** 4 imágenes (`03`, `04`,
+   `19`, `20`) tenían 48-66 % de transparencia y trazo oscuro: sobre `#010e26`
+   desaparecían. Se les puso **fondo blanco sólido** (regla del proyecto para
+   láminas con texto/trazo oscuro). Ojo: `31.png` trae fondo NEGRO opaco, y se
+   dejó así porque es como viene del Word.
+4. **Nunca convertir PNG con alfa a JPEG**: rellena de negro lo transparente
+   (error ya cometido en CR-60 y revertido). Las 25 PNG se quedaron PNG.
+5. **El header es `position: fixed` (107 px)**: todo ancla nueva necesita
+   `scroll-margin-top: calc(var(--header-h, 84px) + 16px)`, o el título queda
+   tapado. El patrón ya existía en `servicios.css`.
+6. **`width: 100%` sobre un logo de proporción variable lo aplasta.** Medido: los
+   5 logos salían pintados a ratio 3.29 (el de la caja) en vez del suyo
+   (1.23-3.32). ⇒ `width:auto` + `max-width`/`max-height`.
+
+### Pendientes
+
+- **Logos de las entidades en alta resolución.** Los del Word miden 415-667 px:
+  se ven bien en pantalla, flojos en retina. El dueño los pedirá a cada entidad.
+  Cuando lleguen: **reemplazar el archivo con el mismo nombre**, sin tocar data
+  ni CSS.
+- **`alt` de las 38 imágenes de trilobites**: hoy son genéricos
+  («*sección* — imagen N del documento del museo») porque el agente no ve
+  imágenes. Si el dueño dicta qué es cada una, se mejoran.
+- **Los archivos de la versión anterior de trilobites siguen en disco**
+  (`isotelus.jpg`, `conga.jpg`, `enrollado.jpg`, `tamano-*`, `enrollado-museo*`):
+  ya no se usan en la página, NO se borraron.
