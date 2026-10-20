@@ -26,6 +26,11 @@
 /* CR-80: sección «Entidades que apoyan el museo» de la portada. Va en la cadena
    única, antes de fondo-ammonite para que el fondo no la pise. */
 @import url("secciones/entidades.css");
+/* CR-83 (2026-10-20): la subpágina AMMONITES (amonites.html) tiene su propia
+   hoja, con prefijo `amo-` (DEC-83: no reusa las clases `.tri-*`). Va en la
+   cadena única, como perfil.css/trilobites.css/cec.css, para que UN solo <link>
+   sirva a todas las páginas y no existan dos listas de CSS que puedan divergir. */
+@import url("secciones/amonites.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");

@@ -448,7 +448,11 @@ const COLECCIONES = {
        "Ver más" por defecto, que es texto que NO dictó el dueño. */
     { icono: "trilobite", conIcono: true,  arte: "assets/img/pieza-trilobites.png", nombre: "Trilobites",   detalle: "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico.",
       enlace: "trilobites.html", enlaceTexto: "Conocer los trilobites" },
-    { icono: "ammonite",  conIcono: true,  arte: "assets/img/pieza-ammonite.png", nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica." },
+    { icono: "ammonite",  conIcono: true,  arte: "assets/img/pieza-ammonite.png", nombre: "Ammonites",    detalle: "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica.",
+      /* CR-83 (2026-10-20): mismo mecanismo que Trilobites — el dueño pidió que la
+         card abra su subpágina. `enlaceTexto` es obligatorio cuando hay `enlace`
+         (si falta, el render escribe "Ver más", texto que el dueño no dictó). */
+      enlace: "amonites.html", enlaceTexto: "Conocer los ammonites" },
     { icono: "ambar",     conIcono: true,  arte: "assets/img/pieza-ambar.png", nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
     { icono: "tiburon",   conIcono: true,  arte: "assets/img/pieza-tiburones.png", nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos." },
     { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto." },
@@ -1596,6 +1600,460 @@ const CEC = {
   }
 };
 
+/* --- AMMONITES (subpágina propia) ---
+   CR-83 (2026-10-20): el dueño entregó el documento «AMMONITES.docx»
+   (4,6 MB, 30 imágenes) y pidió agregarlo como la página que se abre
+   apretando la card de Ammonites en Colecciones (mismo mecanismo que
+   trilobites.html, CR-60).
+
+   ⚠️ TEXTO: ÍNTEGRO del Word, sin una palabra redactada (DEC-034).
+   Solo se separó en secciones y se capitalizaron los títulos que el Word
+   trae en minúsculas. NO reescribir: si hay que cambiarlo, lo dicta el dueño.
+
+   🔴 ORDEN DE IMÁGENES: es el del Word, LITERAL. Los archivos se numeran
+   01..30 por su POSICIÓN en el documento, no por nombre ni por tamaño.
+   Un `07.jpg` significa «séptima imagen del Word». NO reordenar.
+
+   ✅ PROCEDENCIA: material del museo, autorizado por el dueño en bloque
+   («son autorizadas, todas», 2026-10-19). La ilustración de la imagen 3
+   es de José Lemos Caro y se publica con su crédito pegado a la figura,
+   tal como el dueño lo autorizó en esta sesión.
+
+   ⚠️ PNG con alfa se conservan en PNG (pasarlas a JPEG rellena de NEGRO
+   lo transparente). Medido: solo 02.png tiene alfa real (1,2 % de
+   píxeles transparentes, luminancia media 129 = clara), así que se ve
+   sobre el fondo oscuro sin necesidad de fondo blanco.
+   ============================================================ */
+
+const AMMONITES = {
+  subpagina: "amonites.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Mesozoico",
+  titulo: "Ammonites",
+  bajada:
+    "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica.",
+  intro:
+    "Subclase Ammonoidea con ejemplares que habitaron todos los mares  desde el periodo Devónico al Cretácico, son los que revisten mayor importancia para los paleontólogos, por ser fósiles que nos permiten fechar los estratos (fósiles guías) Una Subclase de moluscos cefalópodos que se extinguieron a finales del Cretácico hace 65 millones de años. Aparecieron en el Devónico medio hace unos 400 Ma. y fueron muy abundantes, siendo una parte importante en las cadenas tróficas de los mares de la Tierra durante mucho tiempo.",
+
+  secciones: [
+    {
+      id: "subclase",
+      titulo: "Subclase Ammonoidea",
+      nivel: 2,
+      parrafos: [
+        "Subclase Ammonoidea con ejemplares que habitaron todos los mares  desde el periodo Devónico al Cretácico, son los que revisten mayor importancia para los paleontólogos, por ser fósiles que nos permiten fechar los estratos (fósiles guías) Una Subclase de moluscos cefalópodos que se extinguieron a finales del Cretácico hace 65 millones de años. Aparecieron en el Devónico medio hace unos 400 Ma. y fueron muy abundantes, siendo una parte importante en las cadenas tróficas de los mares de la Tierra durante mucho tiempo.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/01.jpg",
+          ancho: 489, alto: 475,
+          alt: "Ammonites — imagen 1 del documento del museo",
+          pie: "Ammonite Dactilioceras comune, y Ammonite con corte sagital que muestra las cámaras internas.",
+        },
+        {
+          src: "assets/img/amonites/word/02.png",
+          ancho: 164, alto: 171,
+          alt: "Ammonites — imagen 2 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "reconstruccion",
+      titulo: "Reconstrucción paleobiológica",
+      nivel: 3,
+      parrafos: [],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/03.jpg",
+          ancho: 1148, alto: 787,
+          alt: "Ammonites — imagen 3 del documento del museo",
+          pie: "Reconstrucción paleobiológica de un Ammonite. Ilustración José Lemos Caro.",
+        },
+      ],
+    },
+    {
+      id: "fosilizacion",
+      titulo: "Proceso de fosilización",
+      nivel: 2,
+      parrafos: [
+        "El proceso de fosilización es el que permite contar con buenos o malos especímenes para un posterior estudio de una forma de vida del pasado. Esto depende de varios factores, como la rapidez de sepultación, lo fino o grueso de los sedimentos, la alteración del terreno por los movimientos tectónicos, etc. Un excelente ejemplo para mostrar el proceso de fosilización es el de los ammonites, pues son un grupo abundante de invertebrados marinos en el pasado de Chile:",
+      ],
+    },
+    {
+      id: "fosilizacion-1",
+      titulo: "1. El animal muere",
+      nivel: 3,
+      parrafos: [
+        "1.- El Ammonite vive en su ambiente, muere por alguna causa –como el ataque de algún depredador, como un reptil marino, o por causas naturales. Sus partes blandas son consumidas por carroñeros y las bacterias degradan el cuerpo.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/04.jpg",
+          ancho: 631, alto: 429,
+          alt: "Ammonites — imagen 4 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "fosilizacion-2",
+      titulo: "2. La concha se rellena",
+      nivel: 3,
+      parrafos: [
+        "2.- Su concha vacía queda en el fondo o a la orilla del mar, donde es rellenada por barro o sedimentos y recubiertas por el mismo.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/05.jpg",
+          ancho: 721, alto: 538,
+          alt: "Ammonites — imagen 5 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "fosilizacion-3",
+      titulo: "3. El molde queda protegido",
+      nivel: 3,
+      parrafos: [
+        "3.- Este molde queda protegido por capas de sedimento, que posteriormente los paleontólogos excavan, para extraer estas valiosas piezas paleontológicas.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/06.jpg",
+          ancho: 728, alto: 448,
+          alt: "Ammonites — imagen 6 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "fosilizacion-4",
+      titulo: "4. Molde interno",
+      nivel: 3,
+      parrafos: [
+        "4.- Posteriormente queda un molde interno de la concha, mostrando su estructura.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/07.jpg",
+          ancho: 731, alto: 488,
+          alt: "Ammonites — imagen 7 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "deposicion-fondo",
+      titulo: "Deposición de fondo",
+      nivel: 3,
+      parrafos: [
+        "Al morir los Ammonites puede ocurrir que la concha quede con mucho líquido en sus cámaras, provocando que las conchas terminen depositándose en el fondo marino.",
+        "Esto se refleja en que quedan depositadas de tal modo que se van agrupando o amontonando unas encima de otras, siendo posible encontrar capas de sedimento con ammonites de diferentes especies.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/08.jpg",
+          ancho: 538, alto: 642,
+          alt: "Ammonites — imagen 8 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "deposicion-playa",
+      titulo: "Deposición de playa",
+      nivel: 3,
+      parrafos: [
+        "Al contrario de la deposición de fondo, en la deposición de playa las conchas pueden quedar con gas o aire en su interior haciendo que las conchas floten, y de este modo las corrientes marinas transporten las conchas hasta las playas. En este tipo de fosilización las conchas están aisladas y no se encuentran amontonadas.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/09.jpg",
+          ancho: 504, alto: 777,
+          alt: "Ammonites — imagen 9 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "belleza",
+      titulo: "Un grupo atractivo y bello",
+      nivel: 2,
+      parrafos: [
+        "Los ammonites, además de constituir un grupo fósil muy atractivo desde el punto de vista sistemático (se conocen miles de especies) y estratigráfico (son buenos indicadores del tiempo geológico), evidencian además una gran belleza estructural (distribución y forma de la concha), lo cual hace que sean muy apreciados por todos cuantos manifiestan interés por los fósiles.",
+      ],
+    },
+    {
+      id: "concha",
+      titulo: "La concha",
+      nivel: 2,
+      parrafos: [
+        "La concha es de forma espiral, abierta o cerrada. Está dividida en una serie de cámaras que contienen un líquido llamado “líquido cameral “, que genera gas Nitrógeno. Estas cámaras están separadas por una pared o tabique llamado septo, que se encuentra presente en toda la parte interior de la concha. Estos tabiques son atravesados por un conducto carnoso llamado sifón, al igual que en los nautilos, con la diferencia que en los Ammonites éste pasa por la periferia de la concha.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/10.jpg",
+          ancho: 571, alto: 461,
+          alt: "Ammonites — imagen 10 del documento del museo",
+        },
+        {
+          src: "assets/img/amonites/word/11.jpg",
+          ancho: 440, alto: 416,
+          alt: "Ammonites — imagen 11 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "concha-camaras",
+      titulo: "Cámaras y crecimiento",
+      nivel: 3,
+      parrafos: [
+        "La concha posee varias cámaras internas pequeñas y una grande donde se aloja el animal llamada cámara habitación, a medida que el animal crece se van creando nuevas cámaras, por lo cual cada cámara representa un estado de crecimiento del animal. Estas conchas pueden tener diversos tamaños. Se conocen Ammonites muy pequeños de solo algunos milímetros hasta especies gigantescas que alcanzaron más de tres metros en la especie Pachidiscus y Parapuzosia seppenradensis.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/12.jpg",
+          ancho: 486, alto: 552,
+          alt: "Ammonites — imagen 12 del documento del museo",
+        },
+        {
+          src: "assets/img/amonites/word/13.jpg",
+          ancho: 547, alto: 552,
+          alt: "Ammonites — imagen 13 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "protoconcha",
+      titulo: "Protocono o protoconcha: la ammonitella",
+      nivel: 3,
+      parrafos: [
+        "La parte inicial de la concha de los ammonites es muy pequeña, del orden de 0.5 a 0.8 mm. Se denomina protoconcha y tiene un aspecto globoso. A partir de ella, comienza a desarrollarse la primera vuelta que ya está tabicada. Hacia el final de la primera vuelta todas las especies de ammonite poseen un estrangulamiento debido a que, en este punto, la concha alcanza un mayor grosor. Este estrangulamiento se denomina constricción Nepiónica y ha sido motivo de múltiples estudios e interpretaciones.",
+        "La concha también estaba ornamentada con una serie de costillas transversales que podían ser finas o gruesas o una mezcla de las dos. Muchas de estas conchas tenían espinas y tubérculos que la adornaban, sirviéndoles también para defenderse.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/14.jpg",
+          ancho: 886, alto: 733,
+          alt: "Ammonites — imagen 14 del documento del museo",
+        },
+        {
+          src: "assets/img/amonites/word/15.jpg",
+          ancho: 426, alto: 677,
+          alt: "Ammonites — imagen 15 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "depredacion",
+      titulo: "Depredación en ammonites",
+      nivel: 2,
+      parrafos: [
+        "Los primeros ammonites fueron simples, con líneas de sutura poco complicadas, con costillas finas y sin tubérculos, no obstante, con el paso del tiempo surgieron una gran cantidad de depredadores marinos que se alimentaban de ellos, triturando las conchas con sus mandíbulas. Este momento del tiempo Mesozoico, ha sido denominado como la “Revolución marina del Mesozoico”, ya que surgieron los Pliosaurus, Plesiosaurus, Mosasaurus, Ictiosaurus, Cocodrilos marinos y otros, los que convivían a su vez con una gran cantidad de peces trituradores de conchas, como los encontrados en la formación Lo Valdés, del género Lepidotus.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/16.jpg",
+          ancho: 582, alto: 702,
+          alt: "Ammonites — imagen 16 del documento del museo",
+        },
+        {
+          src: "assets/img/amonites/word/17.jpg",
+          ancho: 430, alto: 607,
+          alt: "Ammonites — imagen 17 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "marcas-maxilar",
+      titulo: "Marcas del maxilar de Mosasaurus",
+      nivel: 3,
+      parrafos: [
+        "Marcas del maxilar de Mosasaurus orridus en una concha de Ammonite del genero Placentíceras.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/18.jpg",
+          ancho: 967, alto: 386,
+          alt: "Ammonites — imagen 18 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "tuberculos",
+      titulo: "Tubérculos y espinas",
+      nivel: 3,
+      parrafos: [
+        "Los Ammonites, desarrollaron una serie de tubérculos y espinas en toda la espiral, lo que impedía que fueran mordidas con facilidad; los tabiques o paredes internas se juntaron más y su forma se complicó ya que sus líneas de suturas presentaban rugosidades o arborización, con la finalidad de aumentar la resistencia de la presión marina, lo que le permitiría bajar a grandes profundidades para arrancar de sus atacantes. Por último, las costillas, que son ornamentos de disposición transversal en las espirales, se hicieron más gruesas y fuertes, lo que aumentaba la resistencia de la concha a las mordeduras de los depredadores.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/19.jpg",
+          ancho: 737, alto: 381,
+          alt: "Ammonites — imagen 19 del documento del museo",
+        },
+        {
+          src: "assets/img/amonites/word/20.jpg",
+          ancho: 361, alto: 416,
+          alt: "Ammonites — imagen 20 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "hidrodinamica",
+      titulo: "Hidrodinámica de las conchas",
+      nivel: 2,
+      parrafos: [
+        "Las conchas de los Ammonites, se comprimieron haciéndose más veloces e hidrodinámicas. Algunos estudios han demostrado que la forma discoidal comprimida de la concha en algunos, se adapta mejor a la natación rápida, todo lo cual concuerda con sus costumbres nectónicas, tales animales debieron ser excelentes nadadores, no así otros como los Ammonites heteromorfos o aquellos que, teniendo concha discoidal, la misma no era comprimida si no globosa y a veces muy ornamentada, lo que indudablemente sería un impedimento para nadar con soltura. Este tipo de animales habrían tenido con seguridad un modo de vida distinta a los nadadores, arrastrándose en el fondo marino o aun viviendo de modo sedentario.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/21.jpg",
+          ancho: 206, alto: 528,
+          alt: "Ammonites — imagen 21 del documento del museo",
+        },
+        {
+          src: "assets/img/amonites/word/22.jpg",
+          ancho: 373, alto: 519,
+          alt: "Ammonites — imagen 22 del documento del museo",
+        },
+        {
+          src: "assets/img/amonites/word/23.jpg",
+          ancho: 370, alto: 521,
+          alt: "Ammonites — imagen 23 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "ornamentos",
+      titulo: "Ornamentación de la concha",
+      nivel: 3,
+      parrafos: [],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/24.jpg",
+          ancho: 1353, alto: 351,
+          alt: "Ammonites — imagen 24 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "sistema-natatorio",
+      titulo: "Sistema natatorio",
+      nivel: 2,
+      parrafos: [
+        "Para el desplazamiento vertical, el Ammonites poseía dentro de su concha un apéndice carnoso nacido de su masa visceral, que recorría todas las cámaras llamado sifón, cuya función consistía en ingresar a las cámaras gas nitrógeno lo que  permitía  ascender desde  el fondo  marino; o ingresar  líquido (liquido cameral), a las cámaras para hacerlo descender, sistema que funcionaba por osmosis y que era un efectivo sistema para cambios de nivel en el agua tal como lo hacen los submarinos.",
+        "Para el desplazamiento horizontal, el ammonites poseía una estructura muscular al interior del cuerpo junto a todas las partes blandas que recibe el nombre de manto, este se encontraba plegado al interior de la llamada cavidad paleal. El manto era una estructura elástica y flexible que contaba con una serie de músculos tanto radiales como longitudinales, era como una bolsa cuya función era llenarse de líquido, para lo cual dilataba su sistema muscular, una ves llena comprimía los músculos expulsando fuertemente el mismo por un conducto o embudo llamado hiponomio Por el principio de acción y reacción el animal se movía en sentido contrario a la salida del chorro de agua.",
+      ],
+    },
+    {
+      id: "anatomia",
+      titulo: "Anatomía interna del Ammonite",
+      nivel: 2,
+      parrafos: [
+        "Podemos decir que los ammonites poseían un sistema nervioso muy desarrollado, más que en los otros moluscos y una vista privilegiada con grandes ojos que tal ves le permitía ver en colores.",
+        "Cuenta con un pequeño estómago y un ventrículo digestivo que le permitía digerir su alimento y eliminarlo sin problemas dentro de la cavidad del manto donde estaba ubicado el ano, por donde eran expulsados los residuos.",
+        "Para alimentarse poseía una boca coronada por un pico corneo de quitina, que le permitía al animal triturar su alimento, estaba formada por dos placas puntiagudas situadas una en la parte superior y la otra en la inferior que encajaban al igual que el pico de los loros.",
+        "Para que el alimento llegara a la boca el animal atrapaba su alimento con los tentáculos y los llevaba hasta su orificio bucal. Poseía una rádula para moler su alimento constituida por Peces, Crustáceos, Moluscos etc. El Ammonite poseía para su respiración un sistema branquial eficaz.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/25.jpg",
+          ancho: 1355, alto: 723,
+          alt: "Ammonites — imagen 25 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "linea-sutura",
+      titulo: "Línea de sutura",
+      nivel: 2,
+      parrafos: [
+        "Los Ammonites dentro del mismo plan estructural de los Nautilus, se caracterizan por tener tabiques internos los cuales al llegar a la concha externa para formar lo que se denomina Línea de sutura. En algunos Ammonites esta línea de sutura no presenta una mayor complejidad (menos evolucionados), pero en otros existe una sutura muy compleja (más evolucionados), la cual le sirve para darle una mayor resistencia a la concha.  Además, la línea de sutura es un elemento que nos permite identificar a los Ammonites.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/26.jpg",
+          ancho: 758, alto: 714,
+          alt: "Ammonites — imagen 26 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "reproduccion",
+      titulo: "Reproducción de los Ammonites",
+      nivel: 2,
+      parrafos: [
+        "Todos los Ammonites son unisexuales, y suelen presentar caracteres sexuales secundarios que afectan la estructura y forma de la concha, la fecundación es interna; en el macho existe entre sus tentáculos, uno que es especial por estar involucrado directamente en la reproducción, llamado hectocótilo, portador de los espermios llamados espermatóforos, en tanto las hembras poseen glándulas nidamentarias, cuyas secreciones es utilizada para aglutinar los huevos. Su apareamiento se producía frontalmente entrelazando sus tentáculos. El hectocótilo se introduce en la cavidad del manto de la hembra y deposita los espermatóforos en la pared de dicha cavidad, en donde tiene lugar la fecundación.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/27.jpg",
+          ancho: 777, alto: 543,
+          alt: "Ammonites — imagen 27 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "extincion",
+      titulo: "Extinción de los ammonites",
+      nivel: 2,
+      parrafos: [
+        "Una de las características más notables de los ammonites es su rápida evolución, en otras palabras, su desarrollo filogenético alcanza un rango de entre un millón y dos millones de años, por tanto, muchos ammonites nacían y morían como especie; sin embargo, estos desaparecieron rápidamente producto de la gran catástrofe originada por la caída de un meteorito hace 65 millones de años. La presencia de porciones de Estroncio encontrados en algunas conchas de Ammonites supone una lluvia ácida como consecuencia del roce de este bólido con la atmósfera terrestre.",
+      ],
+    },
+    {
+      id: "fosiles-guias",
+      titulo: "Ammonites como fósiles guías",
+      nivel: 2,
+      parrafos: [
+        "Desde el punto de vista estratigráfico los ammonites constituyen excelentes fósiles guía que han permitido dividir el Paleozoico a partir del Devónico, y todo el Mesozoico. Se han descrito muchas familias y géneros que se distribuyen de forma variable en unas 7.500 especies y convivieron con los reptiles marinos, peces y otra serie de invertebrados marinos.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/28.jpg",
+          ancho: 512, alto: 733,
+          alt: "Ammonites — imagen 28 del documento del museo",
+        },
+      ],
+    },
+    {
+      id: "yacimientos",
+      titulo: "Yacimientos",
+      nivel: 2,
+      parrafos: [],
+    },
+    {
+      id: "lo-valdes",
+      titulo: "Formación Lo Valdés",
+      nivel: 3,
+      parrafos: [
+        "La Formación Lo Valdés está constituida por una serie de estratos casi verticales que afloran en la cordillera, y están interrumpidas por una corriente fluvial provocada por el río El Volcán, que los cruza. La edad de la formación ha sido situada en el Jurásico Superior al Cretácico temprano (120 a 140 millones de años, del Titoniano al Hauteriviano), constituida por calizas, lavas submarinas, areniscas y lutitas grises.",
+        "Encontramos evidencias de gran actividad volcánica y glacial en el sector. Además, existen varios géneros que representan las formas de vida de Lo Valdés como Trigonias, Euriphylas, Pholadomyas; y ammonites como los géneros Spiticeras, Paracrioceras, Aulacosphinctes, entre muchos otros. Existe también una especie de tamaño grande del género Titanites y vida vertebrada representada por peces del género Lepidotus, y reptiles marinos.",
+        "En el sector también encontramos evidencia costera continental como la presencia de rizaduras de arena o ripple marks, que son ondulaciones de la arena producidas por el agua en movimiento en la orilla del mar, ríos o lagos. Otro elemento característico es la presencia de cuarteamientos poligonales que se producen en sectores de sequedad del terreno como producto de una sequía.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/amonites/word/29.jpg",
+          ancho: 800, alto: 535,
+          alt: "Ammonites — imagen 29 del documento del museo",
+        },
+        {
+          src: "assets/img/amonites/word/30.jpg",
+          ancho: 800, alto: 534,
+          alt: "Ammonites — imagen 30 del documento del museo",
+        },
+      ],
+    },
+  ],
+
+  notaImagenes:
+    "Las imágenes de esta página son material del Museo Paleontológico de Chile y se publican con su autorización. La reconstrucción paleobiológica de un ammonite es una ilustración de José Lemos Caro.",
+  /* Sin sección de atributos: las imágenes son del museo, no de Commons.
+     El render hace `if (!T.atribucion) return;` y no la pinta. */
+  atribucion: null,
+  cierre: {
+    texto: "Los ammonites son una de las piezas de la muestra del museo.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones"
+  }
+};
+
 if (typeof window !== "undefined") {
   window.MUSEO = MUSEO; window.QUIENES_SOMOS = QUIENES_SOMOS;
   /* CR-71: el interruptor de la subpágina tiene que viajar al `window` igual
@@ -1606,6 +2064,7 @@ if (typeof window !== "undefined") {
   window.COLECCIONES = COLECCIONES; window.SERVICIOS = SERVICIOS;
   window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.MUSEO_ITINERANTE = MUSEO_ITINERANTE;
   window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES; window.CEC = CEC;
+  window.AMMONITES = AMMONITES;
   /* CR-80: `const` no crea propiedad global — sin esta línea ENTIDADES es
      undefined en el render (misma trampa que documentó CR-71 con CEC_SUBPAGINA). */
   window.ENTIDADES = ENTIDADES;

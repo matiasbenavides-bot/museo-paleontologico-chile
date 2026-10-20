@@ -1,0 +1,206 @@
+/* ============================================================
+   CR-83 (2026-10-20) — Subpágina AMMONITES (amonites.html)
+   Cuarta subpágina del sitio, después de curriculum.html (CR-55),
+   trilobites.html (CR-60) y proyecto-cec.html (CR-61).
+
+   Reglas vigentes del proyecto que esta hoja respeta:
+     - tamaños con `clamp()`, nunca px fijos (DEC-015);
+     - animaciones de entrada SOLO en el eje Y (DEC-017);
+     - hover con glow / translateY, NUNCA `scale` en la caja;
+     - todo el texto sale de data/museo.js -> AMMONITES (DEC-005);
+       acá no hay una sola palabra escrita a mano.
+
+   🔴 DEC-83: PREFIJO PROPIO `amo-`, NO se reusan las clases `.tri-*`.
+   Motivo medido y ya pagado en este proyecto: un selector de una hoja
+   compartida aplica a TODA página que reuse la clase (pasó con
+   `.galeria__foto img` en CR-60e, que recortaba las figuras, y con `.perfil__libros`
+   en CR-69, que pisaba la grilla). Con prefijo propio el riesgo es cero.
+   ============================================================ */
+
+/* ---------- Cabecera de la página ----------
+   ⚠️ El `.header` es `position: fixed` (header.css), así que NO reserva espacio
+   en el flujo y el título quedaría DEBAJO de la barra. No se copia un número a
+   mano (lección de CR-57: los px fijos quedan viejos cuando cambia el alto del
+   header): se deriva de `--header-h`, que el JS publica con la altura REAL, con
+   el 84px solo como respaldo por si el JS no corre. Mismo patrón que
+   `.tri-cabeza` y `.hero`. */
+.amo-cabeza {
+  padding-top: max(clamp(96px, 12vw, 120px),
+                   calc(var(--header-h, 84px) + clamp(18px, 2.6vw, 32px)));
+}
+
+.amo-volver {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: clamp(.78rem, 1.1vw, .84rem); font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--text-muted); text-decoration: none;
+  margin-bottom: clamp(20px, 3vw, 30px);
+  transition: color .3s, gap .3s var(--ease-out-expo);
+}
+.amo-volver:hover { color: var(--ocre); gap: 13px; }
+.amo-volver svg { flex: none; }
+
+.amo-titulo {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: 1.06; color: var(--text-main);
+  margin: 12px 0 14px;
+}
+.amo-bajada {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: var(--text-soft); max-width: 62ch;
+}
+.amo-intro {
+  margin-top: clamp(18px, 2.6vw, 26px);
+  padding-top: clamp(18px, 2.6vw, 26px);
+  border-top: 1px solid var(--border-subtle);
+  max-width: 74ch;
+}
+.amo-intro p {
+  font-size: clamp(.95rem, 1.4vw, 1.03rem);
+  line-height: 1.72; color: var(--text-soft);
+}
+
+/* ---------- Índice de secciones ----------
+   La página es larga (13 secciones de nivel 2) y sin índice el usuario no sabe
+   qué hay abajo. Se arma con los MISMOS datos que las secciones, así que no
+   puede desincronizarse. */
+.amo-indice {
+  margin-top: clamp(26px, 4vw, 40px);
+  padding: clamp(18px, 2.6vw, 24px);
+  border-radius: var(--radius-md);
+  background: var(--bg-glass); border: 1px solid var(--border-subtle);
+}
+.amo-indice__t {
+  font-family: var(--font-display); font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  color: var(--text-main); margin-bottom: 14px;
+}
+.amo-indice__l {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px 20px; list-style: none; margin: 0; padding: 0;
+}
+.amo-indice__l a {
+  display: block; padding: 5px 0;
+  font-size: clamp(.84rem, 1.2vw, .89rem);
+  color: var(--text-muted); text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .25s, border-color .25s;
+}
+.amo-indice__l a:hover { color: var(--ocre-light); border-bottom-color: var(--border-accent); }
+
+/* ---------- Secciones ----------
+   `scroll-margin-top` derivado de `--header-h`: sin esto el ancla del índice
+   deja el título tapado detrás de la barra fija (misma lección de CR-80, donde
+   `#entidades` quedó con top 0). */
+.amo-sec {
+  margin-top: var(--space-bloque);
+  scroll-margin-top: calc(var(--header-h, 84px) + 16px);
+}
+.amo-sec--sub {
+  margin-top: clamp(20px, 3vw, 30px);
+  padding-left: clamp(0px, 2vw, 18px);
+  border-left: 1px solid var(--border-subtle);
+}
+
+.amo-sec__t {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3vw, 2.05rem);
+  line-height: 1.14; color: var(--text-main);
+  margin-bottom: 14px;
+}
+.amo-sec--sub .amo-sec__t { font-size: clamp(1.2rem, 2.2vw, 1.5rem); }
+
+.amo-sec p {
+  font-size: clamp(.95rem, 1.4vw, 1.02rem);
+  line-height: 1.75; color: var(--text-soft);
+  max-width: 76ch;
+}
+.amo-sec p + p { margin-top: 14px; }
+
+/* ---------- Figuras ----------
+   CR-60b dejó la lección en trilobites: `width:100%; height:auto` dentro de una
+   grilla `auto-fit` estira a TODO el contenedor las secciones de una sola
+   imagen, y el material vertical pinta dos pantallas de alto. Los dos topes
+   (ancho de la grilla + alto del marco) son los mismos, con `clamp()`.
+
+   🔴 CR-60e costó dos intentos porque la causa NO estaba en la hoja de la
+   página sino en `galeria.css`, que fuerza `aspect-ratio:1/1 + object-fit:cover`
+   a toda `.galeria__foto img` del sitio. Acá NO se usa esa clase: el prefijo es
+   `amo-`, así que el recorte no puede heredarse. */
+.amo-figs {
+  display: grid; gap: clamp(16px, 2.4vw, 24px);
+  margin: clamp(20px, 3vw, 28px) 0 0;
+  max-width: min(100%, clamp(440px, 46vw + 180px, 780px));
+  align-items: stretch;
+}
+.amo-figs--1 { grid-template-columns: 1fr; }
+.amo-figs--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.amo-figs--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+
+.amo-fig {
+  margin: 0; border-radius: var(--radius-md); overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  transition: border-color .35s, box-shadow .35s;
+  display: flex; flex-direction: column;
+}
+.amo-fig:hover { border-color: var(--border-accent); box-shadow: var(--shadow-md); }
+
+/* ⚠️ El marco NO impone un alto: toma la proporción de la imagen. Los topes son
+   MÁXIMO, y la imagen se limita con `max-height` + `width:auto`, que ESCALA sin
+   cortar. `min-height` solo evita que una imagen sin cargar deje la caja en 0. */
+.amo-fig__marco {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; overflow: hidden;
+  min-height: clamp(180px, 24vh, 280px);
+  max-height: clamp(280px, 58vh, 620px);
+  background: linear-gradient(160deg, var(--bg-elevated), var(--bg-deep));
+}
+.amo-fig__marco img {
+  /* Sin `object-fit`: eso es lo que recortaba en CR-60e. La caja se adapta a
+     la imagen, no al revés. */
+  display: block;
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  margin: auto;
+  transition: transform .5s var(--ease-out-expo);
+}
+/* El zoom va SOLO en la imagen de adentro (la caja no cambia de tamaño). */
+.amo-fig:hover .amo-fig__marco img { transform: scale(1.035); }
+
+.amo-fig figcaption {
+  padding: 12px 14px 14px;
+  font-size: clamp(.78rem, 1.1vw, .83rem);
+  line-height: 1.55; color: var(--text-muted);
+  margin-top: auto;
+}
+.amo-fig figcaption b { color: var(--text-soft); font-weight: 600; }
+
+/* ---------- Nota de imágenes ---------- */
+.amo-nota {
+  margin-top: var(--space-seccion);
+  padding: clamp(20px, 3vw, 28px);
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass); border: 1px solid var(--border-subtle);
+}
+.amo-nota__t {
+  font-family: var(--font-display); font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  color: var(--text-main); margin-bottom: 10px;
+}
+.amo-nota__m {
+  font-size: clamp(.84rem, 1.2vw, .89rem); line-height: 1.65;
+  color: var(--text-muted); max-width: 76ch;
+  padding: 12px 14px; border-radius: var(--radius-sm);
+  background: rgba(81, 173, 198, .07); border-left: 2px solid var(--border-accent);
+}
+
+/* ---------- Cierre ---------- */
+.amo-cierre {
+  margin-top: var(--space-bloque); text-align: center;
+  padding: clamp(26px, 4vw, 40px);
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass-strong); border: 1px solid var(--border-subtle);
+}
+.amo-cierre p {
+  font-family: var(--font-display); font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  color: var(--text-main); margin-bottom: 18px; max-width: 46ch; margin-inline: auto;
+}
