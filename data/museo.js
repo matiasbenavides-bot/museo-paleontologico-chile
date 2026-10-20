@@ -2135,7 +2135,11 @@ const TIBURONES = {
           "definitiva los tiburones como hoy los conocemos, apareciendo también en éste periodo las " +
           "Mantarrayas y las Rayas, que son selacios de cuerpo aplanado con grandes aletas que le " +
           "permiten un nado con movimientos ondulatorio.",
-        "Chile posee a lo largo deb su territorio varios sitios con presencia de tiburones fósiles. " +
+        /* CR-85b (2026-10-20): el Word trae «a lo largo DEB su territorio» — una
+           letra de más («deb»). El dueño lo detectó al leer la página publicada
+           y pidió corregirlo. Excepción justificada a la regla de transcribir
+           literal: es una ERRATA del original, no una palabra del museo. */
+        "Chile posee a lo largo de su territorio varios sitios con presencia de tiburones fósiles. " +
           "Sin embargo, el sitio de mayor importancia sea el de la Formación Bahía Inglesa, en la",
         "III región, cercana a la ciudad de Caldera. En éste lugar aparecen fósiles de varios " +
           "tiburones como Isurus, Carcharias, Lamna, Otodus, etc., todos ellos asociados a mamíferos " +
@@ -2294,7 +2298,9 @@ const TIBURONES = {
       titulo: "Visión y membrana nictitante",
       nivel: 2,
       parrafos: [
-        "Los órganos de la visión de de los tiburones, pueden percibirse pequeños o grandes debido a " +
+        /* CR-85b: el Word trae «la visión DE DE los tiburones» — «de» repetido.
+           Segunda errata del original corregida junto con «a lo largo deb». */
+        "Los órganos de la visión de los tiburones, pueden percibirse pequeños o grandes debido a " +
           "que estos se dilatan, dependiendo de la cantidad de luz presente en su entorno. También " +
           "estos están en muchas especies de tiburón cubiertas por una membrana a modo de parpado que " +
           "les protege este órgano durante el ataque de algún depredador o cuando este ataca a su " +
