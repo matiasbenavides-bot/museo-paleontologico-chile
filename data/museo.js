@@ -1365,8 +1365,13 @@ const TRILOBITES = {
      de terceros, se repone acá y se rehace creditos.json. */
   atribucion: null,
 
+  /* ⚠️ CR-82 (2026-10-19): SIN NÚMERO. El dueño corrigió: «debería decir una de
+     las piezas del museo, ya que a veces son más piezas o menos». La cantidad
+     de piezas CAMBIA, así que escribir «las siete» en el copy queda viejo solo.
+     ⇒ No volver a poner un número en este texto. Si se necesita la cifra, se
+     deriva de `MUSEO.piezas.length`, nunca se escribe a mano. */
   cierre: {
-    texto: "Los trilobites son una de las siete piezas de la muestra del museo.",
+    texto: "Los trilobites son una de las piezas de la muestra del museo.",
     boton: "Ver la colección completa",
     enlace: "index.html#colecciones"
   }
