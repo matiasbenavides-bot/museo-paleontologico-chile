@@ -252,6 +252,30 @@ salto **cancela las peticiones `lazy` en vuelo**. `curl` daba 200 a las 8 y con
 scroll continuo cargaban 30/30. ⇒ El recorrido continuo va **primero y solo**;
 un `lazy` sin scroll es «NO MEDIDO», nunca «roto».
 
+### CORRECCIÓN CR-84 (mismo día) — 3 defectos que el dueño encontró al abrirla
+
+1. **Texto duplicado** («¿por qué está duplicado el primer texto?»): el párrafo
+   de arranque iba en `intro` **y** en la primera sección. `intro: null` en
+   AMMONITES **y en TRILOBITES** (autorizado: «a las 2»). El texto no se
+   pierde: sigue íntegro en su sección. **El mismo defecto llevaba publicado
+   desde CR-81 en Trilobites.**
+2. **Un pie usado como TÍTULO** («el texto en una imagen está en otro lugar»):
+   *«Marcas del maxilar de Mosasaurus orridus…»* es el **pie de la imagen 18**
+   en el Word; yo lo puse como título de sección y la imagen quedó sin pie.
+   Auditados los 20 bloques de imagen: era el único. **Regla: si el texto
+   describe la imagen de arriba, es pie, aunque suene a titular.**
+3. **La sección «Sobre las imágenes» se ELIMINÓ** (pedido: «es innecesario para
+   el contexto informativo»). Fuera del HTML, del render y del CSS. El dato
+   `notaImagenes` se conserva en el data.
+
+**Y el control de no regresión marcaba «imgs sin resolver» que NO existían**
+(`!complete` incluye las `lazy` no pedidas). Ahora solo cuenta
+`complete && naturalHeight === 0`. Quinta aparición de «el instrumento miente y
+yo le creo» en el proyecto.
+
+**PUBLICADO:** `202c636`. En vivo: el arranque aparece **1 sola vez** en cada
+página, 0 imágenes rotas, 3 pies cada uno con su imagen, 0 desborde.
+
 📎 Detalle, tabla de decisiones y las sondas: `references/cr83-amonites-subpagina.md`
 (skill `museo-mpch`).
 
