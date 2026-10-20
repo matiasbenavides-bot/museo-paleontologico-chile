@@ -281,6 +281,79 @@ página, 0 imágenes rotas, 3 pies cada uno con su imagen, 0 desborde.
 
 ---
 
+## CR-85 (2026-10-20) — subpágina Tiburones desde el Word nuevo
+
+Pedido del dueño: «sigamos museo, agreguemos tiburones con el word nuevo que descargue».
+
+**El Word:** `Este grupo de peces.docx` (3,78 MB, 47 párrafos, **18 imágenes**).
+El archivo se llama «Este grupo de peces» pero su contenido es el capítulo de los
+**seláceos** (tiburones, rayas, mantarrayas y quimeras). Se preguntó el título en vez
+de asumirlo; las hermanas se llaman por el grupo (`Trilobites`, `Ammonites`), así que
+queda **«Tiburones»**, etiqueta **Colecciones · Cenozoico**.
+
+**La autorización:** el dueño respondió **«arranca las 18»** — en bloque, mismo
+criterio que declaró para trilobites («son autorizadas, todas») y la galería
+(«EL MUSEO AUTORIZA MOSTRARLA»). Los 18 pies nombran a Matías Palma, Juan Castillo
+y José Lemos Caro; el retiro de cualquiera es quirúrgico porque cada pie identifica
+a su autor.
+
+**PUBLICADO:** `c6648ef`. Verificado **sobre la URL real**, no sobre el push.
+
+| Archivo | Qué se hizo |
+|---|---|
+| `assets/img/tiburones/word/01..18.jpg` | 18 imágenes, orden literal del Word, 2,79 MB, **todas JPEG RGB** (ninguna con alfa) |
+| `data/museo.js` | `const TIBURONES`: 11 secciones, 22 párrafos, 18 imágenes con `pie` y crédito + `window.TIBURONES`; la card «Restos de tiburones» gana `enlace` |
+| `tiburones.html` | esqueleto, misma plantilla que amonites.html, prefijo `tib-` |
+| `js/tiburones.js` | render con prefijo `tib-` (DEC-83: no reusa `.tri-*` ni `.amo-*`) |
+| `css/secciones/tiburones.css` | hoja propia; agrega `.tib-figs--5` (en ammonites el máximo era 3) |
+| `css/main.css` | un `@import` en la cadena única |
+| `index/amonites/trilobites/curriculum/proyecto-cec .html` | «Tiburones» en nav y footer «Explorar» (10 lugares) |
+| `scripts/verifica-tiburones.py` | sonda Playwright: 5 anchos, imágenes, deformación, desborde, **pie vs imagen** |
+
+### 🔴 EL DEFECTO QUE CASI SE PUBLICA — y cómo se detectó
+
+El primer mapeo asignó los pies **por índice de lista de párrafos**, no por
+proximidad real a la figura. Resultado: todo el capítulo quedaba **corrido 2
+posiciones**. Se vio midiendo el DOM ya renderizado, no leyendo el código:
+
+```
+sección «Dientes que nunca se acaban» → imagen 05 = «Ampollas de Lorenzini»  ✗
+```
+
+**La regla correcta del Word: cada IMAGEN va seguida INMEDIATAMENTE por su PIE.**
+Se reconstruyó el flujo lineal (texto e imágenes en el orden real del documento) y
+el mapeo se rehízo contra esa secuencia. Verificado después: 16 pies, cada uno
+describiendo **su** figura (`pie desalineado: ninguno` a los 5 anchos).
+
+⚠️ **Para la próxima subpágina: NO emparejar pies contando párrafos.** Recorrer el
+documento en orden lineal y tomar, para cada `<w:drawing>`, el primer `<w:p>` con
+texto que venga **después**. Es el único criterio que no se corre.
+
+### Segunda medición que evitó un falso positivo
+
+La sonda marcó «42 car/línea (<55 = se ve de celular)» a 390 px. Se midió la misma
+métrica en `amonites.html` y `trilobites.html`: **las tres dan 358 px de caja,
+15.2 px de fuente y 42 car/línea**. Es el ancho normal del sitio en móvil, no un
+defecto de Tiburones. ⇒ El umbral de 55 caracteres se aplica **solo desde 480 px**;
+por debajo se informa y no se falla. Sexta aparición de «el instrumento miente».
+
+### Verificación (medida, no supuesta)
+
+```
+node --check data/museo.js          OK
+node --check js/tiburones.js        OK
+scripts/verifica-tiburones.py       1440/1024/899/768/390 → TODO OK
+   11 secciones · 18 figuras · 16 pies · 18/18 imágenes cargan
+   0 deformadas · 0 desborde · 0 títulos tapados · pie desalineado: ninguno
+6 páginas a 1440 px                 0 errores de consola, 0 desborde
+URL en vivo (GitHub Pages)          11 secciones · 18/18 imágenes · 0 errores
+```
+
+📎 Capturas al escritorio real: `tiburones-hero.png`, `tiburones-megalodon.png`,
+`tiburones-completo.png`, `tiburones-VIVO.png`.
+
+---
+
 ## LO PRIMERO QUE HAY QUE SABER
 
 **Leer `/home/logicforgex/.hermes/skills/software-development/museo-mpch/`.**
