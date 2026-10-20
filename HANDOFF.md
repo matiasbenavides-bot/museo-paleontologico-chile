@@ -222,6 +222,41 @@ creyendo que ya estaba resuelto.
 
 ---
 
+## CR-83 (2026-10-20) — subpágina Ammonites desde el Word del museo
+
+Pedido del dueño: «tengo un word de amonites a agregar». Tres decisiones suyas
+antes de tocar nada: **publicar la ilustración de José Lemos Caro (SÍ)**,
+título **«Ammonites»** (no «AMMONITES»), y **la card de Colecciones abre la
+página (SÍ)**.
+
+**PUBLICADO:** `96d88e3`. Verificado sobre la URL real, no sobre el push.
+
+| Archivo | Qué se hizo |
+|---|---|
+| `assets/img/amonites/word/01..30` | 30 imágenes del Word numeradas **por POSICIÓN**, 3,13 MB. `02.png` conserva su alfa |
+| `data/museo.js` | `const AMMONITES`: 26 secciones + `window.AMMONITES`; `piezas[1].enlace` a la página |
+| `amonites.html` | esqueleto, misma plantilla que trilobites.html |
+| `js/amonites.js` | render con prefijo `amo-` (DEC-83) |
+| `css/secciones/amonites.css` | hoja propia; NO reusa `.tri-*` (DEC-83) |
+| `index/curriculum/trilobites/proyecto-cec .html` | «Ammonites» en nav y footer (8 lugares) |
+| `scripts/genera-amonites.py` | **generador commiteado** (el de CR-61 se perdió en /tmp) |
+| `scripts/diff-texto-amonites.py` | prueba del texto: **32/32 párrafos idénticos** al Word |
+| `scripts/verifica-amonites.py` | 5 anchos: 30/30 cargan, 0 deformadas, 0 desborde, 0 tapados |
+| `scripts/verifica-no-regresion-amonites.py` | las 5 páginas OK a 1440 y 390 |
+| `scripts/verifica-amonites-vivo.py` | GitHub Pages, DOM pintado |
+| `scripts/captura-amonites.py` | 3 PNG al escritorio real |
+
+**La trampa que costó la sesión:** la sonda reportó **8 imágenes rotas** que no
+existían. Causa: saltaba de ancla en ancla ANTES de recorrer la página, y cada
+salto **cancela las peticiones `lazy` en vuelo**. `curl` daba 200 a las 8 y con
+scroll continuo cargaban 30/30. ⇒ El recorrido continuo va **primero y solo**;
+un `lazy` sin scroll es «NO MEDIDO», nunca «roto».
+
+📎 Detalle, tabla de decisiones y las sondas: `references/cr83-amonites-subpagina.md`
+(skill `museo-mpch`).
+
+---
+
 ## LO PRIMERO QUE HAY QUE SABER
 
 **Leer `/home/logicforgex/.hermes/skills/software-development/museo-mpch/`.**
