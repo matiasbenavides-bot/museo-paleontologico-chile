@@ -454,7 +454,12 @@ const COLECCIONES = {
          (si falta, el render escribe "Ver más", texto que el dueño no dictó). */
       enlace: "amonites.html", enlaceTexto: "Conocer los ammonites" },
     { icono: "ambar",     conIcono: true,  arte: "assets/img/pieza-ambar.png", nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
-    { icono: "tiburon",   conIcono: true,  arte: "assets/img/pieza-tiburones.png", nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos." },
+    /* CR-85 (2026-10-20): el dueño pidió subpágina propia para los tiburones, así que
+       la card ABRE su página — mismo mecanismo que Trilobites (CR-60) y Ammonites
+       (CR-83). `enlaceTexto` es OBLIGATORIO cuando hay `enlace`: si falta, el render
+       escribe "Ver más", que es texto que NO dictó el dueño. */
+    { icono: "tiburon",   conIcono: true,  arte: "assets/img/pieza-tiburones.png", nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos.",
+      enlace: "tiburones.html", enlaceTexto: "Conocer los tiburones" },
     { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto." },
     { icono: "huevo",     conIcono: true,  arte: "assets/img/pieza-huevos.png", nombre: "Huevos de dinosaurios", detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." },
     { icono: "recon",     conIcono: true,  arte: "assets/img/pieza-reconstrucciones.png", nombre: "Reconstrucciones", detalle: "Esqueletos y reconstrucciones que devuelven forma a los fósiles." }
@@ -2063,6 +2068,420 @@ const AMMONITES = {
   }
 };
 
+/* --- SUBPÁGINA TIBURONES (tiburones.html) ---
+   CR-85 (2026-10-20) — QUINTA subpágina del sitio, después de curriculum.html
+   (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61) y amonites.html (CR-83).
+
+   FUENTE: «Este grupo de peces.docx» (3,78 MB, 18 imágenes), el Word que el dueño
+   descargó para esta colección. El archivo se llama «Este grupo de peces» y su
+   contenido es el capítulo de los seláceos: tiburones, rayas, mantarrayas y quimeras.
+   Se publica bajo el título «Tiburones» para quedar a la par de sus hermanas
+   (Trilobites, Ammonites), que también se nombran por el grupo, no por el archivo.
+
+   IMAGENES: las 18 se publican. El dueño autorizó EN BLOQUE («arranca las 18»),
+   mismo criterio que declaró para trilobites («son autorizadas, todas» / «ya se
+   solucionó lo del copyright ya que eran cosas hechas por el mismo») y que la
+   galería («EL MUSEO AUTORIZA MOSTRARLA»). DEC-012 queda exceptuada para material
+   del museo; la prohibición de material de TERCEROS sin licencia sigue vigente.
+   Los pies nombran a Matías Palma y Juan Castillo (equipo del museo) y a José
+   Lemos Caro. Si alguno pide retiro, se sacan SOLO sus figuras: cada pie
+   identifica su autor, así que el retiro es quirúrgico.
+
+   EL ORDEN DE LAS IMÁGENES ES EL DEL WORD, LITERAL (DEC-82).
+     Los archivos van 01..18 según su posición en el documento, no por tamaño ni
+     por criterio visual. NO reordenar: rompe la correspondencia imagen-párrafo.
+
+   TODAS SON JPEG RGB, ninguna con alfa: sin el problema de PNG transparente
+     que hubo que resolver en trilobites (allí pasar a JPEG rellenaba de negro).
+
+   El Word NO trae jerarquía de títulos: sólo hay tres rótulos en negrita
+     («Tiburones fósiles en Chile», «Formación Bahía Inglesa», «Otodus megalodon,
+     la Megabestias marina»). Las otras ocho secciones son divisiones por TEMA del
+     propio texto, y sus títulos son RÓTULOS, no contenido redactado. Los párrafos
+     son transcripción literal del Word, sin reescribir ni corregir.
+     Se unieron los 4 cortes de línea duros del Word (frases partidas por salto
+     de párrafo): unir NO cambia una palabra, sólo deja de cortar la frase.
+   ============================================================ */
+const TIBURONES = {
+  subpagina: "tiburones.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Cenozoico",
+  titulo: "Tiburones",
+  bajada:
+    "Peces cartilaginosos que han surcado los mares desde el Devónico hasta hoy.",
+  /* `intro: null` a propósito, igual que en TRILOBITES y AMMONITES (CR-84):
+     el primer párrafo del Word ya se publica en su sección («¿Qué son los
+     seláceos?»), y repetirlo acá lo mostraba DOS veces. El render tolera null
+     (`if (intro && T.intro)`). */
+  intro: null,
+
+  secciones: [
+    {
+      id: "que-son",
+      titulo: "¿Qué son los seláceos?",
+      nivel: 2,
+      parrafos: [
+        "Este grupo de peces, conocidos como seláceos (Selachii), son los más grandes depredadores " +
+          "marinos de la clase Chondrichthyes y de la Subclase: Elasmobranchiide. El grupo ha " +
+          "evolucionado y desarrollado desde el periodo Devónico hasta la actualidad, dividiéndose en " +
+          "tres grupos: escualos (tiburones en general), las mantas y las rayas, más un grupo de peces " +
+          "cartilaginosos de aguas profundas llamados quimeras. Este grupo es muy conocido en la " +
+          "actualidad, por su más fiel representante, el Tiburón Blanco.",
+        "No podemos asegurar cual es el antecesor directo de los selacios, sin embargo puede " +
+          "considerarse a Cladoselache como el posible ancestro de muchos, sino de todos los peces de " +
+          "éste tipo.",
+        "Los tiburones fósiles, tuvieron una amplia distribución geográfica, presentando diversas y " +
+          "raras formas desde el Devónico al Carbonífero. Ya hacia finales del Mesozoico aparecen en " +
+          "definitiva los tiburones como hoy los conocemos, apareciendo también en éste periodo las " +
+          "Mantarrayas y las Rayas, que son selacios de cuerpo aplanado con grandes aletas que le " +
+          "permiten un nado con movimientos ondulatorio.",
+        "Chile posee a lo largo deb su territorio varios sitios con presencia de tiburones fósiles. " +
+          "Sin embargo, el sitio de mayor importancia sea el de la Formación Bahía Inglesa, en la",
+        "III región, cercana a la ciudad de Caldera. En éste lugar aparecen fósiles de varios " +
+          "tiburones como Isurus, Carcharias, Lamna, Otodus, etc., todos ellos asociados a mamíferos " +
+          "marinos que eran su fuente de alimentación.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/01.jpg",
+          ancho: 639, alto: 822,
+          alt: "Ilustración: esqueleto de un tiburón, vista lateral",
+          /* Sin `pie`: el Word no le pone pie a esta ilustración. */
+        },
+        {
+          src: "assets/img/tiburones/word/02.jpg",
+          ancho: 711, alto: 830,
+          alt: "Ilustración: reconstrucción del esqueleto completo de un tiburón",
+          /* Sin `pie`: el Word no le pone pie a esta ilustración. */
+        },
+        {
+          src: "assets/img/tiburones/word/03.jpg",
+          ancho: 744, alto: 539,
+          alt: "Esqueleto de la cabeza de un tiburón",
+          pie: "Esqueleto de la cabeza de un tiburón (Ilustración José Lemos)."
+        },
+      ],
+    },
+    {
+      id: "conservacion",
+      titulo: "Por qué se conservan tan poco",
+      nivel: 2,
+      parrafos: [
+        "El registro fósil ha preservado los dientes y vértebras, el resto por ser material " +
+          "cartilaginoso es consumido por bacterias y carroñeros, no preservándose en el registro. Los " +
+          "tiburones ocupan de preferencia zonas de aguas cálidas, por tanto la aparición de tiburones " +
+          "en los estratos fosilíferos indicaría que en el momento en que murieron habitaban un mar " +
+          "cálido, como fue el caso de las costas miocénicas de Chile.",
+        "Sin embargo, los esqueletos cartilaginosos de los tiburones tienen un inconveniente, cuando " +
+          "el tiburón muere, se descomponen con mayor rapidez que el hueso dificultando y a veces " +
+          "impidiendo, la labor de los paleontólogos que rara vez encuentran esqueletos fosilizados " +
+          "completos de este animal. Entre los restos óseos no cartilaginosos que podemos encontrar " +
+          "están: dientes, vertebras y espinas presentes en las aletas dorsales de algunas especies.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/04.jpg",
+          ancho: 1171, alto: 383,
+          alt: "Vértebra cóncava de tiburón con el dibujo de los anillos concéntricos",
+          pie: "Vértebra cóncava de tiburón y dibujo de los anillos concéntricos."
+        },
+        {
+          src: "assets/img/tiburones/word/05.jpg",
+          ancho: 1351, alto: 383,
+          alt: "Reconstrucción del esqueleto completo de un tiburón",
+          pie: "Reconstrucción del esqueleto completo de un tiburón (Ilustración Matías Palma)."
+        },
+      ],
+    },
+    {
+      id: "dientes",
+      titulo: "Dientes que nunca se acaban",
+      nivel: 2,
+      parrafos: [
+        "Muchos animales mueren al perder sus dientes, puesto que ya no pueden comer. Así ocurre con " +
+          "los elefantes, las focas y otras especies, pero esto no ocurre con los tiburones que nunca " +
+          "se quedan sin ellos. Sus mandíbulas disponen de cuatro a seis corridas de dientes, una " +
+          "detrás de la otra. Un tiburón puede llegar a tener hasta 300 dientes en la boca a la vez, y " +
+          "todos ellos pueden ser reemplazados por otros de mayor tamaño conforme el tiburón va " +
+          "madurando. Es por esta razón la cantidad de dientes fósiles presentes en formaciones " +
+          "paleontológicas, es muy abundante como es el caso de muchas formaciones fosilíferas en el " +
+          "planeta, y Chile no es la excepción en sus diferentes formaciones, sobre todo en la " +
+          "Formación Bahía Inglesa detallada en este libro.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/06.jpg",
+          ancho: 1351, alto: 360,
+          alt: "Dientes fósiles de diversos tiburones",
+          pie: "Dientes de diversos tiburones conservados como fósiles: de izquierda a derecha Megalolamna, " +
+           "Notorynchus, Carcharodon (tiburón blanco), Galeorhinus y Otodus megalodon; la proporción no " +
+           "es exacta (Ilustración Matías Palma)."
+        },
+      ],
+    },
+    {
+      id: "respiracion",
+      titulo: "Respiración por branquias",
+      nivel: 2,
+      parrafos: [
+        "Todo organismo vivo necesita oxígeno para sobrevivir, los peces incluidos los tiburones por " +
+          "ejemplo absorben el oxígeno del agua a través  de las branquias, y la sangre lo transporta " +
+          "hasta las células distribuidas por todo el cuerpo, ya que el oxígeno es el que da vida a las " +
+          "células de éstos. Los seres humanos absorben el oxígeno del aire a través de los pulmones, " +
+          "mientras que los tiburones lo absorben del agua a través de las branquias.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/07.jpg",
+          ancho: 1195, alto: 676,
+          alt: "Sistema respiratorio de un tiburón",
+          pie: "Sistema respiratorio de un tiburón (Ilustración Matías Palma)."
+        },
+      ],
+    },
+    {
+      id: "electrorrecepcion",
+      titulo: "Electrorrecepción: las ampollas de Lorenzini",
+      nivel: 2,
+      parrafos: [
+        "El increíble sentido del tiburón, denominado electrorrecepción, le permite detectar los " +
+          "débiles impulsos eléctricos que emiten los animales. Este asombroso sentido ayuda al tiburón " +
+          "a localizar ciertas presas que no podría encontrar con los otros sentidos.",
+        "El gel que esta al interior de las ampollas es una sustancia basada en la glicoproteína con " +
+          "la misma resistencia que el agua marina, y tiene propiedades eléctricas similares a un " +
+          "semiconductor, permitiéndole esencialmente percibir los cambios de temperatura a una señal " +
+          "eléctrica que podría ser utilizada para detectar gradientes de temperatura.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/08.jpg",
+          ancho: 1095, alto: 402,
+          alt: "Ampollas de Lorenzini",
+          pie: "Ampollas de Lorenzini (Ilustración Matías Palma)."
+        },
+      ],
+    },
+    {
+      id: "linea-lateral",
+      titulo: "La línea lateral",
+      nivel: 2,
+      parrafos: [
+        "Los tiburones tienen por otra parte, un conjunto de células sensoriales que se ubican a los " +
+          "costados del cuerpo del tiburón, por lo que se conoce como línea lateral. Los canales de la " +
+          "línea lateral están formados por unas células con diminutas protuberancias filiformes, " +
+          "denominados cilios, que conectan con miles de fibras nerviosas que conducen los impulsos al " +
+          "cerebro del tiburón. (Un investigador contó unas 6.000 fibras sensoriales que se dirigían de " +
+          "la línea lateral al cerebro de una pintarroja). Este es un sentido interno conformado por un " +
+          "conjunto de células nerviosas que le permite detectar las vibraciones en el agua. En " +
+          "Carcharodon carcharias o tiburón blanco, estas células llegan a seis mil, repartidas a lo " +
+          "largo del flanco del animal, lo que se ha convertido en el principal sentido que utilizan " +
+          "para encontrar a sus presas en el agua, así como la ubicación de otros tiburones que pueden " +
+          "estar en la zona. Tal vez en Otodus megalodon el número de células le eleve a los dieciocho " +
+          "mil o a los veinte mil.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/09.jpg",
+          ancho: 1057, alto: 441,
+          alt: "Cuerpo de un tiburón mostrando la línea lateral",
+          pie: "Cuerpo de un tiburón mostrando la posición de la línea de células laterales (Ilustración " +
+           "Matías Palma)."
+        },
+      ],
+    },
+    {
+      id: "vision",
+      titulo: "Visión y membrana nictitante",
+      nivel: 2,
+      parrafos: [
+        "Los órganos de la visión de de los tiburones, pueden percibirse pequeños o grandes debido a " +
+          "que estos se dilatan, dependiendo de la cantidad de luz presente en su entorno. También " +
+          "estos están en muchas especies de tiburón cubiertas por una membrana a modo de parpado que " +
+          "les protege este órgano durante el ataque de algún depredador o cuando este ataca a su " +
+          "presa, llamada membrana nictitante.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/10.jpg",
+          ancho: 1219, alto: 567,
+          alt: "Membrana nictitante cubriendo el ojo de un tiburón",
+          pie: "Membrana nictitante que cubre el ojo de algunos tiburones (Ilustración Matías Palma)."
+        },
+      ],
+    },
+    {
+      id: "camuflaje",
+      titulo: "Camuflaje",
+      nivel: 2,
+      parrafos: [
+        "Los tiburones recurren al camuflaje para sorprender a sus presas al cazar. Por lo general, " +
+          "los tiburones presentan una coloración oscura por encima, en la zona dorsal, y más clara por " +
+          "debajo, en la parte ventral. Las presas o depredadores no siempre los ven cuando miran hacia " +
+          "abajo gracias a la oscuridad que emerge del fondo oceánico. Cuando la presa o depredador " +
+          "mira hacia arriba, el vientre claro de los tiburones se funde con la superficie del océano " +
+          "iluminada por el sol, con lo que también logran pasar inadvertidos. De forma similar, los " +
+          "tiburones que prefieren el fondo oceánico para vivir se confunden a la perfección con el " +
+          "lecho marino.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/11.jpg",
+          ancho: 1129, alto: 515,
+          alt: "Coloración dorsal oscura y ventral clara de un tiburón",
+          pie: "Color del tiburón, oscuro arriba y claro abajo para camuflarse en su ambiente (Ilustración " +
+           "Matías Palma)."
+        },
+      ],
+    },
+    {
+      id: "fosiles-chile",
+      titulo: "Tiburones fósiles en Chile",
+      nivel: 2,
+      parrafos: [
+        "Los tiburones fósiles en Chile, que han sido estudiados, tienen una amplia distribución " +
+          "geográfica y temporal, ya que han sido encontrados en muchos lugares del país, como la " +
+          "formación Navidad, la formación Bahía Inglesa, el extremo Austral y la Antártica entre otras " +
+          "zonas, y han estado presentes desde el Triásico hasta el presente.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/12.jpg",
+          ancho: 473, alto: 1102,
+          alt: "Mapa de localidades con tiburones fósiles en Chile",
+          pie: "Mapa de las principales localidades con tiburones fósiles en Chile (Mapa Juan Castillo " +
+           "Cornejo). 1) La Portada y Caleta Herradura de Mejillones, Región de Antofagasta. 2) Cerro " +
+           "Negro, Región de Antofagasta. 3) Punta del Viento, Región de Antofagasta. 4) La Coipa, " +
+           "Región de Atacama. 5) Caldera, Región de Atacama, Bahía Inglesa. 6) Coquimbo, Región de " +
+           "Coquimbo. 7) Horcón, Región de Valparaíso. 8) Algarrobo, Región de Valparaíso. 9) Lo Abarca, " +
+           "Región de Valparaíso. 10) Navidad-Matanzas, Región de O'Higgins. 11) Lo Valdés, Región " +
+           "Metropolitana. 12) Punta Topocalma. 13) Caleta Loanco, Región del Maule. 14) Distintas " +
+           "localidades en la costa de la Región del Biobío. 15) Cerro San Miguel, Talcahuano. 16) Isla " +
+           "de Chiloé, Región de los Lagos. 17) Región de Aysén. 18) Sierra Baguales, Región de " +
+           "Magallanes. 19) Cerro Dorotea, Puerto Natales, Región de Magallanes. 20) Río de Las Minas, " +
+           "Península de Brunswick, Región de Magallanes. 21) Isla de James Ross e Isla Marambio, " +
+           "territorio Antártico."
+        },
+      ],
+    },
+    {
+      id: "bahia-inglesa",
+      titulo: "Formación Bahía Inglesa",
+      nivel: 2,
+      parrafos: [
+        "El sitio fosilífero de Bahía Inglesa, es la formación con vertebrados más importante del " +
+          "país, ubicada en las costas de la III región, cercano al pueblo de caldera, aproximadamente " +
+          "a 718 Km. de Santiago. La zona se caracteriza por presentar sedimentos con una inusual " +
+          "concentración de restos óseos, sobre todo en la zona denominada fosforita y los dedos. Estos " +
+          "restos se encuentran casi superficiales de entre 20 centímetros a un metro de profundidad, " +
+          "no es exagerado decir que, en algunas zonas de la formación, hay que caminar con cuidado " +
+          "para no pisar los fósiles.",
+        "La geología de la Formación Bahía Inglesa consiste en una secuencia de sedimentos " +
+          "fosilíferos marinos litorales, con depósitos de coquinas, areniscas, intercaladas con " +
+          "diatomitas, fosforitas y, ocasionalmente, cenizas; consiste en sedimentos heterogéneos, que " +
+          "en menor proporción contiene brechas y conglomerados, depositados entre el Mioceno Medio y " +
+          "el Plioceno, en un entorno marino costero. Está dividido en tres unidades sedimentarias o " +
+          "miembros: Miembro del Morro, Miembro Bonebed Bahía Inglesa, y Miembro del Lechero.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/13.jpg",
+          ancho: 1350, alto: 1012,
+          alt: "Vista panorámica del sector fosilífero de Bahía Inglesa",
+          pie: "Vista panorámica del sector fosilífero de Bahía Inglesa (Foto Juan Castillo)."
+        },
+      ],
+    },
+    {
+      id: "megalodon",
+      titulo: "Otodus megalodon, la megabestia marina",
+      nivel: 2,
+      parrafos: [
+        "Este gran tiburón ha tenido a lo largo del tiempo diversas clasificaciones, por ejemplo, se " +
+          "creyó que era pariente directo del tiburón blanco, por lo que se le llamó Carcharodon " +
+          "megalodon, después paso a llamarse Carcharocles megalodon, sin embargo, recientes " +
+          "investigaciones lo ubican en la familia Otodontidae, quedando nominado como Otodus " +
+          "megalodon.",
+        "Otodus megalodon, con un tamaño de entre 14 a más de 20 metros, fue el pez más grande de los " +
+          "océanos del mundo, un temible tiburón que, como ningún otro animal, puede llevar el justo " +
+          "apelativo de megabestia, con un peso que oscilaba entre los 14 y los 37 mil ki¬los (de 14 a " +
+          "37 toneladas). Hay que imaginarse al megalodon como un tiburón blanco, (aunque no son " +
+          "parientes directos), pero tres veces más grande y masivo, características que lo " +
+          "convirtieron en el cazador más feroz de los mares durante el Mioceno Superior y el Plioceno, " +
+          "de 15 a 5 millones de años, ya que su fuerza de mordedura superaba en mucho a la del T. Rex.",
+        "Sus fauces alojaban aproximadamente de 260 a 270 dientes acerrados, siendo los más grandes " +
+          "de unos 20 centímetros, transformándose así, en el mayor depredador marino de todos los " +
+          "tiempos.",
+        "El megalodon depredaba ballenas, pinnípedos, aves como Pelagornis y otros animales. Su " +
+          "cuerpo era masivo y fusiforme, lo que le permitía desplazarse como un verdadero torpedo. " +
+          "Esto sumado a una serie de elementos sensoriales, con los que podía detectar su presa a " +
+          "mucha distancia y olfatear su sangre a muchos kilómetros, lo hacía un inminente peligro para " +
+          "cualquier animal. Su hocico abierto abarcaba más de 2,5 metros, siendo su único competidor " +
+          "el Leviatán, un cetáceo odontoceto del grupo de los cachalotes.",
+        "Su hocico abierto abarcaba más de 2,5 metros, siendo su único competidor el Leviatán, un " +
+          "cetáceo odontoceto del grupo de los cachalotes.",
+        "Debido a que su cuerpo es cartilaginoso, el megalodon presenta dificultades en su " +
+          "preservación como fósil, por lo que sólo se han conservado algunas partes de su cuerpo, unas " +
+          "cuantas vértebras, pero principalmente sus dientes, a partir de los cuales se puede " +
+          "extrapolar su medida.",
+        "La distribución es amplia, encontrándose en varias partes del mundo. En Chile lo hemos " +
+          "encontrado principalmente en Bahía Inglesa, pero también Juan Castillo, ha encontrado restos " +
+          "en la VI Región, específicamente en la Formación Navidad y publicado en la Revista Isurus de " +
+          "España.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/tiburones/word/14.jpg",
+          ancho: 1100, alto: 883,
+          alt: "Diente de Megalodon adulto",
+          pie: "Diente de Megalodon adulto depositado en el Museo Paleontológico de Caldera (Foto Juan " +
+           "Castillo)."
+        },
+        {
+          src: "assets/img/tiburones/word/15.jpg",
+          ancho: 909, alto: 621,
+          alt: "Diente de Otodus megalodon in situ en Bahía Inglesa",
+          pie: "Diente de Otodus megalodon in situ, Bahía Inglesa, III Región."
+        },
+        {
+          src: "assets/img/tiburones/word/16.jpg",
+          ancho: 492, alto: 609,
+          alt: "Otodus megalodon juvenil atacando a un Odobenocetops",
+          pie: "Otodus megalodon juvenil atacando a un Odobenocetops, en los mares de Bahía Inglesa " +
+           "(Ilustración de José Lemos Caro)."
+        },
+        {
+          src: "assets/img/tiburones/word/17.jpg",
+          ancho: 625, alto: 821,
+          alt: "Otodus megalodon juvenil atacando a un Thalassocnus",
+          pie: "Otodus megalodon juvenil atacando a un Thalassocnus, en los mares de Bahía Inglesa " +
+           "(Ilustración de José Lemos Caro)."
+        },
+        {
+          src: "assets/img/tiburones/word/18.jpg",
+          ancho: 772, alto: 1057,
+          alt: "Otodus megalodon juvenil atacando a un Pelagornis",
+          pie: "Otodus megalodon juvenil atacando a un Pelagornis."
+        },
+      ],
+    },
+  ],
+
+  /* Nota de procedencia: mismo criterio que trilobites y ammonites. El material
+     es del museo y lleva el crédito de sus autores en el pie de cada figura. */
+  notaImagenes:
+    "Las imágenes de esta página son material del Museo Paleontológico de Chile " +
+    "y se publican con su autorización. El crédito de cada autor va en el pie " +
+    "de su figura.",
+  /* Sin sección de atribución: no hay material de Wikimedia ni de terceros sin
+     licencia. El render hace `if (!T.atribucion) return;` y no la pinta. */
+  atribucion: null,
+  cierre: {
+    texto: "Los tiburones son una de las piezas de la muestra del museo.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones"
+  }
+};
+
 if (typeof window !== "undefined") {
   window.MUSEO = MUSEO; window.QUIENES_SOMOS = QUIENES_SOMOS;
   /* CR-71: el interruptor de la subpágina tiene que viajar al `window` igual
@@ -2074,6 +2493,7 @@ if (typeof window !== "undefined") {
   window.SERVICIOS_NOTA = SERVICIOS_NOTA; window.MUSEO_ITINERANTE = MUSEO_ITINERANTE;
   window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES; window.CEC = CEC;
   window.AMMONITES = AMMONITES;
+  window.TIBURONES = TIBURONES;
   /* CR-80: `const` no crea propiedad global — sin esta línea ENTIDADES es
      undefined en el render (misma trampa que documentó CR-71 con CEC_SUBPAGINA). */
   window.ENTIDADES = ENTIDADES;

@@ -31,6 +31,11 @@
    cadena única, como perfil.css/trilobites.css/cec.css, para que UN solo <link>
    sirva a todas las páginas y no existan dos listas de CSS que puedan divergir. */
 @import url("secciones/amonites.css");
+/* CR-85 (2026-10-20): la subpágina TIBURONES (tiburones.html) tiene su propia
+   hoja, con prefijo `tib-` (DEC-83: no reusa `.tri-*` ni `.amo-*`). Va en la
+   cadena única, como las otras cuatro subpáginas, para que UN solo <link>
+   sirva a todas las páginas y no existan dos listas de CSS que puedan divergir. */
+@import url("secciones/tiburones.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");
