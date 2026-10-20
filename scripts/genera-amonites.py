@@ -90,8 +90,17 @@ SECCIONES = [
 
     dict(id='depredacion', titulo='Depredación en ammonites', nivel=2,
          parrafos=[38], imgs=[16, 17]),
-    dict(id='marcas-maxilar', titulo='Marcas del maxilar de Mosasaurus', nivel=3,
-         parrafos=[41], imgs=[18]),
+    # 🔴 CR-84 (2026-10-20) — CORREGIDO POR EL DUEÑO: «el texto en una imagen está
+    # en otro lugar». El Word pone el pie «Marcas del maxilar de Mosasaurus
+    # orridus…» DEBAJO de la imagen 18 (body[40]=IMG[18], body[41]=TEXTO), o sea
+    # ese texto es el PIE de la imagen 18, no un título de sección.
+    # Yo lo había usado como `titulo:` y la imagen 18 quedó SIN su pie, con el
+    # texto flotando arriba. Ahora el texto va donde el Word lo puso: al pie.
+    # La subsección conserva un título NEUTRO (no se inventa prosa: se nombra la
+    # figura), porque la estructura del índice necesita el nodo.
+    dict(id='marcas-maxilar', titulo='Una concha mordida', nivel=3,
+         parrafos=[], imgs=[18],
+         pies={18: 'Marcas del maxilar de Mosasaurus orridus en una concha de Ammonite del genero Placentíceras.'}),
     dict(id='tuberculos', titulo='Tubérculos y espinas', nivel=3,
          parrafos=[43], imgs=[19, 20]),
 

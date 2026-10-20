@@ -929,8 +929,14 @@ const TRILOBITES = {
   titulo: "Trilobites",
   bajada:
     "Artrópodos marinos extintos, de los fósiles más representativos del Paleozoico.",
-  intro:
-    "Los trilobites fueron un grupo común de artrópodos marinos paleozoicos, provistos de un caparazón cuticular dorsal mineralizado en carbonatos (exoesqueleto) y fosilizable, la que permitió que tengan gran representación en el registro fósil. Estuvieron presentes durante 300 millones de años en todos los mares y océanos de la era Paleozoica (que va desde hace 541 a 252 millones de años). Desde que aparecen en el Cámbrico Temprano, su diversidad alcanzó valores elevados en el Cámbrico Tardío y Ordovícico, para decrecer durante el Silúrico-Devónico y reducirse aún más en el Paleozoico Tardío (Carbonífero), antes de extinguirse a fines del Pérmico.",
+  /* 🔴 CR-84 (2026-10-20): `intro: null` a propósito, mismo defecto que en
+     AMMONITES y reportado por el dueño en esa página. Este párrafo se publicaba
+     DOS veces: acá en la cabecera y otra vez en la sección «¿Qué son los
+     trilobites?», que es donde el Word lo pone (bajo su título, con las
+     imágenes). El render tolera null (`if (intro && T.intro)`) y la sección
+     sigue publicando el texto íntegro. NO se borra contenido: se deja de
+     repetirlo. */
+  intro: null,
 
   /* ============================================================
      CR-81 (2026-10-19) — REHECHO DESDE EL WORD DEL MUSEO.
@@ -1632,8 +1638,12 @@ const AMMONITES = {
   titulo: "Ammonites",
   bajada:
     "Moluscos cefalópodos con concha en espiral, guías de la era Mesozoica.",
-  intro:
-    "Subclase Ammonoidea con ejemplares que habitaron todos los mares  desde el periodo Devónico al Cretácico, son los que revisten mayor importancia para los paleontólogos, por ser fósiles que nos permiten fechar los estratos (fósiles guías) Una Subclase de moluscos cefalópodos que se extinguieron a finales del Cretácico hace 65 millones de años. Aparecieron en el Devónico medio hace unos 400 Ma. y fueron muy abundantes, siendo una parte importante en las cadenas tróficas de los mares de la Tierra durante mucho tiempo.",
+  /* 🔴 CR-84 (2026-10-20): `intro: null` a propósito. El párrafo del Word se
+     publicaba DOS veces: acá en la cabecera y otra vez en la sección
+     «Subclase Ammonoidea». El Word lo trae UNA sola vez, y su lugar es la
+     sección, bajo su título. El dueño lo reportó: «¿por qué está duplicado
+     el primer texto?». El render tolera null (`if (intro && A.intro)`). */
+  intro: null,
 
   secciones: [
     {
@@ -1861,16 +1871,15 @@ const AMMONITES = {
     },
     {
       id: "marcas-maxilar",
-      titulo: "Marcas del maxilar de Mosasaurus",
+      titulo: "Una concha mordida",
       nivel: 3,
-      parrafos: [
-        "Marcas del maxilar de Mosasaurus orridus en una concha de Ammonite del genero Placentíceras.",
-      ],
+      parrafos: [],
       imagenes: [
         {
           src: "assets/img/amonites/word/18.jpg",
           ancho: 967, alto: 386,
           alt: "Ammonites — imagen 18 del documento del museo",
+          pie: "Marcas del maxilar de Mosasaurus orridus en una concha de Ammonite del genero Placentíceras.",
         },
       ],
     },

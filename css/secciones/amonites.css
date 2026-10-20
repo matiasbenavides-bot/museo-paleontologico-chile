@@ -175,24 +175,6 @@
 }
 .amo-fig figcaption b { color: var(--text-soft); font-weight: 600; }
 
-/* ---------- Nota de imágenes ---------- */
-.amo-nota {
-  margin-top: var(--space-seccion);
-  padding: clamp(20px, 3vw, 28px);
-  border-radius: var(--radius-lg);
-  background: var(--bg-glass); border: 1px solid var(--border-subtle);
-}
-.amo-nota__t {
-  font-family: var(--font-display); font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-  color: var(--text-main); margin-bottom: 10px;
-}
-.amo-nota__m {
-  font-size: clamp(.84rem, 1.2vw, .89rem); line-height: 1.65;
-  color: var(--text-muted); max-width: 76ch;
-  padding: 12px 14px; border-radius: var(--radius-sm);
-  background: rgba(81, 173, 198, .07); border-left: 2px solid var(--border-accent);
-}
-
 /* ---------- Cierre ---------- */
 .amo-cierre {
   margin-top: var(--space-bloque); text-align: center;

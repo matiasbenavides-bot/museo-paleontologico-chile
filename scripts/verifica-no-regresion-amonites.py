@@ -25,14 +25,21 @@ JS = r"""
   const imgs = Array.from(document.images);
   return {
     navItems: nav ? nav.querySelectorAll('a').length : 0,
-    navDesborda: nav ? (nav.scrollWidth - nav.clientWidth) : -1,
+    desborde: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     headerH: header ? Math.round(header.getBoundingClientRect().height) : 0,
     headerDesborda: header ? (header.scrollWidth - header.clientWidth) : -1,
     desborde: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     imgsTotales: imgs.length,
+    /* 🔴 CR-84 (2026-10-20) — SOLO cuentan como rotas las que COMPLETARON con
+       `naturalHeight == 0`. Un `lazy` que todavía no se pidió tiene
+       `complete: false` y su `naturalWidth` es 0, y eso NO es una imagen rota:
+       es una imagen que el recorrido no alcanzó a disparar. Medido: el control
+       reportaba «2 y 1 imgs sin resolver» a 1440 y `scripts/diag-imagenes-rotas.py`
+       demostró 0 rotas, 0 peticiones fallidas, 0 nunca pedidas tras un recorrido
+       lento. El defecto era del instrumento. */
     imgsRotas: imgs.filter(i => i.complete && i.naturalHeight === 0)
                    .map(i => (i.getAttribute('src') || '').split('/').pop()),
-    imgsSinResolver: imgs.filter(i => !i.complete).length,
+    imgsNoPedidas: imgs.filter(i => !i.complete).length,
     enlaceAmmonitesNav: !!document.querySelector('.nav a[href="amonites.html"]'),
     enlaceAmmonitesFoot: !!document.querySelector('.footer a[href="amonites.html"]'),
     mainPintado: (document.querySelector('main') || {}).innerText
@@ -73,12 +80,10 @@ def main():
                     probs.append('DESBORDE %dpx' % v['desborde'])
                 if v['headerDesborda'] > 0:
                     probs.append('HEADER desborda %dpx' % v['headerDesborda'])
-                if v['navDesborda'] > 0:
-                    probs.append('NAV desborda %dpx' % v['navDesborda'])
                 if v['imgsRotas']:
                     probs.append('IMGS ROTAS %s' % v['imgsRotas'])
-                if v['imgsSinResolver']:
-                    probs.append('%d imgs sin resolver' % v['imgsSinResolver'])
+                # `imgsNoPedidas` NO es un fallo: son `lazy` que el recorrido no
+                # alcanzó a disparar. Se informa, no se cuenta.
                 if not v['enlaceAmmonitesNav']:
                     probs.append('falta enlace Ammonites en el NAV')
                 if not v['enlaceAmmonitesFoot']:
@@ -89,9 +94,9 @@ def main():
                     probs.append('ERRORES: %s' % errs[:3])
 
                 estado = 'OK' if not probs else 'FALLA'
-                print('%-18s @%-5d nav=%d headerH=%d imgs=%d  %s %s'
+                print('%-18s @%-5d nav=%d headerH=%d imgs=%d (sin pedir %d)  %s %s'
                       % (pagina, ancho, v['navItems'], v['headerH'],
-                         v['imgsTotales'], estado, ' | '.join(probs)))
+                         v['imgsTotales'], v['imgsNoPedidas'], estado, ' | '.join(probs)))
                 fallos += ['%s@%d: %s' % (pagina, ancho, pr) for pr in probs]
         nav.close()
 

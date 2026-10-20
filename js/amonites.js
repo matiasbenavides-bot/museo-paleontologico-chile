@@ -169,18 +169,6 @@
     }).join("");
   }
 
-  /* ---------- Nota de imágenes ----------
-     Sin sección de atributos (no hay material de terceros con licencia que
-     acreditar), pero SÍ una nota que dice de quién es el material: el museo
-     autoriza sus imágenes y la reconstrucción tiene autor propio. Se pinta
-     pegada al cierre, no como sección aparte. */
-  function pintarNota() {
-    var cont = $("[data-amo-nota]");
-    if (!cont || !A.notaImagenes) return;
-    cont.innerHTML = '<p class="amo-nota__t">Sobre las imágenes</p>' +
-                     '<p class="amo-nota__m">' + esc(A.notaImagenes) + "</p>";
-  }
-
   /* ---------- Cierre ---------- */
   function pintarCierre() {
     var cont = $("[data-amo-cierre]");
@@ -197,7 +185,6 @@
     pintarCabeza();
     pintarIndice();
     pintarSecciones();
-    pintarNota();
     pintarCierre();
     pintarFooter();
     /* animaciones.js escucha este evento para re-enganchar los reveals. */
