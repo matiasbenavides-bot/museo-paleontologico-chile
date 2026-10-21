@@ -2129,19 +2129,19 @@ const TIBURONES = {
           "actualidad, por su más fiel representante, el Tiburón Blanco.",
         "No podemos asegurar cual es el antecesor directo de los selacios, sin embargo puede " +
           "considerarse a Cladoselache como el posible ancestro de muchos, sino de todos los peces de " +
-          "éste tipo.",
+          "este tipo.",
         "Los tiburones fósiles, tuvieron una amplia distribución geográfica, presentando diversas y " +
           "raras formas desde el Devónico al Carbonífero. Ya hacia finales del Mesozoico aparecen en " +
-          "definitiva los tiburones como hoy los conocemos, apareciendo también en éste periodo las " +
+          "definitiva los tiburones como hoy los conocemos, apareciendo también en este periodo las " +
           "Mantarrayas y las Rayas, que son selacios de cuerpo aplanado con grandes aletas que le " +
-          "permiten un nado con movimientos ondulatorio.",
+          "permiten un nado con movimientos ondulatorios.",
         /* CR-85b (2026-10-20): el Word trae «a lo largo DEB su territorio» — una
            letra de más («deb»). El dueño lo detectó al leer la página publicada
            y pidió corregirlo. Excepción justificada a la regla de transcribir
            literal: es una ERRATA del original, no una palabra del museo. */
         "Chile posee a lo largo de su territorio varios sitios con presencia de tiburones fósiles. " +
           "Sin embargo, el sitio de mayor importancia sea el de la Formación Bahía Inglesa, en la",
-        "III región, cercana a la ciudad de Caldera. En éste lugar aparecen fósiles de varios " +
+        "III región, cercana a la ciudad de Caldera. En este lugar aparecen fósiles de varios " +
           "tiburones como Isurus, Carcharias, Lamna, Otodus, etc., todos ellos asociados a mamíferos " +
           "marinos que eran su fuente de alimentación.",
       ],
@@ -2180,7 +2180,7 @@ const TIBURONES = {
           "el tiburón muere, se descomponen con mayor rapidez que el hueso dificultando y a veces " +
           "impidiendo, la labor de los paleontólogos que rara vez encuentran esqueletos fosilizados " +
           "completos de este animal. Entre los restos óseos no cartilaginosos que podemos encontrar " +
-          "están: dientes, vertebras y espinas presentes en las aletas dorsales de algunas especies.",
+          "están: dientes, vértebras y espinas presentes en las aletas dorsales de algunas especies.",
       ],
       imagenes: [
         {
@@ -2231,7 +2231,7 @@ const TIBURONES = {
         "Todo organismo vivo necesita oxígeno para sobrevivir, los peces incluidos los tiburones por " +
           "ejemplo absorben el oxígeno del agua a través  de las branquias, y la sangre lo transporta " +
           "hasta las células distribuidas por todo el cuerpo, ya que el oxígeno es el que da vida a las " +
-          "células de éstos. Los seres humanos absorben el oxígeno del aire a través de los pulmones, " +
+          "células de estos. Los seres humanos absorben el oxígeno del aire a través de los pulmones, " +
           "mientras que los tiburones lo absorben del agua a través de las branquias.",
       ],
       imagenes: [
@@ -2302,7 +2302,7 @@ const TIBURONES = {
            Segunda errata del original corregida junto con «a lo largo deb». */
         "Los órganos de la visión de los tiburones, pueden percibirse pequeños o grandes debido a " +
           "que estos se dilatan, dependiendo de la cantidad de luz presente en su entorno. También " +
-          "estos están en muchas especies de tiburón cubiertas por una membrana a modo de parpado que " +
+          "estos están en muchas especies de tiburón cubiertas por una membrana a modo de párpado que " +
           "les protege este órgano durante el ataque de algún depredador o cuando este ataca a su " +
           "presa, llamada membrana nictitante.",
       ],
