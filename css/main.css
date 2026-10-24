@@ -36,6 +36,11 @@
    cadena única, como las otras cuatro subpáginas, para que UN solo <link>
    sirva a todas las páginas y no existan dos listas de CSS que puedan divergir. */
 @import url("secciones/tiburones.css");
+/* CR-86 (2026-10-24): la subpágina ÁMBAR (ambar.html) tiene su propia hoja, con
+   prefijo `amb-` (DEC-83: no reusa `.tri-*`, `.amo-*` ni `.tib-*`). Va en la
+   cadena única, como las otras cinco subpáginas, para que UN solo <link> sirva
+   a todas las páginas y no existan dos listas de CSS que puedan divergir. */
+@import url("secciones/ambar.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");

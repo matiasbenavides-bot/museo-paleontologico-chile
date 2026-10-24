@@ -828,3 +828,122 @@ museo-mpch/
 - **Los archivos de la versión anterior de trilobites siguen en disco**
   (`isotelus.jpg`, `conga.jpg`, `enrollado.jpg`, `tamano-*`, `enrollado-museo*`):
   ya no se usan en la página, NO se borraron.
+
+---
+
+## CR-86 (2026-10-24) — SEXTA SUBPÁGINA: ÁMBAR (`ambar.html`)
+
+**El ámbar ya existía como card en Colecciones; lo que faltaba era su página.**
+
+### Lo que cambió
+
+| Archivo | Acción |
+|---|---|
+| `assets/img/ambar/01..11.jpg` | 11 imágenes extraídas del Word, numeradas por posición |
+| `data/museo.js` | **+ `const AMBAR`** (6 secciones, 11 figuras) y `+ window.AMBAR` |
+| `data/museo.js:456` | card de Ámbar ahora tiene `enlace` + `enlaceTexto: "Conocer el ámbar"` |
+| `ambar.html` | nueva (clon estructural de `tiburones.html`) |
+| `js/ambar.js` | nuevo (render IIFE sobre `window.AMBAR`, prefijo `amb-`) |
+| `css/secciones/ambar.css` | nueva (prefijo `amb-`, 195 líneas) |
+| `css/main.css` | `+ @import url("secciones/ambar.css")` |
+| Las 7 páginas | `+ Ámbar` en el nav y en el footer «Explorar» |
+| `fuentes/ambar-material-del-dueno.docx` | **la fuente, copiada al repo** (ver abajo) |
+
+### 🔴 DEC-086 — Material de ámbar: imágenes del museo, autorizadas
+
+- **Problema:** el Word «ÁMBAR.docx» trae 11 imágenes **sin crédito, sin autor y
+  sin licencia**. El texto tiene marcas de copiado desde PDF (letra griega `ο`,
+  comilla `‘` suelta, `lefttop`, palabra partida), lo que indica material de
+  divulgación externa, no propio.
+- **Precedente que obligaba a preguntar:** `data/museo.js:915` documentaba que el
+  ámbar *«estaba medido e integrado y se quedó sin publicar»* por DEC-027.
+- **Decisión:** el dueño autorizó textual el 2026-10-24: **«autorizadas todas»**.
+  Se publican las 11 imágenes.
+- **Justificación:** mismo mecanismo que la DEC-012 exceptuada de CR-75/CR-81
+  («son autorizadas, todas» para material del museo).
+- **Alcance:** cubre **este** material. DEC-027 sigue vigente para imágenes de
+  **terceros** sin licencia verificable.
+- **Estado:** aprobada.
+
+### ⚠️ DEC-82 aplicada con cuidado (aquí casi se rompe)
+
+La primera asignación de imágenes la hice **por tema** y quedó mal: moví las
+figuras a la sección que "parecía" corresponderles. Eso rompe DEC-82 (orden
+literal del Word). Se rehízo **por posición estricta** en `word/document.xml`:
+
+```
+rId4->01  rId5->02  rId6->03  rId7->04  rId8->05
+rId9->06  rId10->07  rId11->08  rId12->09  rId13->10  rId14->11
+```
+
+**Trampa medida:** el párrafo que precede a la imagen `06` es un `‘` suelto
+(basura de copiado). Se descartó el texto pero **se conservó su imagen**, pegada
+a su predecesora inmediata, porque el dueño autorizó las 11.
+
+### Erratas del original corregidas (5, y sólo éstas)
+
+1. `ο` (ómicron griega, U+03BF) → `o` en «partículas de polvo o pequeños»
+2. párrafo con sólo `‘` → **no se publica** (no es contenido)
+3. `defen s a` → `defensa`
+4. `lefttop` → **no se publica** (basura de maquetado)
+5. `región.Al promocionar` → `región. Al promocionar`
+
+Es la misma clase de excepción que CR-85b (la «deb» de tiburones): defectos del
+original, no palabras del museo.
+
+### 🔴 TRAMPA NUEVA MEDIDA — la fuente estaba en la caché de Office
+
+El dueño dijo «guardé un word» pero **no había ningún .docx nuevo en Descargas,
+Documents, Desktop ni OneDrive**. El archivo estaba en:
+
+```
+C:\Users\logic\AppData\Local\Microsoft\Windows\INetCache\Content.MSO\6E20554C.docx
+```
+
+Es la copia temporal que Office deja al abrir un documento desde una fuente
+externa, **y Windows la borra sola**. Se copió al repo como
+`fuentes/ambar-material-del-dueno.docx` (MD5 `1e034511…`) antes de tocarla.
+
+⇒ **Regla para la próxima:** si el dueño dice que guardó un Word y no aparece,
+buscar primero en `INetCache/Content.MSO/`, y **copiarlo al repo antes de
+trabajar sobre él**.
+
+### 🔴 TRAMPA NUEVA MEDIDA — `const` no llega a `window`
+
+Al medir con `node -e`, `window.AMBAR` era `undefined`. Es la MISMA trampa ya
+documentada en CR-71 (`CEC_SUBPAGINA`) y CR-80 (`ENTIDADES`): `const` en el
+ámbito del archivo no crea propiedad global. **Sin `window.AMBAR = AMBAR` la
+página sale en blanco** y el render sale por el guard sin avisar.
+⇒ Tras crear cualquier `const` nuevo en `data/museo.js`, **agregar su export a
+`window` en el mismo commit**, y verificarlo con
+`node -e "global.window={}; require('./data/museo.js'); console.log(window.X)"`.
+
+### Verificación (medida, no supuesta)
+
+- `node --check data/museo.js` y `node --check js/ambar.js` → OK
+- 11/11 imágenes en disco y 11/11 referenciadas en el data
+- `http.server` local: `ambar.html`, `ambar.css`, `ambar.js`, `01.jpg`, `11.jpg` → **HTTP 200**
+- DOM real en navegador: 6 secciones, 9 párrafos únicos, 6 ítems de índice,
+  11 figuras, **0 texto duplicado**, **0 overflow horizontal**
+- Imágenes: 7 cargan a scrollY 0 (las del primer bloque) y **11/11 tras
+  scrollear** — el `loading="lazy"` funciona como debe (contraste con la trampa
+  de CR-81, donde las lejanas NO cargaban nunca)
+- Consola: **0 errores JS, 0 mensajes**
+- `width`/`height` de cada `<img>` = `naturalWidth`/`naturalHeight` exactos
+- 0 imágenes recortadas por el marco (`max-width`/`max-height`, sin `object-fit`)
+- **0 anchos fijos en px** en `ambar.css` (DEC-015); grilla con
+  `repeat(auto-fit, minmax(230px, 1fr))`, así que a 375px cae a 1 columna sola
+- Cero contaminación de prefijos: `ambar.css` no tiene selectores activos
+  `.tri-*`, `.amo-*`, `.tib-*` ni `.galeria*` (sólo los menciona en comentarios)
+
+### Pendientes
+
+- **`alt` de las 11 imágenes de ámbar.** Son descriptivos pero genéricos («Pieza
+  de ámbar con una inclusión…»): el agente no ve las imágenes. Si el dueño dicta
+  qué es cada una, se mejoran en el data, sin tocar HTML ni CSS.
+- **Pies de foto.** El Word no trae ninguno. Si el dueño los dicta, se agregan
+  como `pie:` en cada figura y el render los pinta solo.
+- **Procedencia real del texto.** El documento tiene marcas de copiado desde PDF
+  (y habla de la Expo Ámbar de Chiapas, no del museo). El dueño lo dio como
+  material del museo y así se publica, pero **conviene que confirme de dónde
+  salió** por si hay que atribuir la fuente.

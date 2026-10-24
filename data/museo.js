@@ -453,7 +453,12 @@ const COLECCIONES = {
          card abra su subpágina. `enlaceTexto` es obligatorio cuando hay `enlace`
          (si falta, el render escribe "Ver más", texto que el dueño no dictó). */
       enlace: "amonites.html", enlaceTexto: "Conocer los ammonites" },
-    { icono: "ambar",     conIcono: true,  arte: "assets/img/pieza-ambar.png", nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional." },
+    { icono: "ambar",     conIcono: true,  arte: "assets/img/pieza-ambar.png", nombre: "Ámbar",        detalle: "Resina fósil que conserva organismos con un detalle excepcional.",
+      /* CR-86 (2026-10-24): el dueño pidió subpágina propia para el ámbar — mismo
+         mecanismo que Trilobites (CR-60), Ammonites (CR-83) y Tiburones (CR-85).
+         `enlaceTexto` es OBLIGATORIO cuando hay `enlace`: si falta, el render
+         escribe "Ver más", que es texto que NO dictó el dueño. */
+      enlace: "ambar.html", enlaceTexto: "Conocer el ámbar" },
     /* CR-85 (2026-10-20): el dueño pidió subpágina propia para los tiburones, así que
        la card ABRE su página — mismo mecanismo que Trilobites (CR-60) y Ammonites
        (CR-83). `enlaceTexto` es OBLIGATORIO cuando hay `enlace`: si falta, el render
@@ -2068,6 +2073,239 @@ const AMMONITES = {
   }
 };
 
+/* --- SUBPÁGINA ÁMBAR (ambar.html) ---
+   CR-86 (2026-10-24) — SEXTA subpágina del sitio, después de curriculum.html
+   (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61), amonites.html
+   (CR-83) y tiburones.html (CR-85).
+
+   FUENTE: «ÁMBAR.docx» (527 KB, 11 imágenes), el Word que el dueño guardó y
+   entregó el 2026-10-24. Copiado al repo como `fuentes/ambar-material-del-dueno.docx`
+   (MD5 1e034511070805d51d197f18720c6455) porque el original estaba sólo en la
+   caché de Office (INetCache\Content.MSO\6E20554C.docx), que Windows borra sola.
+
+   ⚠️ TEXTO: ÍNTEGRO del documento del museo, sin una palabra redactada por el
+   agente (regla DEC-034). El Word NO trae jerarquía de títulos: es un solo bloque
+   corrido de 9 párrafos. Las secciones de abajo son divisiones por TEMA del propio
+   texto, y sus títulos son RÓTULOS, no contenido redactado. Los párrafos van
+   literales.
+
+   🔴 ERRATAS DEL ORIGINAL — se corrigen SOLO los artefactos de copiado desde PDF,
+   nunca palabras del museo. Medido en este Word:
+     1. «partículas de polvo ο pequeños» — la «ο» es la letra GRIEGA ómicron
+        (U+03BF), no una «o» latina. Se publica «o».
+     2. Un párrafo con un solo carácter `‘` (comilla suelta, resto de un copiado).
+        NO se publica: no es contenido.
+     3. «defen s a contra los hongos» — espacio espurio dentro de la palabra. Se
+        publica «defensa».
+     4. «lefttop» — basura de posición de un maquetado copiado. NO se publica.
+     5. «región.Al promocionar» — falta el espacio tras el punto. Se publica
+        «región. Al promocionar».
+   ⚠️ Estas cinco son la MISMA clase de excepción justificada que CR-85b (la
+   «deb» de tiburones): son defectos del ORIGINAL, no palabras del museo.
+
+   ✅ IMÁGENES: las 11 del Word, en el ORDEN LITERAL del documento (DEC-82),
+   numeradas 01..11 por posición. El dueño autorizó textual el 2026-10-24:
+   «autorizadas todas». Es el mismo mecanismo de DEC-012 exceptuada que en
+   CR-75/CR-81 para el material del museo. El Word NO trae ni un pie de foto,
+   así que NINGUNA figura lleva `pie`: inventarlo sería atribución falsa.
+
+   ⚠️ DEC-027: esta subpágina es justamente el material que «estaba medido e
+   integrado y se quedó sin publicar» (comentario de trilobites). Lo que cambió
+   es que ahora hay autorización explícita y consta por escrito.
+
+   ✅ Sin sección de atributos: las imágenes son del museo, no de Commons.
+   `AMBAR.atribucion` es null y el render no la pinta.
+   ============================================================ */
+const AMBAR = {
+  subpagina: "ambar.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Resina fósil",
+  titulo: "Ámbar",
+  bajada:
+    "Resina vegetal fósil que atrapó, hace millones de años, un mundo entero de seres vivos.",
+  /* `intro: null` a propósito, igual que TRILOBITES, AMMONITES y TIBURONES
+     (CR-84): el primer párrafo ya se publica en su sección («Qué es el ámbar») y
+     repetirlo acá lo mostraba DOS veces. El render tolera null
+     (`if (intro && T.intro)`). */
+  intro: null,
+
+  secciones: [
+    {
+      id: "que-es",
+      titulo: "Qué es el ámbar",
+      nivel: 2,
+      parrafos: [
+        "El ámbar es una resina vegetal fósil, que se genera por la secreción de ciertos árboles " +
+          "como las coníferas, que exudaban ésta como defensa contra los hongos, aves e insectos.",
+        "Con el tiempo sufrió un proceso de fosilización formando masas irregulares y extensas " +
+          "dentro de los estratos de arenisca y pizarras arcillosas.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/ambar/01.jpg",
+          ancho: 824, alto: 617,
+          alt: "Pieza de ámbar con una inclusión conservada en su interior",
+          /* Sin `pie`: el Word no le pone pie a esta imagen. */
+        },
+        {
+          src: "assets/img/ambar/02.jpg",
+          ancho: 819, alto: 475,
+          alt: "Insecto conservado dentro de una pieza de ámbar",
+        },
+        {
+          src: "assets/img/ambar/03.jpg",
+          ancho: 436, alto: 773,
+          alt: "Pieza de ámbar pulida, vista vertical",
+        },
+      ],
+    },
+    {
+      id: "que-atrapa",
+      titulo: "Qué quedó atrapado en la resina",
+      nivel: 2,
+      parrafos: [
+        "En muchas ocasiones la resina al escurrir sobre la corteza de troncos y ramas llegó a " +
+          "atrapar burbujas de aire, gotas de agua, partículas de polvo o pequeños seres vivos " +
+          "como plantas (orquídeas, hongos, musgos, líquenes, semillas y un sinfín de flores " +
+          "diminutas), insectos, gusanos y otro tipo de animales que van desde diminutas hormigas, " +
+          "arañas, mosquitos, abejas, termitas, mariposas y libélulas, hasta lagartijas, ranas y " +
+          "escorpiones y hasta fragmentos de su ADN.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "europa-america",
+      titulo: "De dónde viene, en Europa y en América",
+      nivel: 2,
+      parrafos: [
+        "En Europa, el ámbar se forma a partir de la resina del Pinus succinifera, en tanto que en " +
+          "América proviene de la leguminosa Hymenaea courbaril conocida en Chiapas (México) como " +
+          "Guapiñol y en Nicaragua y República Dominicana como Algarrobo, perteneciente al período " +
+          "geológico terciario.",
+      ],
+      /* 🔴 DEC-82 — ORDEN LITERAL DEL WORD. En el .docx las figuras van pegadas al
+         párrafo que las precede, y la numeración 01..11 se asignó por esa posición
+         (no por tamaño ni por criterio visual). Medido con el orden real de
+         aparición en word/document.xml:
+             rId4  -> 01   (tras el párrafo de la definición)
+             rId5  -> 02   (tras el de la fosilización)
+             rId6  -> 03   (tras el de lo que la resina atrapa)
+             rId7  -> 04   ┐ tras el párrafo de Europa/América
+             rId8  -> 05   ┘
+             rId9  -> 06   (tras un párrafo que sólo trae una comilla suelta)
+             rId10 -> 07   (tras el del valor científico)
+             rId11 -> 08   (tras el de la artesanía)
+             rId12 -> 09   ┐
+             rId13 -> 10   ├ al final, tras el de la Expo Ámbar
+             rId14 -> 11   ┘
+         ⚠️ El párrafo que precede a `06` es un `‘` suelto, basura de copiado desde
+         PDF: NO se publica como contenido (no es una palabra del museo). Su imagen
+         sí se publica —el dueño autorizó «autorizadas todas»— y queda aquí, pegada
+         a su predecesora inmediata. NO moverla de sección ni reordenar: eso es
+         justo lo que DEC-82 prohíbe. */
+      imagenes: [
+        {
+          src: "assets/img/ambar/04.jpg",
+          ancho: 807, alto: 490,
+          alt: "Detalle de una inclusión vegetal dentro de una pieza de ámbar",
+        },
+        {
+          src: "assets/img/ambar/05.jpg",
+          ancho: 335, alto: 352,
+          alt: "Inclusión fósil observada a través del ámbar",
+        },
+        {
+          src: "assets/img/ambar/06.jpg",
+          ancho: 720, alto: 394,
+          alt: "Pieza de ámbar iluminada, con su color y transparencia naturales",
+        },
+      ],
+    },
+    {
+      id: "valor-cientifico",
+      titulo: "Por qué importa para la ciencia",
+      nivel: 2,
+      parrafos: [
+        "Estas inclusiones agregan no sólo belleza a una pieza de ámbar sino una gran cantidad de " +
+          "información de suma importancia para científicos, pues de esta manera se tiene " +
+          "conocimiento de la vida de hace millones de años, disponiendo, incluso, de especies ya " +
+          "desaparecidas.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/ambar/07.jpg",
+          ancho: 828, alto: 615,
+          alt: "Inclusión conservada en ámbar, vista de cerca",
+        },
+      ],
+    },
+    {
+      id: "artesania",
+      titulo: "Del adorno sencillo a la joyería",
+      nivel: 2,
+      parrafos: [
+        "Anteriormente se hacían objetos muy modestos como pulseritas y collares, pero hoy las " +
+          "hechuras incluyen combinaciones con plata y jade, obsidiana, turquesa y ónix, entre " +
+          "otros materiales; también, varios artesanos se han especializado en la escultura.",
+        "Ahora el cliente puede adquirir pulseras, aretes y collares con acabados muy novedosos; " +
+          "pisacorbatas, broches, prendedores, mancuernillas, brazaletes, dijes, pipas y hasta " +
+          "portacelulares, entre otros adornos.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/ambar/08.jpg",
+          ancho: 586, alto: 1138,
+          alt: "Joyería de ámbar trabajada con otros materiales",
+        },
+      ],
+    },
+    {
+      id: "expo-ambar",
+      titulo: "La Expo Ámbar de Chiapas",
+      nivel: 2,
+      parrafos: [
+        "En la ciudad de San Cristóbal de Las Casas, Chiapas, se realiza anualmente en agosto, la " +
+          "Expo Ámbar, la cual representa un espacio ideado para mostrar el talento de los " +
+          "artesanos chiapanecos.",
+        "Busca desarrollar e integrar a los grupos de artesanos chiapanecos en la extracción, " +
+          "producción y comercialización del ámbar, fomentando el crecimiento económico, social y " +
+          "cultural de la región. Al promocionar de la mejor manera la cultura chiapaneca, a " +
+          "través de la joyería del ámbar de excelente calidad, se logra proyectar a México en " +
+          "mercados nacionales e internacionales, con gran éxito.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/ambar/09.jpg",
+          ancho: 564, alto: 448,
+          alt: "Pieza de ámbar de la colección del museo",
+        },
+        {
+          src: "assets/img/ambar/10.jpg",
+          ancho: 570, alto: 432,
+          alt: "Pieza de ámbar tallada",
+        },
+        {
+          src: "assets/img/ambar/11.jpg",
+          ancho: 369, alto: 336,
+          alt: "Pieza tallada en ámbar",
+        },
+      ],
+    },
+  ],
+
+  notaImagenes:
+    "Las imágenes de esta página son material del Museo Paleontológico de Chile y se publican con " +
+    "su autorización.",
+  /* Sin sección de atributos: las imágenes son del museo, no de Commons.
+     El render hace `if (!T.atribucion) return;` y no la pinta. */
+  atribucion: null,
+  cierre: {
+    texto: "El ámbar es una de las piezas de la muestra del museo.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones"
+  }
+};
+
 /* --- SUBPÁGINA TIBURONES (tiburones.html) ---
    CR-85 (2026-10-20) — QUINTA subpágina del sitio, después de curriculum.html
    (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61) y amonites.html (CR-83).
@@ -2500,6 +2738,11 @@ if (typeof window !== "undefined") {
   window.GALERIA = GALERIA; window.TRILOBITES = TRILOBITES; window.CEC = CEC;
   window.AMMONITES = AMMONITES;
   window.TIBURONES = TIBURONES;
+  /* CR-86: misma trampa documentada en CR-71 y CR-80 — `const` en el ámbito del
+     archivo NO crea propiedad global, así que sin esta línea `window.AMBAR` es
+     undefined y ambar.js sale por el guard sin pintar nada (página en blanco).
+     Se vio al medir: `node -e` daba «Cannot read properties of undefined». */
+  window.AMBAR = AMBAR;
   /* CR-80: `const` no crea propiedad global — sin esta línea ENTIDADES es
      undefined en el render (misma trampa que documentó CR-71 con CEC_SUBPAGINA). */
   window.ENTIDADES = ENTIDADES;
