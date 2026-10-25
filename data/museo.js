@@ -2144,18 +2144,15 @@ const AMBAR = {
         {
           src: "assets/img/ambar/01.jpg",
           ancho: 824, alto: 617,
-          alt: "Pieza de ámbar con una inclusión conservada en su interior",
           /* Sin `pie`: el Word no le pone pie a esta imagen. */
         },
         {
           src: "assets/img/ambar/02.jpg",
           ancho: 819, alto: 475,
-          alt: "Insecto conservado dentro de una pieza de ámbar",
         },
         {
           src: "assets/img/ambar/03.jpg",
           ancho: 436, alto: 773,
-          alt: "Pieza de ámbar pulida, vista vertical",
         },
       ],
     },
@@ -2178,8 +2175,8 @@ const AMBAR = {
       titulo: "De dónde viene, en Europa y en América",
       nivel: 2,
       parrafos: [
-        "En Europa, el ámbar se forma a partir de la resina del Pinus succinifera, en tanto que en " +
-          "América proviene de la leguminosa Hymenaea courbaril conocida en Chiapas (México) como " +
+        "En Europa, el ámbar se forma a partir de la resina del *Pinus succinifera*, en tanto que en " +
+          "América proviene de la leguminosa *Hymenaea courbaril* conocida en Chiapas (México) como " +
           "Guapiñol y en Nicaragua y República Dominicana como Algarrobo, perteneciente al período " +
           "geológico terciario.",
       ],
@@ -2207,17 +2204,14 @@ const AMBAR = {
         {
           src: "assets/img/ambar/04.jpg",
           ancho: 807, alto: 490,
-          alt: "Detalle de una inclusión vegetal dentro de una pieza de ámbar",
         },
         {
           src: "assets/img/ambar/05.jpg",
           ancho: 335, alto: 352,
-          alt: "Inclusión fósil observada a través del ámbar",
         },
         {
           src: "assets/img/ambar/06.jpg",
           ancho: 720, alto: 394,
-          alt: "Pieza de ámbar iluminada, con su color y transparencia naturales",
         },
       ],
     },
@@ -2235,7 +2229,6 @@ const AMBAR = {
         {
           src: "assets/img/ambar/07.jpg",
           ancho: 828, alto: 615,
-          alt: "Inclusión conservada en ámbar, vista de cerca",
         },
       ],
     },
@@ -2255,7 +2248,6 @@ const AMBAR = {
         {
           src: "assets/img/ambar/08.jpg",
           ancho: 586, alto: 1138,
-          alt: "Joyería de ámbar trabajada con otros materiales",
         },
       ],
     },
@@ -2277,17 +2269,14 @@ const AMBAR = {
         {
           src: "assets/img/ambar/09.jpg",
           ancho: 564, alto: 448,
-          alt: "Pieza de ámbar de la colección del museo",
         },
         {
           src: "assets/img/ambar/10.jpg",
           ancho: 570, alto: 432,
-          alt: "Pieza de ámbar tallada",
         },
         {
           src: "assets/img/ambar/11.jpg",
           ancho: 369, alto: 336,
-          alt: "Pieza tallada en ámbar",
         },
       ],
     },

@@ -119,6 +119,17 @@
 }
 .amb-sec p + p { margin-top: 14px; }
 
+/* ---------- Nombres científicos en cursiva (CR-86b) ----------
+   Pedido del dueño: «para cualquier nombre científico se usan cursiva».
+   El render (js/ambar.js, `conCursivas`) convierte `*Pinus succinifera*` del
+   data/ en un `<i>` DESPUÉS de escapar el HTML. Esta regla sólo le da color y
+   peso: la cursiva ya viene en la etiqueta, no la impone el CSS — así el texto
+   sigue siendo correcto incluso si la hoja no carga. */
+.amb-sec p i {
+  font-style: italic;
+  color: var(--text-main);
+}
+
 /* ---------- Figuras ----------
    CR-60b dejó la lección en trilobites: `width:100%; height:auto` dentro de una
    grilla `auto-fit` estira a TODO el contenedor las secciones de una sola

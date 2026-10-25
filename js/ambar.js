@@ -36,6 +36,28 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
     return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); };
+
+  /* ---------- Cursivas para nombres científicos (CR-86b) ----------
+     Pedido del dueño: «para cualquier nombre científico se usan cursiva».
+
+     CÓMO FUNCIONA, y por qué así:
+       1. El data/ marca el nombre con asteriscos:  `*Pinus succinifera*`
+       2. Primero se ESCAPA todo el párrafo con `esc()` — así ningún `<` del
+          texto puede colarse como etiqueta.
+       3. SÓLO DESPUÉS se cambian los asteriscos por `<i>`.
+
+     🔴 El orden importa y no es negociable. Si se marcara antes de escapar, un
+     `<script>` escrito en el data/ sobreviviría como HTML y esto sería una vía de
+     inyección. Al revés —escapar y recién entonces sustituir— lo único que puede
+     aparecer en el resultado es `<i>` y `</i>`, que los escribe esta función.
+     El data/ es de confianza, pero el patrón queda seguro igual.
+
+     ⚠️ Los asteriscos NO pueden anidarse ni quedar sueltos: se convierten por
+     pares. Si un párrafo trae un `*` impar, ese queda literal — preferible un
+     asterisco visible a una etiqueta abierta sin cerrar. */
+  var conCursivas = function (s) {
+    return esc(s).replace(/\*([^*]+)\*/g, "<i>$1</i>");
+  };
   var M = window.MUSEO;
   var T = window.AMBAR;
   if (!M || !T) return;
@@ -134,6 +156,16 @@
      sería atribución falsa. Si el dueño dicta pies, se agregan al data/. */
   function figurasHTML(imgs) {
     if (!imgs || !imgs.length) return "";
+    /* ⚠️ CR-86b (2026-10-24): el dueño pidió las 11 fotos SIN descripción. Los
+       `alt` que había eran inventados por el agente (no ve las imágenes), así que
+       se quitaron del data/. Acá se emite `alt=""`, que marca la figura como
+       DECORATIVA: es lo correcto cuando no hay descripción autorizada — ni deja
+       un alt inventado ni deja el atributo ausente (obligatorio en HTML).
+       🔴 NO reponer descripciones sin que el dueño las dicte.
+       Si algún día las dicta, se agregan como `alt:` en el data/ y esta línea
+       pasa a usar `esc(im.alt)`. */
+    var altDe = function (im) { return im.alt ? esc(im.alt) : ""; };
+
     /* ⚠️ CR-86: en este capítulo el máximo de figuras por sección es TRES
        (sección «De dónde viene» y «La Expo Ámbar»). No hay ninguna de cinco como
        en tiburones, pero se conserva la rama para no divergir del patrón: si el
@@ -149,7 +181,7 @@
         return '<figure class="amb-fig">' +
                  '<span class="amb-fig__marco">' +
                    '<img src="' + esc(im.src) + '"' + dim +
-                     ' alt="' + esc(im.alt) + '"' + carga + ' decoding="async">' +
+                     ' alt="' + altDe(im) + '"' + carga + ' decoding="async">' +
                  "</span>" +
                  (pie ? "<figcaption><b>" + pie + "</b></figcaption>" : "") +
                "</figure>";
@@ -167,7 +199,7 @@
          conserva la rama para no divergir del patrón: si el dueño agrega
          subsecciones, se marcan con `nivel: 3` y ya. */
       var sub = s.nivel === 3;
-      var cuerpo = (s.parrafos || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+      var cuerpo = (s.parrafos || []).map(function (p) { return "<p>" + conCursivas(p) + "</p>"; }).join("");
       return '<section class="amb-sec' + (sub ? " amb-sec--sub" : "") + ' reveal" id="' + esc(s.id) + '">' +
                '<h' + (sub ? "3" : "2") + ' class="amb-sec__t">' + esc(s.titulo) +
                  '</h' + (sub ? "3" : "2") + '>' +
