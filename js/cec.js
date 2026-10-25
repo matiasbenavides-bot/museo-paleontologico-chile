@@ -26,6 +26,12 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
     return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); };
+  /* CR-86c — Cursivas para nombres científicos.
+     `tx` pinta prosa del data/ permitiendo *cursiva* (ver js/texto.js).
+     Si el módulo no cargó, cae en `esc` puro: el texto se ve sin cursiva pero
+     NUNCA se rompe la página. */
+  var tx = (window.TEXTO && window.TEXTO.conCursivas) || esc;
+
   var ico = function (n) { return (window.ICONOS && window.ICONOS[n]) || ""; };
   var M = window.MUSEO;
   var C = window.CEC;
@@ -113,7 +119,7 @@
 
     var intro = $("[data-cec-intro]");
     if (intro) intro.innerHTML = (C.intro || []).map(function (p) {
-      return "<p>" + esc(p) + "</p>";
+      return "<p>" + tx(p) + "</p>";
     }).join("");
 
     /* La relación con el museo. Es la aclaración que el dueño tuvo que dar, así
@@ -220,7 +226,7 @@
     return '<section class="cec-bloque reveal" id="museo-itinerante">' +
       tituloBloque(d) +
       (d.subtitulo ? '<p class="cec-bloque__sub">' + esc(d.subtitulo) + "</p>" : "") +
-      d.parrafos.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+      d.parrafos.map(function (p) { return "<p>" + tx(p) + "</p>"; }).join("") +
     "</section>";
   }
 
@@ -255,7 +261,7 @@
                      /* CR-72: el data nuevo trae `texto`; se acepta también
                         `detalle` (forma vieja) para no romper si vuelve. */
                      '<p class="cec-actividad__detalle">' + esc(a.texto || a.detalle || "") + "</p>" +
-                     (a.parrafos || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+                     (a.parrafos || []).map(function (p) { return "<p>" + tx(p) + "</p>"; }).join("") +
                      /* CR-73: foto opcional del programa. `loading=lazy` porque
                         están más abajo del pliegue. */
                      (a.foto
@@ -337,7 +343,7 @@
     return '<section class="cec-bloque reveal" id="aves-del-terror">' +
       tituloBloque(d) +
       (d.subtitulo ? '<p class="cec-bloque__sub">' + esc(d.subtitulo) + "</p>" : "") +
-      d.parrafos.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+      d.parrafos.map(function (p) { return "<p>" + tx(p) + "</p>"; }).join("") +
     "</section>";
   }
 

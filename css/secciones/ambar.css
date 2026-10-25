@@ -125,7 +125,13 @@
    data/ en un `<i>` DESPUÉS de escapar el HTML. Esta regla sólo le da color y
    peso: la cursiva ya viene en la etiqueta, no la impone el CSS — así el texto
    sigue siendo correcto incluso si la hoja no carga. */
-.amb-sec p i {
+/* CR-86c — Cursiva para nombres científicos.
+   El `<i>` lo genera js/texto.js; acá sólo se garantiza el estilo. Se cubre
+   párrafo, pie de foto y título de sección porque los tres pueden traer un
+   nombre binomial (`Otodus megalodon, la megabestia marina` es un <h2>). */
+.amb-sec p i,
+.amb-fig figcaption i,
+.amb-sec__t i {
   font-style: italic;
   color: var(--text-main);
 }

@@ -37,27 +37,18 @@
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
     return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); };
 
-  /* ---------- Cursivas para nombres científicos (CR-86b) ----------
+  /* ---------- Cursivas para nombres científicos (CR-86b → CR-86c) ----------
      Pedido del dueño: «para cualquier nombre científico se usan cursiva».
 
-     CÓMO FUNCIONA, y por qué así:
-       1. El data/ marca el nombre con asteriscos:  `*Pinus succinifera*`
-       2. Primero se ESCAPA todo el párrafo con `esc()` — así ningún `<` del
-          texto puede colarse como etiqueta.
-       3. SÓLO DESPUÉS se cambian los asteriscos por `<i>`.
+     🔴 CR-86c: esta función se MOVIÓ a `js/texto.js`, compartida por los seis
+     renders del sitio. Antes vivía sólo acá y el mecanismo no existía en
+     amonites, tiburones, trilobites, cec ni la portada. La implementación es la
+     misma de siempre —escapa primero, sustituye después, y esa asimetría es la
+     que la hace segura— pero ahora hay UN solo lugar que mantener.
 
-     🔴 El orden importa y no es negociable. Si se marcara antes de escapar, un
-     `<script>` escrito en el data/ sobreviviría como HTML y esto sería una vía de
-     inyección. Al revés —escapar y recién entonces sustituir— lo único que puede
-     aparecer en el resultado es `<i>` y `</i>`, que los escribe esta función.
-     El data/ es de confianza, pero el patrón queda seguro igual.
-
-     ⚠️ Los asteriscos NO pueden anidarse ni quedar sueltos: se convierten por
-     pares. Si un párrafo trae un `*` impar, ese queda literal — preferible un
-     asterisco visible a una etiqueta abierta sin cerrar. */
-  var conCursivas = function (s) {
-    return esc(s).replace(/\*([^*]+)\*/g, "<i>$1</i>");
-  };
+     Si el módulo no cargó, cae en `esc` puro: el texto se ve sin cursiva pero la
+     página NUNCA se rompe. */
+  var conCursivas = (window.TEXTO && window.TEXTO.conCursivas) || esc;
   var M = window.MUSEO;
   var T = window.AMBAR;
   if (!M || !T) return;
@@ -137,7 +128,7 @@
       '<p class="amb-indice__t">En esta página</p>' +
       '<ul class="amb-indice__l">' +
         principales.map(function (s) {
-          return '<li><a href="#' + esc(s.id) + '">' + esc(s.titulo) + "</a></li>";
+          return '<li><a href="#' + esc(s.id) + '">' + conCursivas(s.titulo) + "</a></li>";
         }).join("") +
       "</ul>";
   }
@@ -174,7 +165,7 @@
     var n = imgs.length >= 5 ? 5 : (imgs.length >= 3 ? 3 : imgs.length);
     return '<div class="amb-figs amb-figs--' + n + '">' +
       imgs.map(function (im, k) {
-        var pie = im.pie ? esc(im.pie) : "";
+        var pie = im.pie ? conCursivas(im.pie) : "";
         var dim = (im.ancho && im.alto)
           ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
         var carga = k === 0 ? ' loading="eager"' : ' loading="lazy"';
@@ -201,7 +192,7 @@
       var sub = s.nivel === 3;
       var cuerpo = (s.parrafos || []).map(function (p) { return "<p>" + conCursivas(p) + "</p>"; }).join("");
       return '<section class="amb-sec' + (sub ? " amb-sec--sub" : "") + ' reveal" id="' + esc(s.id) + '">' +
-               '<h' + (sub ? "3" : "2") + ' class="amb-sec__t">' + esc(s.titulo) +
+               '<h' + (sub ? "3" : "2") + ' class="amb-sec__t">' + conCursivas(s.titulo) +
                  '</h' + (sub ? "3" : "2") + '>' +
                cuerpo +
                figurasHTML(s.imagenes) +

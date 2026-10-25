@@ -11,6 +11,12 @@
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
   }); };
+  /* CR-86c — Cursivas para nombres científicos.
+     `tx` pinta prosa del data/ permitiendo *cursiva* (ver js/texto.js).
+     Si el módulo no cargó, cae en `esc` puro: el texto se ve sin cursiva pero
+     NUNCA se rompe la página. */
+  var tx = (window.TEXTO && window.TEXTO.conCursivas) || esc;
+
 
   /* --- CR-71 (2026-10-17): INTERRUPTOR DE LA SUBPÁGINA DEL PROYECTO C.E.C ---
      El dueño pidió «borremos c.e.c o quitemos del publico, hare cambios» y
@@ -289,7 +295,7 @@
 
     var cont = $("[data-somos-parrafos]"); if (cont && window.QUIENES_SOMOS) {
       cont.innerHTML = window.QUIENES_SOMOS.parrafos.map(function (p) {
-        return "<p>" + esc(p) + "</p>"; }).join("");
+        return "<p>" + tx(p) + "</p>"; }).join("");
     }
     var mis = $("[data-somos-mision]");
     if (mis && window.QUIENES_SOMOS) mis.textContent = window.QUIENES_SOMOS.mision;
@@ -397,7 +403,7 @@
         : "";
       return '<article class="servicio reveal reveal--zoom' + (s.destacado ? " servicio--destacado" : "") + '">' +
                '<div class="servicio__ico">' + ico(s.icono) + "</div>" +
-               "<h3>" + esc(s.titulo) + "</h3>" +
+               "<h3>" + tx(s.titulo) + "</h3>" +
                "<p>" + esc(s.detalle) + "</p>" +
                enlace +
              "</article>";

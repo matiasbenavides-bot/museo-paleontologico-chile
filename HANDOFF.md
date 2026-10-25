@@ -947,3 +947,103 @@ página sale en blanco** y el render sale por el guard sin avisar.
   (y habla de la Expo Ámbar de Chiapas, no del museo). El dueño lo dio como
   material del museo y así se publica, pero **conviene que confirme de dónde
   salió** por si hay que atribuir la fuente.
+
+
+---
+
+## CR-86c (2026-10-25) — CURSIVA EN NOMBRES CIENTÍFICOS EN TODO EL SITIO
+
+**Pedido del dueño:** «el resto del sitio tambien. nombres comunes no».
+
+Extiende la DEC-086 cursiva que en CR-86b existía **sólo** en `ambar.html`.
+
+### Lo que cambió
+
+| Archivo | Acción |
+|---|---|
+| `js/texto.js` | **nuevo** — módulo compartido: `window.TEXTO.conCursivas()` y `.esc()` |
+| `js/ambar.js` | deja de tener su copia propia; usa la compartida (fallback a `esc`) |
+| `js/amonites.js` · `js/tiburones.js` · `js/trilobites.js` · `js/cec.js` · `js/render.js` | `+ var tx` y prosa/pies/títulos por `tx()` / `conCursivas()` |
+| 7 `.html` | `+ <script src="js/texto.js">` **antes** del render de la página |
+| `data/museo.js` | **+42 nombres** marcados con `*…*` (ver tabla abajo) |
+| `css/secciones/{ambar,amonites,tiburones,trilobites}.css` | `+ regla … p i, … figcaption i, … __t i` |
+
+### 🔴 DEC-088 — Qué va en cursiva y qué no
+
+- **SÍ:** géneros y binomiales. `Otodus megalodon`, `Carcharodon carcharias`,
+  `Pinus succinifera`, `Hymenaea courbaril`, `Triarthrus becki`,
+  `Olenoides serratus`, `Walliserops trifurcatus`, `Isotelus rex`,
+  `Acadoparadoxides briareus`, `Crotalocephalus gibbus`, y los géneros solos
+  (`Isurus`, `Lamna`, `Odobenocetops`, `Thalassocnus`, `Pelagornis`, etc.).
+- **NO:** nombres comunes y títulos. El dueño lo confirmó explícito:
+  **`Megalodon` y `megalodon` NO**, y por el mismo criterio quedaron fuera
+  `Guapiñol`, `Algarrobo`, `tiburón blanco`, `Ammonites`, `Trilobites`,
+  `Cocodrilos marinos`.
+- **NO:** localidades y pisos geológicos (`Alnif`, `Erfoud`, `Marruecos`, `Arenig`,
+  `Floiano`), formación (`Lo Valdés`), publicaciones (`Revista Isurus`).
+- **Estado:** aprobada por el dueño (2026-10-25).
+
+### Por qué la función se movió a `js/texto.js`
+
+Copiarla en seis renders habría creado **seis copias** de la misma lógica de
+escape. Un solo módulo, cargado antes de cada render, con *fallback* a `esc`
+si no cargó: el texto se ve sin cursiva pero **la página nunca se rompe**.
+
+### 🔴 TRAMPA NUEVA MEDIDA — el `pie` no pasaba por las cursivas
+
+En CR-86b `conCursivas` se aplicaba **sólo a `s.parrafos`**. Los **pies de foto**
+seguían con `esc(im.pie)` directo, y ahí está la mayoría de los nombres
+(`*Otodus megalodon* juvenil atacando a un *Odobenocetops*`). Se corrigió en los
+4 renders que pintan pies. Del mismo modo, los **títulos de sección** se
+escapaban con `esc(s.titulo)` — y `Otodus megalodon, la megabestia humana` es un
+`<h2>`. Ahora también pasan por `tx()`.
+
+### 🔴 TRAMPA NUEVA MEDIDA — un nombre partido en dos strings
+
+El data/ corta los párrafos largos en varios strings concatenados, y el marcado
+puede quedar repartido:
+
+```js
+"…se le llamó *Carcharodon " +
+"megalodon*, después…"
+```
+
+Es **correcto**: el par se cierra tras concatenar y `conCursivas` recibe el
+párrafo ya unido. Pero un chequeo ingenuo de "asteriscos pares por línea" marca
+falsos positivos. El verificador real (`scripts/verificar-cursivas.js`) cuenta
+por párrafo completo.
+
+### Verificación (medida en DOM real, no supuesta)
+
+`node scripts/verificar-cursivas.js`:
+
+- **57 `<i>`** en el sitio: trilobites 16, ammonites 15, tiburones 24, ámbar 2
+- **0** párrafos con asterisco impar · **0** `<i>` escapados literalmente
+- **0** nombres comunes marcados (`Guapiñol`, `Algarrobo`, `Megalodon`)
+
+`node scripts/medir-cursivas-dom.js` (Chromium headless, DOM real, 7 páginas):
+
+| Página | `<i>` | `font-style` | asteriscos | figuras | figcaption | alt vacíos | overflow | errores JS |
+|---|---|---|---|---|---|---|---|---|
+| index.html | 0 | — | 0 | 6 | 0 | 0 | no | ninguno |
+| amonites.html | 15 | italic 15 | 0 | 30 | 3 | 0 | no | ninguno |
+| tiburones.html | 25 | italic 25 | 0 | 18 | 16 | 0 | no | ninguno |
+| trilobites.html | 16 | italic 16 | 0 | 38 | 0 | 0 | no | ninguno |
+| ambar.html | 2 | italic 2 | 0 | **11** | **0** | **11** | no | ninguno |
+| proyecto-cec.html | 0 | — | 0 | 6 | 0 | 0 | no | ninguno |
+| curriculum.html | 0 | — | 0 | — | — | — | no | ninguno |
+
+`node scripts/medir-responsive-cursivas.js` → **375 / 768 / 1280 px, 21/21 sin
+overflow horizontal**, cursivas intactas y 0 asteriscos visibles.
+
+Prueba de inyección: `<script>`, `<img onerror>`, asterisco impar y `<b>` en el
+data → **los 4 quedan inertes**; sólo se emiten `<i>`/`</i>` propios.
+
+`node --check` OK en los 10 archivos de `js/` y en `data/museo.js`.
+
+### Estado de Ámbar tras CR-86b + CR-86c
+
+Las **11 fotos**: sin descripción (11 `alt=""`, 0 `figcaption`), en **orden del
+Word** `01→11` verificado por hash contra `word/document.xml`
+(`image1..image11` → `01.jpg..11.jpg`, coincidencia exacta). El orden publicado
+**ya era** el del Word: lo inventado eran las descripciones, no el orden.

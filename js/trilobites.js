@@ -30,6 +30,12 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
     return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); };
+  /* CR-86c — Cursivas para nombres científicos.
+     `tx` pinta prosa del data/ permitiendo *cursiva* (ver js/texto.js).
+     Si el módulo no cargó, cae en `esc` puro: el texto se ve sin cursiva pero
+     NUNCA se rompe la página. */
+  var tx = (window.TEXTO && window.TEXTO.conCursivas) || esc;
+
   var M = window.MUSEO;
   var T = window.TRILOBITES;
   if (!M || !T) return;
@@ -114,7 +120,7 @@
       '<p class="tri-indice__t">En esta página</p>' +
       '<ul class="tri-indice__l">' +
         principales.map(function (s) {
-          return '<li><a href="#' + esc(s.id) + '">' + esc(s.titulo) + "</a></li>";
+          return '<li><a href="#' + esc(s.id) + '">' + tx(s.titulo) + "</a></li>";
         }).join("") +
       "</ul>";
   }
@@ -139,7 +145,7 @@
     return '<div class="tri-figs tri-figs--' + n + '">' +
       imgs.map(function (im, k) {
         var f = FICHAS[im.credito] || {};
-        var pie = im.pie ? esc(im.pie) : "";
+        var pie = im.pie ? tx(im.pie) : "";
         var cred = f.autor ? '<span class="tri-fig__cred">' + esc(f.autor) + "</span>" : "";
         var dim = (im.ancho && im.alto)
           ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
@@ -202,9 +208,9 @@
       /* Anatomía es un título de grupo sin párrafos: se pinta como encabezado
          de bloque, no como sección con cuerpo. */
       var sub = s.nivel === 3;
-      var cuerpo = (s.parrafos || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+      var cuerpo = (s.parrafos || []).map(function (p) { return "<p>" + tx(p) + "</p>"; }).join("");
       return '<section class="tri-sec' + (sub ? " tri-sec--sub" : "") + ' reveal" id="' + esc(s.id) + '">' +
-               '<h' + (sub ? "3" : "2") + ' class="tri-sec__t">' + esc(s.titulo) +
+               '<h' + (sub ? "3" : "2") + ' class="tri-sec__t">' + tx(s.titulo) +
                  '</h' + (sub ? "3" : "2") + '>' +
                cuerpo +
                figurasHTML(s.imagenes) +

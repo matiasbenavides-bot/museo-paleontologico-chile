@@ -29,6 +29,12 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
     return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); };
+  /* CR-86c — Cursivas para nombres científicos.
+     `tx` pinta prosa del data/ permitiendo *cursiva* (ver js/texto.js).
+     Si el módulo no cargó, cae en `esc` puro: el texto se ve sin cursiva pero
+     NUNCA se rompe la página. */
+  var tx = (window.TEXTO && window.TEXTO.conCursivas) || esc;
+
   var M = window.MUSEO;
   var T = window.TIBURONES;
   if (!M || !T) return;
@@ -108,7 +114,7 @@
       '<p class="tib-indice__t">En esta página</p>' +
       '<ul class="tib-indice__l">' +
         principales.map(function (s) {
-          return '<li><a href="#' + esc(s.id) + '">' + esc(s.titulo) + "</a></li>";
+          return '<li><a href="#' + esc(s.id) + '">' + tx(s.titulo) + "</a></li>";
         }).join("") +
       "</ul>";
   }
@@ -134,7 +140,7 @@
     var n = imgs.length >= 5 ? 5 : (imgs.length >= 3 ? 3 : imgs.length);
     return '<div class="tib-figs tib-figs--' + n + '">' +
       imgs.map(function (im, k) {
-        var pie = im.pie ? esc(im.pie) : "";
+        var pie = im.pie ? tx(im.pie) : "";
         var dim = (im.ancho && im.alto)
           ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
         var carga = k === 0 ? ' loading="eager"' : ' loading="lazy"';
@@ -158,9 +164,9 @@
          subtítulos), pero se conserva la rama para no divergir del patrón: si
          el dueño agrega subsecciones, se marcan con `nivel: 3` y ya. */
       var sub = s.nivel === 3;
-      var cuerpo = (s.parrafos || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+      var cuerpo = (s.parrafos || []).map(function (p) { return "<p>" + tx(p) + "</p>"; }).join("");
       return '<section class="tib-sec' + (sub ? " tib-sec--sub" : "") + ' reveal" id="' + esc(s.id) + '">' +
-               '<h' + (sub ? "3" : "2") + ' class="tib-sec__t">' + esc(s.titulo) +
+               '<h' + (sub ? "3" : "2") + ' class="tib-sec__t">' + tx(s.titulo) +
                  '</h' + (sub ? "3" : "2") + '>' +
                cuerpo +
                figurasHTML(s.imagenes) +

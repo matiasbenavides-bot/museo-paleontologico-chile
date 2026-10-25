@@ -998,7 +998,7 @@ const TRILOBITES = {
       titulo: "Estructura de los trilobites",
       nivel: 2,
       parrafos: [
-        "Los trilobites estaban protegidos por un exoesqueleto dorsal fuertemente calcificado, de simetría bilateral y convexidad variable, que continuaba ventralmente como un doblez marginal angosto. Los trilobites poseen un cuerpo segmentado con un exoesqueleto ovalado o subelíptico en vista dorsal y está dividido longitudinalmente en tres regiones (del latín Tri, tres y lobus, lóbulo = Tres lóbulos). Su exoesqueleto está constituido de cierto número de segmentos a lo largo del cuerpo, un par de surcos axiales divide al exoesqueleto en un lóbulo central (axis, raquis) y dos lóbulos laterales (genas en el céfalo; área o campos pleurales en el tórax-pigidio), a los cuales hace alusión el término «Trilobita o trilobite».",
+        "Los trilobites estaban protegidos por un exoesqueleto dorsal fuertemente calcificado, de simetría bilateral y convexidad variable, que continuaba ventralmente como un doblez marginal angosto. Los trilobites poseen un cuerpo segmentado con un exoesqueleto ovalado o subelíptico en vista dorsal y está dividido longitudinalmente en tres regiones (del latín Tri, tres y lobus, lóbulo = Tres lóbulos). Su exoesqueleto está constituido de cierto número de segmentos a lo largo del cuerpo, un par de surcos axiales divide al exoesqueleto en un lóbulo central (axis, raquis) y dos lóbulos laterales (genas en el céfalo; área o campos pleurales en el tórax-pigidio), a los cuales hace alusión el término «*Trilobita* o trilobite».",
         "En ambos extremos del cuerpo los segmentos están unidos y forman un escudo, que en el extremo anterior forma la cabeza o cefalón, en tanto que en el extremo posterior forma el escudo caudal o pigidio. En la región intermedia o tórax está constituida por pleuras articuladas, todos los segmentos están separados. Estas tres partes del cuerpo tienen porciones axiales y pleurales, y, por consiguiente, el cuerpo presenta un aspecto transversalmente dividido en tres zonas.",
         "El exoesqueleto dorsal está marcado por un par de surcos o estrías que separan la región axial de las pleurales, las que tienen un relieve interno donde se adhieren los músculos que accionan los miembros locomotores. El exoesqueleto ventral es muy delicado, por ello se ha conservado en raras ocasiones, siendo el lugar en donde se sitúan los apéndices.",
       ],
@@ -1028,7 +1028,7 @@ const TRILOBITES = {
         "Los miembros encargados de la natación reciben el nombre de exopodito y consta de numerosas uniones o coyunturas que proporcionan un soporte a una serie de estructuras duras y aplanadas, como púas, que en gran número forman un eficiente sistema de nado, que le servía para movilizarse en el medio acuático.",
         "En otras ocasiones los trilobites caminaban o reptaban en la superficie del fondo, para lo cuál utilizaban otro miembro locomotor llamado endopodito, que estaba constituido por seis fuertes junturas de material quitinoso y que funcionó como una pata y se situaba por debajo del exopodito.",
         "Por detrás de la base de adherencia de esta pata se sitúa un órgano parecido a una hoja llamado epidodito, que tenía a su cargo la función respiratoria, por lo tanto, funcionaba como una branquia.",
-        "Triarthrus becki, Trilobites en vista dorsal an: Antena; ca: Cabeza; o: Ojo; s.f: sutura facial;  c.fi: Cara fija;  c.li; Cara libre;  gl: Glabela;  ag: Angulo genal;  pi: Pigidio; hi: Hipostoma; bo: Boca o labrum; ex: Exopodito; en: Endopodito; ep: Epipodito.",
+        "*Triarthrus becki*, Trilobites en vista dorsal an: Antena; ca: Cabeza; o: Ojo; s.f: sutura facial;  c.fi: Cara fija;  c.li; Cara libre;  gl: Glabela;  ag: Angulo genal;  pi: Pigidio; hi: Hipostoma; bo: Boca o labrum; ex: Exopodito; en: Endopodito; ep: Epipodito.",
       ],
       imagenes: [
         {
@@ -1048,10 +1048,10 @@ const TRILOBITES = {
       titulo: "Huellas fósiles de trilobites",
       nivel: 2,
       parrafos: [
-        "Las huellas fósiles o icnofósiles son parte de la actividad biológica del desenvolvimiento del trilobite en su ambiente. Estas huellas son a lo menos de tres tipos: Cruziana, Diplichnites y Rusophycus. Normalmente se encuentran como contramoldes, en relieve invertido, en la base (cara inferior) en capas de arenisca o cuarcita.",
-        "Cruziana se interpreta como pistas fósiles debidas a la locomoción y la alimentación de trilobites en el fondo arenoso.",
-        "Diplichnites se interpreta como pistas del desplazamiento rápido sobre la superficie arenosa.",
-        "Rusophycus se interpreta como huellas de reposo (cubichnia) o quizás de alimentación.",
+        "Las huellas fósiles o icnofósiles son parte de la actividad biológica del desenvolvimiento del trilobite en su ambiente. Estas huellas son a lo menos de tres tipos: *Cruziana*, *Diplichnites* y *Rusophycus*. Normalmente se encuentran como contramoldes, en relieve invertido, en la base (cara inferior) en capas de arenisca o cuarcita.",
+        "*Cruziana* se interpreta como pistas fósiles debidas a la locomoción y la alimentación de trilobites en el fondo arenoso.",
+        "*Diplichnites* se interpreta como pistas del desplazamiento rápido sobre la superficie arenosa.",
+        "*Rusophycus* se interpreta como huellas de reposo (cubichnia) o quizás de alimentación.",
       ],
       imagenes: [
         {
@@ -1233,7 +1233,7 @@ const TRILOBITES = {
       titulo: "Reproducción y apareamiento",
       nivel: 2,
       parrafos: [
-        "Recientes investigaciones han revelado que existe una diferencia entre machos y hembras del trilobite Olenoides serratus, que podría tratarse de un dimorfismo sexual, ya que el macho al parecer presenta adaptaciones para el apareamiento. Se trata de apéndices funcionalmente especializados, que son extremidades análogas a los ganchos, en los endopoditos 10 y 11, que son utilizados por los machos hembra durante el apareamiento.",
+        "Recientes investigaciones han revelado que existe una diferencia entre machos y hembras del trilobite *Olenoides serratus*, que podría tratarse de un dimorfismo sexual, ya que el macho al parecer presenta adaptaciones para el apareamiento. Se trata de apéndices funcionalmente especializados, que son extremidades análogas a los ganchos, en los endopoditos 10 y 11, que son utilizados por los machos hembra durante el apareamiento.",
       ],
       imagenes: [
         {
@@ -1256,12 +1256,12 @@ const TRILOBITES = {
         "El dimorfismo sexual se refiere a la exhibición de diferencias de apariencia entre machos y hembras de la misma especie, especialmente su tamaño, forma, color u órganos reproductivos sexuales. La mayoría de los artrópodos existentes presentan un fuerte dimorfismo sexual característico entre las especies, especialmente en la forma del cuerpo. Los trilobites exhibieron dimorfismo sexual entre sus especies como los artrópodos existentes, y su estudio es posible dado que los trilobites son uno de los artrópodos marinos extintos más abundantes y antiguos conocidos.",
         "Bajo alturas similares de especies similares, los machos parecen con su cabeza más aguzada (forma de víbora), en tanto que las hembras tienen una forma ligeramente esférica.",
         "Los machos tienen longitudes idénticas en ambas antenas, mientras que las hembras tienen longitudes diferentes.",
-        "El cuerpo del macho tiene forma muscular de Hércules o se ve alargado, en tanto que las hembras se aprecian más globoso o gordo. Ejemplo el caso de Crotalocephalus.",
+        "El cuerpo del macho tiene forma muscular de Hércules o se ve alargado, en tanto que las hembras se aprecian más globoso o gordo. Ejemplo el caso de *Crotalocephalus*.",
         "El cuerpo del macho tiene los primeros 6 segmentos del tórax tienen una forma pleural recta, mientras que el de la hembra parece ligeramente esférico.",
         "El cuerpo del macho tiene los primeros 6 segmentos del tórax tienen una forma pleural recta, mientras que el de la hembra parece ligeramente esférico.",
         "Los rasgos que diferencian a los morfotipos son diferentes para cada especie, pero incluyen tanto la longitud del pigidio, más corto en los machos, como variaciones en la longitud de algunos segmentos del tórax, presentando las hembras una zona más estrecha en el mismo.",
         "El área del tórax después de los primeros 6 segmentos del macho suele tener forma de “V” y alargarse hasta el final del   pigidio. Las hembras suelen presentar una estructura en forma de “U” con un pigidio más aplanado.",
-        "Comparación entre macho (izquierda) y hembra (derecha) de Crotalocephalus gibbus de Alnif, Marruecos; y en B/N, Comparación entre macho (izquierda, 5,40 cm) y hembra (derecha, 5,72 cm) de Sokhretia cf solitaria de Tisserdmine, Erfoud, Marruecos.",
+        "Comparación entre macho (izquierda) y hembra (derecha) de *Crotalocephalus gibbus* de Alnif, Marruecos; y en B/N, Comparación entre macho (izquierda, 5,40 cm) y hembra (derecha, 5,72 cm) de *Sokhretia* cf solitaria de Tisserdmine, Erfoud, Marruecos.",
       ],
       imagenes: [
         {
@@ -1287,8 +1287,8 @@ const TRILOBITES = {
       nivel: 2,
       parrafos: [
         "Los trilobites se encontraban entre los invertebrados dominantes en los mares del Paleozoico y exhibían una extraordinaria variedad de morfología exoesquelética, comúnmente tenían protuberancias cefálicas, espinas o bulbos, en su tórax, mostrando una notable variedad de formas. Es probable que su función principal fuera la protección contra depredadores sobre todo en estado de enrollamiento que los haría muy difícil de atacar o para el desplazamiento hidrodinámico. En tanto que otros postulan que eran rasgos sexuales secundarios.",
-        "Dentro de estas características existen algunos trilobites que exhiben un tridente frontal muy extraño, que al parecer es una especie de arma. Walliserops trifurcatus llevaba un tridente único y gigante en la cabeza, cuya finalidad ha sido durante mucho tiempo un misterio. Ahora se piensa que se utilizaba para las peleas entre machos que luchaban por el dominio de las hembras.",
-        "Walliserops trifurcatus",
+        "Dentro de estas características existen algunos trilobites que exhiben un tridente frontal muy extraño, que al parecer es una especie de arma. *Walliserops trifurcatus* llevaba un tridente único y gigante en la cabeza, cuya finalidad ha sido durante mucho tiempo un misterio. Ahora se piensa que se utilizaba para las peleas entre machos que luchaban por el dominio de las hembras.",
+        "*Walliserops trifurcatus*",
       ],
       imagenes: [
         {
@@ -1344,8 +1344,8 @@ const TRILOBITES = {
       titulo: "Tamaño",
       nivel: 2,
       parrafos: [
-        "Los trilobites, durante su evolución, alcanzaron diversos tamaños, desde aquellos agnostidos de algunos milímetros, hasta aquellos gigantes como Isotelus rex, que alcanzo un tamaño de más de 70 centímetros. Esta diversidad de tamaños sin duda influyo en la forma de vida de estos formidables artrópodos.",
-        "Trilobites pequeños, izquierda y grande, Acadoparadoxides briareus",
+        "Los trilobites, durante su evolución, alcanzaron diversos tamaños, desde aquellos agnostidos de algunos milímetros, hasta aquellos gigantes como *Isotelus rex*, que alcanzo un tamaño de más de 70 centímetros. Esta diversidad de tamaños sin duda influyo en la forma de vida de estos formidables artrópodos.",
+        "Trilobites pequeños, izquierda y grande, *Acadoparadoxides briareus*",
       ],
       imagenes: [
         {
@@ -1864,7 +1864,7 @@ const AMMONITES = {
       titulo: "Depredación en ammonites",
       nivel: 2,
       parrafos: [
-        "Los primeros ammonites fueron simples, con líneas de sutura poco complicadas, con costillas finas y sin tubérculos, no obstante, con el paso del tiempo surgieron una gran cantidad de depredadores marinos que se alimentaban de ellos, triturando las conchas con sus mandíbulas. Este momento del tiempo Mesozoico, ha sido denominado como la “Revolución marina del Mesozoico”, ya que surgieron los Pliosaurus, Plesiosaurus, Mosasaurus, Ictiosaurus, Cocodrilos marinos y otros, los que convivían a su vez con una gran cantidad de peces trituradores de conchas, como los encontrados en la formación Lo Valdés, del género Lepidotus.",
+        "Los primeros ammonites fueron simples, con líneas de sutura poco complicadas, con costillas finas y sin tubérculos, no obstante, con el paso del tiempo surgieron una gran cantidad de depredadores marinos que se alimentaban de ellos, triturando las conchas con sus mandíbulas. Este momento del tiempo Mesozoico, ha sido denominado como la “Revolución marina del Mesozoico”, ya que surgieron los *Pliosaurus*, *Plesiosaurus*, *Mosasaurus*, *Ictiosaurus*, Cocodrilos marinos y otros, los que convivían a su vez con una gran cantidad de peces trituradores de conchas, como los encontrados en la formación Lo Valdés, del género *Lepidotus*.",
       ],
       imagenes: [
         {
@@ -1889,7 +1889,7 @@ const AMMONITES = {
           src: "assets/img/amonites/word/18.jpg",
           ancho: 967, alto: 386,
           alt: "Ammonites — imagen 18 del documento del museo",
-          pie: "Marcas del maxilar de Mosasaurus orridus en una concha de Ammonite del genero Placentíceras.",
+          pie: "Marcas del maxilar de *Mosasaurus* orridus en una concha de Ammonite del genero *Placentíceras*.",
         },
       ],
     },
@@ -2043,7 +2043,7 @@ const AMMONITES = {
       nivel: 3,
       parrafos: [
         "La Formación Lo Valdés está constituida por una serie de estratos casi verticales que afloran en la cordillera, y están interrumpidas por una corriente fluvial provocada por el río El Volcán, que los cruza. La edad de la formación ha sido situada en el Jurásico Superior al Cretácico temprano (120 a 140 millones de años, del Titoniano al Hauteriviano), constituida por calizas, lavas submarinas, areniscas y lutitas grises.",
-        "Encontramos evidencias de gran actividad volcánica y glacial en el sector. Además, existen varios géneros que representan las formas de vida de Lo Valdés como Trigonias, Euriphylas, Pholadomyas; y ammonites como los géneros Spiticeras, Paracrioceras, Aulacosphinctes, entre muchos otros. Existe también una especie de tamaño grande del género Titanites y vida vertebrada representada por peces del género Lepidotus, y reptiles marinos.",
+        "Encontramos evidencias de gran actividad volcánica y glacial en el sector. Además, existen varios géneros que representan las formas de vida de Lo Valdés como *Trigonias*, *Euriphylas*, *Pholadomyas*; y ammonites como los géneros *Spiticeras*, *Paracrioceras*, *Aulacosphinctes*, entre muchos otros. Existe también una especie de tamaño grande del género *Titanites* y vida vertebrada representada por peces del género *Lepidotus*, y reptiles marinos.",
         "En el sector también encontramos evidencia costera continental como la presencia de rizaduras de arena o ripple marks, que son ondulaciones de la arena producidas por el agua en movimiento en la orilla del mar, ríos o lagos. Otro elemento característico es la presencia de cuarteamientos poligonales que se producen en sectores de sequedad del terreno como producto de una sequía.",
       ],
       imagenes: [
@@ -2369,7 +2369,7 @@ const TIBURONES = {
         "Chile posee a lo largo de su territorio varios sitios con presencia de tiburones fósiles. " +
           "Sin embargo, el sitio de mayor importancia sea el de la Formación Bahía Inglesa, en la",
         "III región, cercana a la ciudad de Caldera. En este lugar aparecen fósiles de varios " +
-          "tiburones como Isurus, Carcharias, Lamna, Otodus, etc., todos ellos asociados a mamíferos " +
+          "tiburones como *Isurus*, *Carcharias*, *Lamna*, *Otodus*, etc., todos ellos asociados a mamíferos " +
           "marinos que eran su fuente de alimentación.",
       ],
       imagenes: [
@@ -2444,8 +2444,8 @@ const TIBURONES = {
           src: "assets/img/tiburones/word/06.jpg",
           ancho: 1351, alto: 360,
           alt: "Dientes fósiles de diversos tiburones",
-          pie: "Dientes de diversos tiburones conservados como fósiles: de izquierda a derecha Megalolamna, " +
-           "Notorynchus, Carcharodon (tiburón blanco), Galeorhinus y Otodus megalodon; la proporción no " +
+          pie: "Dientes de diversos tiburones conservados como fósiles: de izquierda a derecha *Megalolamna*, " +
+           "*Notorynchus*, *Carcharodon* (tiburón blanco), *Galeorhinus* y *Otodus megalodon*; la proporción no " +
            "es exacta (Ilustración Matías Palma)."
         },
       ],
@@ -2504,10 +2504,10 @@ const TIBURONES = {
           "cerebro del tiburón. (Un investigador contó unas 6.000 fibras sensoriales que se dirigían de " +
           "la línea lateral al cerebro de una pintarroja). Este es un sentido interno conformado por un " +
           "conjunto de células nerviosas que le permite detectar las vibraciones en el agua. En " +
-          "Carcharodon carcharias o tiburón blanco, estas células llegan a seis mil, repartidas a lo " +
+          "*Carcharodon carcharias* o tiburón blanco, estas células llegan a seis mil, repartidas a lo " +
           "largo del flanco del animal, lo que se ha convertido en el principal sentido que utilizan " +
           "para encontrar a sus presas en el agua, así como la ubicación de otros tiburones que pueden " +
-          "estar en la zona. Tal vez en Otodus megalodon el número de células le eleve a los dieciocho " +
+          "estar en la zona. Tal vez en *Otodus megalodon* el número de células le eleve a los dieciocho " +
           "mil o a los veinte mil.",
       ],
       imagenes: [
@@ -2626,15 +2626,15 @@ const TIBURONES = {
     },
     {
       id: "megalodon",
-      titulo: "Otodus megalodon, la megabestia marina",
+      titulo: "*Otodus megalodon*, la megabestia marina",
       nivel: 2,
       parrafos: [
         "Este gran tiburón ha tenido a lo largo del tiempo diversas clasificaciones, por ejemplo, se " +
-          "creyó que era pariente directo del tiburón blanco, por lo que se le llamó Carcharodon " +
-          "megalodon, después paso a llamarse Carcharocles megalodon, sin embargo, recientes " +
-          "investigaciones lo ubican en la familia Otodontidae, quedando nominado como Otodus " +
-          "megalodon.",
-        "Otodus megalodon, con un tamaño de entre 14 a más de 20 metros, fue el pez más grande de los " +
+          "creyó que era pariente directo del tiburón blanco, por lo que se le llamó *Carcharodon " +
+          "megalodon*, después paso a llamarse *Carcharocles megalodon*, sin embargo, recientes " +
+          "investigaciones lo ubican en la familia Otodontidae, quedando nominado como *Otodus " +
+          "megalodon*.",
+        "*Otodus megalodon*, con un tamaño de entre 14 a más de 20 metros, fue el pez más grande de los " +
           "océanos del mundo, un temible tiburón que, como ningún otro animal, puede llevar el justo " +
           "apelativo de megabestia, con un peso que oscilaba entre los 14 y los 37 mil ki¬los (de 14 a " +
           "37 toneladas). Hay que imaginarse al megalodon como un tiburón blanco, (aunque no son " +
@@ -2644,7 +2644,7 @@ const TIBURONES = {
         "Sus fauces alojaban aproximadamente de 260 a 270 dientes acerrados, siendo los más grandes " +
           "de unos 20 centímetros, transformándose así, en el mayor depredador marino de todos los " +
           "tiempos.",
-        "El megalodon depredaba ballenas, pinnípedos, aves como Pelagornis y otros animales. Su " +
+        "El megalodon depredaba ballenas, pinnípedos, aves como *Pelagornis* y otros animales. Su " +
           "cuerpo era masivo y fusiforme, lo que le permitía desplazarse como un verdadero torpedo. " +
           "Esto sumado a una serie de elementos sensoriales, con los que podía detectar su presa a " +
           "mucha distancia y olfatear su sangre a muchos kilómetros, lo hacía un inminente peligro para " +
@@ -2673,27 +2673,27 @@ const TIBURONES = {
           src: "assets/img/tiburones/word/15.jpg",
           ancho: 909, alto: 621,
           alt: "Diente de Otodus megalodon in situ en Bahía Inglesa",
-          pie: "Diente de Otodus megalodon in situ, Bahía Inglesa, III Región."
+          pie: "Diente de *Otodus megalodon* in situ, Bahía Inglesa, III Región."
         },
         {
           src: "assets/img/tiburones/word/16.jpg",
           ancho: 492, alto: 609,
           alt: "Otodus megalodon juvenil atacando a un Odobenocetops",
-          pie: "Otodus megalodon juvenil atacando a un Odobenocetops, en los mares de Bahía Inglesa " +
+          pie: "*Otodus megalodon* juvenil atacando a un *Odobenocetops*, en los mares de Bahía Inglesa " +
            "(Ilustración de José Lemos Caro)."
         },
         {
           src: "assets/img/tiburones/word/17.jpg",
           ancho: 625, alto: 821,
           alt: "Otodus megalodon juvenil atacando a un Thalassocnus",
-          pie: "Otodus megalodon juvenil atacando a un Thalassocnus, en los mares de Bahía Inglesa " +
+          pie: "*Otodus megalodon* juvenil atacando a un *Thalassocnus*, en los mares de Bahía Inglesa " +
            "(Ilustración de José Lemos Caro)."
         },
         {
           src: "assets/img/tiburones/word/18.jpg",
           ancho: 772, alto: 1057,
           alt: "Otodus megalodon juvenil atacando a un Pelagornis",
-          pie: "Otodus megalodon juvenil atacando a un Pelagornis."
+          pie: "*Otodus megalodon* juvenil atacando a un *Pelagornis*."
         },
       ],
     },
