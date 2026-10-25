@@ -1047,3 +1047,96 @@ Las **11 fotos**: sin descripción (11 `alt=""`, 0 `figcaption`), en **orden del
 Word** `01→11` verificado por hash contra `word/document.xml`
 (`image1..image11` → `01.jpg..11.jpg`, coincidencia exacta). El orden publicado
 **ya era** el del Word: lo inventado eran las descripciones, no el orden.
+
+
+---
+
+## CR-86d (2026-10-25) — ÁMBAR: CADA FIGURA JUNTO A SU PÁRRAFO
+
+**Síntoma que reportó el dueño:** «tienes 3 imagenes de golpe cuando deberia ser por texto».
+
+### La causa
+
+`pintarSecciones()` hacía esto por cada sección:
+
+```js
+var cuerpo = s.parrafos.map(...).join("");   // TODOS los párrafos
+...
+cuerpo + figurasHTML(s.imagenes)             // y DESPUÉS TODAS las imágenes
+```
+
+Con tres imágenes en una sección, se pintaban las tres juntas **al final**, lejos
+del párrafo que las explica. El dueño eligió la opción **A**: respetar el original,
+no repartir una imagen por párrafo.
+
+### Lo que cambió
+
+| Archivo | Acción |
+|---|---|
+| `data/museo.js` | `+ tras: N` en las 11 figuras (índice del párrafo tras el cual va) |
+| `js/ambar.js` | `+ figuraHTML()` extraída; `+ seccionHTML()` que intercala párrafo a párrafo |
+| `scripts/verificar-intercalado-ambar.js` | nuevo — mide la estructura real del DOM |
+| `scripts/responsive-ambar.js` | nuevo — 6 anchos, recorte y desborde |
+
+### 🔴 DEC-089 — `tras` es el ancla al Word, no una preferencia
+
+`tras` es el índice (0-based) del párrafo **después del cual** va la figura, medido
+en `word/document.xml`:
+
+| Imagen | Párrafo del Word | Sección del sitio | `tras` |
+|---|---|---|---|
+| 01 | [01] definición | Qué es el ámbar | 0 |
+| 02 | [03] fosilización | Qué es el ámbar | 1 |
+| 03 | [05] qué atrapa | Qué quedó atrapado | 0 |
+| 04, 05 | [07] Europa/América (**mismo párrafo**) | De dónde viene | 0 |
+| 06 | [09] comilla suelta | De dónde viene | 0 |
+| 07 | [10] valor científico | Por qué importa | 0 |
+| 08 | [12] artesanía | Del adorno a la joyería | 0 |
+| 09, 10, 11 | [14] Expo Ámbar (**mismo párrafo**) | La Expo Ámbar | 0 |
+
+**Las que comparten párrafo comparten `tras` y se pintan juntas**, porque juntas
+vienen. Separarlas «una por párrafo» habría inventado un orden inexistente
+(DEC-82). Si `tras` falta o queda fuera de rango, la figura cae al final de la
+sección: el cambio no puede dejar una imagen sin lugar.
+
+### 🔴 ERROR MÍO CORREGIDO EN EL CAMINO
+
+Al asignar `tras` dejé `03.jpg` en la sección «Qué es el ámbar». Su párrafo en el
+Word es el **03** («lo que la resina atrapa»), que en el sitio es **otra sección**.
+Se movió a «Qué quedó atrapado en la resina». Ese error no lo habría visto sin
+volver al `document.xml`: el `.docx` es la autoridad, no el orden previo del data.
+
+### 🔴 TRAMPA NUEVA MEDIDA — función declarada dentro de otra función
+
+`figuraHTML` quedaba declarada **dentro** de `figurasHTML`, así que desde
+`seccionHTML` no existía: `ReferenceError: figuraHTML is not defined`, y la página
+salía **en blanco** porque el error corta el IIFE antes de pintar. El
+`node --check` **no lo detecta** (es un error de ámbito, no de sintaxis).
+⇒ Toda función que use más de un pintor va a nivel del IIFE. Verificar con el
+script de DOM, no con `--check`.
+
+### Verificación (DOM real, Chromium headless)
+
+Estructura medida en la página:
+
+```
+[Qué es el ámbar]                 H2 · P · IMGS(1) · P · IMGS(1)
+[Qué quedó atrapado]              H2 · P · IMGS(1)
+[De dónde viene]                  H2 · P · IMGS(3)
+[Por qué importa]                 H2 · P · IMGS(1)
+[Del adorno a la joyería]         H2 · P · IMGS(1) · P
+[La Expo Ámbar]                   H2 · P · IMGS(3) · P
+```
+
+- **11/11 figuras**, orden en DOM `01 → 11` **intacto**
+- **0** figcaption · **11** alt vacíos · **0** asteriscos · **2** cursivas
+- **0** errores JS · **0** desborde horizontal
+- 360/375/414/768/1024/1280 px: **6/6 sin overflow**, **0 recortadas**, **0 desbordan**
+- Imágenes: 7 cargan a `scrollY=0` y **11/11 tras scrollear**; `naturalWidth`
+  coincide con `ancho`/`alto` del data en las 11
+
+### Pendiente que sigue abierto
+
+Las tres de la Expo Ámbar (09/10/11) siguen juntas **porque así vienen en el
+Word**. Si el dueño prefiere verlas repartidas, hay que decirlo explícitamente:
+hoy repartirlas sería inventar.

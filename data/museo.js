@@ -2144,15 +2144,13 @@ const AMBAR = {
         {
           src: "assets/img/ambar/01.jpg",
           ancho: 824, alto: 617,
+          tras: 0,
           /* Sin `pie`: el Word no le pone pie a esta imagen. */
         },
         {
           src: "assets/img/ambar/02.jpg",
           ancho: 819, alto: 475,
-        },
-        {
-          src: "assets/img/ambar/03.jpg",
-          ancho: 436, alto: 773,
+          tras: 1,
         },
       ],
     },
@@ -2168,7 +2166,13 @@ const AMBAR = {
           "arañas, mosquitos, abejas, termitas, mariposas y libélulas, hasta lagartijas, ranas y " +
           "escorpiones y hasta fragmentos de su ADN.",
       ],
-      imagenes: [],
+      imagenes: [
+        {
+          src: "assets/img/ambar/03.jpg",
+          ancho: 436, alto: 773,
+          tras: 0,
+        },
+      ],
     },
     {
       id: "europa-america",
@@ -2204,14 +2208,17 @@ const AMBAR = {
         {
           src: "assets/img/ambar/04.jpg",
           ancho: 807, alto: 490,
+          tras: 0,
         },
         {
           src: "assets/img/ambar/05.jpg",
           ancho: 335, alto: 352,
+          tras: 0,
         },
         {
           src: "assets/img/ambar/06.jpg",
           ancho: 720, alto: 394,
+          tras: 0,
         },
       ],
     },
@@ -2229,6 +2236,7 @@ const AMBAR = {
         {
           src: "assets/img/ambar/07.jpg",
           ancho: 828, alto: 615,
+          tras: 0,
         },
       ],
     },
@@ -2248,6 +2256,7 @@ const AMBAR = {
         {
           src: "assets/img/ambar/08.jpg",
           ancho: 586, alto: 1138,
+          tras: 0,
         },
       ],
     },
@@ -2269,14 +2278,17 @@ const AMBAR = {
         {
           src: "assets/img/ambar/09.jpg",
           ancho: 564, alto: 448,
+          tras: 0,
         },
         {
           src: "assets/img/ambar/10.jpg",
           ancho: 570, alto: 432,
+          tras: 0,
         },
         {
           src: "assets/img/ambar/11.jpg",
           ancho: 369, alto: 336,
+          tras: 0,
         },
       ],
     },

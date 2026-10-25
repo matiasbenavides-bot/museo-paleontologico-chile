@@ -145,59 +145,118 @@
      ⚠️ En este Word NINGUNA figura trae pie de foto, así que `im.pie` viene
      ausente en las 11 y el <figcaption> no se pinta. Es correcto: inventar un pie
      sería atribución falsa. Si el dueño dicta pies, se agregan al data/. */
+  var altDe = function (im) { return im.alt ? esc(im.alt) : ""; };
+
+  /* Una figura suelta. `k` sólo decide si se carga de inmediato (eager). */
+  function figuraHTML(im, k) {
+    var pie = im.pie ? conCursivas(im.pie) : "";
+    var dim = (im.ancho && im.alto)
+      ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
+    var carga = k === 0 ? ' loading="eager"' : ' loading="lazy"';
+    return '<figure class="amb-fig">' +
+             '<span class="amb-fig__marco">' +
+               '<img src="' + esc(im.src) + '"' + dim +
+                 ' alt="' + altDe(im) + '"' + carga + ' decoding="async">' +
+             "</span>" +
+             (pie ? "<figcaption><b>" + pie + "</b></figcaption>" : "") +
+           "</figure>";
+  }
+
+  /* ⚠️ CR-86: en este capítulo el máximo de figuras por sección es TRES
+     (sección «De dónde viene» y «La Expo Ámbar»). No hay ninguna de cinco como
+     en tiburones, pero se conserva la rama para no divergir del patrón: si el
+     dueño agrega más material, se marca solo. */
   function figurasHTML(imgs) {
     if (!imgs || !imgs.length) return "";
-    /* ⚠️ CR-86b (2026-10-24): el dueño pidió las 11 fotos SIN descripción. Los
-       `alt` que había eran inventados por el agente (no ve las imágenes), así que
-       se quitaron del data/. Acá se emite `alt=""`, que marca la figura como
-       DECORATIVA: es lo correcto cuando no hay descripción autorizada — ni deja
-       un alt inventado ni deja el atributo ausente (obligatorio en HTML).
-       🔴 NO reponer descripciones sin que el dueño las dicte.
-       Si algún día las dicta, se agregan como `alt:` en el data/ y esta línea
-       pasa a usar `esc(im.alt)`. */
-    var altDe = function (im) { return im.alt ? esc(im.alt) : ""; };
-
-    /* ⚠️ CR-86: en este capítulo el máximo de figuras por sección es TRES
-       (sección «De dónde viene» y «La Expo Ámbar»). No hay ninguna de cinco como
-       en tiburones, pero se conserva la rama para no divergir del patrón: si el
-       dueño agrega más material, se marca solo. */
-    var n = imgs.length >= 5 ? 5 : (imgs.length >= 3 ? 3 : imgs.length);
     var n = imgs.length >= 5 ? 5 : (imgs.length >= 3 ? 3 : imgs.length);
     return '<div class="amb-figs amb-figs--' + n + '">' +
-      imgs.map(function (im, k) {
-        var pie = im.pie ? conCursivas(im.pie) : "";
-        var dim = (im.ancho && im.alto)
-          ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
-        var carga = k === 0 ? ' loading="eager"' : ' loading="lazy"';
-        return '<figure class="amb-fig">' +
-                 '<span class="amb-fig__marco">' +
-                   '<img src="' + esc(im.src) + '"' + dim +
-                     ' alt="' + altDe(im) + '"' + carga + ' decoding="async">' +
-                 "</span>" +
-                 (pie ? "<figcaption><b>" + pie + "</b></figcaption>" : "") +
-               "</figure>";
-      }).join("") +
+      imgs.map(function (im, k) { return figuraHTML(im, k); }).join("") +
     "</div>";
   }
 
-  /* ---------- Secciones ---------- */
+  /* ---------- Secciones ----------
+     🔴 CR-86d (2026-10-25) — CADA FIGURA VA PEGADA A SU PÁRRAFO.
+
+     ANTES la sección pintaba todos sus párrafos y DESPUÉS un bloque con todas
+     sus imágenes. Con tres imágenes eso se leía como «3 fotos de golpe» al
+     final, separadas del texto que las explica.
+
+     El Word no las agrupa así. Medido en word/document.xml, cada imagen vive en
+     su propio párrafo, inmediatamente después del párrafo que la precede:
+
+         [01] definición       -> image1
+         [03] fosilización     -> image2
+         [05] qué atrapa       -> image3
+         [07] Europa/América   -> image4 + image5
+         [09] (comilla suelta) -> image6
+         [10] valor científico -> image7
+         [12] artesanía        -> image8
+         [14] Expo Ámbar       -> image9 + image10 + image11
+
+     `tras` es el índice (0-based) del párrafo después del cual va la figura. Si
+     `tras` viene ausente o fuera de rango, la figura cae al final de la sección
+     como antes: este cambio no puede dejar una imagen sin lugar.
+
+     Las imágenes que comparten párrafo en el original (05/06 y 10/11) comparten
+     `tras`: se pintan juntas porque JUNTAS VIENEN. Separarlas una por párrafo
+     habría inventado un orden que el Word no tiene (DEC-82). */
+  function seccionHTML(s) {
+    /* nivel 3 = subsección. En este capítulo NO hay ninguna (el Word de ámbar
+       no trae ni un subtítulo: es un bloque corrido de 9 párrafos), pero se
+       conserva la rama para no divergir del patrón: si el dueño agrega
+       subsecciones, se marcan con `nivel: 3` y ya. */
+    var sub = s.nivel === 3;
+    var parrafos = s.parrafos || [];
+
+    /* Agrupar figuras por el párrafo tras el cual van. */
+    var porIndice = {}, sueltas = [];
+    (s.imagenes || []).forEach(function (im) {
+      if (typeof im.tras === "number" && im.tras >= 0 && im.tras < parrafos.length) {
+        (porIndice[im.tras] = porIndice[im.tras] || []).push(im);
+      } else {
+        sueltas.push(im);
+      }
+    });
+
+    /* `eager` sólo para la PRIMERA figura de la sección. */
+    var primera = true;
+    var cuerpo = parrafos.map(function (p, idx) {
+      var html = "<p>" + conCursivas(p) + "</p>";
+      var grupo = porIndice[idx];
+      if (grupo && grupo.length) {
+        var gn = grupo.length >= 5 ? 5 : (grupo.length >= 3 ? 3 : grupo.length);
+        html += '<div class="amb-figs amb-figs--' + gn + '">' +
+          grupo.map(function (im) {
+            var h = figuraHTML(im, primera ? 0 : 1);
+            primera = false;
+            return h;
+          }).join("") + "</div>";
+      }
+      return html;
+    }).join("");
+
+    /* Las que no declaran `tras` (o apuntan fuera de rango) al final. */
+    if (sueltas.length) {
+      cuerpo += '<div class="amb-figs amb-figs--' +
+        (sueltas.length >= 5 ? 5 : (sueltas.length >= 3 ? 3 : sueltas.length)) + '">' +
+        sueltas.map(function (im) {
+          var h = figuraHTML(im, primera ? 0 : 1);
+          primera = false;
+          return h;
+        }).join("") + "</div>";
+    }
+
+    return '<section class="amb-sec' + (sub ? " amb-sec--sub" : "") + ' reveal" id="' + esc(s.id) + '">' +
+             '<h' + (sub ? "3" : "2") + ' class="amb-sec__t">' + conCursivas(s.titulo) +
+               '</h' + (sub ? "3" : "2") + '>' +
+             cuerpo +
+           "</section>";
+  }
+
   function pintarSecciones() {
     var cont = $("[data-amb-secciones]");
     if (!cont || !T.secciones) return;
-    cont.innerHTML = T.secciones.map(function (s) {
-      /* nivel 3 = subsección. En este capítulo NO hay ninguna (el Word de ámbar
-         no trae ni un subtítulo: es un bloque corrido de 9 párrafos), pero se
-         conserva la rama para no divergir del patrón: si el dueño agrega
-         subsecciones, se marcan con `nivel: 3` y ya. */
-      var sub = s.nivel === 3;
-      var cuerpo = (s.parrafos || []).map(function (p) { return "<p>" + conCursivas(p) + "</p>"; }).join("");
-      return '<section class="amb-sec' + (sub ? " amb-sec--sub" : "") + ' reveal" id="' + esc(s.id) + '">' +
-               '<h' + (sub ? "3" : "2") + ' class="amb-sec__t">' + conCursivas(s.titulo) +
-                 '</h' + (sub ? "3" : "2") + '>' +
-               cuerpo +
-               figurasHTML(s.imagenes) +
-             "</section>";
-    }).join("");
+    cont.innerHTML = T.secciones.map(seccionHTML).join("");
   }
 
   /* ---------- Cierre ---------- */
