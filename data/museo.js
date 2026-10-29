@@ -465,7 +465,15 @@ const COLECCIONES = {
        escribe "Ver más", que es texto que NO dictó el dueño. */
     { icono: "tiburon",   conIcono: true,  arte: "assets/img/pieza-tiburones.png", nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos.",
       enlace: "tiburones.html", enlaceTexto: "Conocer los tiburones" },
-    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto." },
+    /* CR-87 (2026-10-29): el dueño pidió subpágina para los dinosaurios — mismo
+       mecanismo que Trilobites (CR-60), Ammonites (CR-83), Tiburones (CR-85) y
+       Ámbar (CR-86). La card que ABRE la página es esta, «Huesos de dinosaurios»:
+       es la pieza de la colección a la que corresponde el material del Word
+       («Definiendo a los dinosaurios»). `enlaceTexto` es OBLIGATORIO cuando hay
+       `enlace`: si falta, el render escribe "Ver más", que es texto que el dueño
+       NO dictó. */
+    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto.",
+      enlace: "dinosaurios.html", enlaceTexto: "Conocer los dinosaurios" },
     { icono: "huevo",     conIcono: true,  arte: "assets/img/pieza-huevos.png", nombre: "Huevos de dinosaurios", detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." },
     { icono: "recon",     conIcono: true,  arte: "assets/img/pieza-reconstrucciones.png", nombre: "Reconstrucciones", detalle: "Esqueletos y reconstrucciones que devuelven forma a los fósiles." }
   ]
@@ -2307,6 +2315,432 @@ const AMBAR = {
   }
 };
 
+/* --- SUBPÁGINA DINOSAURIOS (dinosaurios.html) ---
+   CR-87 (2026-10-29) — SÉPTIMA subpágina del sitio, después de curriculum.html
+   (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61), amonites.html
+   (CR-83), tiburones.html (CR-85) y ambar.html (CR-86).
+
+   FUENTE: «Definiendo a los dinosaurios.docx» (1.986.966 bytes, 11 imágenes),
+   el Word que el dueño entregó el 2026-10-29. Copiado al repo como
+   `fuentes/dinosaurios-material-del-dueno.docx`
+   (MD5 c5a66ee8864337cb91869c1db5e7f36f).
+
+   ⚠️ TEXTO: ÍNTEGRO del documento del museo, sin una palabra redactada por el
+   agente (regla DEC-034). El Word SÍ trae jerarquía propia en dos niveles:
+
+     - El primer párrafo es el TÍTULO del capítulo («Definiendo a los
+       dinosaurios») → no se republica como párrafo; da el `titulo` de la página.
+     - Hay CUATRO rótulos cortos y solos que encabezan un tema y no llevan punto
+       final: «Algunas novedades evolutivas características del superorden
+       Dinosauria», «El acetábulo perforado», «Vértebras sacras fusionadas»,
+       «Fíbula reducida» y «Tarsometatarso». Son TÍTULOS del original, no
+       divisiones inventadas: se publican como títulos de sección.
+     - Las secciones SIN rótulo en el Word (los cinco bloques temáticos del
+       comienzo) llevan título derivado del propio contenido, porque la página
+       necesita anclas para el índice. Los párrafos van literales.
+     - Un párrafo es un PIE DE FIGURA del propio Word
+       («Reconstrucción de la pelvis de Bagarctatan ostromi en vista lateral, y
+       detalle de la Fosa brevis, Barras de escala: 2 cm.»): se publica como
+       `pie` de la figura que lo precede, no como párrafo suelto.
+
+   🔴 ERRATAS DEL ORIGINAL — se corrigen SOLO los artefactos de copiado desde PDF,
+   nunca palabras del museo. Medidas en este Word:
+     1. «adaptaciones dentarías» → «dentarias» (tilde espuria; el original la
+        tiene mal y el dueño pidió «corrección de nombre»: es ortografía, no
+        contenido). Se corrige.
+     2. «saurópodos, ceratopcianos o hadrosáuridos» → «ceratopsianos» (falta una
+        «s» y hay transposición: el grupo se llama Ceratopsia). Se corrige.
+     3. «giganotosauridos» → «giganotosáuridos» (falta la tilde del grupo,
+        Giganotosauridae). Se corrige. ⚠️ El nombre del dinosaurio
+        `Giganotosaurus` NO aparece en el Word y NO se agrega.
+     4. «Dinosauria, debió darse» → «Dinosauria debió darse» (coma espuria que
+        parte el sujeto del verbo). Se corrige.
+     5. «Los orígenes de dinosauria» → «Dinosauria» con mayúscula, porque es el
+        nombre del clado tal como lo escribe el propio Word tres párrafos más
+        abajo («el clado Dinosauria»). Se unifica, no se reescribe.
+     6. «las aves descenderían de los dinosaurios» — sin error; se deja.
+     7. «vertebras» (en «Esta fusión puede incluir de 3 a 5 vertebras») →
+        «vértebras». El Word escribe «vértebras» con tilde dos líneas antes, en
+        el mismo párrafo: es la misma palabra, se unifica.
+
+   ✅ IMÁGENES: las 11 del Word, en el ORDEN LITERAL del documento (DEC-82),
+   numeradas 01..11 por posición medida en `word/document.xml` (r:embed).
+   El dueño autorizó textual el 2026-10-29: «las imagenes estan autorizadas».
+   Es el mismo mecanismo de DEC-012 exceptuada que en CR-75/CR-81/CR-86 para el
+   material del museo.
+
+   🖼️ CONVERSIÓN DE FORMATO (documentada, no silenciosa):
+     - image2 es un **TIF** RGBA (922×472). JPEG no lleva alfa; se compuso sobre
+       fondo BLANCO (no negro: pasar un alfa a JPEG sin rellenar lo ennegrece, y
+       eso ya se cometió en CR-60). Su alfa es opaco en las 4 esquinas, así que
+       el resultado es idéntico al original.
+     - image5 es un **PNG** RGBA (516×315) con transparencia real (esquinas con
+       alfa 0). Mismo tratamiento: compuesto sobre blanco. ⚠️ El contenido de esa
+       figura ocupa el ancho completo, así que el blanco no forma marco visible.
+
+   📐 TAMAÑOS: `ancho`/`alto` son los del archivo YA en disco, medidos con PIL
+   uno por uno. Van en el `<img>` para que el navegador reserve el espacio (CLS).
+
+   🔴 SIN `alt`: el dueño no dictó descripciones y el agente no ve las imágenes,
+   así que cualquier texto sería inventado (DEC-034, misma regla de CR-86b). El
+   render emite `alt=""`, que marca la figura como decorativa.
+
+   🔴 CURSIVAS (CR-86b/c, mecanismo de js/texto.js): los nombres de género y las
+   binomiales van marcados con asteriscos en el data y el render los convierte en
+   `<i>` DESPUÉS de escapar el HTML. Los nombres comunes y los nombres de grupo
+   NO se marcan (DEC-088): «dinosaurios», «terópodos», «saurópodos»,
+   «ceratopsianos», «hadrosáuridos», «tiranosáuridos», «abelisáuridos»,
+   «giganotosáuridos», «ornitisquios» van en redonda.
+   ⚠️ Los asteriscos son SINTAXIS DEL RENDER, no los escribió el dueño: no se
+   «limpian».
+
+   ⚠️ DECISIÓN DE CRITERIO DECLARADA — los nombres ANATÓMICOS en cursiva
+   (`*fíbula*`, `*peroné*`) son términos anatómicos latinos, no nombres comunes,
+   y DEC-088 los admite en el mismo eje «término latino vs. nombre común».
+   ⚠️ NO están dictados por el dueño: si su criterio es que sólo los TAXONES van
+   en cursiva, se desmarcan en un solo lugar (quitar los asteriscos del data) y
+   la página queda igual.
+
+   🔴 DEC-090: esta página reusa las clases `.amb-*` y la hoja
+   `css/secciones/ambar.css`. Motivo medido: esa hoja tiene 34 reglas y sus 34
+   selectores empiezan por `.amb-` (verificado enumerándolos), sin un solo
+   selector global — ni `body`, ni `p`, ni `img`, ni `figure`. Por eso no puede
+   filtrarse a otra página. Duplicarla
+   para renombrar habría creado una segunda copia que diverge en la primera
+   corrección. Si algún día estas dos páginas necesitan estilos distintos, ese es
+   el momento de separar.
+   ============================================================ */
+const DINOSAURIOS = {
+  subpagina: "dinosaurios.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Mesozoico",
+  titulo: "Dinosaurios",
+  bajada:
+    "El grupo de animales que dominó los ecosistemas del Mesozoico durante casi 165 millones de años.",
+  /* `intro: null` a propósito, igual que TRILOBITES, AMMONITES, TIBURONES y
+     ÁMBAR (CR-84): el primer párrafo del Word se publica en su sección («Qué son
+     los dinosaurios») y repetirlo acá lo mostraba DOS veces. El render tolera
+     null (`if (intro && T.intro)`). */
+  intro: null,
+  secciones: [
+    {
+      id: "que-son",
+      titulo: "Qué son los dinosaurios",
+      nivel: 2,
+      parrafos: [
+        "Los Dinosaurios son un grupo (o taxón) de animales prehistóricos que " +
+          "alcanzaron gran diversidad de tamaños, morfología, fisiología y evolución. " +
+          "Fueron los animales dominantes de los ecosistemas del Mesozoico durante " +
+          "aproximadamente 165 millones de años. Se desarrollaron desde el periodo " +
+          "Triásico, hace casi 251 millones de años, donde se inicia su evolución, " +
+          "diversificación y radiación. Durante los periodos Jurásico y Cretácico " +
+          "alcanzaron su gran esplendor, desarrollándose ampliamente, hasta que, a " +
+          "finales del último periodo de la era Mesozoica, se extinguen de forma " +
+          "repentina y catastrófica hace 65 Millones de años.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/01.jpg",
+          ancho: 1304, alto: 595,
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "herbivoros-carnivoros",
+      titulo: "Herbívoros y carnívoros",
+      nivel: 2,
+      parrafos: [
+        "Algunos de estos dinosaurios eran pacíficos herbívoros, que pasaban gran " +
+          "parte de su existencia cerca de los bosques, alimentándose de las plantas " +
+          "y los árboles de estas zonas, para lo cual tenían adaptaciones dentarias " +
+          "aptas para tales tareas como saurópodos, ceratopsianos o hadrosáuridos. " +
+          "Otros dinosaurios en cambio fueron feroces carnívoros, dotados de baterías " +
+          "de dientes capaces de triturar los cuerpos de sus presas como los tan " +
+          "conocidos tiranosáuridos, abelisáuridos, o giganotosáuridos dotados " +
+          "también de afiladas garras, cuerpos más esbeltos y cerebros un poco más " +
+          "desarrollados y al parecer con una fisiología endotérmica acordes a " +
+          "animales cazadores como velocirraptores o troodóntidos.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "diversidad-de-tamanos",
+      titulo: "La diversidad de tamaños",
+      nivel: 2,
+      parrafos: [
+        "La diversidad en los tamaños es otra característica del grupo, ya que " +
+          "existieron dinosaurios de gran tamaño como *Argentinosaurus* y " +
+          "*Supersaurus* son de los dinosaurios más grandes, con longitudes " +
+          "estimadas entre 37 y 42 metros y pesos cercanos a las 70-100 toneladas; " +
+          "pasando por toda la gama de tamaños, hasta aquellos pequeños dinosaurios " +
+          "que alcanzaban el tamaño de una gallina, como *Mei Long*, " +
+          "*Compsognathus*, o el *Parvicursor* y el *Microraptor*, que fueron aún " +
+          "más pequeños,  y si consideramos a las aves actuales como dinosaurios, " +
+          "encontraríamos tamaños aún más pequeños como los gorriones.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/02.jpg",
+          ancho: 922, alto: 472,
+          tras: 0,
+        },
+        {
+          src: "assets/img/dinosaurios/03.jpg",
+          ancho: 362, alto: 604,
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "origen",
+      titulo: "El origen del grupo",
+      nivel: 2,
+      parrafos: [
+        "Los orígenes de Dinosauria debió darse en algún momento durante el " +
+          "Triásico en Gondwana, ya que, desde el punto de vista geográfico y " +
+          "temporal, tendría un origen en este punto del planeta, esto está " +
+          "indicado, debido al descubrimiento de numerosos dinosaurios tempranos y " +
+          "basalmente divergentes, y sus grupos externos de dinosaurios en el sur de " +
+          "Sudamérica y África oriental.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/04.jpg",
+          ancho: 1105, alto: 721,
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "clasificacion",
+      titulo: "La clasificación en debate",
+      nivel: 2,
+      parrafos: [
+        "Estudios recientes han reavivado el debate sobre las relaciones de los " +
+          "principales grupos de dinosaurios y los rasgos anatómicos que los " +
+          "caracterizan. El esquema tradicional Ornithischia y Saurischia " +
+          "(Sauropodomorpha + Theropoda + Herrerasauridae) fue cuestionado a favor " +
+          "de una hipótesis Ornithoscelida (Ornithischia + Theropoda) y Saurischia " +
+          "(Sauropodomorpha + Herrerasauridae). Por lo tanto, este linaje, " +
+          "actualmente comprende dos órdenes, los Ornithoscelida (Ornithischia + " +
+          "Theropoda) y Saurischia (Sauropodomorpha + Herrerasauridae).",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/05.jpg",
+          ancho: 516, alto: 315,
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "dinosaurios-avianos",
+      titulo: "Dinosaurios avianos y no avianos",
+      nivel: 2,
+      parrafos: [
+        "Las últimas evidencias arrojadas por la investigación paleontológica " +
+          "sugieren fuertemente que las aves descenderían de los dinosaurios y por " +
+          "lo tanto pertenecerían a los Ornitosquelida. Todos estos grupos, " +
+          "Ornitosquelida y Saurischia descenderían de un único antepasado, que es " +
+          "común para todos, condición conocida como monofilética.",
+        "Al considerar a las aves dentro del grupo de los dinosaurios, el grupo se " +
+          "amplía ostensiblemente, por lo cual hoy hablamos de dinosaurios avianos " +
+          "(de ave) y no avianos.",
+        "Los dinosaurios avianos son aquellos que pertenecen al suborden de " +
+          "dinosaurios conocidos como terópodos, y son las aves modernas, el único " +
+          "grupo de dinosaurios que no se extinguió y que están con nosotros.",
+        "Nos referimos a dinosaurios no aviares, a todos aquellos dinosaurios que " +
+          "no comparten características de ave, por ejemplo, ceratopsianos, " +
+          "Stegosauridos, hadrosáuridos, sauropodomorfos en general y todos los " +
+          "terópodos no aviares. En tanto un dinosaurio aviar es cualquier miembro " +
+          "del clado Avialae.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/06.jpg",
+          ancho: 1024, alto: 577,
+          tras: 1,
+        },
+      ],
+    },
+    {
+      id: "novedades-evolutivas",
+      titulo: "Algunas novedades evolutivas características del superorden Dinosauria",
+      nivel: 2,
+      parrafos: [
+        "La evolución de los dinosaurios se ha caracterizado por la aparición de " +
+          "ciertas novedades evolutivas o sinapomorfias, que dicen relación con la " +
+          "conformación estructural y anatómica del tobillo, de las extremidades " +
+          "posteriores en general y de la pelvis, afectando a todo el sistema " +
+          "locomotor posterior que ha llevado a los paleontólogos a definir el clado " +
+          "Dinosauria, agrupación que incluye al antepasado común del grupo y todo " +
+          "su linaje, incluyendo actualmente a las aves.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "acetabulo-perforado",
+      titulo: "El acetábulo perforado",
+      nivel: 3,
+      parrafos: [
+        "El acetábulo perforado, es una cavidad de la cadera abierta, un agujero en " +
+          "el centro, formada por la unión de los tres huesos de la pelvis (ilion, " +
+          "isquion y pubis). Es la característica anatómica principal (sinapomorfía) " +
+          "que define al clado Dinosauria. Esta cavidad recibe la cabeza femoral de " +
+          "tal manera que esta queda encajada sosteniendo todo el peso del dinosaurio.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "vertebras-sacras",
+      titulo: "Vértebras sacras fusionadas",
+      nivel: 3,
+      parrafos: [
+        "Por otra parte, las vértebras sacras fusionadas, constituye una " +
+          "característica clave para clasificar a los dinosaurios.  Estas vertebras " +
+          "están fusionadas, formando una maciza barra que formaba una estructura " +
+          "rígida y robusta, que soporta el peso del animal y la locomoción bípeda. " +
+          "Esta fusión puede incluir de 3 a 5 vertebras",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/07.jpg",
+          ancho: 1350, alto: 483,
+          tras: 0,
+        },
+        {
+          src: "assets/img/dinosaurios/08.jpg",
+          ancho: 521, alto: 126,
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "fossa-brevis",
+      titulo: "La fossa brevis",
+      nivel: 3,
+      parrafos: [
+        "La fossa brevis, es un rasgo anatómico funcional en la pelvis de los " +
+          "dinosaurios, es una depresión o cavidad situada en la parte " +
+          "postero-inferior del ilion (hueso superior de la cadera), justo detrás " +
+          "del acetábulo. Es una característica clave de los dinosaurios, que sirve " +
+          "para alojar el músculo caudofemoralis brevis, el cual funciona como un " +
+          "retractor femoral, esencial para la locomoción bípeda o cuadrúpeda " +
+          "albergando los músculos que mueve la pata hacia atrás y el movimiento de " +
+          "la cola. La presencia de este ayuda a los paleontólogos a distinguir a " +
+          "los dinosaurios basales de otros arcosaurios.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/09.jpg",
+          ancho: 979, alto: 477,
+          /* El Word trae, inmediatamente después de esta figura, un párrafo que es
+             su PIE («Reconstrucción de la pelvis de Bagarctatan ostromi en vista
+             lateral…»). Viaja como `pie` de la figura y no como párrafo suelto:
+             es lo que el Word dice que es. */
+          pie: "Reconstrucción de la pelvis de Bagarctatan ostromi en vista lateral, y detalle de la Fosa brevis, Barras de escala: 2 cm.",
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "cabeza-femoral",
+      titulo: "La cabeza femoral",
+      nivel: 3,
+      parrafos: [
+        "La cabeza femoral en los dinosaurios está claramente diferenciada y " +
+          "orientada hacia adentro, encajando en un acetábulo perforado (agujero en " +
+          "la cadera). Esta estructura es una sinapomorfia clave que permitía a sus " +
+          "patas sostenerse directamente debajo del cuerpo, garantizando una postura " +
+          "erguida en lugar de extendida, lo cual fue fundamental para su locomoción " +
+          "y éxito evolutivo de estos dinosaurios. Tanto los dinosaurios de cadera de " +
+          "reptil como de ave compartían esta articulación especializada, " +
+          "diferenciándolos de otros arcosaurios con patas más extendidas, " +
+          "permitiendo una marcha bípeda eficiente en los terópodos.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "fibula-reducida",
+      titulo: "Fíbula reducida",
+      nivel: 3,
+      parrafos: [
+        "La *fíbula* (o *peroné*) reducida en los dinosaurios, especialmente en " +
+          "terópodos, es una adaptación evolutiva clave para la locomoción bípeda " +
+          "rápida, donde este hueso se vuelve más delgado y corto en comparación con " +
+          "la tibia para aligerar el peso de las extremidades y mejorar la eficiencia " +
+          "mecánica, por lo cual la reducción de la fíbula ocurre principalmente en " +
+          "dinosaurios bípedos, donde la tibia soporta la mayor parte de la carga de " +
+          "peso. Al reducirse la fíbula, el astrágalo y el calcáneo (huesos del " +
+          "tobillo) se articulan principalmente con la tibia, permitiendo un " +
+          "movimiento de bisagra más estable y directo. Como era de esperar y siendo " +
+          "las aves descendientes de los dinosaurios, esta tendencia a la reducción " +
+          "del *peroné* continuó en las aves modernas, donde la *fíbula* a menudo es " +
+          "solo una pequeña espícula ósea unida a la tibia.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/10.jpg",
+          ancho: 726, alto: 637,
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "tarsometatarso",
+      titulo: "Tarsometatarso",
+      nivel: 3,
+      parrafos: [
+        "Por otra parte, en los dinosaurios tiranosáuridos, y en general en las " +
+          "aves, el \"tarso metatarsiano\" es un hueso compuesto llamado " +
+          "tarsometatarso, formado por la fusión de los huesos del tarso o el " +
+          "tobillo y los metatarsos que son los huesos largos del pie, en una sola " +
+          "estructura en la parte inferior de la pata. Este hueso articula en la " +
+          "parte superior con los huesos de la pierna (tibia y peroné) y con las " +
+          "falanges de los dedos en la parte inferior siendo características únicas " +
+          "del grupo.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/dinosaurios/11.jpg",
+          ancho: 522, alto: 831,
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "extincion",
+      titulo: "La extinción y el nombre del grupo",
+      nivel: 2,
+      parrafos: [
+        "Los dinosaurios se extinguen al final del periodo Cretácico, o tal vez " +
+          "deberíamos decir que no se extinguieron totalmente, sino que su " +
+          "descendencia vive aún con nosotros a través de las aves actuales.",
+        "El término dinosaurio acuñado por Richard Owen, evoca a reptiles, ya que " +
+          "significa “Lagarto terrible”, lo que está lejos de ser así, ya que los " +
+          "dinosaurios no son lagartos ni tampoco son tan terribles, puesto que " +
+          "estos han tenido un desarrollo como cualquier grupo biológico, con presas " +
+          "y depredadores.",
+      ],
+      imagenes: [],
+    },
+  ],
+
+  notaImagenes:
+    "Las imágenes de esta página son material del Museo Paleontológico de Chile y se publican con " +
+    "su autorización.",
+  /* Sin sección de atributos: las imágenes son del museo, no de Commons.
+     El render hace `if (!T.atribucion) return;` y no la pinta. */
+  atribucion: null,
+  cierre: {
+    texto: "Los huesos de dinosaurios son una de las piezas de la muestra del museo.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones"
+  }
+};
+
+
 /* --- SUBPÁGINA TIBURONES (tiburones.html) ---
    CR-85 (2026-10-20) — QUINTA subpágina del sitio, después de curriculum.html
    (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61) y amonites.html (CR-83).
@@ -2744,6 +3178,7 @@ if (typeof window !== "undefined") {
      undefined y ambar.js sale por el guard sin pintar nada (página en blanco).
      Se vio al medir: `node -e` daba «Cannot read properties of undefined». */
   window.AMBAR = AMBAR;
+  window.DINOSAURIOS = DINOSAURIOS;
   /* CR-80: `const` no crea propiedad global — sin esta línea ENTIDADES es
      undefined en el render (misma trampa que documentó CR-71 con CEC_SUBPAGINA). */
   window.ENTIDADES = ENTIDADES;
