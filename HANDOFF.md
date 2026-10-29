@@ -1305,3 +1305,53 @@ Estructura medida en el DOM:
    juzgarla (el agente no ve imágenes). Pedirle al dueño que la mire: si es un
    esquema con texto, el fondo blanco está bien; si es una lámina con fondo de
    color, hay que revisarla.
+
+---
+
+## CR-88 (2026-10-29) — CORRECCIÓN DE NOMBRE: «Dinosaurios general» (DEC-091)
+
+Instrucción del dueño, textual: «recuerda que huesos de dinosaurios se corrige a
+dinosaurios general».
+
+⚠️ **Es la MISMA instrucción de CR-87 que no se aplicó donde correspondía.** En el
+pedido original («huesos de dinosaurio, correccion de nombre, dinosaurios
+general») se tomó «dinosaurios general» como el ALCANCE del material —la
+subpágina— y se dejó la card con el nombre viejo. El dueño tuvo que repetirlo. La
+lectura correcta era la literal: **el nombre de la pieza se corrige**.
+
+### Alcance aplicado (y lo que NO se tocó)
+
+| Campo de la card | Acción |
+|---|---|
+|  |  → **** |
+|  | intacto |
+|  /  | intactos (, ) |
+|  /  | intactos (, «Conocer los dinosaurios») |
+| Piezas hermanas | ** y  intactas** |
+
+La corrección nombra **una sola** pieza: no se propaga a las otras dos hermanas.
+
+### Verificación (DOM real, URL EN VIVO)
+
+
+
+- **0** apariciones de «Huesos de dinosaurios» en la portada publicada
+- **0** apariciones en el código publicado ( en vivo sirve
+  ; la única que queda está en el comentario que
+  documenta el cambio)
+- **0** errores JS · **0** desborde a 390 px · 7 cards
+
+⚠️ **GitHub Pages tardó ~110 s en servir el  nuevo**, más que los
+~30-45 s documentados. El primer  devolvía el nombre VIEJO y el segundo, con
+, ya traía el nuevo. Antes de alarmar por «no se aplicó»:
+reintentar con cache-bust y medir el DOM, no el código HTTP.
+
+Captura de la card corregida: .
+
+### 🔴 Lección de trato (para el dueño de este proyecto)
+
+Cuando dicta **dos cosas en una frase** («huesos de dinosaurio, corrección de
+nombre, dinosaurios general»), **cada fragmento es una orden**: el material, la
+corrección y el nombre nuevo. Se aplican TODAS antes de cerrar. Tomar el último
+fragmento como «alcance» de los anteriores es leerlo al revés — y le costó un
+mensaje extra al dueño.
