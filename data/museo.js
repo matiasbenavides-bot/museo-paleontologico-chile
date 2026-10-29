@@ -467,12 +467,17 @@ const COLECCIONES = {
       enlace: "tiburones.html", enlaceTexto: "Conocer los tiburones" },
     /* CR-87 (2026-10-29): el dueño pidió subpágina para los dinosaurios — mismo
        mecanismo que Trilobites (CR-60), Ammonites (CR-83), Tiburones (CR-85) y
-       Ámbar (CR-86). La card que ABRE la página es esta, «Huesos de dinosaurios»:
+       Ámbar (CR-86). La card que ABRE la página es esta, «Dinosaurios general»:
        es la pieza de la colección a la que corresponde el material del Word
        («Definiendo a los dinosaurios»). `enlaceTexto` es OBLIGATORIO cuando hay
        `enlace`: si falta, el render escribe "Ver más", que es texto que el dueño
        NO dictó. */
-    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Huesos de dinosaurios", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto.",
+    /* CR-88 (2026-10-29): el dueño corrigió el NOMBRE de esta pieza — decía
+       «Huesos de dinosaurios» y el nombre correcto es «Dinosaurios general»
+       (DEC-091). Es la pieza de la colección que abre la subpágina
+       dinosaurios.html. Las otras dos piezas hermanas («Huevos de dinosaurios»
+       y «Reconstrucciones») NO se tocan: la corrección nombra ésta sola. */
+    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Dinosaurios general", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto.",
       enlace: "dinosaurios.html", enlaceTexto: "Conocer los dinosaurios" },
     { icono: "huevo",     conIcono: true,  arte: "assets/img/pieza-huevos.png", nombre: "Huevos de dinosaurios", detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." },
     { icono: "recon",     conIcono: true,  arte: "assets/img/pieza-reconstrucciones.png", nombre: "Reconstrucciones", detalle: "Esqueletos y reconstrucciones que devuelven forma a los fósiles." }
