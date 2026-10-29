@@ -1140,3 +1140,168 @@ Estructura medida en la página:
 Las tres de la Expo Ámbar (09/10/11) siguen juntas **porque así vienen en el
 Word**. Si el dueño prefiere verlas repartidas, hay que decirlo explícitamente:
 hoy repartirlas sería inventar.
+
+---
+
+## CR-87 (2026-10-29) — SÉPTIMA SUBPÁGINA: DINOSAURIOS
+
+Pedido del dueño, textual: «sigamos con huesos de dinosaurio, correccion de
+nombre, dinosaurios general». El material es **«Definiendo a los dinosaurios.docx»**
+(1.986.966 bytes, 11 imágenes), entregado el 2026-10-29 y copiado al repo como
+`fuentes/dinosaurios-material-del-dueno.docx`
+(**MD5 `c5a66ee8864337cb91869c1db5e7f36f`**). Autorización de imágenes: textual,
+*«las imagenes estan autorizadas»*.
+
+**EN LÍNEA Y VERIFICADO EN VIVO:**
+`https://matiasbenavides-bot.github.io/museo-paleontologico-chile/dinosaurios.html`
+(commit `b218f19`).
+
+### Las 7 piezas del trámite
+
+| # | Archivo | Acción |
+|---|---|---|
+| 1 | `assets/img/dinosaurios/01..11.jpg` | 11 imágenes en orden literal del Word |
+| 2 | `data/museo.js` → `const DINOSAURIOS` | bloque nuevo, antes de `TIBURONES` |
+| 3 | `data/museo.js` → `window.DINOSAURIOS` | export (trampa de `const`, 4.ª vez) |
+| 4 | `data/museo.js` → card «Huesos de dinosaurios» | `enlace` + `enlaceTexto` |
+| 5 | `dinosaurios.html` | clon de `ambar.html` |
+| 6 | `js/dinosaurios.js` | clon de `js/ambar.js` |
+| 7 | `css/secciones/ambar.css` | **REUSADA** (DEC-090), no duplicada |
+
+Nav + footer en las **8 páginas** = **2 apariciones cada una** (medido).
+
+### 🔴 DEC-090 — esta página SÍ reusa `amb-`, a propósito
+
+DEC-83 («prefijo propio por subpágina») nació de dos defectos: `.galeria__foto img`
+(CR-60e) y `.perfil__libros` (CR-69) — selectores de hojas **genéricas** aplicados
+a páginas que reusaban la clase. Acá el caso es el opuesto y está **medido**:
+`ambar.css` tiene **34 reglas y sus 34 selectores empiezan por `.amb-`**, sin un
+solo selector global (ni `body`, ni `p`, ni `img`, ni `figure`). No puede filtrarse
+a otra página. Duplicar 211 líneas para renombrar habría creado **una segunda copia
+que diverge en la primera corrección** — el defecto que DEC-83 evita, al revés.
+Si algún día las dos páginas necesitan estilos distintos, **ese** es el momento de
+separar.
+
+### 🔴 TRAMPA NUEVA MEDIDA — el `<script>` quedó apuntando al render viejo
+
+El clon de `ambar.html` conservaba `<script src="js/ambar.js">`. Síntoma exacto:
+`<title>` y `<h1>` decían **«Ámbar»** y la página pintaba **6 secciones / 9
+párrafos / 11 figuras** — las de ámbar, no las de dinosaurios. No había ningún
+error de consola: el render viejo encontró `window.AMBAR` y pintó lo suyo.
+
+⇒ **Al clonar una subpágina, el `<script src>` es el que se olvida.** El `<title>`
+del `<head>` ya decía «Dinosaurios» y engañaba: el que manda es el que el render
+escribe en `document.title`. Verificar **contando secciones**, no leyendo el HTML.
+
+### 🔴 Erratas corregidas (5) — ninguna palabra del museo
+
+Verificado con `difflib` palabra por palabra contra `word/document.xml`:
+**9 diferencias, todas declaradas, 0 no explicadas.**
+
+| Word | Publicado |
+|---|---|
+| `dentarías` | `dentarias` |
+| `ceratopcianos` | `ceratopsianos` |
+| `giganotosauridos` | `giganotosáuridos` |
+| `dinosauria,` (coma espuria) | `Dinosauria` |
+| `vertebras` (el mismo párrafo ya escribe `vértebras`) | `vértebras` |
+
+Las otras 4 diferencias del diff son los **5 rótulos del Word** que se publican
+como **títulos de sección** y no como párrafos (ver abajo).
+
+### Jerarquía: el Word SÍ trae títulos (no hubo que inventar)
+
+- El **primer párrafo es el título** del capítulo («Definiendo a los dinosaurios»)
+  → da el `titulo` de la página, no se republica.
+- **5 rótulos cortos sin punto final** son títulos del original y se publican como
+  `h2`/`h3`: «Algunas novedades evolutivas características del superorden
+  Dinosauria», «El acetábulo perforado», «Vértebras sacras fusionadas», «Fíbula
+  reducida», «Tarsometatarso».
+- **Un párrafo es PIE DE FIGURA** del propio Word («Reconstrucción de la pelvis de
+  Bagarctatan ostromi en vista lateral…»): viaja como `pie` de la figura 09, no
+  como párrafo suelto. Es la **única** `figcaption` de la página.
+- Las **5 secciones** sin rótulo en el Word llevan título **derivado del
+  contenido** (la página necesita anclas para el índice). Los párrafos son
+  literales.
+
+14 secciones: **7 de nivel 2** y **6 de nivel 3**.
+
+### 🖼️ Conversión de formato (declarada, no silenciosa)
+
+`image2` es **TIF RGBA** y `image5` es **PNG RGBA**. JPEG no lleva alfa → se
+compusieron sobre **BLANCO**, nunca sobre negro: rellenar de negro lo transparente
+**ya se cometió en CR-60** y se revirtió. Medido después: las 4 esquinas de
+`05.jpg` dan `255,255,255` y el contenido ocupa el ancho completo (`bbox`
+2..514 de 516), así que **el blanco no forma marco visible**.
+
+### Verificación (todo medido)
+
+`node --check` OK en `data/museo.js` y `js/dinosaurios.js`.
+
+**DOM real, Chromium headless, URL EN VIVO:**
+
+| Dato | Medido |
+|---|---|
+| secciones / párrafos / figuras | 14 / 18 / 11 |
+| `<i>` renderizadas con `font-style: italic` | **10 / 10** |
+| asteriscos visibles · `<i>` escapados | **0 · 0** |
+| `alt=""` · sin atributo · con texto | **11 · 0 · 0** |
+| `figcaption` | **1** (el pie del Word) |
+| orden en DOM | `01 → 11` intacto |
+| texto duplicado entre secciones | **0** |
+| overflow · errores JS | **no · ninguno** |
+| lazy | 9/11 a `scrollY=0` → **11/11** tras scrollear, 0 fallidas |
+| 360/375/414/768/1024/1280 | **6/6** sin overflow, 0 recortadas |
+| humo del sitio (8 páginas × 3 anchos) | **8/8** con 0 errores JS, 0 imágenes rotas, 0 desborde |
+
+Estructura medida en el DOM:
+
+```
+[que-son]               H2 · P · IMGS(1)
+[herbivoros-carnivoros] H2 · P
+[diversidad-de-tamanos] H2 · P · IMGS(2)
+[origen]                H2 · P · IMGS(1)
+[clasificacion]         H2 · P · IMGS(1)
+[dinosaurios-avianos]   H2 · P · P · IMGS(1) · P · P
+[novedades-evolutivas]  H2 · P
+[acetabulo-perforado]   H3 · P
+[vertebras-sacras]      H3 · P · IMGS(2)
+[fossa-brevis]          H3 · P · IMGS(1) + PIE
+[cabeza-femoral]        H3 · P
+[fibula-reducida]       H3 · P · IMGS(1)
+[tarsometatarso]        H3 · P · IMGS(1)
+[extincion]             H2 · P · P
+```
+
+### Sondas nuevas (re-ejecutables)
+
+- `scripts/medir-dom.js` — **reconstruida**: la skill la citaba y **no estaba en el
+  repo**. Mide cursivas, asteriscos, figuras, `alt`, orden en DOM, estructura por
+  sección, duplicados, lazy en dos pasadas y 6 anchos. Requiere
+  `NODE_PATH=/tmp/pwtest/node_modules` y `CHROME_PATH` apuntando a
+  `~/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome` (el
+  `channel: "msedge"` y los paths de WSL **no** funcionan en este equipo).
+- `scripts/humo-sitio.js` — 8 páginas × 3 anchos: errores JS, imágenes rotas,
+  desborde. Es la sonda de **no regresión** del sitio entero.
+- `scripts/verifica-texto-dinosaurios.js` — asteriscos **por párrafo completo**
+  (no por línea: da falsos positivos, ver CR-86c).
+
+### Capturas para el dueño
+
+`/mnt/c/Users/logic/Downloads/mpch-dinosaurios-inicio.png`, `-novedades.png`,
+`-pie.png` (1440) y `-celular.png` (390).
+
+### Pendientes abiertos de esta página
+
+1. **Sin `alt`** (11 vacíos): el dueño no dictó descripciones y el agente no ve las
+   imágenes. Si las dicta, se agregan como `alt:` en el data y `altDe` las usa sola.
+2. **Sin pies de foto** salvo el que trae el Word (figura 09). Los otros 10 no
+   tienen descripción en el original: inventarlos sería atribución falsa.
+3. **Cursivas anatómicas** (`*fíbula*`, `*peroné*`): son criterio declarado, **no
+   dictadas**. Si el dueño quiere cursiva **sólo** en taxones, se quitan los
+   asteriscos del data en un solo lugar.
+4. ⚠️ **La figura 05** (el esquema de Ornithoscelida/Saurischia) **no se pudo
+   verificar como imagen legible**: muestreo de color y ASCII no alcanzan para
+   juzgarla (el agente no ve imágenes). Pedirle al dueño que la mire: si es un
+   esquema con texto, el fondo blanco está bien; si es una lámina con fondo de
+   color, hay que revisarla.
