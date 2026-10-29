@@ -1323,30 +1323,38 @@ lectura correcta era la literal: **el nombre de la pieza se corrige**.
 
 | Campo de la card | Acción |
 |---|---|
-|  |  → **** |
-|  | intacto |
-|  /  | intactos (, ) |
-|  /  | intactos (, «Conocer los dinosaurios») |
-| Piezas hermanas | ** y  intactas** |
+| `nombre` | `Huesos de dinosaurios` → **`Dinosaurios general`** |
+| `detalle` | intacto |
+| `icono` / `arte` | intactos (`hueso`, `pieza-huesos.png`) |
+| `enlace` / `enlaceTexto` | intactos (`dinosaurios.html`, «Conocer los dinosaurios») |
+| Piezas hermanas | **`Huevos de dinosaurios` y `Reconstrucciones` intactas** |
 
 La corrección nombra **una sola** pieza: no se propaga a las otras dos hermanas.
 
 ### Verificación (DOM real, URL EN VIVO)
 
-
+```
+Trilobites             -> trilobites.html
+Ammonites              -> amonites.html
+Ámbar                  -> ambar.html
+Restos de tiburones    -> tiburones.html
+Dinosaurios general    -> dinosaurios.html     <- corregido
+Huevos de dinosaurios  -> (sin enlace)
+Reconstrucciones       -> (sin enlace)
+```
 
 - **0** apariciones de «Huesos de dinosaurios» en la portada publicada
-- **0** apariciones en el código publicado ( en vivo sirve
-  ; la única que queda está en el comentario que
+- **0** apariciones en el código publicado (`data/museo.js` en vivo sirve
+  `nombre: "Dinosaurios general"`; la única que queda está en el comentario que
   documenta el cambio)
 - **0** errores JS · **0** desborde a 390 px · 7 cards
 
-⚠️ **GitHub Pages tardó ~110 s en servir el  nuevo**, más que los
-~30-45 s documentados. El primer  devolvía el nombre VIEJO y el segundo, con
-, ya traía el nuevo. Antes de alarmar por «no se aplicó»:
+⚠️ **GitHub Pages tardó ~110 s en servir el `data/museo.js` nuevo**, más que los
+~30-45 s documentados. El primer `curl` devolvía el nombre VIEJO y el segundo, con
+`?cachebust=<timestamp>`, ya traía el nuevo. Antes de alarmar por «no se aplicó»:
 reintentar con cache-bust y medir el DOM, no el código HTTP.
 
-Captura de la card corregida: .
+Captura de la card corregida: `/mnt/c/Users/logic/Downloads/mpch-card-dinosaurios-general.png`.
 
 ### 🔴 Lección de trato (para el dueño de este proyecto)
 
