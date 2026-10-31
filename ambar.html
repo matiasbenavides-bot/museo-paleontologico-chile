@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es-CL" class="sin-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ámbar — Colecciones | Museo Paleontológico de Chile</title>
+<meta name="description" content="Ámbar: qué es la resina vegetal fósil, qué quedó atrapado en ella, su origen en Europa y América, su valor para la ciencia, la joyería y la Expo Ámbar de Chiapas. Colección del Museo Paleontológico de Chile.">
+<meta name="theme-color" content="#02153f">
+
+<!-- Open Graph (el enlace que se comparte por WhatsApp) -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ámbar — Museo Paleontológico de Chile">
+<meta property="og:description" content="Resina vegetal fósil que atrapó, hace millones de años, un mundo entero de seres vivos.">
+<meta property="og:locale" content="es_CL">
+
+<!-- Mismos favicons que la portada: es el mismo sitio -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+<link rel="mask-icon" href="assets/img/isotipo-ammonite.svg" color="#51adc6">
+<link rel="stylesheet" href="css/main.css">
+<script>document.documentElement.classList.remove("sin-js");</script>
+</head>
+<body>
+
+<!-- Barra de progreso de lectura -->
+<div class="progreso"></div>
+
+<!-- Fondo inmersivo: los MISMOS nodos que la portada y que trilobites.html, para
+     que la subpágina no se sienta de otro sitio. La copia es deliberada y va
+     marcada: si alguien cambia la portada, tiene que cambiarlas todas. -->
+<div id="fondo-clip" aria-hidden="true">
+  <div id="fondo-sedimento"></div>
+  <div id="fondo-ammonite-grande"></div>
+  <div id="fondo-ammonite-2"></div>
+  <div id="fondo-ilustracion"></div>
+  <div id="fondo-ilustracion-2"></div>
+</div>
+<div id="fondo-grano" aria-hidden="true"></div>
+
+<!-- ===== HEADER =====
+     CR-86: misma cabecera que la portada, curriculum.html y trilobites.html.
+     Los enlaces del menú vuelven a la portada con su ancla (`index.html#...`),
+     porque las secciones viven allá, no acá. -->
+<header class="header">
+  <div class="contenedor header__inner">
+    <a href="index.html" class="marca" aria-label="Museo Paleontológico de Chile — inicio">
+      <img class="marca__logo" src="assets/img/logo-mpch-placa.png" alt="Museo Paleontológico de Chile">
+    </a>
+
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="index.html#inicio">Inicio</a>
+      <a href="index.html#somos">Quiénes somos</a>
+      <a href="index.html#colecciones">Colecciones</a>
+      <a href="amonites.html">Ammonites</a>
+      <a href="tiburones.html">Tiburones</a>
+      <a href="ambar.html" aria-current="page">Ámbar</a>
+      <a href="dinosaurios.html">Dinosaurios</a>
+      <a href="index.html#cec">Proyecto C.E.C</a>
+      <a href="index.html#galeria">Galería</a>
+      <a href="index.html#servicios">Servicios</a>
+      <a href="index.html#entidades">Entidades</a>
+      <a href="index.html#visita">Visítanos</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+
+    <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="overlay"></div>
+
+<main>
+
+  <!-- ===== CABECERA DE LA SUBPÁGINA =====
+       Todo el texto sale de AMBAR (data/museo.js), que es la fuente única
+       (DEC-005, y el render lo llena). Acá solo va el esqueleto, igual que en
+       trilobites.html: así no hay dos lugares donde corregir lo mismo.
+
+       ⚠️ El texto es ÍNTEGRO del documento del museo («ÁMBAR.docx»). El agente
+       no redacta (regla DEC-034). Si hay que cambiarlo, lo dicta el dueño. -->
+  <section class="seccion amb-cabeza" id="ambar">
+    <div class="contenedor">
+      <a href="index.html#colecciones" class="amb-volver" data-amb-volver>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        <span data-amb-volver-texto>Volver a la colección</span>
+      </a>
+
+      <span class="etiqueta reveal" data-amb-etiqueta>Colecciones · Resina fósil</span>
+      <h1 class="amb-titulo reveal" data-amb-titulo>Ámbar</h1>
+      <p class="amb-bajada reveal" data-amb-bajada></p>
+
+      <div class="amb-intro reveal" data-amb-intro></div>
+
+      <!-- Índice: se arma solo desde las secciones (no puede desincronizarse) -->
+      <nav class="amb-indice reveal" data-amb-indice aria-label="Secciones de esta página"></nav>
+    </div>
+  </section>
+
+  <hr class="separador">
+
+  <!-- ===== SECCIONES =====
+       Las pinta js/ambar.js desde AMMONITES.secciones (data/museo.js).
+       Cada sección lleva sus párrafos y sus figuras; el pie y el crédito de cada
+       figura viajan JUNTOS en el mismo <figcaption>. -->
+  <section class="seccion" aria-label="Contenido sobre el ámbar">
+    <div class="contenedor">
+      <div data-amb-secciones></div>
+
+      <div class="amb-cierre glass reveal" data-amb-cierre></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER =====
+     Mismo pie que la portada. Los enlaces de "Explorar" van a la portada. -->
+<footer class="footer">
+  <div class="contenedor">
+    <div class="footer__grid">
+      <div class="footer__marca">
+        <a href="index.html" class="marca">
+          <img class="marca__logo marca__logo--footer" src="assets/img/logo-mpch-placa.png" alt="Museo Paleontológico de Chile">
+        </a>
+        <p data-marca-lema>Museo Paleontológico de Chile, 40 años trayendo el pasado al presente.</p>
+      </div>
+
+      <div>
+        <h4>Explorar</h4>
+        <ul>
+          <li><a href="index.html#somos">Quiénes somos</a></li>
+          <li><a href="index.html#colecciones">Colecciones</a></li>
+          <li><a href="amonites.html">Ammonites</a></li>
+          <li><a href="tiburones.html">Tiburones</a></li>
+          <li><a href="ambar.html" aria-current="page">Ámbar</a></li>
+          <li><a href="dinosaurios.html">Dinosaurios</a></li>
+          <li><a href="index.html#cec">Proyecto C.E.C</a></li>
+          <li><a href="index.html#galeria">Galería</a></li>
+          <li><a href="index.html#servicios">Servicios</a></li>
+          <li><a href="index.html#entidades">Entidades</a></li>
+          <li><a href="index.html#visita">Visítanos</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contacto</h4>
+        <ul data-footer-contacto></ul>
+      </div>
+    </div>
+
+    <div class="footer__creditos" data-footer-creditos></div>
+
+    <div class="footer__base">
+      <span>© <span data-anio>2026</span> Museo Paleontológico de Chile. Todos los derechos reservados.</span>
+      <span class="footer__pertenece" data-marca-pertenece></span>
+    </div>
+  </div>
+</footer>
+
+<script src="data/museo.js"></script>
+<script src="js/iconos.js"></script>
+<script src="js/texto.js"></script>
+<script src="js/ambar.js"></script>
+<script src="js/animaciones.js"></script>
+</body>
+</html>
