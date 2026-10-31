@@ -109,6 +109,25 @@ const MUSEO = {
      escrito por su dueño manda sobre la ortografía del agente. Ya se cometió
      el error una vez en esta sesión (se escribió "Matías"); no repetirlo.
      Si hace falta una tilde, la pide él. */
+  /* --- Derechos de los textos (CR-90, 2026-10-30) ---
+
+     🔴 DEC-092 — pidió el dueño, textual: «en todos los textos pon derechos del
+     dueño que sería Juan Castillo Cornejo por sacar los textos de sus propios
+     libros». Después precisó: «SIN TEXTO DE LOS LIBROS, ALGO COMO ESCRITO POR
+     JUAN....» y eligió la frase exacta de abajo.
+
+     ⇒ NO se mencionan los libros en el texto publicado (lo pidió él). La frase
+     va IGUAL en el pie de las 9 páginas, en su propio bloque sobre el copyright
+     del museo, que no se toca.
+
+     ⚠️ El nombre es «Juan Castillo Cornejo», CONFIRMADO por el dueño: en el
+     mensaje escribió «CORNEJO» y al preguntárselo eligió «fue un error de
+     tipeo, como está en todo el sitio». NO cambiar a «Cornejo».
+
+     Mecanismo: el render lo pinta desde acá (DEC-005, fuente única), no a mano
+     en el HTML. Los 7 renders del sitio leen este mismo campo. */
+  derechos: "© Juan Castillo Cornejo. Textos escritos por Juan Castillo Cornejo. Todos los derechos reservados.",
+
   creditos: {
     titulo: "Sitio desarrollado por",
     autores: [

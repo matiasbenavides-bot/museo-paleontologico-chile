@@ -100,6 +100,17 @@
                  "</span>";
         }).join("");
     }
+  
+    /* CR-90 (2026-10-30) — DERECHOS DE LOS TEXTOS (DEC-092).
+        El dueño pidió: «en todos los textos pon derechos del dueño que sería
+        Juan Castillo Cornejo por sacar los textos de sus propios libros», y
+        después precisó que NO se mencionen los libros: «algo como escrito por
+        Juan...». El texto vive en el data/ (DEC-005) y es el MISMO en las 9
+        páginas. Va en su propio bloque, arriba del copyright del museo, que no
+        se toca. Si el dato falta, el bloque se queda vacío: no hay texto
+        inventado de respaldo. */
+    var der = $("[data-footer-derechos]");
+    if (der && M.derechos) { der.textContent = M.derechos; }
   }
 
   /* ---------- Cabecera ---------- */

@@ -25,6 +25,18 @@
 }
 .footer__base a:hover { color: var(--ocre); }
 
+/* --- Derechos de los textos (CR-90, DEC-092)
+   Franja propia ARRIBA de la línea de copyright del museo. El texto lo pide el
+   dueño y vive en data/museo.js (M.derechos); acá sólo se viste.
+   Si el dato falta, el div queda vacío y `:empty` lo saca del flujo: no se ve
+   un hueco ni un borde huérfano. */
+.footer__derechos {
+  padding-top: 20px; margin-top: 4px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: .8rem; line-height: 1.6; color: var(--text-soft);
+}
+.footer__derechos:empty { display: none; }
+
 /* --- Créditos de autoría (CR-34)
    Van entre la grilla del footer y la línea de copyright, con su propio
    separador para que se lean como una franja aparte y no como parte de
