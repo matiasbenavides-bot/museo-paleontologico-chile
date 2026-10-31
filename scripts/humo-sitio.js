@@ -59,5 +59,16 @@ const ANCHOS = [360, 768, 1280];
       f.titulo
     )
   );
+  /* CR-89: la columna `texto` NO es informativa, es un VEREDICTO. Una página
+     servida con 0 caracteres está EN BLANCO aunque el HTTP sea 200 — así se
+     publicaron 5 páginas vacías el 2026-10-29 sin que la tabla lo gritara. */
+  const rotas = filas.filter((f) => f.textos === 0 || f.rotas > 0 || f.errores > 0 || f.anchos.includes("DESBORDE"));
+  if (rotas.length) {
+    console.error("\n*** FALLA: " + rotas.length + " página(s) con problema ***");
+    rotas.forEach((f) => console.error("   " + f.p + " texto=" + f.textos + " rotas=" + f.rotas + " errores=" + f.errores));
+    await browser.close();
+    process.exit(1);
+  }
+  console.log("\nOK: 8/8 páginas con contenido, 0 errores, 0 rotas, 0 desborde");
   await browser.close();
 })().catch((e) => { console.error("FALLO:", e.message); process.exit(1); });
