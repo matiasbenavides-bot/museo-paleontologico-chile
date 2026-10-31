@@ -10,6 +10,7 @@ const BASE = process.argv[2] || "http://127.0.0.1:8899";
 const PAGS = [
   "index.html", "curriculum.html", "proyecto-cec.html", "trilobites.html",
   "amonites.html", "tiburones.html", "ambar.html", "dinosaurios.html",
+  "huellas.html",
 ];
 const ANCHOS = [360, 768, 1280];
 
@@ -69,6 +70,6 @@ const ANCHOS = [360, 768, 1280];
     await browser.close();
     process.exit(1);
   }
-  console.log("\nOK: 8/8 páginas con contenido, 0 errores, 0 rotas, 0 desborde");
+  console.log("\nOK: " + filas.length + "/" + PAGS.length + " páginas con contenido, 0 errores, 0 rotas, 0 desborde");
   await browser.close();
 })().catch((e) => { console.error("FALLO:", e.message); process.exit(1); });

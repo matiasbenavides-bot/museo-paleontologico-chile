@@ -499,6 +499,13 @@ const COLECCIONES = {
     { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Dinosaurios general", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto.",
       enlace: "dinosaurios.html", enlaceTexto: "Conocer los dinosaurios" },
     { icono: "huevo",     conIcono: true,  arte: "assets/img/pieza-huevos.png", nombre: "Huevos de dinosaurios", detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." },
+    /* CR-91 (2026-10-30): el dueño pidió CARD y PÁGINA NUEVA para «Dinosaurios en
+       Chile a través de las huellas» (DEC-093) — mismo mecanismo que las otras
+       cinco subpáginas. `enlaceTexto` es OBLIGATORIO cuando hay `enlace`: si
+       falta, el render escribe "Ver más", que es texto que el dueño NO dictó.
+       Todo el contenido sale de su Word «Huellas para Pag..docx». */
+    { icono: "huella",    conIcono: true,  arte: "assets/img/pieza-huellas.png", nombre: "Dinosaurios en Chile a través de las huellas", detalle: "Las marcas de sus pasos: qué son las huellas fósiles y los sitios donde quedaron escritas.",
+      enlace: "huellas.html", enlaceTexto: "Conocer las huellas" },
     { icono: "recon",     conIcono: true,  arte: "assets/img/pieza-reconstrucciones.png", nombre: "Reconstrucciones", detalle: "Esqueletos y reconstrucciones que devuelven forma a los fósiles." }
   ]
 };
@@ -2765,6 +2772,511 @@ const DINOSAURIOS = {
 };
 
 
+/* --- SUBPÁGINA HUELLAS (huellas.html) ---
+   CR-91 (2026-10-30) — OCTAVA subpágina del sitio, después de curriculum.html
+   (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61), amonites.html
+   (CR-83), tiburones.html (CR-85), ambar.html (CR-86) y dinosaurios.html (CR-87).
+
+   FUENTE: «Huellas para Pag..docx» (7.328.059 bytes, 23 imágenes), el Word que
+   el dueño entregó el 2026-10-30. Copiado al repo como
+   `fuentes/huellas-material-del-dueno.docx`
+   (MD5 07643ca07b32a61c6b561eb5c7c6da63).
+
+   ⚠️ TEXTO: ÍNTEGRO del documento del museo, sin una palabra redactada por el
+   agente (regla DEC-034). Este Word SÍ trae jerarquía propia:
+     - [P0] es el TÍTULO del trabajo → da el `titulo` de la página.
+     - [P1] es una CITA de apertura del autor, firmada por él en [P2]
+       («Juan Castillo Cornejo»). Se publica como `cita` + `citaAutor`, no como
+       párrafo: es lo que el Word dice que es.
+     - SIETE rótulos cortos son títulos del original y se publican como
+       `h2`: «¿Qué es una huella fósil?», «Huellas de dinosaurios en Chile»,
+       «Las huellas fósiles de Chacarilla», «Huellas Fósiles de Huatacondo»,
+       «Carretera de los dinosaurios», «Huellas de la Quebrada La Descubridora»,
+       «Huellas en la región metropolitana», «Las huellas de Termas del Flaco»,
+       «Expedición 2026».
+     - Los PIES DE FIGURA vienen en el Word como párrafo suelto después de cada
+       imagen (o grupo de imágenes). Viajan como `pie` de su figura, no como
+       párrafo: son 17 pies y cada uno pertenece a la figura que lo precede.
+       ⚠️ Un pie puede cubrir DOS figuras («Fotografía y plano de las huellas de
+       Chacarilla»); entonces el pie va en la primera y la segunda lo comparte
+       visualmente, porque así viene en el original.
+     - [P83] es la leyenda de los 10 sitios del mapa final. Va como `pie` de la
+       figura 23 (el mapa), tal como está en el Word: es su leyenda.
+
+   🔴 ERRATAS DEL ORIGINAL — se corrigen SOLO los artefactos de copiado y las
+   faltas evidentes de tipeo, NUNCA palabras ni contenido del museo. Medidas:
+     1. «dejo su impronta» → «dejó» · «deambulo por las playas» → «deambuló»
+        (falta la tilde: el propio Word la pone en «dejó» en otros pasajes).
+     2. «Las hullas presentes» → «Las huellas» · «potencial sitios de huelas» →
+        «potencial sitio de huellas» (transposición de letras).
+     3. «en el año1966» → «en el año 1966» (falta el espacio).
+     4. «innumerables» se mantiene: está bien escrita.
+     5. «a lo menos siete pistas» → se mantiene (es correcto en Chile).
+     6. «1), Quebrada La Descubridora» → «7) Quebrada La Descubridora» en la
+        leyenda del mapa: el original dice «7),» con un paréntesis de más. Se
+        publica «7) Quebrada La Descubridora, Región de Atacama.» — es la MISMA
+        numeración del Word (1 a 10), no se renumeró nada.
+     7. «Giganotosaurus carolini» → se respeta LITERAL aunque el nombre válido
+        sea *Giganotosaurus carolinii*: es el nombre que escribe el museo y
+        corregirlo sería cambiar contenido, no un artefacto. Queda anotado para
+        que el dueño decida.
+     8. «Fotografía: Juan Castillo Cornejo» es un pie del propio Word: se
+        mantiene como pie de la figura 17.
+
+   ✅ IMÁGENES: las 23 del Word, en el ORDEN LITERAL del documento (DEC-82),
+   numeradas 01..23 por posición medida con `r:embed`. El dueño autorizó textual
+   el 2026-10-30: «LAS IMAGENES ESTAN AUTORIZADAS».
+
+   🖼️ CONVERSIÓN DE FORMATO (documentada, no silenciosa):
+     6 son PNG con transparencia real (image1,2,3,6,7,20: los esquemas y los
+     dibujos de línea) y 1 es JPEG en escala de grises (image8). JPEG no lleva
+     alfa → se compusieron sobre BLANCO, nunca sobre negro (rellenar de negro lo
+     transparente ya se cometió en CR-60 y se revirtió).
+     MEDIDO después: el contenido ocupa el marco completo en 06/07/20 (margen
+     0-1 px) y en 01/02/03 el margen es el del propio dibujo (9/22/53 px), así
+     que el blanco NO forma marco artificial — es el fondo del esquema.
+     ⚠️ La regla del proyecto «lámina CON TEXTO → fondo BLANCO» se cumple: los
+     esquemas con rótulos (01, 02, 03, 06, 07, 20) quedan sobre blanco sólido,
+     que es lo que el dueño pidió textualmente en 2026-10-15.
+
+   📐 TAMAÑOS: `ancho`/`alto` son los del archivo YA en disco, medidos con PIL
+   uno por uno. Van en el `<img>` para que el navegador reserve el espacio (CLS).
+
+   🔴 SIN `alt`: el dueño no dictó descripciones y el agente no ve las imágenes,
+   así que cualquier texto sería inventado (DEC-034, regla de CR-86b). El render
+   emite `alt=""`, que marca la figura como decorativa. Los PIES sí se publican:
+   vienen del Word.
+
+   🔴 CURSIVAS (CR-86b/c, mecanismo de js/texto.js): los taxones y los icnogéneros
+   van marcados con asteriscos en el data y el render los convierte en `<i>`
+   DESPUÉS de escapar el HTML. Se marcan: *Australopithecus afarensis*,
+   *Giganotopodus*, *Megalosauripus*, *Parabrontopodus*, *Iguanodonichnus
+   frenkii*, *Camtosaurichnus fasolae*, *Giganotosaurus carolini*.
+   ⚠️ NO se marcan: «terópodos», «saurópodos», «ornitópodos», «hadrosáuridos»,
+   «icnitas», «paleoicnitas» (nombres comunes y de grupo, DEC-088).
+
+   🔴 DERECHOS: este Word es del director. Los textos del sitio llevan la línea
+   DEC-092 en el pie («© Juan Castillo Cornejo. Textos escritos por Juan Castillo
+   Cornejo. Todos los derechos reservados.»), que se pinta en las 9 páginas
+   desde `MUSEO.derechos`.
+
+   🔴 DEC-090 (misma decisión que dinosaurios.html): esta página reusa las clases
+   `.amb-*` y la hoja `css/secciones/ambar.css`, porque esa hoja tiene 34 reglas
+   y sus 34 selectores empiezan por `.amb-`, sin un solo selector global.
+   ============================================================ */
+const HUELLAS = {
+  subpagina: "huellas.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Icnología",
+  titulo: "Dinosaurios en Chile a través de las huellas",
+  bajada:
+    "Las marcas que dejaron sus pasos: qué son las huellas fósiles y los sitios de Chile donde quedaron escritas.",
+  /* La cita de apertura viene firmada por el autor EN EL WORD ([P1] y [P2]).
+     Se publica aparte del cuerpo, como cita, no como párrafo suelto. */
+  cita:
+    "“Las huellas son como una máquina del tiempo, que nos llevan a ver los animales del pasado, " +
+    "realmente a través de estas se puede sentir el movimiento, el comportamiento, e incluso " +
+    "percibir el instinto depredador de los dinosaurios y otras bestias prehistóricas”.",
+  citaAutor: "Juan Castillo Cornejo",
+  /* `intro: null` a propósito, igual que las otras subpáginas (CR-84): el primer
+     párrafo del Word se publica en su primera sección y repetirlo acá lo
+     mostraría DOS veces. */
+  intro: null,
+  secciones: [
+    {
+      id: "testimonio",
+      titulo: "El testimonio de su caminar",
+      nivel: 2,
+      parrafos: [
+        "Desde que los primeros vertebrados se aventuraron hacia tierra firme nos han dejado el " +
+          "testimonio de su presencia, no solo a través de su esqueleto sino también las marcas de " +
+          "su caminar. Desde hace 370 millones de años (Devónico medio) en que un pez primitivo " +
+          "dejó su impronta cuando arrastraba su cuerpo por el lodo al ir de charco en charco, " +
+          "impulsado por sus aletas lobuladas cortas y robustas hasta las marcas de los pies " +
+          "dejadas por nuestros ancestros en la húmeda ceniza volcánica lanzada hace 3,6 millones " +
+          "de años en Laetoli en Tanzania en el África oriental, proporcionando evidencia clave " +
+          "del bipedalismo temprano de ancestros como el *Australopithecus afarensis*; los " +
+          "vertebrados han dejado el testimonio de su pasar por el planeta.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "que-es-una-huella",
+      titulo: "¿Qué es una huella fósil?",
+      nivel: 2,
+      parrafos: [
+        "Las huellas fósiles o paleoicnitas, (del griego Paleo = antiguo e icnita = huella), son " +
+          "Las marcas de las patas u otra parte del cuerpo de un animal prehistórico, constituyen " +
+          "un documento único para los paleontólogos, puesto que nos permite deducir los " +
+          "movimientos de los animales que los produjeron. Saber por ejemplo si corría, su " +
+          "velocidad, cantidad de dedos en sus patas, si tenía garras, si era bípedo o " +
+          "cuadrúpedo, etc. Las huellas o improntas de los animales debieron producirse por la " +
+          "actividad del animal en su medio y quedar impresas en el lodo o en terrenos " +
+          "humedecidos por las lluvias, en las orillas de los lagos o zonas de aguas someras, " +
+          "sometidas en ocasiones a transgresiones o regresiones. Luego que el animal ha dejado " +
+          "su huella, ésta debe secarse y quedar cubierta por sedimentos, barro, arena, ceniza " +
+          "volcánica u otros materiales que permitan su conservación.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/huellas/01.jpg",
+          ancho: 408, alto: 249,
+          pie: "Esquema de la producción de una huella, y huella de un Terópodo (Ilustración Jorge Aragón)",
+          tras: 0,
+        },
+        {
+          src: "assets/img/huellas/02.jpg",
+          ancho: 583, alto: 802,
+          pie: "Esquema de las huellas y morfología de Terópodo y morfología de Saurópodo, modificado de Lockley.",
+          tras: 0,
+        },
+        {
+          src: "assets/img/huellas/03.jpg",
+          ancho: 568, alto: 809,
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "huellas-en-chile",
+      titulo: "Huellas de dinosaurios en Chile",
+      nivel: 2,
+      parrafos: [
+        "En el último tiempo se han encontrado muchos restos óseos de dinosaurios en nuestro " +
+          "territorio, sin embargo, el registro de huellas de estos mismos animales, superan con " +
+          "creces a los restos esqueléticos hallados. Las huellas son muy abundantes de norte a " +
+          "sur y amplían el número de dinosaurios en Chile.",
+        "El registro icnológico incluye huellas de terópodos grandes, medianos y pequeños " +
+          "incluyendo raptoridos, innumerables huellas de saurópodos de diversos tamaños, huellas " +
+          "de ornitópodos, también de tamaños variables, más una cantidad de huellas " +
+          "indeterminadas que necesitan más estudio. Las edades para las mismas generalmente van " +
+          "desde el Jurásico Superior hasta el Cretácico Inferior. Acá mostramos solo las mas " +
+          "importantes.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "chacarilla",
+      titulo: "Las huellas fósiles de Chacarilla",
+      nivel: 2,
+      parrafos: [
+        "Diversas huellas y varias rastrilladas fósiles de dinosaurios, han sido encontradas en la " +
+          "I región de Tarapacá, ubicadas en un cañón denominado Chacarilla a unos 40 km al " +
+          "sureste de la localidad de Pica, pertenecientes a la Formación Chacarilla, desde donde " +
+          "se han dado a conocer por varios grupos de estudiosos. Aunque las huellas de " +
+          "Chacarilla eran conocidas desde hace mucho tiempo, fueron reportadas por primera vez " +
+          "en el año 1962, cuando los investigadores C.  Galli y R. J. Digman, las reconocieron " +
+          "en un trabajo que publicaron, donde se identificaron diferentes icnoformas que, " +
+          "incluyen ornitópodos, saurópodos, terópodos y estegosaurios (esta última con muchas " +
+          "dudas).",
+        "Con base a las diversas investigaciones en la Formación Chacarilla, se puede determinar " +
+          "la existencia de cuatro clases de tamaño de icnitas de terópodos, presentes en el " +
+          "lugar:",
+        "1.-  Huellas gigantes cuyas longitudes van entre los 51 y 52,8 centímetros, (*Giganotopodus*).",
+        "2.-  Huellas grandes con longitudes entre los 43,5 y 46,5 centímetros.",
+        "3.-  Huellas medianas con un rango de unos 24 a 26 centímetros de longitud.",
+        "4.-  y un cuarto grupo donde se concentran las huellas más pequeñas entre 12 a 20 centímetros.",
+        "En las cercanías, el lugar presenta asociación con restos vegetales y troncos fósiles, lo " +
+          "que es indicativo de presencia de bosques cercanos al lugar. También esta asociación " +
+          "faunística demostraría que los dinosaurios tendrían comportamiento gregario, o sea, que " +
+          "vivían en grupos como el caso de saurópodos y ornitópodos.",
+        "Las huellas de ornitópodos también son grandes y parecidas a las de Termas del Flaco, " +
+          "de por lo menos 40 centímetros. En tanto que las huellas de saurópodos, dan cuenta de " +
+          "ejemplares que midieron entre 10 y 20 metros. Todo este conjunto de huellas muestra " +
+          "una asociación biológica sin precedente.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/huellas/04.jpg",
+          ancho: 1556, alto: 1064,
+          pie: "Fotografía de las rastrilladas de Terópodo, y Huella de Terópodo de Chacarilla, " +
+               "posiblemente de Giganotosaurio, (*Giganotopodus*) el cartabón o referencia de " +
+               "medida, es de 40 centímetros.",
+          tras: 7,
+        },
+        {
+          src: "assets/img/huellas/05.jpg",
+          ancho: 419, alto: 617,
+          tras: 7,
+        },
+        {
+          src: "assets/img/huellas/06.jpg",
+          ancho: 304, alto: 215,
+          pie: "Fotografía y plano de las huellas de Chacarilla, que muestran rastrilladas de " +
+               "saurópodos y terópodos.",
+          tras: 7,
+        },
+        {
+          src: "assets/img/huellas/07.jpg",
+          ancho: 277, alto: 214,
+          tras: 7,
+        },
+        {
+          src: "assets/img/huellas/08.jpg",
+          ancho: 2448, alto: 1705,
+          pie: "*Giganotosaurus carolini*, dinosaurio terópodo que posiblemente fue el trazador " +
+               "de las huellas (*Giganotopodus*), en la Formación Chacarilla.",
+          tras: 7,
+        },
+      ],
+    },
+    {
+      id: "huatacondo",
+      titulo: "Huellas Fósiles de Huatacondo",
+      nivel: 2,
+      parrafos: [
+        "Varias huellas de dinosaurios han sido estudiadas en quebrada Huatacondo, perteneciente a " +
+          "la Formación Majala, Cuenca de Tarapacá, al interior de Iquique, I región. Huatacondo " +
+          "es un oasis y pequeño poblado de origen quechua (significa \"donde el cóndor tiene su " +
+          "nido\") situado a unos 230 km al sureste de Iquique en la Región de Tarapacá, Chile. La " +
+          "edad para esta Formación y las huellas, ha sido situada en el Jurásico Superior, que va " +
+          "de los 157 a los 155 millones de años (Oxfordiano tardío).",
+        "Las huellas pertenecen a grandes terópodos cuya longitud de la pata va de 50 a 52,8 " +
+          "centímetros, que habrían pertenecido al icnogénero *Megalosauripus*. Otras huellas de " +
+          "43 a 46 centímetros, que podrían pertenecer a un juvenil del anterior y huellas " +
+          "medianas que están en el rango de 25 a 27 centímetros, y huellas de terópodos pequeños " +
+          "con longitudes que van de los 8 y 13 centímetros.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/huellas/09.jpg",
+          ancho: 1236, alto: 663,
+          pie: "Cuatro huellas consecutivas de un gran terópodo, con un largo de 61,5 cm. y un " +
+               "ancho de 38,5 cm. Fotografía de Karen Moreno.",
+          tras: 1,
+        },
+      ],
+    },
+    {
+      id: "carretera-de-los-dinosaurios",
+      titulo: "Carretera de los dinosaurios",
+      nivel: 2,
+      parrafos: [
+        "Lo que hoy es el Desierto de Atacama, en el pasado fue un vergel, con bosques y cursos de " +
+          "agua en donde muchos animales dinosaurianos se congregaban para disfrutar de este " +
+          "paraíso, dejando en las orillas de estos cursos de agua el testimonio de su presencia, " +
+          "“sus huellas”. “Carretera de Dinosaurios”, con estas palabras, los especialistas " +
+          "definen un nuevo sitio paleontológico ubicado en el sector de San Salvador, al interior " +
+          "de Calama, descubierto por Osvaldo Rojas Mondaca, director del Museo de Historia " +
+          "Natural y Cultural del Desierto de Atacama, en el 2010 una infinidad de rastrilladas " +
+          "de Dinosaurios (conjunto de huellas o caminatas), de diverso tipo; Terópodos, " +
+          "Ornitópodos, Saurópodos etc. Pertenecientes a la Formación Quinchamale.",
+        "La importancia que reviste este sitio, es que nos puede mostrar un ecosistema pasado " +
+          "único, pues estos sectores muestran a muchas especies conviviendo e interactuando " +
+          "entre ellas.  Osvaldo Rojas, dio a conocer a quien escribe, estas huellas en el 2010, " +
+          "mientras se encontraba mostrando sus libros en la Feria del Libro de la ciudad de " +
+          "Calama. Las huellas presentes en este sitio son muy nítidas y permitirán un excelente " +
+          "estudio de las mismas, constituyendo un potencial sitio de huellas, tal vez mejor que " +
+          "otros sitios del país.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/huellas/10.jpg",
+          ancho: 1388, alto: 816,
+          pie: "Huella de dinosaurio, terópodo, San Salvador, al interior de Calama, foto Osvaldo Rojas.",
+          tras: 1,
+        },
+        {
+          src: "assets/img/huellas/11.jpg",
+          ancho: 988, alto: 744,
+          pie: "Rastrillada de dinosaurio, San Salvador, al interior de Calama, foto Osvaldo Rojas.",
+          tras: 1,
+        },
+        {
+          src: "assets/img/huellas/12.jpg",
+          ancho: 1299, alto: 879,
+          pie: "Saurópodos bebiendo la orilla de un curso de agua, en el pasado de San Salvador, " +
+               "al interior de Calama. Ilustración Francisco Lemos Caro",
+          tras: 1,
+        },
+      ],
+    },
+    {
+      id: "la-descubridora",
+      titulo: "Huellas de la Quebrada La Descubridora",
+      nivel: 2,
+      parrafos: [
+        "En Quebrada La Descubridora, ubicadas cerca del pueblo de Tierra Amarilla, en la Región de " +
+          "Atacama, en el Norte de Chile, se han descubierto una serie de ocho icnitas, de " +
+          "dinosaurios hadrosáuridos y terópodos, todas del Cretácico Inferior. También fue " +
+          "encontrada una huella en la Quebrada Carrizalillo, ambas quebradas pertenecientes a la " +
+          "Formación Pabellón, lo que hace un total de nueve huellas. De las nueve huellas siete " +
+          "serian de ornitópodos y dos de terópodos. Las icnitas se pueden apreciar claramente y " +
+          "no cabe dudas que son las mejores huellas de ornitópodos que se han conservado.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/huellas/13.jpg",
+          ancho: 952, alto: 1127,
+          pie: "Bloque central con huellas de ornitópodos, arriba y detalles de las huellas abajo. " +
+               "Tomado y modificado de Rubilar-Rogers, et al, 2014.",
+          tras: 0,
+        },
+      ],
+    },
+    {
+      id: "region-metropolitana",
+      titulo: "Huellas en la región metropolitana",
+      nivel: 2,
+      parrafos: [
+        "Una serie de depresiones presentes sobre las arenas fosilizadas fueron descubiertas al " +
+          "interior del Cajón del Maipo a 70 Km. de Santiago, un análisis de estas permitió " +
+          "reconocer huellas fosilizadas, que por su tamaño, composición y forma corresponderían " +
+          "a un dinosaurio saurópodo, un animal de cuatro piernas columnares, de cuello y cola " +
+          "larga que deambuló por las playas del Jurásico hace unos 140 millones de años.",
+        "Estos ripple marks o arenas fosilizadas eran parte de estas playas, constituían la costa " +
+          "de un antiguo mar que ingresaba por el norte abarcando gran cantidad de nuestro " +
+          "territorio. En éste instante la Cordillera de los Andes aun no existía y por tanto los " +
+          "fósiles que encontramos y las huellas fósiles fueron levantados posteriormente por los " +
+          "movimientos tectónicos provocados por las placas.",
+        "Las pisadas presentan barro en el borde de la huella, característica típica de animales " +
+          "de gran peso. Posteriormente se secó conservando las marcas, el lugar luego fue tapado " +
+          "por sedimentos volcánicos o más barro formando capas que permitieron la preservación. " +
+          "El tamaño de las huellas y su morfología permite afirmar que el dinosaurio que las " +
+          "produjo era un saurópodo juvenil, puesto que estos animales alcanzaban fácilmente los " +
+          "25 a 30 metros, en tanto las huellas descubiertas revelan un saurópodo de unos " +
+          "8 metros.",],
+      imagenes: [
+        {
+          src: "assets/img/huellas/14.jpg",
+          ancho: 1349, alto: 1012,
+          pie: "Foto Juan Castillo C. 2026, que muestra cómo están presentes las huellas, la capa " +
+               "de ceniza volcánica que las cubrió y cemento, las ondulitas.",
+          tras: 1,
+        },
+        {
+          src: "assets/img/huellas/15.jpg",
+          ancho: 1351, alto: 924,
+          pie: "Paleoreconstrucción que muestra al Saurópodo dejando sus huellas sobre las " +
+               "rizaduras o Ripple Marks, en la Formación Lo Valdés.  (Ilustración José Lemos Caro).",
+          tras: 1,
+        },
+      ],
+    },
+    {
+      id: "termas-del-flaco",
+      titulo: "Las huellas de Termas del Flaco",
+      nivel: 2,
+      parrafos: [
+        "Uno de los sitios con huellas más importante de Chile, es el ubicado en la localidad de " +
+          "Termas del Flaco, al interior de San Fernando en la VI Región. Las huellas fueron " +
+          "descubiertas por el estudioso de San Fernando, señor Diego Márquez, quien en un viaje " +
+          "de exploración descubre las mismas y las da a conocer al Museo Nacional de Historia " +
+          "Natural de Santiago. Personal de esta institución realizó las primeras investigaciones " +
+          "en el año 1966, pero no fue hasta el año 1967 que la zona pudo ser visitada y estudiada " +
+          "por los investigadores Sammy Frenk, Armando Fasola y el paleontólogo argentino Rodolfo " +
+          "Casamiquela, quienes reconocieron, en una pared casi vertical situada en la falda de " +
+          "una montaña a 600 metros del poblado, rastrilladas que atribuyeron a dos icnoespecies " +
+          "ornitópodas: *Iguanodonichnus frenkii* y *Camtosaurichnus fasolae*. Casamiquela y su " +
+          "equipo reconocieron a lo menos siete pistas de huellas y asignaron la edad de la " +
+          "formación Termas del Flaco, al Jurásico superior.",
+        "Recientes investigaciones se han realizado en la zona por Karen Moreno y David Rubilar, " +
+          "quienes han revelado la presencia de grandes huellas de saurópodos atribuibles al " +
+          "icnogénero *Parabrontopodus*; diversas pistas de ornitópodos y diferentes pistas " +
+          "atribuibles a dinosaurios carnívoros del orden Theropoda.",
+        "Las huellas de Terópodos representan animales de tamaño medio de tres a tres y medio " +
+          "metros y Terópodos pequeños de uno y medio a dos metros. Encontramos en Termas del " +
+          "Flaco una asociación faunística que representa a grupos de dinosaurios compartiendo un " +
+          "hábitat común. Lo que constituye una contribución al estudio de la fauna Mesozoica de " +
+          "Chile y permite comprender el desarrollo de la vida de los dinosaurios.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/huellas/16.jpg",
+          ancho: 1104, alto: 830,
+          pie: "Vista panorámica de las huellas de Termas del Flaco, foto del autor (2026)",
+          tras: 0,
+        },
+        {
+          src: "assets/img/huellas/17.jpg",
+          ancho: 1149, alto: 862,
+          pie: "Huellas (rastrillada) de *Parabrontopodus* (Saurópodo) en Termas del Flaco. " +
+               "Fotografía: Juan Castillo Cornejo",
+          tras: 0,
+        },
+        {
+          src: "assets/img/huellas/18.jpg",
+          ancho: 1105, alto: 708,
+          pie: "Saurópodo dejando las huellas en Termas del Flaco. Ilustración: Bruno Hernández.",
+          tras: 1,
+        },
+      ],
+    },
+    {
+      id: "expedicion-2026",
+      titulo: "Expedición 2026",
+      nivel: 2,
+      parrafos: [
+        "Desde el Museo Paleontológico de Chile, se organiza una salida a terreno, encabezada por " +
+          "su director Juan Castillo Cornejo, hacia las Termas del Flaco, con el objetivo de " +
+          "fotografiar, medir, y registrar nuevas huellas a las ya descubiertas. Dicha salida se " +
+          "realizó desde el día 23 al 27 de febrero, siendo coronada con éxito, pues se pudo hacer " +
+          "todo lo planificado. Como resultado se presentan acá un sinnúmero de nuevas huellas. " +
+          "Participaron junto con el director del Museo Paleontológico de Chile, los colaboradores " +
+          "Guillermo Fuentes y Rafael Baeza.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/huellas/19.jpg",
+          ancho: 1151, alto: 648,
+          pie: "Nueva huella de dinosaurio terópodo descubierta por Juan Castillo C. (2026), escala 25 Cm.",
+          tras: 0,
+        },
+        {
+          src: "assets/img/huellas/20.jpg",
+          ancho: 572, alto: 307,
+          pie: "Dibujo de un pequeño Terópodo, dejando sus huellas en Termas del Flaco. " +
+               "Ilustración Jorge Aragón.",
+          tras: 0,
+        },
+        {
+          src: "assets/img/huellas/21.jpg",
+          ancho: 1350, alto: 761,
+          pie: "Nueva huella de terópodo grande, la huella mide unos 25 centímetros, la escala es " +
+               "de 25 centímetros, foto Juan Castillo C. 2026.",
+          tras: 0,
+        },
+        {
+          src: "assets/img/huellas/22.jpg",
+          ancho: 1570, alto: 1074,
+          pie: "Iguanodontido dejando las huellas en Termas del Flaco. Ilustración: Bruno Hernández.",
+          tras: 0,
+        },
+        {
+          src: "assets/img/huellas/23.jpg",
+          ancho: 1247, alto: 1592,
+          pie: "Sitios con huellas en Chile, los números van en orden de Norte a Sur.  " +
+               "1) Quebrada de Chacarilla, Región de Tarapacá. Formación Chacarilla, Cretácico " +
+               "Inferior. 2) Quebrada de Huatacondo, Tarapacá Región. Formación Quehuita, " +
+               "Kimmeridgiano. 3) Quebrada de Arca, Región de Antofagasta. Formación Quinchamale, " +
+               "Kimmeridgiano. 4) San Salvador, Región de Antofagasta. Formación San Salvador, " +
+               "Kimmeridgiano. 5) Quebrada de Codoceo, Atacama Región. Formación Quebrada " +
+               "Monardes, Cretácico Inferior. 6) Cerro La Isla, Región de Atacama. Quebrada " +
+               "Monardes Formación, Cretácico inferior. 7) Quebrada La Descubridora, Región de " +
+               "Atacama. 8) Valle Las Arenas, Cajón del Maipo, R.M. Formación Lo Valdés, Jurásico " +
+               "Superior- Cretácico Inferior. 9) Termas del Flaco, VI región, Formación Baños del " +
+               "Flaco, Berriasiano – Titoniano, Cretácico Temprano. 10) Posibles huellas en la " +
+               "Formación Dorotea Magallanes.",
+          tras: 0,
+        },
+      ],
+    },
+  ],
+
+  notaImagenes:
+    "Las imágenes de esta página son material del Museo Paleontológico de Chile y se publican con " +
+    "su autorización.",
+  /* Sin sección de atributos: las imágenes son del museo y de sus colaboradores, no de Commons.
+     Los autores van en el pie de cada figura, que es donde el Word los pone. */
+  atribucion: null,
+  cierre: {
+    texto: "Las huellas de dinosaurios son parte del registro fósil que reúne el museo.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones"
+  }
+};
+
+
 /* --- SUBPÁGINA TIBURONES (tiburones.html) ---
    CR-85 (2026-10-20) — QUINTA subpágina del sitio, después de curriculum.html
    (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61) y amonites.html (CR-83).
@@ -3203,6 +3715,7 @@ if (typeof window !== "undefined") {
      Se vio al medir: `node -e` daba «Cannot read properties of undefined». */
   window.AMBAR = AMBAR;
   window.DINOSAURIOS = DINOSAURIOS;
+  window.HUELLAS = HUELLAS;
   /* CR-80: `const` no crea propiedad global — sin esta línea ENTIDADES es
      undefined en el render (misma trampa que documentó CR-71 con CEC_SUBPAGINA). */
   window.ENTIDADES = ENTIDADES;

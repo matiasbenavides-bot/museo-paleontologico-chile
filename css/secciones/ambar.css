@@ -209,3 +209,29 @@
   font-family: var(--font-display); font-size: clamp(1.15rem, 2.2vw, 1.5rem);
   color: var(--text-main); margin-bottom: 18px; max-width: 46ch; margin-inline: auto;
 }
+
+/* ---------- Cita de apertura (CR-91, sólo huellas.html) ----------
+   Viene del Word firmada por el autor. Va entre la bajada y el índice, con una
+   barra de acento a la izquierda: se lee como cita y no como párrafo del cuerpo.
+   `:empty` la saca del flujo cuando el data no trae cita, así las otras siete
+   subpáginas que reusan esta hoja no ganan un hueco. */
+.amb-cita:empty { display: none; }
+.amb-cita {
+  margin-top: clamp(22px, 3.4vw, 32px);
+  padding: clamp(16px, 2.4vw, 22px) clamp(18px, 2.8vw, 26px);
+  border-left: 3px solid var(--border-accent);
+  background: var(--bg-glass);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  max-width: 70ch;
+}
+.amb-cita__texto {
+  font-family: var(--font-display);
+  font-size: clamp(1.02rem, 1.8vw, 1.22rem);
+  line-height: 1.62; color: var(--text-main);
+  margin: 0; font-style: normal;
+}
+.amb-cita__autor {
+  margin: 12px 0 0;
+  font-size: clamp(.82rem, 1.2vw, .88rem);
+  letter-spacing: .04em; color: var(--ocre-light);
+}

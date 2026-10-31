@@ -1439,3 +1439,178 @@ desborde**, y cada página con su propio título y su texto.
 4. **El humo del sitio debe incluir el tamaño del cuerpo**, no sólo el título.
    `scripts/humo-sitio.js` ya imprime la columna `texto`: **si dice 0, la página
    está rota** — se miró esa tabla con los ceros a la vista y no se vio.
+
+---
+
+## CR-91 (2026-10-30) — OCTAVA SUBPÁGINA: «Dinosaurios en Chile a través de las huellas»
+
+Pedido del dueño, textual: «Dinosaurios en Chile a traves de las Huellas, MIRA EL
+NUEVO WORD. ES UNA CARD Y PAGINA NUEVA. EN TODOS LOS TEXTOS PON DERECHOS DEL
+DUENIO QUE SERIA JUAN CASTILLO CORNEJO POR SACAR LOS TEXTOS DE SUS PROPIOS
+LIBROS». Al aclarar el texto de los derechos precisó: «SIN TEXTO DE LOS LIBROS,
+ALGO COMO ESCRITO POR JUAN....».
+
+**Material:** «Huellas para Pag..docx» (7.328.059 bytes, **23 imágenes**, 2.221
+palabras), copiado a `fuentes/huellas-material-del-dueno.docx`
+(**MD5 `07643ca07b32a61c6b561eb5c7c6da63`**). Autorización de imágenes: textual,
+*«LAS IMAGENES ESTAN AUTORIZADAS»*.
+
+### Las 8 piezas del trámite
+
+| # | Archivo | Acción |
+|---|---|---|
+| 1 | `assets/img/huellas/01..23.jpg` | 23 imágenes, orden literal del Word |
+| 2 | `data/museo.js` → `const HUELLAS` | bloque nuevo, antes de `TIBURONES` |
+| 3 | `data/museo.js` → `window.HUELLAS` | export (trampa de `const`) |
+| 4 | `data/museo.js` → card nueva | `enlace` + `enlaceTexto` |
+| 5 | `huellas.html` | clon de `dinosaurios.html` |
+| 6 | `js/huellas.js` | clon + pintado de la CITA |
+| 7 | `css/secciones/ambar.css` | **REUSADA** (DEC-090) + bloque `.amb-cita` |
+| 8 | `assets/img/pieza-huellas.png` | icono de la card (ver abajo) |
+
+Nav + footer en las **9 páginas** = **2 apariciones cada una**.
+
+### 🔴 DEC-092 — la línea de derechos (esto es lo que pidió primero)
+
+Frase **dictada por el dueño**, idéntica en las 9 páginas, en su propia franja
+**arriba** del copyright del museo (que no se tocó):
+
+> © Juan Castillo Cornejo. Textos escritos por Juan Castillo Cornejo. Todos los derechos reservados.
+
+- Vive en `data/museo.js` → `MUSEO.derechos` (DEC-005, nunca a mano en el HTML).
+- La pintan los **8 renders** desde `[data-footer-derechos]`.
+- `.footer__derechos:empty { display:none }`: si el dato falta no queda hueco.
+- ⚠️ **SIN mención a los libros** (lo pidió él). El primer borrador que se propuso
+  decía «Textos extraídos de los libros de…» y lo rechazó.
+
+### 🔴 Nombre: «Cornejo», CONFIRMADO
+
+El dueño escribió «JUAN CASTILLO CORNEJO». Se le preguntó porque todo el sitio
+dice «Cornejo» y porque la regla del proyecto es no corregir nombres propios:
+eligió **«fue un error de tipeo, como está en todo el sitio»**. Se publica
+**Cornejo** en los 9 pies y en la cita.
+
+### 🎯 Erratas corregidas (5) — ninguna palabra del museo
+
+Verificado con `difflib` **palabra por palabra** contra `word/document.xml`:
+**21 diferencias, las 21 explicadas, 0 sin justificar.**
+
+| Word | Publicado |
+|---|---|
+| `dejo su impronta` | `dejó` |
+| `deambulo por las playas` | `deambuló` |
+| `Las hullas presentes` | `Las huellas` |
+| `potencial sitios de huelas,` | `potencial sitio de huellas,` |
+| `en el año1966` | `en el año 1966` |
+| `orden de Norte a Sur.` (sin punto) | `Sur.` |
+| `7), Quebrada La Descubridora` | `7) Quebrada…` |
+
+Las otras 14 diferencias son los **9 rótulos del Word** publicados como títulos y
+**2 reordenamientos pie↔figura** (abajo).
+
+### 🔴 ERROR MÍO DETECTADO EN LA VERIFICACIÓN — 2 párrafos faltaban
+
+La primera pasada publicó **2.037** palabras contra **2.221** del Word. El
+`difflib` delató dos `delete` de párrafos completos, los dos **sin figura propia
+que los delatara**:
+
+1. `[P24]` «Las huellas de ornitópodos también son grandes…» (Chacarilla).
+2. `[P54]` «Las pisadas presentan barro en el borde de la huella…» (Cajón del
+   Maipo).
+
+Se agregaron. Ahora: **2.170 publicadas / 2.221 del Word**, y las 51 restantes son
+exactamente los casos explicados. ⇒ **La verificación por palabra total es la que
+detecta un párrafo perdido**; contar secciones o mirar la página no lo ve.
+
+### 🔴 DECISIÓN DE COLOCACIÓN (a la vista del dueño)
+
+En 2 lugares el Word pone el pie **ANTES** de la figura:
+
+- `[P23]` y `[P27]` pies de Chacarilla → se publican como pie de **04** y **06**.
+- `[P53]` pie del Cajón del Maipo → se publica como pie de **14**.
+
+Se movieron al pie de la figura que describen (un pie antes de la imagen se lee
+como si describiera la anterior). **Es el único cambio de ORDEN del documento** y
+está declarado. Si el dueño prefiere el orden del Word al pie de la letra, se
+devuelve sin tocar el texto.
+
+### 🖼️ Conversión de formato
+
+6 PNG con transparencia real (01, 02, 03, 06, 07, 20 — los esquemas y dibujos de
+línea) y 1 JPEG en escala de grises (08). Se compusieron sobre **BLANCO**, nunca
+negro (llenar de negro lo transparente ya se cometió en CR-60).
+
+**Medido después con bbox del contenido:** en 06/07/20 el dibujo toca el borde
+(margen 0-1 px) y en 01/02/03 el margen es el del propio esquema (9/22/53 px). El
+blanco **no forma marco artificial** — es el fondo del esquema, que es lo que la
+regla del proyecto exige («lámina con texto → fondo blanco sólido»).
+
+### 🎯 El icono de la card: `huella` es un SVG NUEVO, no un pictograma
+
+`art: "assets/img/pieza-huellas.png"` se **generó desde un SVG nuevo** dibujado con
+anatomía real, no inventado a ojo: almohadilla metatarsal + **tres dedos** (II, III
+y IV, que son los que apoya un terópodo) + dedo central más largo + garra en cada
+punta. Es la morfología que el propio Word describe en `[P10]` («morfología de
+Terópodo»). Script reproducible: `scripts/generar-icono-huella.js`.
+
+⚠️ La card **sí se ve**: medido en DOM real, `naturalWidth 440`, caja 59×59,
+`opacity 1`. (Es la trampa de otros iconos de este proyecto: se creyó «no se ve»
+cuando el que mentía era el instrumento.)
+
+### Verificación (todo medido)
+
+`node --check` OK en `data/museo.js`, `js/huellas.js`, `js/iconos.js`. Balance de
+llaves 0 en los 8 renders.
+
+**DOM real, Chromium headless, local:**
+
+| Dato | Medido |
+|---|---|
+| secciones / párrafos / figuras | 10 / 24 / 23 |
+| `figcaption` | **20** (todos los pies del Word) |
+| `<i>` renderizadas en cursiva | **10 / 10** |
+| asteriscos visibles · `<i>` escapados | **0 · 0** |
+| `alt=""` · sin atributo · con texto | **23 · 0 · 0** |
+| orden en DOM | `01 → 23` intacto |
+| texto duplicado entre secciones | **0** |
+| overflow · errores JS | **no · ninguno** |
+| lazy | 10/23 a `scrollY=0` → **23/23** tras scrollear, 0 fallidas |
+| 360/375/414/768/1024/1280 | **6/6** sin overflow, 0 recortadas |
+| cita de apertura | visible, 206 px, con su autor |
+| línea de derechos | presente y visible en las 9 |
+
+Estructura del DOM:
+
+```
+[testimonio]                   H2 · P
+[que-es-una-huella]            H2 · P · IMGS(3)
+[huellas-en-chile]             H2 · P · P
+[chacarilla]                   H2 · P·P·P·P·P·P·P·P · IMGS(5)
+[huatacondo]                   H2 · P · P · IMGS(1)
+[carretera-de-los-dinosaurios] H2 · P · P · IMGS(3)
+[la-descubridora]              H2 · P · IMGS(1)
+[region-metropolitana]         H2 · P · P · IMGS(2) · P
+[termas-del-flaco]             H2 · P · IMGS(2) · P · IMGS(1) · P
+[expedicion-2026]              H2 · P · IMGS(5)
+```
+
+Humo del sitio: **9/9 páginas** con contenido, 0 errores, 0 imágenes rotas, 0
+desborde en 360/768/1280. (`scripts/humo-sitio.js` ya incluye `huellas.html` y
+cuenta las 9.)
+
+### Capturas para el dueño
+
+`/mnt/c/Users/logic/Downloads/mpch-huellas-inicio.png`, `-chacarilla.png`,
+`-termas.png` (1280), `-celular.png` (390) y `mpch-card-huellas.png`.
+
+### Pendientes abiertos
+
+1. **`Giganotosaurus carolini`** se publicó **literal** del Word. El nombre válido
+   es *carolinii* (dos íes). Corregirlo sería cambiar contenido, no un artefacto:
+   lo decide el dueño.
+2. **Sin `alt`** en las 23 figuras (el dueño no dictó descripciones). Los pies sí
+   son los del Word.
+3. **La leyenda del mapa (figura 23)** va completa como pie, tal como en el Word.
+   Es larga (10 sitios): si el dueño la quiere aparte, se mueve a texto.
+4. **Cursivas anatómicas / de grupo**: se marcaron sólo taxones e icnogéneros
+   (DEC-088). «terópodos», «saurópodos», «ornitópodos» van en redonda.

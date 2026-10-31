@@ -224,6 +224,38 @@ const ICONOS = {
     '<path d="M10.5 30.5v4M16.5 30.5v4M22.5 31v4M28.5 31.5v4M34.5 31.5v4"/>' +
     '</svg>',
 
+
+  /* HUELLA — icono de pieza para «Dinosaurios en Chile a través de las huellas»
+     (CR-91). NO es un pictograma decorativo: dibuja lo que la pieza ES, una
+     icnita de terópodo de tres dedos, vista desde arriba.
+
+     Anatomía que se dibuja (la del propio Word del museo, [P10]: «morfología de
+     Terópodo», dedos II-III-IV, el III más largo):
+       - almohadilla metatarsal redondeada atrás (el talón, que apoya primero);
+       - TRES dedos, no cuatro ni cinco: los terópodos apoyan el II, III y IV;
+       - el dedo central (III) más largo y centrado, los laterales más cortos y
+         abiertos, que es lo que hace reconocible una huella de terópodo;
+       - la garra al final de cada dedo, marcada con una punta, porque las
+         huellas reales la conservan.
+
+     El contorno va en trazo continuo y las almohadillas digitales como puntos:
+     así se lee a 58-62 px, que es el tamaño real de la caja del icono. */
+  huella: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    /* almohadilla metatarsal: la base redondeada del talón */
+    '<path d="M32 38c-5.5 0-9.5 4-9.5 9.5S26.5 57 32 57s9.5-4 9.5-9.5S37.5 38 32 38z"/>' +
+    /* dedo II (izquierda): sale abierto y corto, con su garra */
+    '<path d="M24.5 41.5c-3.5-4.5-7-9-9-13.5-1-2.5-.5-5 1.5-6.5 2-1.5 4.5-1.5 6.5.5 4 4 7 9 9 13.5"/>' +
+    /* dedo IV (derecha): espejo del II */
+    '<path d="M39.5 41.5c3.5-4.5 7-9 9-13.5 1-2.5.5-5-1.5-6.5-2-1.5-4.5-1.5-6.5.5-4 4-7 9-9 13.5"/>' +
+    /* dedo III (central): el MÁS LARGO y centrado — el rasgo del terópodo */
+    '<path d="M32 38V26"/>' +
+    '<path d="M27.5 25.5c0-6 .5-12 2-17 .5-2 1.5-3 2.5-3s2 1 2.5 3c1.5 5 2 11 2 17"/>' +
+    /* garras: la punta que remata cada dedo */
+    '<path d="M15.5 20.5l-2.5-2M48.5 20.5l2.5-2M32 5.5l0-3"/>' +
+    /* almohadillas digitales: tres puntos donde el dedo apoya */
+    '<path d="M22 36.5h.01M42 36.5h.01M32 30h.01"/>' +
+    '</svg>',
+
   /* --- Servicios (no son piezas: quedan como pictogramas funcionales) --- */
   museo: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18L24 6l18 12"/><path d="M10 20v16M19 20v16M29 20v16M38 20v16"/><path d="M6 40h36"/></svg>',
   terreno: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4l5 10 11 2-8 8 2 11-10-5-10 5 2-11-8-8 11-2z" transform="translate(0,4)"/><path d="M8 44h32"/></svg>',
