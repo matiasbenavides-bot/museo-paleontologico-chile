@@ -1363,3 +1363,79 @@ nombre, dinosaurios general»), **cada fragmento es una orden**: el material, la
 corrección y el nombre nuevo. Se aplican TODAS antes de cerrar. Tomar el último
 fragmento como «alcance» de los anteriores es leerlo al revés — y le costó un
 mensaje extra al dueño.
+
+---
+
+## CR-89 (2026-10-29) — 🔴 INCIDENTE EN PRODUCCIÓN: 5 PÁGINAS EN CERO (restauradas)
+
+**Síntoma que reportó el dueño:** «HAY UN PROBLEMA CON EL LINK A DINOSAURIOS».
+
+**Lo medido:** `dinosaurios.html`, `trilobites.html`, `amonites.html`,
+`tiburones.html` y `ambar.html` respondían **HTTP 200 con 0 bytes**. El enlace del
+menú y la card abrían **una página en blanco**. `index.html`, `data/museo.js` y
+`js/dinosaurios.js` estaban sanos — por eso el sitio «parecía» funcionar.
+
+### Causa raíz (medida, no inferida)
+
+`git show --numstat be4c008` → **852 borrados, 50 inserciones**: el commit que
+sólo debía documentar en el HANDOFF **truncó a cero los 5 HTML** y creó un archivo
+basura con nombre binario.
+
+El origen fue **mi comando de shell**: un heredoc con texto acentuado y comillas.
+El heredoc se rompió, el shell intentó ejecutar el texto como órdenes y las
+redirecciones `>` terminaron apuntando a nombres sacados del texto.
+
+### 🔴 POR QUÉ NO SE DETECTÓ (las 4 razones, todas evitables)
+
+1. **`git add -A` commitea un archivo vacío sin una sola advertencia.** Un archivo
+   en cero es un cambio válido para git.
+2. **`git status` quedó LIMPIO** → el commit siguiente (`a33db30`) **certificó la
+   rotura** y todo pareció normal.
+3. **`node --check` pasó**: verifica `data/museo.js` y `js/*.js`, que estaban
+   sanos. **Ningún linter mira el HTML.**
+4. **`curl` devolvía 200.** El código HTTP no dice si el cuerpo tiene contenido:
+   **había que medir `size_download` / `wc -c`, y no se hizo.**
+
+### Restauración
+
+Las 5 páginas se recuperaron de `7b41d4a` (el commit **inmediatamente anterior**),
+byte por byte, y se borró el archivo basura. **No se reescribió historia** porque
+`origin/master` ya estaba pusheado: la restauración va como commit nuevo
+(`346bee0`).
+
+| Página | Restaurada |
+|---|---|
+| `ambar.html` | 7384 |
+| `amonites.html` | 7395 |
+| `dinosaurios.html` | 7481 |
+| `tiburones.html` | 7437 |
+| `trilobites.html` | 7698 |
+
+### Verificación en vivo (después del push)
+
+Tamaño servido de las 8 páginas — **todas > 0**:
+
+```
+index.html 21774 · dinosaurios 7481 · trilobites 7698 · amonites 7395
+tiburones 7437 · ambar 7384 · curriculum 7902 · proyecto-cec 9440
+```
+
+Humo del sitio (8 páginas × 3 anchos): **0 errores JS, 0 imágenes rotas, 0
+desborde**, y cada página con su propio título y su texto.
+
+**Prueba del enlace real (clic, no `curl`):** desde la portada, clic en la card
+«Dinosaurios general» → llega a `dinosaurios.html`, título **Dinosaurios**, `h1`
+**Dinosaurios**, **14 secciones**, **11 figuras**, 9798 caracteres de texto.
+
+### 🔴 REGLA NUEVA (va a la skill: `verificacion-por-medicion-trampas.md`)
+
+1. **NUNCA heredoc con texto acentuado, comillas o paréntesis** para escribir
+   documentación en este proyecto. Escribir el bloque con `write_file` a un archivo
+   temporal y **concatenarlo con Python**, nunca con `cat >> … <<'EOF'`.
+2. **Tras CUALQUIER commit que toque archivos existentes, verificar tamaños**
+   antes y después. Un archivo de 0 bytes commiteado es el síntoma.
+3. **`curl` con `-o /dev/null -w '%{size_download}'`, no sólo `%{http_code}`.**
+   Un 200 vacío es peor que un 404: parece que funciona.
+4. **El humo del sitio debe incluir el tamaño del cuerpo**, no sólo el título.
+   `scripts/humo-sitio.js` ya imprime la columna `texto`: **si dice 0, la página
+   está rota** — se miró esa tabla con los ceros a la vista y no se vio.
