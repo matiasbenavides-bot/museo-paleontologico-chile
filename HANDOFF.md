@@ -1614,3 +1614,66 @@ cuenta las 9.)
    Es larga (10 sitios): si el dueño la quiere aparte, se mueve a texto.
 4. **Cursivas anatómicas / de grupo**: se marcaron sólo taxones e icnogéneros
    (DEC-088). «terópodos», «saurópodos», «ornitópodos» van en redonda.
+
+---
+
+## CR-92 (2026-11-01) — nav sin subpáginas + 3 fotos nuevas en la galería
+
+### 1. Pedido: «Ammonites Tiburones Ámbar Dinosaurios Huellas están de más en el nav»
+
+Tenía razón y el motivo lo dio él: **en Colecciones ya se ven las tarjetas con su
+enlace**, así que el nav repetía cinco veces lo mismo y empujaba el resto.
+
+Se retiraron del **`<nav>` de las 9 páginas**. El nav quedó con los **9 enlaces de
+sección**:
+
+```
+Inicio · Quiénes somos · Colecciones · Proyecto C.E.C · Galería ·
+Servicios · Entidades · Visítanos · Contacto
+```
+
+🔴 **Lo que NO se tocó, a propósito: el pie de página.** La lista «Explorar» del
+footer **conserva las 5 subpáginas**, porque ahí es el índice del sitio y es el
+lugar donde el enlace no se pierde. Si alguien «limpia» el pie también, las
+subpáginas quedan accesibles **sólo** desde las tarjetas.
+
+**Verificado (DOM real, URL en vivo):**
+
+| Medido | Resultado |
+|---|---|
+| `<nav>` con 9 enlaces y 0 subpáginas | **9 / 9 páginas** |
+| Menú móvil abierto (390 px) | 9 enlaces · **0** subpáginas |
+| Header desborda a 1440 | **no** (nav 751 px dentro de 1180) |
+| Pie conserva las 5 subpáginas | **9 / 9** |
+
+### 2. Las 3 fotos nuevas en la galería
+
+`DSC04492.JPG`, `DSC04493.JPG`, `DSC04494.JPG` — **Sony DSC-H400, 5152 × 3864**,
+7,4 / 2,4 / 7,4 MB. Son del dueño y entran con la autorización de bloque que ya
+rige para fotos del museo.
+
+🔴 **RECORTE AL CENTRO — DEC-093, decidido por el dueño.** La galería muestra
+cuadros **1:1** (`aspect-ratio: 1/1` + `object-fit: cover`) y las tres son **4:3
+horizontales**. Se le ofrecieron cuatro salidas y eligió **recortar al centro**,
+«como las otras de la galería».
+
+- Recorte: **3864 × 3864** centrado en **x = 644** → se pierden 644 px por lado.
+- **No se deforma nada**: no se estira, se recorta. (Estirar sí sería un defecto.)
+- Orientación **EXIF respetada** antes de recortar.
+- Salidas: **grande 900×900** y **mini 700×700**, idéntico a las 7 anteriores.
+- Peso: 149/143/141 KB las grandes, 91/85/86 KB las mini.
+
+`titulo` y `pie` **vacíos a propósito** (DEC-034): los escribe el dueño y el render
+no pinta subtítulo si están vacíos.
+
+**Medido:** la galería tiene **8 fotos** en el DOM y **8/8 cargan** a 700×700 tras
+scrollear (la trampa del `lazy`: a `scrollY=0` sólo cargan las del primer bloque,
+eso **no** es un fallo).
+
+### Verificación
+
+- `node --check data/museo.js` OK · **0 archivos críticos en cero**.
+- Humo del sitio (9 páginas × 3 anchos): **9/9** con contenido, **0** errores JS,
+  **0** imágenes rotas, **0** desborde.
+- Capturas: `mpch-galeria-8-fotos.png` y `mpch-nav-sin-subpaginas.png` en
+  `/mnt/c/Users/logic/Downloads`.
