@@ -126,6 +126,19 @@ const MUSEO = {
 
      Mecanismo: el render lo pinta desde acá (DEC-005, fuente única), no a mano
      en el HTML. Los 7 renders del sitio leen este mismo campo. */
+  /* CR-94 (2026-11-01) — DEC-094: el dueño pidió que el crédito de autoría se vea
+     ARRIBA, en el inicio de cada subpágina de colección, y más corto: «diciendo
+     texto escrito por él, nada más».
+
+     ⇒ `derechosInicio` es la frase CORTA y va en la cabecera de las 8 subpáginas
+     de colección (trilobites, amonites, tiburones, ambar, dinosaurios, huellas,
+     curriculum, proyecto-cec). `derechos` (la larga) SIGUE en el pie de las 9
+     páginas: el dueño no pidió sacarla de ahí, sólo agregar el crédito arriba.
+
+     ⚠️ Mismo nombre confirmado: «Juan Castillo Cornejo» (el sitio entero lo
+     escribe así; el «CORNEJO» de un mensaje suyo ya se aclaró como error de
+     tipeo). No cambiar. */
+  derechosInicio: "Texto escrito por Juan Castillo Cornejo.",
   derechos: "© Juan Castillo Cornejo. Textos escritos por Juan Castillo Cornejo. Todos los derechos reservados.",
 
   creditos: {

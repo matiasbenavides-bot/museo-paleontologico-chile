@@ -144,6 +144,18 @@
         cita.remove();
       }
     }
+  
+    /* CR-94 (2026-11-01) — CRÉDITO DE AUTORÍA ARRIBA (DEC-094).
+        El dueño pidió que en el INICIO de cada subpágina de colección se lea que
+        los textos son suyos: «diciendo texto escrito por él, nada más». La frase
+        vive en el data (M.derechosInicio, DEC-005) y es CORTA a propósito; la
+        línea larga del pie no se toca.
+        Si el dato falta, el bloque no se pinta: nunca se escribe texto de
+        respaldo inventado. */
+    $$("[data-credito-inicio]").forEach(function (el) {
+      if (M.derechosInicio) { el.textContent = M.derechosInicio; }
+      else { el.style.display = "none"; }
+    });
   }
 
   /* ---------- Índice ----------

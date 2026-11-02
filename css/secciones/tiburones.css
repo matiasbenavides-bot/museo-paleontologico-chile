@@ -199,3 +199,15 @@
 .tib-sec p i, .tib-fig figcaption i, .tib-sec__t i {
   font-style: italic;
 }
+
+/* ---------- Crédito de autoría en el inicio (CR-94, DEC-094) ----------
+   Misma frase corta que en las otras subpáginas, con el prefijo de ESTA hoja
+   (DEC-83: nada compartido). Versalitas discretas: es un crédito, no un titular.
+   `:empty` lo saca del flujo si el dato falta. */
+.tib-credito:empty { display: none; }
+.tib-credito {
+  margin-top: clamp(10px, 1.4vw, 14px);
+  font-size: clamp(.74rem, 1vw, .8rem);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted);
+}

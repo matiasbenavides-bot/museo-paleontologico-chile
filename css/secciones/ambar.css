@@ -235,3 +235,17 @@
   font-size: clamp(.82rem, 1.2vw, .88rem);
   letter-spacing: .04em; color: var(--ocre-light);
 }
+
+/* ---------- Crédito de autoría en el inicio (CR-94, DEC-094) ----------
+   El dueño pidió que en el arranque de cada subpágina de colección se lea que
+   los textos son suyos: «texto escrito por él, nada más». Va debajo de la
+   bajada, en versalitas discretas: es un crédito, no un titular.
+   `:empty` lo saca del flujo cuando el data no trae la frase, así las páginas
+   que no la usan no ganan un hueco. */
+.amb-credito:empty { display: none; }
+.amb-credito {
+  margin-top: clamp(10px, 1.4vw, 14px);
+  font-size: clamp(.74rem, 1vw, .8rem);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted);
+}

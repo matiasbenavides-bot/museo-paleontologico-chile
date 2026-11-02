@@ -136,6 +136,13 @@
       }
       lib.innerHTML = lista;
     }
+  
+    /* CR-94 (2026-11-01) — CRÉDITO DE AUTORÍA ARRIBA (DEC-094). Misma frase corta
+       del data; si falta, no se pinta nada. */
+    $$("[data-credito-inicio]").forEach(function (el) {
+      if (M.derechosInicio) { el.textContent = M.derechosInicio; }
+      else { el.style.display = "none"; }
+    });
   }
 
   /* --- Footer (contacto, créditos, año) --- */
