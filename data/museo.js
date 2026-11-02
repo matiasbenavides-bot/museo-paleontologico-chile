@@ -848,7 +848,23 @@ const GALERIA = {
     { src: "assets/img/galeria/muestra-2.jpg",      mini: "assets/img/galeria/muestra-2-mini.jpg",      titulo: "", pie: "" },
     { src: "assets/img/galeria/muestra-3.jpg",      mini: "assets/img/galeria/muestra-3-mini.jpg",      titulo: "", pie: "" },
     { src: "assets/img/galeria/muestra-4.jpg",      mini: "assets/img/galeria/muestra-4-mini.jpg",      titulo: "", pie: "" },
-    { src: "assets/img/galeria/ninos-en-museo.jpg", mini: "assets/img/galeria/ninos-en-museo-mini.jpg", titulo: "", pie: "" }
+    { src: "assets/img/galeria/ninos-en-museo.jpg", mini: "assets/img/galeria/ninos-en-museo-mini.jpg", titulo: "", pie: "" },
+    /* CR-92 (2026-11-01): el dueño entregó 3 fotos nuevas («AGREGUEMOS LAS 3
+       FOTOS QUE DESCARGUE PARA GALERIA»). Son suyas, de la muestra, y entran con
+       la misma autorización de bloque que las otras («EL MUSEO AUTORIZA
+       MOSTRARLA», DEC-012 ya dada por buena para material del museo).
+       ORIGEN: DSC04492.JPG, DSC04493.JPG y DSC04494.JPG (Sony DSC-H400,
+       5152×3864, 3:4 horizontal).
+       🔴 RECORTE AL CENTRO — DECIDIDO POR EL DUEÑO, no por el agente: la galería
+       muestra cuadros 1:1 y él eligió «recortar al centro, como las otras de la
+       galería». Se recorta 3864×3864 centrado en x=644 (se pierden 644 px por
+       lado), SIN deformar: no se estira nada.
+       → grande 900×900 y mini 700×700, igual que las demás de esta carpeta.
+       ⚠️ `titulo`/`pie` VACÍOS a propósito: los escribe el dueño (DEC-034). El
+       render no pinta subtítulo si están vacíos, no se rellena solo. */
+    { src: "assets/img/galeria/muestra-5.jpg", mini: "assets/img/galeria/muestra-5-mini.jpg", titulo: "", pie: "" },
+    { src: "assets/img/galeria/muestra-6.jpg", mini: "assets/img/galeria/muestra-6-mini.jpg", titulo: "", pie: "" },
+    { src: "assets/img/galeria/muestra-7.jpg", mini: "assets/img/galeria/muestra-7-mini.jpg", titulo: "", pie: "" }
   ]
 };
 
