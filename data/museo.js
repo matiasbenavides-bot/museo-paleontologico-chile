@@ -511,7 +511,7 @@ const COLECCIONES = {
        Capítulo NUEVO, no tiene relación con las tres páginas de dinosaurios.
        `enlaceTexto` es OBLIGATORIO cuando hay `enlace`: si falta, el render
        escribe "Ver más", que es texto que el dueño NO dictó. */
-    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-pterosaurios.png", nombre: "Pterosaurios", detalle: "Reptiles voladores del Mesozoico y los restos hallados en Chile, desde Domeykodactilus hasta la colonia de Cerro La Isla.",
+    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-pterosaurios.png", nombre: "Pterosaurios", detalle: "Reptiles voladores del Mesozoico y los restos hallados en Chile, desde Domeykodactylus hasta la colonia de Cerro La Isla.",
       enlace: "pterosaurios.html", enlaceTexto: "Conocer los pterosaurios" },
     /* CR-87 (2026-10-29): el dueño pidió subpágina para los dinosaurios — mismo
        mecanismo que Trilobites (CR-60), Ammonites (CR-83), Tiburones (CR-85) y
@@ -3735,7 +3735,7 @@ const HUELLAS = {
      - Siete rótulos = TÍTULOS del original → `nivel: 3`, salvo
        «PTEROSAURIOS: Generalidades» que es el rótulo del bloque inicial.
      - Los pies de figura vienen en DOS párrafos cuando son largos («Reconstrucción
-       paleobiológica de la cabeza del Dsungaripteridae,» + «Domeykodactilus
+       paleobiológica de la cabeza del Dsungaripteridae,» + «Domeykodactylus
        ciciliae (Ilustración Jorge Aragón)»): se UNEN en un solo pie, porque en
        el original es una sola oración partida por el ancho de la columna.
      - «MUHNCAL.20148.» es el acrónimo del ejemplar y cierra la oración anterior:
@@ -3748,10 +3748,14 @@ const HUELLAS = {
      2. «"Pterosaur horizont" o "Chilean colony"» — el original escribe
         «horizont»; es el nombre propio del sitio tal como circula en la
         literatura, SE DEJA.
-     3. «Domeykodactilus» — el Word lo escribe así de forma CONSISTENTE en las 8
-        apariciones. El nombre válido de la literatura es *Domeykodactylus*, pero
-        NO se corrige: es una grafía repetida del autor, no un artefacto de
-        copiado. Se avisa, no se aplica (regla de textos creativos).
+     3. «Domeykodactilus» → «Domeykodactylus». ⚠️ DECISIÓN DEL DUEÑO, no del
+        agente: el Word lo escribe con «i» de forma consistente en sus 8
+        apariciones, y el nombre válido en la literatura es *Domeykodactylus*
+        (con «y»). El agente lo dejó como estaba y AVISÓ; el dueño pidió
+        corregirlo el 2026-11-02 («si, por favor. corrige»). Se corrigió en las
+        15 apariciones del proyecto (prosa, pies, bajada y metas del HTML).
+        ⇒ Regla que se mantiene: una grafía repetida NO se corrige sola, se
+        avisa. Solo se aplica con su palabra.
      4. «significo» → «significó», «esta» → «está», «realizo» → «realizó»,
         «comparo» → «comparó», «termino» → «terminó», «alcanzo» → «alcanzó»,
         «abría permitido» → «habría permitido»: tildes y una errata evidente de
@@ -3772,7 +3776,7 @@ const HUELLAS = {
 
    🔴 CURSIVAS: los taxones van con asteriscos y js/texto.js los convierte en
    `<i>`. Se marcan géneros y binomiales (*Pterodaustro*, *Quetzalcoatlus
-   northropi*, *Pterodactylus elegans*, *Domeykodactilus ciciliae*,
+   northropi*, *Pterodactylus elegans*, *Domeykodactylus ciciliae*,
    *Dsungaripterus weii*, *Phobetor parvus*, *Dimorphodon macronyx*,
    *Darwinopterus modularis*, *Gnathosaurus*, *Cearadactylus*,
    *Perisphinctes andium*, *Tropeognathus*, *Dsungaripterus*, *Anurognathus*,
@@ -3795,7 +3799,7 @@ const PTEROSAURIOS = {
   etiqueta: "Colecciones · Mesozoico",
   titulo: "Pterosaurios en Chile",
   bajada:
-    "Los reptiles voladores del Mesozoico y los restos que han aparecido en el país: desde Domeykodactilus hasta la colonia de Cerro La Isla.",
+    "Los reptiles voladores del Mesozoico y los restos que han aparecido en el país: desde Domeykodactylus hasta la colonia de Cerro La Isla.",
   /* `intro: null` a propósito: el primer párrafo del Word se publica en su
      sección y repetirlo acá lo mostraría dos veces. */
   intro: null,
@@ -3895,48 +3899,48 @@ const PTEROSAURIOS = {
       imagenes: [],
     },
     {
-      id: "domeykodactilus",
-      titulo: "*Domeykodactilus*",
+      id: "domeykodactylus",
+      titulo: "*Domeykodactylus*",
       nivel: 3,
       parrafos: [
         "Un grupo muy peculiar de Pterodactylos, y que fue denominado como " +
-          "*Domeykodactilus ciciliae*. Este grupo de Pterodactylos, estuvo muy " +
+          "*Domeykodactylus ciciliae*. Este grupo de Pterodactylos, estuvo muy " +
           "extendido, pues tiene una amplia distribución geográfica, sobre todo " +
-          "en zonas asiáticas. *Domeykodactilus*, es el registro más seguro de " +
+          "en zonas asiáticas. *Domeykodactylus*, es el registro más seguro de " +
           "la familia Dsungaripteridae para Sudamérica, y está relacionado " +
           "cercanamente con *Dsungaripterus weii* de China y con *Phobetor " +
-          "parvus* de Mongolia. *Domeykodactilus*, vivió en ambientes " +
+          "parvus* de Mongolia. *Domeykodactylus*, vivió en ambientes " +
           "continentales y lagunares donde encontraban gran cantidad de peces, " +
           "también en este ambiente se han encontrado vegetales como " +
           "*Brachyphillum* y *Williamsonia*. La edad de la formación es atribuida " +
           "al Cretácico inferior y pertenece a la Formación Santa Ana.",
         "El globo terráqueo, en estos periodos, está dividido aun en dos grandes " +
           "masas continentales, Laurasia en la parte Norte y Gondwana en la " +
-          "parte Sur, por lo tanto *Domeykodactilus*, fue un ser viviente " +
+          "parte Sur, por lo tanto *Domeykodactylus*, fue un ser viviente " +
           "habitante de Gondwana, en tanto que las especies orientales habitaban " +
           "el continente de Laurasia.",
       ],
       imagenes: [
         {
           src: "assets/img/pterosaurios/03.jpg", ancho: 1332, alto: 538, tras: 1,
-          pie: "Reconstrucción paleobiológica de la cabeza del Dsungaripteridae, *Domeykodactilus ciciliae* (Ilustración Jorge Aragón)",
+          pie: "Reconstrucción paleobiológica de la cabeza del Dsungaripteridae, *Domeykodactylus ciciliae* (Ilustración Jorge Aragón)",
         },
         { src: "assets/img/pterosaurios/04.jpg", ancho: 1351, alto: 293, tras: 1 },
         {
           src: "assets/img/pterosaurios/05.jpg", ancho: 684, alto: 495, tras: 1,
-          pie: "Dibujos esquemáticos, de huesos encontrados de *Domeykodactilus ciciliae*, a la izquierda huesos de la rama mandibular y a la derecha, parte de la cresta sagital (Ilustración Jorge Aragón)",
+          pie: "Dibujos esquemáticos, de huesos encontrados de *Domeykodactylus ciciliae*, a la izquierda huesos de la rama mandibular y a la derecha, parte de la cresta sagital (Ilustración Jorge Aragón)",
         },
         {
           src: "assets/img/pterosaurios/06.jpg", ancho: 515, alto: 512, tras: 1,
-          pie: "Reconstrucción paleobiológica de la cabeza del Dsungaripteridae, *Domeykodactilus ciciliae* (Ilustración José Lemos Caro)",
+          pie: "Reconstrucción paleobiológica de la cabeza del Dsungaripteridae, *Domeykodactylus ciciliae* (Ilustración José Lemos Caro)",
         },
         {
           src: "assets/img/pterosaurios/07.jpg", ancho: 1000, alto: 685, tras: 1,
-          pie: "Reconstrucción paleobiológica de Dsungaripteridae, *Domeykodactilus ciciliae*, alimentándose de ammonites, (Ilustración José Lemos caro)",
+          pie: "Reconstrucción paleobiológica de Dsungaripteridae, *Domeykodactylus ciciliae*, alimentándose de ammonites, (Ilustración José Lemos caro)",
         },
         {
           src: "assets/img/pterosaurios/08.jpg", ancho: 1000, alto: 630, tras: 1,
-          pie: "Reconstrucción paleobiológica de Dsungaripteridae, *Domeykodactilus ciciliae*, pescando a ras del mar, (Ilustración José Lemos caro)",
+          pie: "Reconstrucción paleobiológica de Dsungaripteridae, *Domeykodactylus ciciliae*, pescando a ras del mar, (Ilustración José Lemos caro)",
         },
       ],
     },
