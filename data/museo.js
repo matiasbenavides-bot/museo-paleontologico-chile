@@ -520,7 +520,23 @@ const COLECCIONES = {
        y «Reconstrucciones») NO se tocan: la corrección nombra ésta sola. */
     { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Dinosaurios general", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto.",
       enlace: "dinosaurios.html", enlaceTexto: "Conocer los dinosaurios" },
-    { icono: "huevo",     conIcono: true,  arte: "assets/img/pieza-huevos.png", nombre: "Huevos de dinosaurios", detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." },
+    /* CR-97 (2026-11-02) — PIEZA RETIRADA: «Huevos de dinosaurios».
+       El dueño pidió textual: «elimina huevos de dinosaurio, pero deja la imagen
+       del la card», y al aclarársele que el dibujo del card ES el huevo, precisó:
+       «quitar card, y guardar en archivados la imagen».
+
+       ⚠️ NO se borró nada: el dibujo del card y su SVG de respaldo se
+       ARCHIVARON, como manda la regla del proyecto («lo que no es básico NO se
+       borra: se archiva»).
+         - Dibujo: assets/img/pieza-huevos.png  →  assets/img/archivados/
+         - SVG:    js/iconos.js → `huevo:`  (sigue ahí, intacto como respaldo)
+       Para reactivarla basta devolver el PNG a assets/img/ y reponer este objeto
+       en COLECCIONES.piezas; el render no necesita ningún cambio.
+       El pie de la portada NO enlazaba a los huevos (nunca tuvieron subpágina),
+       así que no hay enlace muerto que reparar. */
+    /* { icono: "huevo", conIcono: true, arte: "assets/img/pieza-huevos.png",
+         nombre: "Huevos de dinosaurios",
+         detalle: "Nidadas fósiles con la cáscara conservada, evidencia directa de su reproducción." } */
     /* CR-91 (2026-10-30): el dueño pidió CARD y PÁGINA NUEVA para «Dinosaurios en
        Chile a través de las huellas» (DEC-093) — mismo mecanismo que las otras
        cinco subpáginas. `enlaceTexto` es OBLIGATORIO cuando hay `enlace`: si
