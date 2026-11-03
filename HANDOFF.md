@@ -82,13 +82,13 @@ Se instalan en `/tmp/venv-docx2` con `uv`. Chromium:
 
 ## Pendientes abiertos (reales, no inventados)
 
-1. **Lista de párrafos sin publicar** — verificar que el Word de dinosaurios no trajera texto
-   que quedó fuera. Medido: 25 párrafos con texto en el Word → 1 título + 8 rótulos + 19 de
-   prosa + 15 pies = cuadra. **Sin pendiente.**
-2. **Pies de figura sin `alt`** — decisión del proyecto (DEC-034): el dueño no dictó
+1. **«Reconstrucciones»** es la única pieza de la colección que sigue **sin subpágina propia**.
+   El dueño no ha dictado material para ella.
+2. **«Huevos de dinosaurios» fue RETIRADA** (CR-97). El dibujo está en
+   `assets/img/archivados/pieza-huevos.png` y el SVG `huevo:` sigue en `js/iconos.js`.
+   Reactivarla = devolver el PNG + descomentar el objeto en `data/museo.js`. **El render no cambia.**
+3. **Pies de figura sin `alt`** — decisión del proyecto (DEC-034): el dueño no dictó
    descripciones y el agente no ve imágenes. No es un faltante, es una decisión.
-3. **Las otras piezas de la colección sin página**: «Huevos de dinosaurios» y
-   «Reconstrucciones» siguen sin subpágina propia. No se tocaron en esta sesión.
 
 ---
 
