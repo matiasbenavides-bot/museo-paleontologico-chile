@@ -47,6 +47,9 @@
    subpáginas, para que UN solo <link> sirva a todas las páginas y no
    existan dos listas de CSS que puedan divergir. */
 @import url("secciones/dinosaurios-chile.css");
+/* CR-98 (2026-11-02): la subpágina PTEROSAURIOS (pterosaurios.html) tiene su
+   propia hoja, con prefijo `ptx-` (DEC-083). Cadena única, un solo <link>. */
+@import url("secciones/pterosaurios.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");

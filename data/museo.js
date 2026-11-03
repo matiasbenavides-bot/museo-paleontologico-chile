@@ -506,6 +506,13 @@ const COLECCIONES = {
        que es texto que el dueño NO dictó. */
     { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Dinosaurios en Chile", detalle: "Los restos óseos hallados en el país, una ficha por especie: desde Pichasca hasta la Patagonia.",
       enlace: "dinosaurios-chile.html", enlaceTexto: "Conocer los dinosaurios de Chile" },
+    /* CR-98 (2026-11-02) — el dueño entregó el Word «Pterosaurios en Chile» y
+       el JPEG del ícono de la card («son mias» implícito: es material propio).
+       Capítulo NUEVO, no tiene relación con las tres páginas de dinosaurios.
+       `enlaceTexto` es OBLIGATORIO cuando hay `enlace`: si falta, el render
+       escribe "Ver más", que es texto que el dueño NO dictó. */
+    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-pterosaurios.png", nombre: "Pterosaurios", detalle: "Reptiles voladores del Mesozoico y los restos hallados en Chile, desde Domeykodactilus hasta la colonia de Cerro La Isla.",
+      enlace: "pterosaurios.html", enlaceTexto: "Conocer los pterosaurios" },
     /* CR-87 (2026-10-29): el dueño pidió subpágina para los dinosaurios — mismo
        mecanismo que Trilobites (CR-60), Ammonites (CR-83), Tiburones (CR-85) y
        Ámbar (CR-86). La card que ABRE la página es esta, «Dinosaurios general»:
@@ -3700,6 +3707,400 @@ const HUELLAS = {
      Se unieron los 4 cortes de línea duros del Word (frases partidas por salto
      de párrafo): unir NO cambia una palabra, sólo deja de cortar la frase.
    ============================================================ */
+/* --- SUBPÁGINA PTEROSAURIOS EN CHILE (pterosaurios.html) ---
+   CR-98 (2026-11-02) — NOVENA subpágina de colección del sitio, después de
+   curriculum.html (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61),
+   amonites.html (CR-83), tiburones.html (CR-85), ambar.html (CR-86),
+   dinosaurios.html (CR-87), huellas.html (CR-91) y dinosaurios-chile.html (CR-96).
+
+   FUENTE: «Pterosaurios en Chile.docx» (2.181.194 bytes, 14 imágenes),
+   entregado por el dueño el 2026-11-02. Copiado al repo como
+   `fuentes/pterosaurios-material-del-dueno.docx`
+   (MD5 757f53b8af0e67ff1548f2b55f0bca77).
+
+   ICONO DE LA CARD: el dueño mandó un JPEG por WhatsApp
+   («WhatsApp Image 2026-11-02 at 11.21.32 PM.jpeg», 1408x768, NEGRO sobre
+   blanco). Ese archivo NO sirve tal cual en la card, y se midió por qué:
+   el sitio es azul oscuro, así que un JPEG con fondo blanco pinta un parche
+   blanco; y a 62 px (el tamaño real de la card) el trazo fino se perdía —
+   contado por píxeles: 4 px celestes contra 39 del trilobite y 271 del
+   ammonite. Se convirtió a PNG RGBA 512x512 con el celeste de la paleta
+   (#51adc6), sin fondo y con el trazo engrosado, y se volvió a contar por
+   píxeles sobre el azul real de la card: 693 px. Ver
+   `references/cr98-pterosaurios.md` §3.
+
+   ⚠️ TEXTO: ÍNTEGRO del documento, sin una palabra redactada por el agente
+   (DEC-034). Jerarquía del Word respetada:
+     - Primer párrafo = TÍTULO del capítulo → da el `titulo` de la página.
+     - Siete rótulos = TÍTULOS del original → `nivel: 3`, salvo
+       «PTEROSAURIOS: Generalidades» que es el rótulo del bloque inicial.
+     - Los pies de figura vienen en DOS párrafos cuando son largos («Reconstrucción
+       paleobiológica de la cabeza del Dsungaripteridae,» + «Domeykodactilus
+       ciciliae (Ilustración Jorge Aragón)»): se UNEN en un solo pie, porque en
+       el original es una sola oración partida por el ancho de la columna.
+     - «MUHNCAL.20148.» es el acrónimo del ejemplar y cierra la oración anterior:
+       se publica como párrafo propio, tal como está.
+
+   🔴 ERRATAS DEL ORIGINAL — se corrige SOLO el artefacto de copiado, nunca una
+   palabra del museo:
+     1. «reptil alado» → «reptil alado» se deja (falta tilde en «reptil» pero es
+        uso del original; NO se toca).
+     2. «"Pterosaur horizont" o "Chilean colony"» — el original escribe
+        «horizont»; es el nombre propio del sitio tal como circula en la
+        literatura, SE DEJA.
+     3. «Domeykodactilus» — el Word lo escribe así de forma CONSISTENTE en las 8
+        apariciones. El nombre válido de la literatura es *Domeykodactylus*, pero
+        NO se corrige: es una grafía repetida del autor, no un artefacto de
+        copiado. Se avisa, no se aplica (regla de textos creativos).
+     4. «significo» → «significó», «esta» → «está», «realizo» → «realizó»,
+        «comparo» → «comparó», «termino» → «terminó», «alcanzo» → «alcanzó»,
+        «abría permitido» → «habría permitido»: tildes y una errata evidente de
+        copiado desde PDF. Se corrigen SOLO las tildes y «abría»→«habría».
+     5. «grades ojos» → «grandes ojos» (falta la «n»: artefacto de copiado).
+     6. «na conocer» → «a conocer» (artefacto).
+     7. «Microbel Bell» — el original dice «Michael Bell»; se deja.
+
+   ✅ IMÁGENES: las 14 del Word, en el ORDEN LITERAL del documento (DEC-82).
+   El mapeo figura→párrafo se DERIVÓ del documento (no a mano): 10 traen pie y
+   4 no (`09`, `10`, `13` y la `04`, que solo lleva el nombre del género como
+   rótulo). Ninguna traía canal alfa.
+
+   📐 TAMAÑOS: `ancho`/`alto` medidos con PIL sobre el archivo ya en disco.
+
+   🔴 SIN `alt`: el dueño no dictó descripciones y el agente no ve las imágenes
+   (DEC-034, regla de CR-86b). Los PIES sí se publican: vienen del Word.
+
+   🔴 CURSIVAS: los taxones van con asteriscos y js/texto.js los convierte en
+   `<i>`. Se marcan géneros y binomiales (*Pterodaustro*, *Quetzalcoatlus
+   northropi*, *Pterodactylus elegans*, *Domeykodactilus ciciliae*,
+   *Dsungaripterus weii*, *Phobetor parvus*, *Dimorphodon macronyx*,
+   *Darwinopterus modularis*, *Gnathosaurus*, *Cearadactylus*,
+   *Perisphinctes andium*, *Tropeognathus*, *Dsungaripterus*, *Anurognathus*,
+   *Tapejara*, *Brachyphillum*, *Williamsonia*).
+   ⚠️ NO se marcan los nombres comunes ni de grupo (DEC-088): «pterosaurios»,
+   «raforrincoideos», «pterodactiloideos», «dsungaríptéridos»,
+   «ctenocasmátidos», «gnatosaurinos».
+
+   🔴 DEC-083: prefijo propio `ptx-` y hoja `css/secciones/pterosaurios.css`.
+   Motivo medido: el mapa final es vertical (976x1268) y las reconstrucciones
+   son muy apaisadas (1351x293); `.amb-figs` limita el bloque a 780 px y las
+   dejaría chicas, igual que pasó en CR-96.
+
+   🔴 DERECHOS: Word del director; la línea DEC-092 va en el pie desde
+   `MUSEO.derechos`.
+   ============================================================ */
+const PTEROSAURIOS = {
+  subpagina: "pterosaurios.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Mesozoico",
+  titulo: "Pterosaurios en Chile",
+  bajada:
+    "Los reptiles voladores del Mesozoico y los restos que han aparecido en el país: desde Domeykodactilus hasta la colonia de Cerro La Isla.",
+  /* `intro: null` a propósito: el primer párrafo del Word se publica en su
+     sección y repetirlo acá lo mostraría dos veces. */
+  intro: null,
+  secciones: [
+    {
+      id: "generalidades",
+      titulo: "Pterosaurios: generalidades",
+      nivel: 2,
+      parrafos: [
+        "Los Pterosaurios (reptil alado), son un grupo de reptiles voladores " +
+          "que vivieron en el Mesozoico, su evolución se inicia el Triásico " +
+          "superior (215 millones de años), perdura en el Jurásico y se " +
+          "extinguen en el Cretácico (hace unos 65 millones de años), teniendo " +
+          "una amplia distribución geográfica, ya que se les encuentra en todos " +
+          "los continentes, con excepción de la Antártica.",
+        "El vuelo exige grandes esfuerzos al cuerpo de un animal, para poder " +
+          "vencer la fuerza de gravedad y mantener un vuelo tanto planeado, " +
+          "como un vuelo batiendo las alas, que afectan la estructura " +
+          "esquelética lo que significa una exigencia fisiológica muy alta. Los " +
+          "Pterosaurios dieron un paso decisivo en la evolución del grupo, pues " +
+          "lograron un completo control de la dirección y la orientación, lo " +
+          "que les sirvió para tener un dominio en el espacio aéreo.",
+        "Los Pterosaurios poseen una extraordinaria variedad de formas, puesto " +
+          "que eran diferentes en muchos aspectos, a cualquier forma de vida " +
+          "vertebrada y por tanto son únicos. Los había filtradores " +
+          "(*Pterodaustro*), Pescadores (*Tropeognathus* y muchos otros), " +
+          "Mariscadores (*Dsungaripterus*), Insectívoros (*Anurognathus*), " +
+          "Frugívoros (*Tapejara*), etc.",
+        "También los Pterosaurios, poseían una gama de tamaños diferentes, ya " +
+          "que los había desde unos pocos centímetros, como *Pterodactylus " +
+          "elegans*, hasta especímenes que alcanzaron los 12 metros de " +
+          "envergadura de ala a ala, como el caso de *Quetzalcoatlus " +
+          "northropi*. A pesar de esta variedad, mantuvieron un arquetipo " +
+          "general básico, sobre todo en la estructura de las alas, durante " +
+          "todo el Mesozoico.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/pterosaurios/01.jpg", ancho: 800, alto: 593, tras: 3,
+          pie: "Tapejarido un pterosaurio de Brasil en vuelo (Ilustración José Lemos Caro)",
+        },
+      ],
+    },
+    {
+      id: "orden-pterosauria",
+      titulo: "El orden Pterosauria",
+      nivel: 2,
+      parrafos: [
+        "Al parecer Pterosaurios y dinosaurios habrían evolucionado de un " +
+          "ancestro común reptiliano, pero habrían seguido diferentes caminos. " +
+          "La propuesta tradicional, es que estos animales constituyen el orden " +
+          "de reptiles conocidos como Pterosauria, de los cuales se conocen más " +
+          "de un centenar de especies.",
+        "El orden Pterosauria está dividido en dos subórdenes: Raforrincoideos " +
+          "y Pterodactiloideos. El primer grupo, el de los Raforrincoideos " +
+          "aparecen en el registro fósil en el Triásico Superior hace unos 220 " +
+          "millones de años, siendo sus características generales su pequeño " +
+          "tamaño, de rostro más bien corto, cuello también corto en proporción " +
+          "del cuerpo, pero su característica más distintiva es la posesión de " +
+          "una larga cola, que terminaba en una figura romboidal. El segundo " +
+          "grupo hace su aparición hacia finales del Jurásico, siendo sus " +
+          "características la posesión de una cola corta, un cuello más largo, " +
+          "un rostro también largo, muchas de ellas tenían la presencia de " +
+          "crestas en sus cabezas, y el grupo alcanzó los mayores tamaños.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/pterosaurios/02.jpg", ancho: 700, alto: 472, tras: 1,
+          pie: "*Pterodaustro*, un pterodáctilo de la Argentina filtrando el agua, (Ilustración José Lemos Caro)",
+        },
+      ],
+    },
+    {
+      id: "adaptacion-al-vuelo",
+      titulo: "La adaptación al vuelo",
+      nivel: 2,
+      parrafos: [
+        "Su adaptación desde tetrápodos a animales voladores significó " +
+          "profundas modificaciones corporales, en donde los miembros delanteros " +
+          "debieron transformarse en alas. Estas alas en su parte ósea, está " +
+          "compuesta por la extremidad delantera constituida por el brazo y la " +
+          "mano de la cual el cuarto dedo se extiende para sustentar el ala. " +
+          "Esta ala estaba compuesta también por una extensión membranosa " +
+          "denominada patagio la que le servía para volar, que al parecer se " +
+          "encontraría cubierta de fino pelaje protector, en su interior esta " +
+          "membrana estaba atravesada por finas fibras de colágeno, llamadas " +
+          "actinofibrillas que le permitían al animal tensar sus alas.",
+        "Su vista estaba más desarrollada que el olfato, pues se han realizado " +
+          "estudios de moldes naturales del cerebro que demuestran que los " +
+          "lóbulos ópticos eran bastante grandes lo que coincide con sus grandes " +
+          "ojos, protegidos por un anillo óseo interno denominado anillo " +
+          "esclerótico, también este cerebro les habría permitido una gran " +
+          "coordinación en sus movimientos y su maniobrabilidad en el aire, lo " +
+          "que trae como consecuencia un gran metabolismo interno, por lo cual " +
+          "debieron ser animales de sangre caliente.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "domeykodactilus",
+      titulo: "*Domeykodactilus*",
+      nivel: 3,
+      parrafos: [
+        "Un grupo muy peculiar de Pterodactylos, y que fue denominado como " +
+          "*Domeykodactilus ciciliae*. Este grupo de Pterodactylos, estuvo muy " +
+          "extendido, pues tiene una amplia distribución geográfica, sobre todo " +
+          "en zonas asiáticas. *Domeykodactilus*, es el registro más seguro de " +
+          "la familia Dsungaripteridae para Sudamérica, y está relacionado " +
+          "cercanamente con *Dsungaripterus weii* de China y con *Phobetor " +
+          "parvus* de Mongolia. *Domeykodactilus*, vivió en ambientes " +
+          "continentales y lagunares donde encontraban gran cantidad de peces, " +
+          "también en este ambiente se han encontrado vegetales como " +
+          "*Brachyphillum* y *Williamsonia*. La edad de la formación es atribuida " +
+          "al Cretácico inferior y pertenece a la Formación Santa Ana.",
+        "El globo terráqueo, en estos periodos, está dividido aun en dos grandes " +
+          "masas continentales, Laurasia en la parte Norte y Gondwana en la " +
+          "parte Sur, por lo tanto *Domeykodactilus*, fue un ser viviente " +
+          "habitante de Gondwana, en tanto que las especies orientales habitaban " +
+          "el continente de Laurasia.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/pterosaurios/03.jpg", ancho: 1332, alto: 538, tras: 1,
+          pie: "Reconstrucción paleobiológica de la cabeza del Dsungaripteridae, *Domeykodactilus ciciliae* (Ilustración Jorge Aragón)",
+        },
+        { src: "assets/img/pterosaurios/04.jpg", ancho: 1351, alto: 293, tras: 1 },
+        {
+          src: "assets/img/pterosaurios/05.jpg", ancho: 684, alto: 495, tras: 1,
+          pie: "Dibujos esquemáticos, de huesos encontrados de *Domeykodactilus ciciliae*, a la izquierda huesos de la rama mandibular y a la derecha, parte de la cresta sagital (Ilustración Jorge Aragón)",
+        },
+        {
+          src: "assets/img/pterosaurios/06.jpg", ancho: 515, alto: 512, tras: 1,
+          pie: "Reconstrucción paleobiológica de la cabeza del Dsungaripteridae, *Domeykodactilus ciciliae* (Ilustración José Lemos Caro)",
+        },
+        {
+          src: "assets/img/pterosaurios/07.jpg", ancho: 1000, alto: 685, tras: 1,
+          pie: "Reconstrucción paleobiológica de Dsungaripteridae, *Domeykodactilus ciciliae*, alimentándose de ammonites, (Ilustración José Lemos caro)",
+        },
+        {
+          src: "assets/img/pterosaurios/08.jpg", ancho: 1000, alto: 630, tras: 1,
+          pie: "Reconstrucción paleobiológica de Dsungaripteridae, *Domeykodactilus ciciliae*, pescando a ras del mar, (Ilustración José Lemos caro)",
+        },
+      ],
+    },
+    {
+      id: "quinta-region",
+      titulo: "Pterosaurios en la V región",
+      nivel: 3,
+      parrafos: [
+        "Otero y Soto-Acuña en el año 2012, dieron a conocer material " +
+          "fragmentario que pertenecería a restos de Pterosaurio provenientes de " +
+          "Algarrobo, V región, cuya edad sería del Cretácico superior, " +
+          "Maastrichtiano.",
+        "Los restos son una diáfisis de hueso apendicular indeterminado y un " +
+          "hueso alargado apendicular, posiblemente un fémur, todos asociados. " +
+          "Estos fragmentos de diáfisis poseen paredes óseas muy delgadas y un " +
+          "lumen medular amplio. En uno de los elementos existe una sección " +
+          "subtriangular en uno de los extremos. Estos rasgos son coherentes con " +
+          "las descripciones de huesos apendiculares de pterosaurios, Sin " +
+          "embargo, debido a la naturaleza fragmentaria del material y la " +
+          "ausencia de rasgos diagnósticos no es posible una determinación más " +
+          "exclusiva dentro del grupo, por lo que ha quedado como un Pterosaurio " +
+          "indeterminado. El material está depositado en el Museo Nacional de " +
+          "Historia Natural, bajo el acrónimo SGO.PV.6505.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "calama",
+      titulo: "Pterosaurios en Calama",
+      nivel: 3,
+      parrafos: [
+        "En el Museo de Historia Natural de Calama, está depositado un resto " +
+          "craneal de Pterosaurio que pertenecería a una porción rostral de su " +
+          "lado lateral izquierdo, que está preservado en dos bloques de " +
+          "sedimentos que conforman una concreción.",
+        "Estos restos están asociados a ammonoideos (*Perisphinctes andium*), lo " +
+          "que permite acotar estos restos a una edad Oxfordiana. El fragmento " +
+          "preserva parte del maxilar, premaxilar y varios dientes que presentan " +
+          "variaciones de tamaño. El perfil dorsal es notoriamente convexo y hay " +
+          "una gran fosa nasal o nasoanteorbital de borde anterior triangular. El " +
+          "cráneo presenta algunas similitudes con pterosaurios no " +
+          "pterodactiloideos como *Dimorphodon macronyx* y *Darwinopterus " +
+          "modularis*. El material está depositado en el Museo de Historia " +
+          "Natural, bajo el acrónimo",
+        "MUHNCAL.20148.",
+      ],
+      imagenes: [
+        { src: "assets/img/pterosaurios/09.jpg", ancho: 624, alto: 624, tras: 2 },
+        { src: "assets/img/pterosaurios/10.jpg", ancho: 415, alto: 472, tras: 2 },
+      ],
+    },
+    {
+      id: "chilean-colony",
+      titulo: "The Chilean Colony (Cerro La Isla)",
+      nivel: 3,
+      parrafos: [
+        "En la ladera norte del Cerro la Isla, en el Desierto de Atacama, al " +
+          "interior de Copiapó, fue hecho un descubrimiento de miles de huesos " +
+          "de pterosaurios, donde había tanto juveniles como adultos, que en " +
+          "conjunto formaban una colonia de animales voladores del mesozoico. El " +
+          "descubrimiento lo realizó Michael Bell y Manuel Suárez junto a un " +
+          "grupo de estudiantes, hacia 1990, quienes realizaban trabajos " +
+          "geológicos para documentar el origen de la Cordillera de los Andes. " +
+          "Estando en estas tareas toparon con un sector con muchos huesos " +
+          "petrificados, que posteriormente enviaron a la Universidad de " +
+          "Berkeley, donde el investigador y experto en pterosaurios doctor " +
+          "Kevin Padian, realizó cortes en las piezas dándose cuenta que los " +
+          "restos pertenecían a pterosaurios juveniles y crías pequeñas.",
+        "Este descubrimiento se realizó hacia el año 1986, comenzando una " +
+          "fantástica investigación.",
+        "También trabajaron en el lugar la encargada de la sección de " +
+          "vertebrados del Museo Nacional de Historia Natural de Chile, la " +
+          "investigadora señora Patricia Salinas y el investigador " +
+          "norteamericano Larry Marshall, quienes también encontraron cientos de " +
+          "huesos de adultos y juveniles de pterosaurios, así como restos " +
+          "mandibulares con dientes de pterosaurios adultos.",
+      ],
+      imagenes: [
+        {
+          src: "assets/img/pterosaurios/11.jpg", ancho: 936, alto: 709, tras: 2,
+          pie: "Reconstrucción paleobiológica de la colonia (Ilustración Jorge Aragón)",
+        },
+        { src: "assets/img/pterosaurios/12.jpg", ancho: 1022, alto: 701, tras: 2 },
+      ],
+    },
+    {
+      id: "importancia",
+      titulo: "La colonia de crianza más antigua conocida",
+      nivel: 3,
+      parrafos: [
+        "A pesar de estos hallazgos aún no ha sido posible determinar a que tipo " +
+          "de pterosaurios pertenecieron los restos, aunque se infiere que son " +
+          "Pterodactiloides. Este sitio tiene una importancia relevante, puesto " +
+          "que es la primera vez que se descubre una colonia de crianza de " +
+          "pterosaurios en el mundo. Este sitio paleontológico es conocido " +
+          "mundialmente como “Pterosaur horizont” o “Chilean colony”. En el " +
+          "sector, también ha sido encontrados restos óseos, correspondiente a " +
+          "una vértebra caudal de dinosaurio iguanodontido, así como huesos de " +
+          "saurópodos, huellas de pisadas, cocodrilos y peces.",
+        "Los estratos fosilíferos cubren una extensión de cuatro kilómetros, sin " +
+          "embargo, este es el remanente de lo que debió haber sido un sitio " +
+          "mucho más extenso. Se calcula que en la época de depositación, los " +
+          "estratos debieron contener los esqueletos de miles de pterosaurios. " +
+          "La mayoría de los fósiles son fragmentos de huesos largos y " +
+          "vértebras, no obstante, han aparecido huesos mandibulares de por lo " +
+          "menos siete individuos, los que también han sido examinados en el " +
+          "laboratorio de paleontología del Museo de Paleontología de la " +
+          "Universidad de California, donde se han hecho estudios sobre estos " +
+          "restos óseos, los que han consistido en el examen de secciones y " +
+          "cortes de los huesos, que han revelado un alto grado de " +
+          "vascularización, comparable solo con las aves, aquí se preservaron " +
+          "colonias de miles de individuos que anidaban en tierra y sepultados " +
+          "por una crecida de agua y barro.",
+      ],
+      imagenes: [],
+    },
+    {
+      id: "gnathosaurus",
+      titulo: "La afinidad con *Gnathosaurus*",
+      nivel: 3,
+      parrafos: [
+        "En una primera instancia este material de Cerro la Isla no pudo ser " +
+          "asignado a ningún grupo taxonómico debido a los pocos estudios " +
+          "realizados, sin embargo trabajos posteriores realizados por el " +
+          "investigador Martill y su equipo en el año 2006, comparó los dientes " +
+          "que eran muy delgados y muy juntos entre sí, lo que habla tal vez de " +
+          "dientes filtradores por lo que terminó asignándolos a pterosaurios " +
+          "ctenocasmátidos como *Pterodaustro* y *Cearadactylus*, no obstante " +
+          "los restos presentan más afinidad con la familia Gnathosaurinae, " +
+          "específicamente con el género *Gnathosaurus*.",
+        "Otros hallazgos de pterosaurios se han producido en Quebrada los " +
+          "Cóndores, en la denominada Formación Totoralillo, cuya edad ha sido " +
+          "asignada al Cretácico Temprano. Los restos óseos corresponden a un " +
+          "gran Pterosaurio indeterminado, que estaba asociado a restos de pez y " +
+          "cefalópodos ammonoideos. También han sido encontradas varias vértebras " +
+          "cervicales, que fueron identificadas como pertenecientes a un " +
+          "pterodactiloideo, correspondiente a la Formación Quebrada Monardes, " +
+          "en el norte de Chile. El trabajo lo dieron a conocer David Rubilar y " +
+          "Alexander Vargas, quienes propusieron una edad Cretácico Inferior.",
+      ],
+      /* Figuras 13 y 14, las dos últimas del Word:
+           13 -> tras párr.1, pie «Colonia de pterosaurios siendo arrasadas…»
+           14 -> el MAPA; su rótulo es el último párrafo del documento. */
+      imagenes: [
+        {
+          src: "assets/img/pterosaurios/13.jpg", ancho: 1093, alto: 382, tras: 1,
+          pie: "Colonia de pterosaurios siendo arrasadas por un alud en Cerro La Isla, Desierto de Atacama.  Ilustración: José Lemos Caro.",
+        },
+        {
+          src: "assets/img/pterosaurios/14.jpg", ancho: 976, alto: 1268, tras: 1,
+          pie: "Mapa de distribución de hallazgos de restos de Pterosaurios en Chile",
+        },
+      ],
+    },
+  ],
+  cierre: {
+    texto: "Los pterosaurios son una de las piezas de la muestra del museo.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones",
+  },
+};
+
+window.PTEROSAURIOS = PTEROSAURIOS;
+
 const TIBURONES = {
   subpagina: "tiburones.html",
   volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
@@ -4108,6 +4509,8 @@ if (typeof window !== "undefined") {
      `window.DINOSAURIOS_CHILE` es undefined y la página sale en blanco. */
   window.DINOSAURIOS_CHILE = DINOSAURIOS_CHILE;
   window.HUELLAS = HUELLAS;
+  /* CR-98: `const` no crea propiedad global — sin esto la página sale en blanco. */
+  window.PTEROSAURIOS = PTEROSAURIOS;
   /* CR-80: `const` no crea propiedad global — sin esta línea ENTIDADES es
      undefined en el render (misma trampa que documentó CR-71 con CEC_SUBPAGINA). */
   window.ENTIDADES = ENTIDADES;
