@@ -497,6 +497,15 @@ const COLECCIONES = {
        escribe "Ver más", que es texto que NO dictó el dueño. */
     { icono: "tiburon",   conIcono: true,  arte: "assets/img/pieza-tiburones.png", nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos.",
       enlace: "tiburones.html", enlaceTexto: "Conocer los tiburones" },
+    /* CR-96 (2026-11-02) — el dueño entregó el Word «Dinosaurios en Chile pag.»
+       y confirmó «son mias. avanza». Es un capítulo DISTINTO del general
+       (dinosaurios.html, CR-87) y del de huellas (huellas.html, CR-91):
+       acá van los RESTOS ÓSEOS, una ficha por especie. La card abre su
+       subpágina, mismo mecanismo que las otras siete. `enlaceTexto` es
+       OBLIGATORIO cuando hay `enlace`: si falta, el render escribe "Ver más",
+       que es texto que el dueño NO dictó. */
+    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Dinosaurios en Chile", detalle: "Los restos óseos hallados en el país, una ficha por especie: desde Pichasca hasta la Patagonia.",
+      enlace: "dinosaurios-chile.html", enlaceTexto: "Conocer los dinosaurios de Chile" },
     /* CR-87 (2026-10-29): el dueño pidió subpágina para los dinosaurios — mismo
        mecanismo que Trilobites (CR-60), Ammonites (CR-83), Tiburones (CR-85) y
        Ámbar (CR-86). La card que ABRE la página es esta, «Dinosaurios general»:
@@ -2658,7 +2667,7 @@ const DINOSAURIOS = {
       nivel: 3,
       parrafos: [
         "Por otra parte, las vértebras sacras fusionadas, constituye una " +
-          "característica clave para clasificar a los dinosaurios.  Estas vertebras " +
+          "característica clave para clasificar a los dinosaurios.  Estas vértebras " +
           "están fusionadas, formando una maciza barra que formaba una estructura " +
           "rígida y robusta, que soporta el peso del animal y la locomoción bípeda. " +
           "Esta fusión puede incluir de 3 a 5 vertebras",
@@ -2893,6 +2902,341 @@ const DINOSAURIOS = {
    `.amb-*` y la hoja `css/secciones/ambar.css`, porque esa hoja tiene 34 reglas
    y sus 34 selectores empiezan por `.amb-`, sin un solo selector global.
    ============================================================ */
+/* --- SUBPÁGINA DINOSAURIOS EN CHILE (dinosaurios-chile.html) ---
+   CR-96 (2026-11-02) — OCTAVA subpágina de colección del sitio, después de
+   curriculum.html (CR-55), trilobites.html (CR-60), proyecto-cec.html (CR-61),
+   amonites.html (CR-83), tiburones.html (CR-85), ambar.html (CR-86),
+   dinosaurios.html (CR-87) y huellas.html (CR-91).
+
+   FUENTE: «Dinosaurios en Chile pag..docx» (16.055.041 bytes, 21 imágenes),
+   entregado por el dueño el 2026-11-02. Copiado al repo como
+   `fuentes/dinosaurios-chile-material-del-dueno.docx`
+   (MD5 237a3264d84ae4ca8eeef7ff25de2d8b).
+
+   🔴 NO CONFUNDIR CON LAS OTRAS DOS PÁGINAS DE DINOSAURIOS:
+     - dinosaurios.html («Dinosaurios general», CR-87) = el grupo Dinosauria:
+       qué es, sinapomorfías, clasificación. Word «Definiendo a los dinosaurios».
+     - huellas.html («Dinosaurios en Chile a través de las huellas», CR-91)
+       = ICNOLOGÍA: huellas fósiles y sitios. Word «Huellas para Pag.».
+     - ESTA página = RESTOS ÓSEOS hallados en Chile, una ficha por especie.
+   El dueño confirmó el 2026-11-02: «esta bien dinosaurios general» (esa card no
+   se toca ni se renombra) y «son mias. avanza» (las imágenes son suyas).
+
+   ⚠️ TEXTO: ÍNTEGRO del documento, sin una palabra redactada por el agente
+   (DEC-034). Jerarquía del Word respetada:
+     - Primer párrafo = TÍTULO del capítulo → da el `titulo` de la página.
+     - Ocho rótulos cortos = TÍTULOS del original → `nivel: 3`.
+     - El último párrafo («Mapa de distribución…») es PIE de la figura 21.
+     - El resto es prosa y va literal.
+
+   🔴 ERRATAS CORREGIDAS (solo artefactos de copiado, nunca palabras del museo):
+     1. «un humero derecho» → «húmero» (el Word escribe «húmero» con tilde luego).
+     2. «titanosaurido»/«Titanosauridos» → «titanosáurido»/«Titanosáuridos».
+     3. «pico corneo» → «pico córneo» (el Word lo escribe bien en otros párrafos).
+     4. «Esté material» → «Este material» (tilde espuria en el demostrativo).
+     5. «Tenía un  gran picos aplanado» → «Tenía un gran pico aplanado»
+        (doble espacio + concordancia rota evidente).
+     6. «Murursaptor barrosaensis» → «Murusraptor barrosaensis» (taxón válido).
+     7. «entre éstos se cuentan» SE DEJA: forma admitida, no es artefacto.
+
+   ✅ IMÁGENES: las 21, en el ORDEN LITERAL del documento (DEC-82). El mapeo se
+   derivó por POSICIÓN REAL en word/document.xml (no a mano): 15 de las 21
+   traen PIE del propio Word, y cada pie sigue a su figura en el flujo del
+   documento. La figura 21 es el MAPA y su rótulo es el último párrafo.
+   ⚠️ Un mapeo escrito a mano se desalineó y metió figuras en la sección
+   equivocada; por eso se genera desde el documento. Si el dueño reemplaza el
+   Word, hay que REGENERAR el mapeo, no editarlo.
+
+   🖼️ CONVERSIÓN: 9 de las 21 traían alfa (PNG RGBA). JPEG no lleva alfa, así
+   que TODAS se compusieron sobre fondo BLANCO — no negro: pasar un alfa a JPEG
+   sin rellenar lo ennegrece, y eso ya se cometió en CR-60. Guardadas .jpg q=88.
+
+   📐 TAMAÑOS: `ancho`/`alto` son los del archivo YA en disco, medidos con PIL.
+
+   🔴 SIN `alt`: el dueño no dictó descripciones y el agente no ve las imágenes
+   (DEC-034, regla de CR-86b). Los PIES sí se publican: vienen del Word.
+
+   🔴 CURSIVAS: los taxones van con asteriscos en el data y js/texto.js los
+   convierte en `<i>` DESPUÉS de escapar. Se marcan géneros y binomiales
+   (*Atacamatitan chilensis*, *Chilesaurus*, *Arackar licanantay*, *Stegouros*,
+   *Gonkoken nanoi*, *Megaraptor*, *Allosaurus*, *Tyrannosaurus rex*,
+   *Psitacosaurus*, *Murusraptor barrosaensis*, *Equisetum*). NO se marcan
+   nombres comunes ni de grupo (DEC-088).
+
+   🔴 DEC-083 (NO DEC-090): prefijo propio `dch-` y hoja
+   `css/secciones/dinosaurios-chile.css`. Motivo medido: a diferencia de ámbar,
+   acá hay figuras que necesitan ANCHO COMPLETO (reconstrucciones de 1350 px y
+   un mapa de 1882 px de alto); `.amb-figs` limita el bloque a 780 px.
+
+   🔴 DERECHOS: Word del director; la línea DEC-092 va en el pie desde
+   `MUSEO.derechos`.
+   ============================================================ */
+const DINOSAURIOS_CHILE = {
+  subpagina: "dinosaurios-chile.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Mesozoico",
+  titulo: "Dinosaurios en Chile",
+  bajada:
+    "Los restos óseos de dinosaurios hallados en el país, una ficha por especie: desde el titanosaurio de Pichasca hasta los dientes de Megaraptor en la Patagonia.",
+  /* `intro: null` a propósito: el primer párrafo del Word se publica en su
+     sección y repetirlo acá lo mostraría dos veces. */
+  intro: null,
+  secciones: [
+    {
+      id: "titanosaurio-pichasca",
+      titulo: "El Titanosaurio de Pichasca",
+      nivel: 3,
+      parrafos: [
+        "El primer registro de restos óseos de dinosaurios en Chile se produjo " +
+          "al interior de Ovalle, en el sector de San Pedro de Pichasca, IV " +
+          "Región. Los restos fueron descubiertos por el señor Gastón Ceballos, " +
+          "pirquinero que en sus recorridos por la zona se topó por casualidad " +
+          "con ellos y los mostró en la XX Feria Agrícola y Ganadera que se " +
+          "efectuaba en la región.",
+        "Los fragmentos corresponden a una vértebra caudal deteriorada, " +
+          "fragmentos de costillas, un trozo de isquion, una parte proximal de " +
+          "un húmero derecho, un fragmento de escapulocaracoides izquierdo y " +
+          "varios trozos de huesos indeterminados.",
+      ],
+    imagenes: [
+      { src: "assets/img/dinosaurios-chile/01.jpg", ancho: 1350, alto: 629, tras: 0 },
+      { src: "assets/img/dinosaurios-chile/02.jpg", ancho: 754, alto: 598, tras: 1 },
+      { src: "assets/img/dinosaurios-chile/03.jpg", ancho: 1351, alto: 1009, tras: 1,
+        pie: "Titanosaurio en el pasado de Pichasca, desplazándose en medio de un bosque de araucarias. Ilustración José Lemos Caro." },
+    ],
+    },
+    {
+      id: "atacamatitan",
+      titulo: "*Atacamatitan chilensis*",
+      nivel: 3,
+      parrafos: [
+        "*Atacamatitan chilensis*, es el dinosaurio titánico de Atacama, un " +
+          "saurópodo titanosáurido, que fue encontrado en la Formación Tolar " +
+          "(una secuencia de rocas sedimentarias clásticas rojas con " +
+          "intercalaciones de conglomerados del mismo color), al interior del " +
+          "desierto de Atacama, un sitio ubicado a unos 150 km al norte de la " +
+          "ciudad de Calama y a unos 50 km al este de la mina de cobre El Abra, " +
+          "cerca de la localidad de Conchi Viejo. Atacamatitan =Atacama, del " +
+          "desierto donde se encontró el espécimen, y Titán, de la mitología " +
+          "griega, raza de dioses gigantes que gobernaron el cosmos antes que " +
+          "los dioses olímpicos, y chilensis = hace alusión a nuestro país, " +
+          "Chile. La edad de este sitio es del Cretácico Superior. Los restos " +
+          "del espécimen están depositados en el Museo Nacional de Historia " +
+          "Natural.",
+        "Los restos fragmentarios que han sido encontrados corresponden a: " +
+          "fémur, húmero, costillas, 2 vértebras dorsales y otros huesos que " +
+          "presentan un color rojizo, y una fuerte consolidación, lo que " +
+          "permiten observar diferencias morfológicas con otros Titanosáuridos.",
+      ],
+    imagenes: [
+      { src: "assets/img/dinosaurios-chile/04.jpg", ancho: 1351, alto: 820, tras: 1,
+        pie: "Reconstrucción paleobiológica de Atacamatitan chilensis con su cría, Ilustración José Lemos Caro." },
+      { src: "assets/img/dinosaurios-chile/05.jpg", ancho: 1348, alto: 948, tras: 1 },
+      { src: "assets/img/dinosaurios-chile/06.jpg", ancho: 1091, alto: 1045, tras: 1 },
+    ],
+    },
+    {
+      id: "chilesaurus",
+      titulo: "*Chilesaurus diegosuarezi*",
+      nivel: 3,
+      parrafos: [
+        "*Chilesaurus* era un dinosaurio relativamente pequeño del Jurásico " +
+          "Superior, 145 millones de años, poseía un cuerpo esbelto, lo que " +
+          "indica y muestra a un dinámico animal, un adulto completamente " +
+          "crecido que habría medido unos 3,2 metros, poseía miembros " +
+          "anteriores robustos similares a los terópodos del Jurásico como " +
+          "*Allosaurus*, pero sus patas tenían cuatro dedos anchos con punta a " +
+          "diferencia del esbelto pie de tres dedos de la mayoría de los " +
+          "terópodos.",
+        "También poseía un largo cuello coronado con un cráneo pequeño, con un " +
+          "reducido hocico que presenta un pico córneo, elemento que le " +
+          "serviría para cortar la hierba, con una serie de dientes en forma de " +
+          "espátula, con los cuales también podía cortar las plantas, estos " +
+          "dientes planos son típicos de dinosaurios herbívoros. Sus manos " +
+          "estaban provistas de dos dedos lo que nos recuerda a las manos de " +
+          "*Tyrannosaurus rex*, pero las garras de éste eran más bien romas y " +
+          "ligeramente curvas, a diferencia de las afiladas garras de otros " +
+          "terópodos.",
+        "*Chilesaurus* poseía un largo cuello coronado con un cráneo pequeño, " +
+          "con un reducido hocico que presenta un margen rostral rugoso, lo que " +
+          "sugiere la presencia en el hocico de una ranfoteca o pico córneo, " +
+          "parecido a los presentes en *Psitacosaurus*, elemento que le " +
+          "serviría para cortar la hierba. El holotipo es el único ejemplar que " +
+          "presenta varios elementos relativamente completos del cráneo, entre " +
+          "éstos se cuentan el premaxilar izquierdo, un fragmento de maxilar " +
+          "derecho, ambos frontales, ambos postorbitales, escamoso derecho, " +
+          "cuadrado derecho, el basicraneo y la parte anterior del dentario " +
+          "derecho con varios dientes.  También poseía unas mandíbulas con una " +
+          "serie de dientes en forma de espátula, con los cuales también podía " +
+          "cortar las plantas, estos dientes planos son típicos de dinosaurios " +
+          "herbívoros, por lo que se supone una dieta de plantas arbustivas " +
+          "bajas.",
+      ],
+    imagenes: [
+      { src: "assets/img/dinosaurios-chile/07.jpg", ancho: 1350, alto: 393, tras: 2,
+        pie: "Reconstrucción paleobiológica de Chilesaurus diegosuarezi, Ilustración gentileza de Mohamed Haghani." },
+      { src: "assets/img/dinosaurios-chile/08.jpg", ancho: 1350, alto: 916, tras: 2 },
+    ],
+    },
+    {
+      id: "arackar",
+      titulo: "*Arackar licanantay*",
+      nivel: 3,
+      parrafos: [
+        "*Arackar licanantay*, es un nuevo dinosaurio titanosáurido descrito " +
+          "para Chile, cuyas características en las vértebras lo hacen " +
+          "diferente de otros dinosaurios del mismo grupo. Fue encontrado en el " +
+          "Norte de Chile en el Desierto de Atacama, a 75 km al sur de Copiapó, " +
+          "en la Formación Hornitos, cuya antigüedad ha sido situada en el " +
+          "Cretácico Superior, de los 83 a 65.5 millones de años.",
+        "De este dinosaurio no se ha encontrado el cráneo, sino que los restos " +
+          "pertenecen al poscráneo como vértebras dorsales y cervicales, así " +
+          "como partes del esqueleto apendicular (extremidades) como el húmero, " +
+          "el fémur y un hueso pelviano (isquion), en total unas 23 piezas.",
+        "Este material permite extrapolar el tamaño, que estaría en torno a los " +
+          "6.3 metros, lo que nos indica que este espécimen no es un adulto, " +
+          "sino más bien un juvenil, o semiadulto, en su estado adulto habría " +
+          "alcanzado los 12 a 15 metros.",
+      ],
+    imagenes: [
+      { src: "assets/img/dinosaurios-chile/09.jpg", ancho: 1351, alto: 1102, tras: 1,
+        pie: "Reconstrucción paleobiológica de Arackar licanantay, ilustración José Lemos Caro." },
+      { src: "assets/img/dinosaurios-chile/10.jpg", ancho: 1115, alto: 705, tras: 2 },
+    ],
+    },
+    {
+      id: "stegouros",
+      titulo: "*Stegouros elengassen*",
+      nivel: 3,
+      parrafos: [
+        "Recientemente, en Cerro Guido, Región de Magallanes, en la Patagonia " +
+          "chilena, se ha descubierto un esqueleto muy completo de un dinosaurio " +
+          "anquilosaurio basal, cuya edad ha sido atribuida al Cretácico " +
+          "Superior de 70 a 74 millones de años. El descubrimiento lo hicieron " +
+          "investigadores de la Universidad de Texas, quienes dieron aviso del " +
+          "hallazgo.",
+        "Fue de tamaño pequeño, ya que alcanzaba los dos metros de largo, con su " +
+          "cuerpo cubierto de una coraza protectora. Su cabeza es grande en " +
+          "proporción del cuerpo, su hocico presentaba un pico córneo para " +
+          "cortar las plantas, y en su interior dientes en forma de hoja y de " +
+          "coronas altas, para una dieta herbívora, probablemente en base a " +
+          "*Equisetum*.",
+        "Poseía miembros cortos y delgados, los dedos terminados en pezuñas. Su " +
+          "cuerpo remataba en una cola aplanada, flexible y compuesta por 26 " +
+          "vértebras, de las cuales varias caudales, estaban cubiertas por " +
+          "placas. La cola estaba compuesta de grandes osteodermos, que se " +
+          "transformaba en un arma caudal, con la cual se defendía de sus " +
+          "depredadores, está conformada por 7 pares de placas u osteodermos " +
+          "aplanados en forma de fronda.",
+      ],
+    imagenes: [
+      { src: "assets/img/dinosaurios-chile/11.jpg", ancho: 977, alto: 403, tras: 2,
+        pie: "Zona caudal de Stegouros elengassen, mostrando las placas en forma de fronda, tomado y adaptado de Soto-Acuña, et al, 2021." },
+      { src: "assets/img/dinosaurios-chile/12.jpg", ancho: 991, alto: 385, tras: 2,
+        pie: "Reconstrucción aproximada del esqueleto de Stegouros elengassen, tomado de Soto-Acuña, et al, 2021." },
+      { src: "assets/img/dinosaurios-chile/13.jpg", ancho: 1115, alto: 705, tras: 2,
+        pie: "Reconstrucción de *Stegouros*, ilustración Mohamed Haghani." },
+    ],
+    },
+    {
+      id: "gonkoken",
+      titulo: "*Gonkoken nanoi*",
+      nivel: 3,
+      parrafos: [
+        "Una investigación nacional descubrió una nueva especie de dinosaurio " +
+          "correspondiente a un linaje ancestral de los hadrosáuridos, grupo " +
+          "conocido también como dinosaurios pico de pato, que vivió en el " +
+          "Maastrichtiano temprano hace 72 millones de años en el extremo sur " +
+          "del país. *Gonkoken nanoi* es el nombre de la especie (nombre que " +
+          "proviene de las palabras en lengua Aonikenk ‘gon’ que significa " +
+          "parecido o similar, ‘koken’ que es pato silvestre o cisne.), que " +
+          "oscilaba entre los 3,5 a 4 metros de largo y que podría haber " +
+          "alcanzado de 600 kilogramos a una tonelada de peso. *Gonkoken* es el " +
+          "primer dinosaurio con pico de pato no hadrosáurido jamás encontrado " +
+          "en Gondwana. Fue encontrado una ladera en el sector del Valle del " +
+          "Río de Las Chinas, zona cercana a las Torres del Paine, en la " +
+          "Patagonia chilena, a 105 kilómetros de Puerto Natales",
+        "Tenía un gran pico aplanado en el extremo del hocico, semejantes a un " +
+          "pato, pero con bordes más cortantes y enormes baterías dentales en " +
+          "sus mandíbulas, formadas por numerosas corridas de cientos de dientes " +
+          "con las cuales podían moler, triturar y cortar prácticamente " +
+          "cualquier material vegetal, incluyendo madera. Poseían, además, " +
+          "comportamiento social, y cuidaban de sus crías.",
+      ],
+    imagenes: [
+      { src: "assets/img/dinosaurios-chile/14.jpg", ancho: 1351, alto: 937, tras: 1,
+        pie: "Fémur izquierdo en vista anterior, tibia izquierda en vista lateral y Húmero izquierdo en vista posterolateral de Gonkoken." },
+      { src: "assets/img/dinosaurios-chile/15.jpg", ancho: 1352, alto: 576, tras: 1,
+        pie: "Escápula derecha en vista lateral de Gonkoken." },
+      { src: "assets/img/dinosaurios-chile/16.jpg", ancho: 1249, alto: 640, tras: 1,
+        pie: "Reconstrucción paleobiológica de Gonkoken nanoi, Arte IA a partir del esqueleto, Albert Castillo." },
+    ],
+    },
+    {
+      id: "megaraptor",
+      titulo: "Megaraptor en Chile",
+      nivel: 3,
+      parrafos: [
+        "Restos de *Megaraptor*, entre los que se encuentran fragmentos de " +
+          "huesos y dientes, han sido encontrados en el Valle del Río de Las " +
+          "Chinas, de la Formación Dorotea, en depósitos del Cretácico Superior, " +
+          "al noroeste del Parque Nacional Torres del Paine. Uno de los " +
+          "hallazgos, consistió en un trozo de hueso (diáfisis), al cual le " +
+          "faltaban ambos extremos (epífisis), se identificó como un fragmento " +
+          "de un hueso tibial macizo pero hueco.",
+        "pero sin duda, lo más relevante de estos restos, son los dientes " +
+          "hallados, ya que estos nos indica que estamos en presencia de " +
+          "animales carnívoros y por ende cazadores. Los autores (Davis, S.N. " +
+          "et al 2023), determinan que estos dientes son de un tamaño similar al " +
+          "megaraptórido argentino *Murusraptor barrosaensis*.",
+        "Estos dientes zifodontos (término que describe a animales, " +
+          "principalmente reptiles y crocodilomorfos, que poseen dientes " +
+          "comprimidos lateralmente y con carenas denticuladas, similares a un " +
+          "filo de sierra), son dientes laterales “grandes”, que habría " +
+          "pertenecido a un dinosaurio terópodo de tamaño mediano. Los dos " +
+          "dientes poseen carenas acerradas, con esmalte irregular y " +
+          "comprimidos lateralmente, ideal para el corte y la cacería.",
+      ],
+    imagenes: [
+      { src: "assets/img/dinosaurios-chile/17.jpg", ancho: 1077, alto: 385, tras: 0,
+        pie: "Tibia indeterminada de Megaraptor (foto tomada de Davis, S. et al.)." },
+      { src: "assets/img/dinosaurios-chile/18.jpg", ancho: 503, alto: 306, tras: 1,
+        pie: "Diente de Megaraptor encontrado en la Patagonia chilena, (foto tomada de Davis, S. et al.) Vistas: A labial; B lingual; Ornamentaciones de la corona E. Abreviaturas: ca, carina; ce, cérvix; lad, depresión labial; lid, depresión lingual; tun, ondulaciones transversales; wfa, faceta de desgaste." },
+      { src: "assets/img/dinosaurios-chile/19.jpg", ancho: 1306, alto: 705, tras: 2,
+        pie: "Reconstrucción paleobiológica de un paisaje de la Patagonia del cretácico superior, en donde tenemos a Megaraptor. Ilustración Mohamad Haghani." },
+    ],
+    },
+    {
+      id: "unenlagidos",
+      titulo: "Unenlágidos en Chile",
+      nivel: 3,
+      parrafos: [
+        "En Valle de Las Chinas, en la Cuenca de Magallanes, fue encontrado un " +
+          "diente diferente a los anteriores, que según los autores (Davis, S. " +
+          "et al), había pertenecido a un dinosaurio que representa la familia " +
+          "Dromaeosauridae, tentativamente perteneciente a la subfamilia " +
+          "Unenlagiinae. Este diente presenta superficies lisas, tiene forma de " +
+          "cuña, sin estrías ni depresiones, además presenta pequeños " +
+          "dentículos en la carena distal formando una sierra muy fina, pero " +
+          "suficiente para cortar.",
+      ],
+    imagenes: [
+      { src: "assets/img/dinosaurios-chile/20.jpg", ancho: 422, alto: 265, tras: 0,
+        pie: "Diente unenlágido encontrado en la Patagonia chilena. Vistas: A labial; B mesial; C lingual y D distal.   Abreviaturas: ca, carina; sps, superficie desconchada. Escala = 5 mm." },
+      { src: "assets/img/dinosaurios-chile/21.jpg", ancho: 1299, alto: 1882, tras: 0,
+        pie: "Mapa de distribución de hallazgos de restos óseos de dinosaurios" },
+    ],
+    },
+  ],
+  cierre: {
+    texto: "Los restos de dinosaurios son una de las piezas de la muestra del museo.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones",
+  },
+};
+
+window.DINOSAURIOS_CHILE = DINOSAURIOS_CHILE;
+
 const HUELLAS = {
   subpagina: "huellas.html",
   volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
@@ -3744,6 +4088,9 @@ if (typeof window !== "undefined") {
      Se vio al medir: `node -e` daba «Cannot read properties of undefined». */
   window.AMBAR = AMBAR;
   window.DINOSAURIOS = DINOSAURIOS;
+  /* CR-96: `const` NO crea propiedad global — sin esta línea
+     `window.DINOSAURIOS_CHILE` es undefined y la página sale en blanco. */
+  window.DINOSAURIOS_CHILE = DINOSAURIOS_CHILE;
   window.HUELLAS = HUELLAS;
   /* CR-80: `const` no crea propiedad global — sin esta línea ENTIDADES es
      undefined en el render (misma trampa que documentó CR-71 con CEC_SUBPAGINA). */

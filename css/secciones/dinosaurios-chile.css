@@ -1,0 +1,266 @@
+/* ============================================================
+   CR-96 (2026-11-02) — Subpágina DINOSAURIOS EN CHILE
+   (dinosaurios-chile.html). Octava subpágina de colección.
+
+   Reglas vigentes del proyecto que esta hoja respeta:
+     - tamaños con `clamp()`, nunca px fijos (DEC-015);
+     - animaciones de entrada SOLO en el eje Y (DEC-017);
+     - hover con glow / translateY, NUNCA `scale` en la caja;
+     - todo el texto sale de data/museo.js -> DINOSAURIOS_CHILE
+       (DEC-005); acá no hay una sola palabra escrita a mano.
+
+   🔴 DEC-083: PREFIJO PROPIO `dch-`. NO se reusa `amb-` aunque las otras
+   páginas de dinosaurios sí lo hagan (DEC-090): acá las figuras necesitan
+   ANCHO COMPLETO y `.amb-figs` las limita a 780 px. Requisito distinto,
+   hoja distinta.
+
+   ⚠️ Se deriva de ambar.css a propósito: mismo esqueleto visual, para que
+   la página no se sienta de otro sitio. Lo que cambia está marcado con
+   «CR-96» en el archivo.
+   ============================================================ */
+
+/* ---------- Cabecera de la página ----------
+   ⚠️ El `.header` es `position: fixed` (header.css), así que NO reserva espacio
+   en el flujo y el título quedaría DEBAJO de la barra. No se copia un número a
+   mano (lección de CR-57: los px fijos quedan viejos cuando cambia el alto del
+   header): se deriva de `--header-h`, que el JS publica con la altura REAL, con
+   el 84px solo como respaldo por si el JS no corre. Mismo patrón que
+   `.tri-cabeza` y `.hero`. */
+.dch-cabeza {
+  padding-top: max(clamp(96px, 12vw, 120px),
+                   calc(var(--header-h, 84px) + clamp(18px, 2.6vw, 32px)));
+}
+
+.dch-volver {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: clamp(.78rem, 1.1vw, .84rem); font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--text-muted); text-decoration: none;
+  margin-bottom: clamp(20px, 3vw, 30px);
+  transition: color .3s, gap .3s var(--ease-out-expo);
+}
+.dch-volver:hover { color: var(--ocre); gap: 13px; }
+.dch-volver svg { flex: none; }
+
+.dch-titulo {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: 1.06; color: var(--text-main);
+  margin: 12px 0 14px;
+}
+.dch-bajada {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: var(--text-soft); max-width: 62ch;
+}
+.dch-intro {
+  margin-top: clamp(18px, 2.6vw, 26px);
+  padding-top: clamp(18px, 2.6vw, 26px);
+  border-top: 1px solid var(--border-subtle);
+  max-width: 74ch;
+}
+.dch-intro p {
+  font-size: clamp(.95rem, 1.4vw, 1.03rem);
+  line-height: 1.72; color: var(--text-soft);
+}
+
+/* ---------- Índice de secciones ----------
+   La página tiene 6 secciones de nivel 2 y sin índice el usuario no sabe qué
+   hay abajo. Se arma con los MISMOS datos que las secciones, así que no
+   puede desincronizarse. */
+.dch-indice {
+  margin-top: clamp(26px, 4vw, 40px);
+  padding: clamp(18px, 2.6vw, 24px);
+  border-radius: var(--radius-md);
+  background: var(--bg-glass); border: 1px solid var(--border-subtle);
+}
+.dch-indice__t {
+  font-family: var(--font-display); font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  color: var(--text-main); margin-bottom: 14px;
+}
+.dch-indice__l {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px 20px; list-style: none; margin: 0; padding: 0;
+}
+.dch-indice__l a {
+  display: block; padding: 5px 0;
+  font-size: clamp(.84rem, 1.2vw, .89rem);
+  color: var(--text-muted); text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .25s, border-color .25s;
+}
+.dch-indice__l a:hover { color: var(--ocre-light); border-bottom-color: var(--border-accent); }
+
+/* ---------- Secciones ----------
+   `scroll-margin-top` derivado de `--header-h`: sin esto el ancla del índice
+   deja el título tapado detrás de la barra fija (misma lección de CR-80, donde
+   `#entidades` quedó con top 0). */
+.dch-sec {
+  margin-top: var(--space-bloque);
+  scroll-margin-top: calc(var(--header-h, 84px) + 16px);
+}
+.dch-sec--sub {
+  margin-top: clamp(20px, 3vw, 30px);
+  padding-left: clamp(0px, 2vw, 18px);
+  border-left: 1px solid var(--border-subtle);
+}
+
+.dch-sec__t {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3vw, 2.05rem);
+  line-height: 1.14; color: var(--text-main);
+  margin-bottom: 14px;
+}
+.dch-sec--sub .dch-sec__t { font-size: clamp(1.2rem, 2.2vw, 1.5rem); }
+
+.dch-sec p {
+  font-size: clamp(.95rem, 1.4vw, 1.02rem);
+  line-height: 1.75; color: var(--text-soft);
+  max-width: 76ch;
+}
+.dch-sec p + p { margin-top: 14px; }
+
+/* ---------- Nombres científicos en cursiva (CR-86b) ----------
+   Pedido del dueño: «para cualquier nombre científico se usan cursiva».
+   El render (js/ambar.js, `conCursivas`) convierte `*Pinus succinifera*` del
+   data/ en un `<i>` DESPUÉS de escapar el HTML. Esta regla sólo le da color y
+   peso: la cursiva ya viene en la etiqueta, no la impone el CSS — así el texto
+   sigue siendo correcto incluso si la hoja no carga. */
+/* CR-86c — Cursiva para nombres científicos.
+   El `<i>` lo genera js/texto.js; acá sólo se garantiza el estilo. Se cubre
+   párrafo, pie de foto y título de sección porque los tres pueden traer un
+   nombre binomial (`Otodus megalodon, la megabestia marina` es un <h2>). */
+.dch-sec p i,
+.dch-fig figcaption i,
+.dch-sec__t i {
+  font-style: italic;
+  color: var(--text-main);
+}
+
+/* ---------- Figuras ----------
+   CR-60b dejó la lección en trilobites: `width:100%; height:auto` dentro de una
+   grilla `auto-fit` estira a TODO el contenedor las secciones de una sola
+   imagen, y el material vertical pinta dos pantallas de alto. Los dos topes
+   (ancho de la grilla + alto del marco) son los mismos, con `clamp()`.
+
+   🔴 CR-60e costó dos intentos porque la causa NO estaba en la hoja de la
+   página sino en `galeria.css`, que fuerza `aspect-ratio:1/1 + object-fit:cover`
+   a toda `.galeria__foto img` del sitio. Acá NO se usa esa clase: el prefijo es
+   `tib-`, así que el recorte no puede heredarse. */
+/* CR-96: A DIFERENCIA de ámbar, acá el bloque de figuras NO se limita a
+   780 px. Este capítulo trae reconstrucciones de 1350 px y un mapa de
+   1882 px de alto: con el tope de ámbar se verían chicas y el detalle
+   (placas, dientes, escala) se perdería. Ocupa el ancho de la columna de
+   texto, que ya está acotada por `.contenedor`. */
+.dch-figs {
+  display: grid; gap: clamp(16px, 2.4vw, 24px);
+  margin: clamp(20px, 3vw, 28px) 0 0;
+  max-width: 100%;
+  align-items: stretch;
+}
+.dch-figs--1 { grid-template-columns: 1fr; }
+/* CR-96 — COLUMNAS DECLARADAS POR RANGO, no con `auto-fit`.
+   🔴 Trampa medida: `repeat(auto-fit, minmax(340px,1fr))` en un bloque de
+   1113 px da TRES columnas de 355 px, porque 3×340+2×24 = 1068 ≤ 1113. La
+   figura de detalle (dientes, placas, huesos con escala) quedaba a 355 px,
+   igual de chica que antes: subir el `minmax` NO bastaba.
+   Las figuras de este capítulo son piezas de detalle: se leen a ≥500 px.
+   Por eso: 2 columnas arriba de 900 px, 1 debajo. */
+.dch-figs--2 { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+.dch-figs--3 { grid-template-columns: 1fr; }
+@media (min-width: 900px) {
+  .dch-figs--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* ⚠️ CR-86: en ámbar el máximo por sección es TRES (no hay ninguna de cinco
+   como la del megalodon en tiburones). Se conserva la regla igual, para no
+   divergir del patrón y por si el dueño agrega más material. */
+.dch-figs--5 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+.dch-fig {
+  margin: 0; border-radius: var(--radius-md); overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  transition: border-color .35s, box-shadow .35s;
+  display: flex; flex-direction: column;
+}
+.dch-fig:hover { border-color: var(--border-accent); box-shadow: var(--shadow-md); }
+
+/* ⚠️ El marco NO impone un alto: toma la proporción de la imagen. Los topes son
+   MÁXIMO, y la imagen se limita con `max-height` + `width:auto`, que ESCALA sin
+   cortar. `min-height` solo evita que una imagen sin cargar deje la caja en 0. */
+.dch-fig__marco {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; overflow: hidden;
+  min-height: clamp(180px, 24vh, 280px);
+  max-height: clamp(280px, 58vh, 620px);
+  background: linear-gradient(160deg, var(--bg-elevated), var(--bg-deep));
+}
+.dch-fig__marco img {
+  /* Sin `object-fit`: eso es lo que recortaba en CR-60e. La caja se adapta a
+     la imagen, no al revés. */
+  display: block;
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  margin: auto;
+  transition: transform .5s var(--ease-out-expo);
+}
+/* El zoom va SOLO en la imagen de adentro (la caja no cambia de tamaño). */
+.dch-fig:hover .dch-fig__marco img { transform: scale(1.035); }
+
+.dch-fig figcaption {
+  padding: 12px 14px 14px;
+  font-size: clamp(.78rem, 1.1vw, .83rem);
+  line-height: 1.55; color: var(--text-muted);
+  margin-top: auto;
+}
+.dch-fig figcaption b { color: var(--text-soft); font-weight: 600; }
+
+/* ---------- Cierre ---------- */
+.dch-cierre {
+  margin-top: var(--space-bloque); text-align: center;
+  padding: clamp(26px, 4vw, 40px);
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass-strong); border: 1px solid var(--border-subtle);
+}
+.dch-cierre p {
+  font-family: var(--font-display); font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  color: var(--text-main); margin-bottom: 18px; max-width: 46ch; margin-inline: auto;
+}
+
+/* ---------- Cita de apertura (CR-91, sólo huellas.html) ----------
+   Viene del Word firmada por el autor. Va entre la bajada y el índice, con una
+   barra de acento a la izquierda: se lee como cita y no como párrafo del cuerpo.
+   `:empty` la saca del flujo cuando el data no trae cita, así las otras siete
+   subpáginas que reusan esta hoja no ganan un hueco. */
+.dch-cita:empty { display: none; }
+.dch-cita {
+  margin-top: clamp(22px, 3.4vw, 32px);
+  padding: clamp(16px, 2.4vw, 22px) clamp(18px, 2.8vw, 26px);
+  border-left: 3px solid var(--border-accent);
+  background: var(--bg-glass);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  max-width: 70ch;
+}
+.dch-cita__texto {
+  font-family: var(--font-display);
+  font-size: clamp(1.02rem, 1.8vw, 1.22rem);
+  line-height: 1.62; color: var(--text-main);
+  margin: 0; font-style: normal;
+}
+.dch-cita__autor {
+  margin: 12px 0 0;
+  font-size: clamp(.82rem, 1.2vw, .88rem);
+  letter-spacing: .04em; color: var(--ocre-light);
+}
+
+/* ---------- Crédito de autoría en el inicio (CR-94, DEC-094) ----------
+   El dueño pidió que en el arranque de cada subpágina de colección se lea que
+   los textos son suyos: «texto escrito por él, nada más». Va debajo de la
+   bajada, en versalitas discretas: es un crédito, no un titular.
+   `:empty` lo saca del flujo cuando el data no trae la frase, así las páginas
+   que no la usan no ganan un hueco. */
+.dch-credito:empty { display: none; }
+.dch-credito {
+  margin-top: clamp(10px, 1.4vw, 14px);
+  font-size: clamp(.74rem, 1vw, .8rem);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted);
+}

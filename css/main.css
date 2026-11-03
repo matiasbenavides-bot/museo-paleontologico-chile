@@ -41,6 +41,12 @@
    cadena única, como las otras cinco subpáginas, para que UN solo <link> sirva
    a todas las páginas y no existan dos listas de CSS que puedan divergir. */
 @import url("secciones/ambar.css");
+/* CR-96 (2026-11-02): la subpágina DINOSAURIOS EN CHILE
+   (dinosaurios-chile.html) tiene su propia hoja, con prefijo `dch-`
+   (DEC-083: no reusa `.amb-`). Va en la cadena única, como las otras
+   subpáginas, para que UN solo <link> sirva a todas las páginas y no
+   existan dos listas de CSS que puedan divergir. */
+@import url("secciones/dinosaurios-chile.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");
