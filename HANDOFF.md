@@ -1,6 +1,6 @@
 # HANDOFF — Museo Paleontológico de Chile (MPCH)
 
-Última actualización: **2026-11-02** (CR-96)
+Última actualización: **2026-11-02** (CR-98)
 Ruta local: `/mnt/c/dev/museo-mpch/`
 **En línea:** https://matiasbenavides-bot.github.io/museo-paleontologico-chile/
 Repo: https://github.com/matiasbenavides-bot/museo-paleontologico-chile (rama `master`, Pages desde `/`)
@@ -11,7 +11,31 @@ Abrir local: doble clic en `index.html` — estático, sin backend, sin build, s
 
 ---
 
-## Lo que se cerró en esta sesión (2026-11-02 · CR-96)
+## Lo que se cerró en esta sesión (2026-11-02)
+
+### CR-98 — página nueva «Pterosaurios en Chile» (9.ª subpágina)
+
+| Qué | Medición en vivo |
+|---|---|
+| Fuente | `fuentes/pterosaurios-material-del-dueno.docx` (2.181.194 b, MD5 `757f53b8…`) |
+| Contenido | **9 secciones · 22 párrafos · 14 figuras · 10 con pie** |
+| Página | 200 · 7.835 b · **9.869 px @1440** |
+| Imágenes | **14/14** cargan · 0 rotas · 0 desborde 360→1440 · 0 errores |
+| Card | **Pterosaurios**, 6.º lugar de la colección (9 cards) |
+
+🔴 **El ícono no se pudo usar tal cual.** El JPEG del dueño (1408×768) era **negro sobre
+fondo blanco**: sobre el azul de la card el blanco pinta un parche, y el trazo fino se perdía a
+los 62 px reales — medido **por píxeles**: **4 px celestes** contra 39 del trilobite. Se
+convirtió a **PNG RGBA 512×512** con el celeste de la paleta y trazo engrosado → **693 px**.
+Script re-ejecutable: `scripts/prepara-icono-pterosaurios.py` (verificado: reproduce el archivo
+publicado, MD5 `6866a069…`).
+
+🔴 **«Domeykodactilus» → «Domeykodactylus»** (CR-98b). El Word lo escribía con «i» 8 veces; el
+nombre válido lleva «y». Se dejó y **se avisó**; el dueño pidió corregirlo. Aplicado en **15
+lugares** + el `id`/ancla de la sección. **Regla que queda**: una grafía repetida no se corrige
+sola, se avisa.
+
+### CR-96 — página «Dinosaurios en Chile» (8.ª subpágina)
 
 **Se publicó la 9.ª página: `dinosaurios-chile.html`.**
 
@@ -89,6 +113,8 @@ Se instalan en `/tmp/venv-docx2` con `uv`. Chromium:
    Reactivarla = devolver el PNG + descomentar el objeto en `data/museo.js`. **El render no cambia.**
 3. **Pies de figura sin `alt`** — decisión del proyecto (DEC-034): el dueño no dictó
    descripciones y el agente no ve imágenes. No es un faltante, es una decisión.
+4. ⚠️ **«Pterosaur horizont»** — el Word escribe «horizont»; se dejó porque es el nombre propio
+   del sitio como circula en la literatura. Si el dueño dice que es «horizon», se corrige.
 
 ---
 
