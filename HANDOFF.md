@@ -9,6 +9,9 @@ Abrir local: doble clic en `index.html` — estático, sin backend, sin build, s
 > ⚠️ **La skill `museo-mpch` y sus `references/` son la fuente de verdad** donde haya choque con
 > este archivo. Aquí va el estado medido y el paso siguiente real.
 
+📋 **Bitácora de la sesión 2026-11-02 (CR-96 a CR-98), con los 5 errores cometidos y la receta
+para retomar: `BITACORA-2026-11-02.md`.**
+
 ---
 
 ## Lo que se cerró en esta sesión (2026-11-02)
