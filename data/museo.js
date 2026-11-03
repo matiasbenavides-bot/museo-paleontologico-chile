@@ -513,6 +513,14 @@ const COLECCIONES = {
        escribe "Ver más", que es texto que el dueño NO dictó. */
     { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-pterosaurios.png", nombre: "Pterosaurios", detalle: "Reptiles voladores del Mesozoico y los restos hallados en Chile, desde Domeykodactylus hasta la colonia de Cerro La Isla.",
       enlace: "pterosaurios.html", enlaceTexto: "Conocer los pterosaurios" },
+    /* CR-99 (2026-11-03) — el dueño entregó el Word «Reptiles marinos en Chile»
+       y pidió «es una nueva card». Capítulo NUEVO: no se relaciona con las
+       tres páginas de dinosaurios ni con la de pterosaurios. `enlaceTexto` es
+       OBLIGATORIO cuando hay `enlace`: si falta, el render escribe "Ver más",
+       que es texto que el dueño NO dictó. Sin `arte` propia todavía: se usa el
+       ícono compartido hasta que él entregue el dibujo de la card. */
+    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Reptiles marinos", detalle: "Plesiosaurios, ictiosaurios, pliosaurios, cocodrilos marinos y mosasaurios: el mar del Mesozoico y sus restos en Chile.",
+      enlace: "reptiles.html", enlaceTexto: "Conocer los reptiles marinos" },
     /* CR-87 (2026-10-29): el dueño pidió subpágina para los dinosaurios — mismo
        mecanismo que Trilobites (CR-60), Ammonites (CR-83), Tiburones (CR-85) y
        Ámbar (CR-86). La card que ABRE la página es esta, «Dinosaurios general»:
@@ -4104,6 +4112,242 @@ const PTEROSAURIOS = {
 };
 
 window.PTEROSAURIOS = PTEROSAURIOS;
+
+
+/* ============================================================
+   CR-99 (2026-11-03) — REPTILES MARINOS EN CHILE (reptiles.html)
+   DÉCIMA subpágina de colección. Material: Word «Reptiles marinos en Chile.docx»
+   del director; copia en `fuentes/reptiles-marinos-material-del-dueno.docx`
+   (MD5 8fc3a6d4d14ccbf8d0c9a94a8b9945d3).
+
+   Contenido medido en `word/document.xml`: 11 secciones · 38 párrafos ·
+   24 figuras · 23 con pie (la 09 no lo trae en el Word y NO se inventó).
+
+   🔴 DEC-82 — El mapeo figura→párrafo se DERIVÓ del documento con
+   `scripts/mapea-figuras-reptiles.py`; jamás se escribió a mano (CR-96
+   costó 4 intentos y desalineó 4 secciones con el conteo cuadrando).
+   Las figs 09 y 10 comparten párrafo en el original y por eso comparten
+   `tras`; las 22, 23 y 24 también, y se pintan juntas porque juntas vienen.
+
+   🔴 CURSIVAS: los asteriscos son SINTAXIS DEL RENDER (`js/texto.js` →
+   `conCursivas`), no los escribe el dueño. NO limpiarlos: sin asteriscos
+   los nombres científicos pierden la cursiva (DEC-088).
+
+   ERRATAS DE COPIADO corregidas (artefactos, NUNCA palabras del museo):
+   «ocupo»→«ocupó» · «hocico pre-sentaba»→«presentaba» · «cráneo mu-cho»→
+   «mucho» · «termina-ba»→«terminaba» · «grue-sos»→«gruesos» ·
+   «escle¬rótico»→«esclerótico» · «estudio otros restos»→«estudió» ·
+   «reasigno»→«reasignó» · «lo nomino»→«lo nominó» · «localidades Han»→
+   «han» · «en los en los mares»→«en los mares» · «vertebras aisladas»→
+   «vértebras» · «La vertebra, es»→«La vértebra es» · «caras articular
+   anterior»→«caras articulares anteriores» · «Sudamérica. de la familia»→
+   «Sudamérica, de la familia» · «bautizaron como como»→«bautizaron como» ·
+   «Wilhelm Deecke, reviso»→«revisó» · «dientes, vertebras»→«vértebras» ·
+   «carácter masiva»→«carácter masivo».
+   🔴 SE DEJAN como están: «que ocupo» ya corregido; «a los Halisauridos»
+   (mayúscula del autor), «Mosasaurido» sin tilde en un pie, «halihaurido»
+   (grafía del pie) y «Arictonectes» frente a «Aristonectes» —ese par es
+   inconsistencia REAL del documento y NO se corrige sin la palabra del dueño.
+
+   🔴 DEC-083 — prefijo propio `rpt-` (no `amb-`, `dch-` ni `ptx-`).
+   ============================================================ */
+const REPTILES = {
+  subpagina: "reptiles.html",
+  volver: { texto: "Volver a la colección", enlace: "index.html#colecciones" },
+  etiqueta: "Colecciones · Mesozoico",
+  titulo: "Reptiles marinos en Chile",
+  bajada:
+    "Plesiosaurios, ictiosaurios, pliosaurios, cocodrilos marinos y mosasaurios: los reptiles que dominaron el mar del Mesozoico y los restos hallados en Chile.",
+  /* `intro: null` a propósito: el primer párrafo del Word se publica en su
+     sección y repetirlo acá lo mostraría dos veces. */
+  intro: null,
+  secciones: [
+    {
+      id: "reptiles-generalidades",
+      titulo: "Reptiles marinos: generalidades",
+      nivel: 2,
+      parrafos: [
+        "Los reptiles marinos fueron un amplio grupo que ocupó uno de los nichos ecológicos más grandes y de abundante alimentación, como lo fue el mar del Mesozoico. Estos han ocupado reiteradamente ambientes marinos a pesar de sus limitaciones fisiológicas, entre las que se destacan la respiración aérea, teniendo que subir a la superficie del agua para respirar el aire atmosférico, o su forma de reproducción en la cual, las crías debían salir a la superficie.",
+        "Este mar Mesozoico permitió una adaptación de animales terrestres a un medio acuático, que significó que dichos animales desarrollaran profundas modificaciones corporales como adaptación al nuevo medio y a las presiones de otros competidores marinos como tiburones u otras especies dinámicas, por lo tanto, estos grupos de reptiles marinos han ocupado este hábitat con mayor o menor éxito.",
+        "Fisiológicamente, los reptiles siempre han sido tolerantes a las temperaturas más bajas, lo que sin duda fue una ventaja para su vida en este medio. También, gracias a sus lentas tasas metabólicas, los reptiles marinos consumen mucho menos oxígeno por segundo que los mamíferos, lo que significa que pueden tolerar la anoxia mejor en caso de escasez de oxígeno, características que permite a los reptiles marinos a permanecer más tiempo bajo el agua.",
+        "Además, estos animales lograron alcanzar una amplia distribución geográfica, comenzando desde el Permotriásico hasta el Cretácico en que se extinguieron. Dado lo anterior, podemos describir una serie de reptiles que se han venido desarrollando a lo largo del tiempo.",
+        "Había más de una docena de grupos de reptiles marinos del Mesozoico, muchos de los cuales tenían presencia en Chile como Ictiosaurios, Mosasaurios, Tortugas, Cocodrilos, Pliosaurios y Plesiosaurios.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/01.jpg", ancho: 789, alto: 511, tras: 2, pie: "Esqueleto de los reptiles marinos más conocidos, mosasaurio, plesiosaurio e ictiosaurio" },
+      ],
+    },
+    {
+      id: "plesiosaurios",
+      titulo: "Plesiosaurios",
+      nivel: 2,
+      parrafos: [
+        "Los plesiosaurios fueron un particular grupo de reptiles marinos que alcanzaron un grado de adaptación tal, que sus aletas natatorias se transformaron en verdaderos remos, los cuales, movían coordinadamente en una especie de vuelo subacuático.",
+        "Su principal característica era su largo cuello, que terminaba en una pequeña cabeza. Su cráneo tenía dos aberturas en su parte superior y su hocico presentaba una infinidad de pequeños y puntiagudos dientes, adaptados para atrapar las escurridizas presas, entre las que destacaban principalmente peces y cefalópodos ammonoideos. Poseía una cola medianamente larga, usada como elemento director del nado.",
+        "Su cráneo posee dos aberturas en su parte superior, las órbitas oculares ocupan una posición media en el cráneo. Los integrantes de este grupo debieron ser excelentes nadadores, sus cuerpos medían de 4 a 10 metros y mayores en los pliosaurios. La proporción entre las aletas natatorias y el tronco permanece más o menos constante desde el Jurásico hasta el Cretácico, en tanto que las proporciones de la cabeza y cuello varían. Sus dientes son agudos y cónicos, con estrías a lo largo de la corona, estos están insertados en alvéolos y son típicamente piscívoros ya que estos animales tenían una dieta la constituían los peces y cefalópodos (Ammonites), siendo grandes depredadores marinos.",
+        "Su reproducción se realizaba mediante huevos que desovaba a la orilla de la playa sobre la arena, sin embargo, hoy se propone que la reproducción podría haber sido interna, desarrollando el embrión de gran tamaño en su interior, tal como lo harían los ictiosaurios. No obstante, esto no está resuelto aún.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/02.jpg", ancho: 1348, alto: 274, tras: 1, pie: "Superfamilia: Plesiosauroidea de cuello largo y cabeza pequeña." },
+        { src: "assets/img/reptiles/03.jpg", ancho: 1350, alto: 334, tras: 2, pie: "Cráneo y reconstrucción de la cabeza de plesiosaurio (Bruno Hernández)" },
+      ],
+    },
+    {
+      id: "plesiosaurios-en-chile",
+      titulo: "Plesiosaurios en Chile",
+      nivel: 3,
+      parrafos: [
+        "La primera mención sobre de restos de plesiosaurios en Chile corresponde a Claudio Gay en el año 1847. En 1848, Gay da a conocer restos de plesiosaurios provenientes de Isla Quiriquina, quien los atribuye a *Plesiosaurus chilensis*. Posteriormente muchos restos han sido encontrados a lo largo del país.",
+        "Philippi (1887) comentó sobre varios hallazgos de plesiosaurios en otras localidades, destacando la presencia de una secuencia vertebral proveniente de Algarrobo, Región de Valparaíso.",
+        "En nuevos trabajos realizados por Steinmann en 1895, estudió otros restos provenientes de la Isla Quiriquina. Colaborando con Steinmann, Wilhelm Deecke, revisó los materiales de Gay y los nuevos encontrados en la isla y los reasignó a Pliosaurus, considerando que los restos tenían más afinidad con este género que con plesiosaurio, por lo cual lo nominó como *Pliosaurus chilensis*.",
+        "El área de distribución geográfica de este grupo comprende al género *Arictonectes*, que encontramos en Chile y Sudamérica. En Chile los hallazgos abarcan desde el Jurásico Inferior hasta el Cretácico, Maastrichtiano Superior. También ha sido encontrados desde el norte de Chile hasta el extremo sur del territorio nacional, en la Patagonia y la Antártida. Chile fue un territorio esencialmente marino. De allí que este tipo de fauna sea abundante en nuestro territorio, sobre todo en la VII y VIII Región donde han sido encontrados restos, tanto de Plesiosauria de la familia Elasmosauridae y Pliosauridae.",
+        "En el norte existe evidencia de plesiosaurios Criptocleididae de una edad Oxfordiana, en tanto que en Chile Centro Sur existe la presencia de plesiosaurios Aristenectidos (con la nueva especie *Arictonectes quiriquinensis*) y otras formas similares a *Morturneria seymourensis* de la Antártica de edad Cretácica Superior. Por otra parte, en el extremo sur existe registro de una especie de pequeño tamaño atribuible al grupo de los Aristonectinos en la región de Magallanes. Recientemente se descubrieron restos de plesiosaurios indeterminados en La Antártica, específicamente en la Isla James Ross y en la Isla Seymour, con una edad del Cretácico Superior, unos 70 millones de años.",
+        "En Pelluhue, VII región, se ha exhumado uno de los ejemplares de Plesiosaurios atribuibles a Elasmosauridae, hoy *Wunyelfia maulensis*, el que se encontraba asociado a dientes de tiburón del genero *Ischyrhiza*, *Lamna* e *Isurus* y a restos de invertebrados, ammonoideos del Maastrichtiano Superior de la Formación Quiriquina de Chile Central. La primera publicación fue realizada en el Museo Nacional de Historia Natural de Santiago, y los materiales fueron depositados en el mismo Museo bajo el acrónimo SGO.PV.6506.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/04.jpg", ancho: 1587, alto: 312, tras: 2, pie: "Aleta articulada. Plesiosauria indeterminada (Quiriquina). Escala 50 mm." },
+        { src: "assets/img/reptiles/05.jpg", ancho: 936, alto: 369, tras: 5, pie: "Atlantoaxis y vértebras cervicales de *Wunyelfia maulensis*, encontrados por el autor, Castillo et al 1992. Fotografía Oscar León (MNHN)" },
+      ],
+    },
+    {
+      id: "aristonectes-quiriquinensis",
+      titulo: "*Aristonectes quiriquinensis*, la nueva especie para Chile",
+      nivel: 3,
+      parrafos: [
+        "Recientemente se ha publicado un trabajo, que da a conocer un nuevo Plesiosaurio para Chile, una nueva especie de plesiosaurio elasmosáurido que ha sido denominado *Aristonectes quiriquinensis*, basados en un esqueleto parcial que se recuperó de capas pertenecientes a una edad correspondiente al Maastrichtiano Superior de la Formación Quiriquina de Chile Central. El material descrito en el trabajo consta de dos esqueletos, uno recolectado cerca del pueblo de Cocholgue, y un segundo ejemplar juvenil del sector de Las Tablas, en Isla Quiriquina.",
+        "Los restos estaban incluidos en un micro conglomerado fosilífero intercalado por areniscas amarillas transversales, los que descansan directamente sobre un conjunto de pizarras paleozoicas. Estos estratos contienen numerosos invertebrados como bivalvos, gasterópodos y ammonites, estos últimos usados como fósiles guías para determinar la edad. También en los niveles superiores de estos estratos han sido encontrados restos de vertebrados como tortuga del género *Euclastes*, peces óseos cartilaginosos y restos de mosasaurios. El nuevo plesiosaurio tiene un cráneo relativamente grande, más o menos unos setenta centímetros, con numerosos dientes homodontos insertados en alveolos, un cuello medianamente “largo” de unos 3,5 metros, y moderadamente comprimido lateralmente. Poseía además un tronco relativamente estrecho, con esbeltas y alargadas aletas natatorias, con un largo total de entre ocho a nueve metros.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/06.jpg", ancho: 995, alto: 536, tras: 0, pie: "*Aristonectes quiriquinensis*, dibujo modificado de Otero, et al, 2014" },
+        { src: "assets/img/reptiles/07.jpg", ancho: 1133, alto: 383, tras: 1, pie: "Reconstrucción paleobiológica de *Arictonectes quiriquinensis*, ilustración José Lemos Caro." },
+      ],
+    },
+    {
+      id: "pliosaurios",
+      titulo: "Pliosaurios",
+      nivel: 3,
+      parrafos: [
+        "Otro pariente de los plesiosaurios es el Pliosaurio, que, al contrario del anterior, posee un cráneo mucho más grande y alargado que puede alcanzar los 1,5 metros o más. Llegaron a medir más de 12 metros, con un cuerpo masivo y ancho, movido por cuatro anchas aletas natatorias que lo impulsaban velozmente en el medio acuático en el que vivía, convirtiéndole en el gran depredador marino del Cretácico.",
+        "Poseía un grueso cuello como consecuencia de la compresión de las vértebras cervicales que terminaba en una gran cabeza con un hocico que tenía gruesos dientes cónicos, insertados en alveolos, con los que depredaba a otros animales, como plesiosaurios, cocodrilos, tortugas y grandes cefalópodos. El Pliosaurio tenía presencia en Chile, ya que restos de estos han sido encontrados en la VIII Región.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/08.jpg", ancho: 668, alto: 1068, tras: 1, pie: "Mapa de distribución de los plesiosaurios en Chile." },
+      ],
+    },
+    {
+      id: "ictiosaurios",
+      titulo: "Ictiosaurios",
+      nivel: 2,
+      parrafos: [
+        "Los ictiosaurios eran los más especializados de los reptiles marinos. Su nombre, que significa «peces lagartos» (ictio = peces y saurus = lagarto), los define muy bien, pues tenían forma de pez, aunque naturalmente eran reptiles pulmonados de respiración aérea, es decir, tenían que salir del agua para respirar, tomar el aire y luego bajar nuevamente. La forma general de su cuerpo era semejante a la de un delfín de la actualidad, con una cabeza puntiaguda y un largo hocico. La forma sumamente hidrodinámica que tenían les permitía alcanzar altas velocidades en el agua. También dada la forma de su cuerpo, los ictiosaurios no basaban sus desplazamientos en el movimiento de las cuatro aletas, las que sólo le servían para estabilizarle y maniobrar bajo el agua, sino que tenían, en cambio, una cola heterocerca, cuyos movimientos laterales constituían la principal fuerza propulsora de estos animales, similar a la cola de los actuales tiburones.",
+        "Los ictiosaurios estaban bien adaptados a la vida marina, ya que no requerían salir del agua para desovar, como lo hacen las tortugas marinas actuales, dando a luz a las crías vivas, expulsándolas al agua. De hecho, en algunos de los hallazgos fósiles más notables es posible ver ictiosaurios adultos hembras con los pequeños surgiendo del interior de su cuerpo, conservados para siempre en el momento del nacimiento.",
+        "En relación a sus ojos, tenían órbitas grandes, que ocupan un buen espacio del cráneo a cada lado. Ambas estaban rodeadas por un anillo de placas óseas (anillo esclerótico que todos los ictiosaurios poseían) para contrarrestar la presión intraocular y evitar que los tejidos blandos quedaran aplastados bajo la presión externa del agua en el avance y para contribuir al enfoque visual.",
+        "Como grupo, los ictiosaurios ocupaban el nicho ecológico de los actuales delfines. Estuvieron muy difundidos y alcanzaron gran éxito durante unos cien millones de años. Surcaron los mares del mundo desde principios del Triásico y en el Jurásico llegaron al máximo de su diversificación. A partir de entonces comenzó su decadencia, hasta quedar prácticamente extinguidos a mediados del Cretácico.",
+        "En Chile son numerosos los registros de norte a sur, desde el Triásico al Jurásico: Quebrada Doña Inés Chica, Cerro Blanco, Manflas, Caracoles, Quebrada Doralisa; todos estos hallazgos en la región de Atacama. En la zona central de Chile también han sido encontrados algunos restos.",
+        "En el extremo sur los más importantes hallazgos se han producido en el Parque Nacional Torres del Paine, sector del glaciar Tyndall, un yacimiento con fósiles de ictiosaurio que, tras varios años de estudios y prospecciones en el lugar, ha arrojado que es el mayor depósito de estos reptiles marinos en Chile y en Sudamérica. En este lugar se han encontrado varios esqueletos enteros y restos parciales. Entre los últimos hallazgos se encuentra el descubrimiento y estudio de un bebé completo de ictiosaurio, así como un ictiosaurio con un embrión en su interior.",
+        "Actualmente, Chile es el lugar más importante del mundo para el estudio de los ictiosaurios del Cretácico por la numerosa cantidad de ejemplares encontrados, y por ser de un amplio espectro que va desde embriones, bebés, hasta adultos de más de cinco metros, lo que permite hacer un estudio de las etapas de crecimiento del animal (ontogenia). Por otro lado, es importante por la presencia de al menos cuatro especies distintas.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/09.jpg", ancho: 1240, alto: 411, tras: 1 },
+        { src: "assets/img/reptiles/10.jpg", ancho: 1360, alto: 451, tras: 1, pie: "Fósil y esqueleto de ictiosaurio, mostrando el contorno del cuerpo." },
+        { src: "assets/img/reptiles/11.jpg", ancho: 1101, alto: 798, tras: 2, pie: "Placas óseas en el ojo del ictiosaurio o anillo esclerótico" },
+        { src: "assets/img/reptiles/12.jpg", ancho: 1000, alto: 569, tras: 6, pie: "Reconstrucción paleobiológica de un ictiosaurio hembra expulsando sus crías, Torres del Paine. Pintura de José Lemos Caro." },
+      ],
+    },
+    {
+      id: "metriorhynchus",
+      titulo: "*Metriorhynchus*, el cocodrilo marino",
+      nivel: 2,
+      parrafos: [
+        "Los Metriorhynchidos, fueron cocodrilos marinos de cabeza masiva y alargada, su cráneo posee dos aberturas o fenestras supratemporales, poseían cuello corto, rostro alargado con dientes cónicos, gruesos y continuos, ideales para una dieta de peces y cefalópodos (Ammonites y Nautilus). Sus ojos están situados a los costados y protegidos superiormente por una expansión ósea sobresaliente, que es un carácter distintivo del grupo. El ojo en sí estaba protegido por un anillo de placas dérmicas articuladas, denominado anillo esclerótico que permite un avance veloz en el agua.",
+        "Como adaptación al medio marino, modificó sus miembros, de tal modo, que las extremidades anteriores o delanteras se transformaron en elementos de estabilización, siendo estos más cortos y con los huesos que conforman las extremidades más bien redondeadas. Por otro lado, en los miembros posteriores o traseros, los huesos se han alargado un poco más, para transformarse en elementos propulsores, ya que habrían tenido una membrana interdigital. La cola fue un elemento propulsor, puesto que está constituida por una cola heterocerca con una membrana que les otorgaba gran impulso. Esto les permitía adentrarse en mar abierto en busca de alimentos.",
+        "En Chile, tenemos uno de los más antiguos cocodrilomorfos marinos de Sudamérica, de la familia Metriorhynchidae, el que fue encontrado en rocas del Jurásico Medio procedente del interior de Antofagasta. La especie se denominó *Metriorhynchus casamiquelai*, en honor al paleontólogo argentino Rodolfo Casamiquela. El hallazgo de los restos fue hecho en el Cerro Jaspe, a unos 40 kilómetros al Norte de Chuquicamata, Antofagasta II región y su edad ha sido asignada al Jurásico Medio (Caloviano Medio), unos 160 millones de años.",
+        "El ambiente en que vivió *Metriorhynchus*, en la cuenca norte fue tropical, con mares cálidos, poco profundos y arenas blancas, lo que está indicado por la presencia de corales y esponjas.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/13.jpg", ancho: 765, alto: 482, tras: 0, pie: "Cráneo y reconstrucción de la cabeza de *Metriorhynchus casamiquelai* (Ilustración Jorge Aragón)" },
+        { src: "assets/img/reptiles/14.jpg", ancho: 794, alto: 405, tras: 1, pie: "Reconstrucción paleobiológica de *Metriorhynchus casamiquelai* (Ilustración Jorge Aragón)" },
+        { src: "assets/img/reptiles/15.jpg", ancho: 1000, alto: 506, tras: 3, pie: "*Metriorhynchus casamiquelai*, en las costas de los mares del Jurásico." },
+      ],
+    },
+    {
+      id: "mosasaurios-en-chile",
+      titulo: "Mosasaurios en Chile",
+      nivel: 2,
+      parrafos: [
+        "Los Mosasaurios son un conjunto de animales adaptados al medio marino, que conforman la familia Mosasauridae, que cuenta con más de 30 géneros. Estos son reptiles y no dinosaurios, como es la creencia popular. Al igual que los ictiopterigios y los sauropterigios, todos los mosasauroides son diápsidos.",
+        "Los mosasaurios son reptiles marinos y por ende respiraban aire, por lo cual ellos permanecían bajo el agua, pero cada cierto tiempo tienen que salir a la superficie para poder respirar y tomar aire. Eran poderosos nadadores y estaban bien adaptados a vivir en los mares cálidos, de agua salada y poco profundos, que predominaban a finales del período Cretácico.",
+        "Probablemente los mosasaurios preferían las aguas costeras menos profundas donde existe abundancia de comida o presas. Su estructura corporal les permitía aventurarse a mar abierto, ya que eran excelentes nadadores. En Chile, los mosasaurios han tenido una distribución geográfica que abarca desde la V región hasta la antártica, sin embargo, el material mayoritariamente es fragmentario representado por dientes y vértebras aisladas, cuya edad es del Cretácico superior.",
+        "Parte del material más completo hasta ahora recolectado proviene desde caleta Cocholgue y corresponde a dos ramas mandibulares, las que fueron asignadas en un principio al género *Clidastes*, sin embargo, investigaciones posteriores en base a la morfología de los dientes conservados en el dentario, que presentan una forma redondeada en la base de la corona, sugieren una asignación a los Halisauridos.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/16.jpg", ancho: 898, alto: 599, tras: 3, pie: "Vista oclusal de los dentarios de cf. Halisaurina, tomado de Jiménez-Huidobro, et al, en Publicación Ocasional del Museo Nacional de Historia Natural, Chile, 63, (2015)" },
+      ],
+    },
+    {
+      id: "region-del-maule",
+      titulo: "Región del Maule",
+      nivel: 3,
+      parrafos: [
+        "Restos fragmentarios de dientes de mosasaurio correspondientes a dos formas diferentes han sido recuperados en la localidad de Loanco, pertenecientes a la Formación Chanco de edad Campaniano, que está correlacionada con la base de la Formación Quiriquina. La presencia de los bivalvos *Cardium acuticostatum*, *Pacitrigonia hanetiana*, y los ammonoideos *Pachydiscus* sp., *Kossmaticeras* sp., *Gunnarites* sp., *Pseudophyllites indra* y *Lytoceras kayei* muestran que esta fauna presenta una directa afinidad con aquella descrita para la Formación Quiriquina.",
+        "En muchas otras localidades han aparecido restos de mosasaurios, como en Algarrobo en estratos de la Quebrada Municipalidad, asociados a ammonoideos, bivalvos, gastrópodos y decápodos. La fauna indicaría una edad Campaniano Tardío - Maastrichtiano temprano. También los Mosasaurios en Quiriquina, están representados por dientes aislados una vértebra dorsal y una rama mandibular, encontradas en la Formación Quiriquina. La vértebra es de carácter masivo y muy erosionado, es una vértebra procélica, con sus caras articulares anteriores de forma circular, en tanto que la posterior de la misma, es de tendencia ovalada.",
+        "En la región de Magallanes en la formación Dorotea, esta localidad con restos fósiles de mosasaurio, se encontraron cuatro vértebras caudales articuladas y en posición anatómica, depositadas en el Museo Nacional de Historia Natural, bajo el acrónimo SGO.PV.6566. En el sector aflora una importante sección de la Formación Dorotea que corresponde a depósitos marinos transicionales desde facies profundas a condiciones someras. La edad ha sido referida al Maastrichtiano Tardío, sobre la base de correlaciones bioestratigráficas.",
+        "Restos de mosasaurios, entre ellos dientes, vértebras y falanges de sus aletas, fueron descubiertos en la Antártica, por una expedición en enero de 2012, conformada por diversos investigadores del Museo Nacional de Historia Natural, la Universidad de Chile y la Universidad de Magallanes, entre ellos David Rubilar y Alexander Vargas, quienes investigaron y recolectaron restos en la Antártica, específicamente en la Isla James Ross y en la Isla Seymour, con una edad del Cretácico Superior, unos 70 millones de años. Los restos dentales permiten saber que estos reptiles marinos depredaban a los plesiosaurios y a otros invertebrados, entre ellos a los Ammonites. Los restos están asociados a crustáceos, equinodermos y corales.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/17.jpg", ancho: 1333, alto: 510, tras: 0, pie: "Diente de mosasaurio en varias vistas, Diente lateral. Loanco, Región del Maule, Formación Quiriquina, Maastrichtiano tardío. Escala 10 mm." },
+        { src: "assets/img/reptiles/18.jpg", ancho: 1333, alto: 511, tras: 2, pie: "Mosasaurido indeterminado, cuatro vértebras caudales articuladas, Formación Dorotea, Maastrichtiano tardío. Escala = 50 mm." },
+        { src: "assets/img/reptiles/19.jpg", ancho: 1000, alto: 551, tras: 3, pie: "Un mosasaurio halihaurido atacando a una tortuga, ilustración José Lemos Caro" },
+      ],
+    },
+    {
+      id: "kaikaifilu-hervei",
+      titulo: "*Kaikaifilu hervei*, el mosasaurio de la Antártica",
+      nivel: 3,
+      parrafos: [
+        "Diversos hallazgos de mosasaurios se han producido en Chile, pero ninguno tan importante como el encontrado en la Antártica en enero del 2011, aquí se descubrieron una cantidad de fragmentos óseos correspondiente a un mosasaurio, donde se recolectaron restos craneales de un gran espécimen que debió llegar a una longitud de 1,20 metros. También fueron encontrados fragmentos mandibulares, restos humerales y varios dientes. Estos materiales provienen de la Isla Seymour, en el territorio Antártico, de los niveles superiores de la formación geológica López de Bertodano, cuya",
+        "edad, son del Cretácico superior, en la parte alta del Maastrichtiano, unos 65 millones de años.",
+        "Luego de un exhaustivo examen de los restos, dadas sus medidas, su cresta prominente en el margen superior de la órbita ocular y que además posee otra cresta entre las dos narinas, la posesión de una heterodoncia, es decir sus dientes no son todos iguales, hizo pensar a los expertos, que estaban en presencia de un nuevo género y una nueva especie que bautizaron como *Kaikaifilu hervei*.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/20.jpg", ancho: 1351, alto: 608, tras: 2, pie: "Trozo del cráneo de *Kaikaifilu hervei*, modificado de Otero, et al 2016" },
+        { src: "assets/img/reptiles/21.jpg", ancho: 800, alto: 490, tras: 2, pie: "Reconstrucción del mosasaurio *Kaikaifilu hervei*, comiéndose un ammonite ilustraciones José Lemos Caro." },
+      ],
+    },
+    {
+      id: "huevo-de-mosasaurio",
+      titulo: "Huevo de posible mosasaurio",
+      nivel: 2,
+      parrafos: [
+        "También en la Antártica se ha descubierto un huevo fósil que correspondería a un reptil marino, muy probablemente a un mosasaurio, especie que vivió hace más de 66 millones de años en la Península Antártica. El gigantesco huevo, de casi 30 centímetros, es el segundo de mayor tamaño del que se tenga registro en la historia. Este es el huevo de cáscara blanda más grande que se conozca a la fecha. Su masa estimada estaría cerca",
+        "de los 6,5 kilos, y tendría unos 29 centímetros en su eje mayor y 20 en el menor.",
+        "El fósil, nombrado *Antarcticoolithus bradyi*, que significa “huevo de piedra antártico tardío”, es algo inédito también por que la regla general en el caso de los fósiles “es que se preserven sólo aquellos de cáscara dura, mientras que los huevos de cáscara blanda, compuestos principalmente de una capa proteica, tienden a descomponerse con facilidad, y no quedar preservados como fósiles”.",
+        "Hasta este descubrimiento el récord del huevo más grande del mundo lo ostentaba la llamada ave elefante, *Aepyornis maximus*, un ave corredora gigante de Madagascar, que vivió en el planeta hasta el siglo XVII.",
+      ],
+      imagenes: [
+        { src: "assets/img/reptiles/22.jpg", ancho: 1404, alto: 700, tras: 3, pie: "Comparación de tamaño entre el huevo del ave elefante *Aepyornis maximus*; el huevo encontrado en la Antártica *Antarcticoolithus bradyi*, el de Avestruz, *Struthio camelus*; y el de gallina; *Gallus gallus domesticus*, Juan Castillo." },
+        { src: "assets/img/reptiles/23.jpg", ancho: 859, alto: 583, tras: 3, pie: "Reproducción en cerámica del huevo de un posible mosasaurio, *Antarcticoolithus bradyi*," },
+        { src: "assets/img/reptiles/24.jpg", ancho: 500, alto: 668, tras: 3, pie: "Reconstrucción paleobiológica de la puesta del huevo de mosasaurio, *Antarcticoolithus bradyi*, ilustración José Lemos Caro" },
+      ],
+    },
+  ],
+  /* Sin `atribucion`: las 24 imágenes son del museo (Word del director, CR-99).
+     El render hace `if (!T.atribucion) return;`, así que no se pinta bloque
+     de procedencia ajeno. Los créditos de cada figura viajan en su `pie`. */
+  atribucion: null,
+  notaImagenes:
+    "Figuras del documento «Reptiles marinos en Chile» del Museo Paleontológico de Chile. " +
+    "Las fotografías y reconstrucciones llevan su crédito en el pie de cada figura.",
+  cierre: {
+    texto: "Plesiosaurios, ictiosaurios y mosasaurios: el mar del Mesozoico en el territorio chileno.",
+    boton: "Ver la colección completa",
+    enlace: "index.html#colecciones",
+  },
+};
+
+/* CR-99: `const` no crea propiedad global — sin esta línea la página sale en
+   blanco (misma trampa de CR-71, CR-80, CR-86, CR-96 y CR-98). */
+window.REPTILES = REPTILES;
 
 const TIBURONES = {
   subpagina: "tiburones.html",
