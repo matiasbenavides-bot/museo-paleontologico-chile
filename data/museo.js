@@ -519,7 +519,7 @@ const COLECCIONES = {
        OBLIGATORIO cuando hay `enlace`: si falta, el render escribe "Ver más",
        que es texto que el dueño NO dictó. Sin `arte` propia todavía: se usa el
        ícono compartido hasta que él entregue el dibujo de la card. */
-    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Reptiles marinos", detalle: "Plesiosaurios, ictiosaurios, pliosaurios, cocodrilos marinos y mosasaurios: el mar del Mesozoico y sus restos en Chile.",
+    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-reptiles.png", nombre: "Reptiles marinos", detalle: "Plesiosaurios, ictiosaurios, pliosaurios, cocodrilos marinos y mosasaurios: el mar del Mesozoico y sus restos en Chile.",
       enlace: "reptiles.html", enlaceTexto: "Conocer los reptiles marinos" },
     /* CR-87 (2026-10-29): el dueño pidió subpágina para los dinosaurios — mismo
        mecanismo que Trilobites (CR-60), Ammonites (CR-83), Tiburones (CR-85) y
