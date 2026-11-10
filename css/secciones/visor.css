@@ -57,6 +57,41 @@
    regla existe sólo por si un data futuro trae una sección vacía. */
 .mpv-abrir[hidden] { display: none; }
 
+/* ---------- CR-102 — la figura de la página es clicable ----------
+   Pedido del dueño: «al hacer click en las imagenes no se seleccionan».
+   El visor sólo se abría con el botón. Estas reglas hacen que la imagen
+   misma se comporte como un control, sin tocar el HTML ni el data.
+
+   ⚠️ NO se usa `transform` en el hover (regla del dueño): la figura se
+   enciende con borde y luz, igual que las tarjetas del resto del sitio.
+   El `scale` que ya existía en `.rpt-fig:hover .rpt-fig__marco img` es un
+   zoom DENTRO del marco y se conserva tal cual estaba. */
+[data-mpv-fig] { cursor: zoom-in; }
+[data-mpv-fig]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--celeste);
+}
+/* Aviso de que se puede ampliar: aparece sobre la imagen al pasar el ratón.
+   Sólo con puntero fino — en táctil no hay hover y quedaría pegado. */
+@media (hover: hover) and (pointer: fine) {
+  [data-mpv-fig] { position: relative; }
+  [data-mpv-fig]::after {
+    content: "Ampliar";
+    position: absolute;
+    top: 10px; right: 10px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: .68rem; letter-spacing: .07em; text-transform: uppercase;
+    color: var(--text-main);
+    background: rgba(2, 21, 63, .82);
+    border: 1px solid var(--border-accent);
+    opacity: 0;
+    transition: opacity .3s;
+    pointer-events: none;
+  }
+  [data-mpv-fig]:hover::after { opacity: 1; }
+}
+
 /* ---------- La capa ---------- */
 .mpv {
   position: fixed; inset: 0;

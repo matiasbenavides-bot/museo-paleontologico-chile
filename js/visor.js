@@ -745,6 +745,88 @@
 
     /* Atajo de máximo nivel para el render: pinta los botones de la página
        y deja la capa lista para abrirse al primer clic. */
+
+    /* ------------------------------------------------------------
+       CR-102 — CLIC EN LA FIGURA DE LA PÁGINA ABRE EL VISOR EN ELLA
+       ------------------------------------------------------------
+       Pedido del dueño: «al hacer click en las imagenes no se seleccionan»
+       y luego «clic en la figura de la página → abre el visor en ESA imagen».
+
+       Hasta ahora el visor sólo se abría con el botón «Ver imágenes». Las
+       figuras de la página eran `<figure class="rpt-fig">` sin manejador y
+       sin `cursor: pointer`: tocar una imagen no hacía NADA. Eso es lo que
+       el dueño reportó, y era correcto.
+
+       Cómo se resuelve sin tocar el data ni los textos:
+         · se recorren las figuras YA pintadas en la página;
+         · se lee su `src` y se busca ese mismo `src` en el índice derivado;
+         · se abre el visor filtrado en la sección de esa imagen, en su
+           posición exacta, y se marca la figura como accesible por teclado.
+
+       ⚠️ El emparejamiento es por `src`, no por orden: si el orden de las
+       figuras cambiara, por posición se abriría la imagen equivocada —
+       el mismo defecto de CR-96 con el mapeo escrito a mano. */
+    est.engancharFiguras = function (raiz) {
+      var puestas = 0;
+      var figs = raiz.querySelectorAll("figure img, .rpt-fig img, .tbl-fig img, .amb-fig img");
+
+      Array.prototype.forEach.call(figs, function (img) {
+        var fig = img.closest("figure") || img;
+        if (fig.getAttribute("data-mpv-fig")) return;   /* ya enganchada */
+
+        /* El `src` tal como quedó en el DOM, absoluto o relativo. */
+        var src = img.getAttribute("src") || "";
+        if (!src) return;
+
+        /* Índice de esa imagen dentro del índice del visor. */
+        var k = -1;
+        for (var i = 0; i < indice.lista.length; i++) {
+          var s = indice.lista[i].src;
+          if (s === src || src.indexOf(s) !== -1 || s.indexOf(src) !== -1) { k = i; break; }
+        }
+        if (k < 0) return;                              /* no está en el índice: no se toca */
+
+        var secId = indice.lista[k].secId;
+        fig.setAttribute("data-mpv-fig", String(k));
+        fig.setAttribute("role", "button");
+        fig.setAttribute("tabindex", "0");
+        fig.setAttribute("aria-label", "Ampliar imagen" +
+          (indice.lista[k].texto ? ": " + indice.lista[k].texto : ""));
+
+        function abrirEsta(ev) {
+          ev.preventDefault();
+          abrirLaImagen(secId, k);
+        }
+
+        fig.addEventListener("click", abrirEsta);
+        fig.addEventListener("keydown", function (ev) {
+          if (ev.key === "Enter" || ev.key === " ") abrirEsta(ev);
+        });
+
+        puestas++;
+      });
+
+      return puestas;
+    };
+
+    /* Abre el visor filtrado en la sección `secId` y posicionado en la imagen
+       `k` (índice global del índice). */
+    function abrirLaImagen(secId, k) {
+      /* El <section> de origen, para que al cerrar se vuelva ahí (DEC-087). */
+      var secEl = null;
+      try { secEl = document.getElementById(secId); } catch (e) { secEl = null; }
+      if (!secEl && secId) secEl = document.querySelector('[id="' + secId + '"]');
+
+      abrir(secEl);
+
+      /* Posicionar en la imagen pedida dentro de lo ya filtrado. */
+      var pos = est.visibles.indexOf(k);
+      if (pos >= 0) {
+        est.pos = pos;
+        pintarImagen();
+      }
+    }
+
     est.pintarBotones = function (raiz) {
       var puestos = 0;
       indice.secciones.forEach(function (s) {
@@ -760,6 +842,14 @@
         if (marcarBoton(el, s.imgs.length, s.titulo, est.etiqueta, abrir)) puestos++;
       });
       return puestos;
+    };
+
+    /* CR-102 — un solo llamado desde el render del capítulo: pinta los
+       botones por sección Y engancha las figuras de la página. */
+    est.pintarTodo = function (raiz) {
+      var b = est.pintarBotones(raiz);
+      var f = est.engancharFiguras(raiz);
+      return { botones: b, figuras: f };
     };
 
     conectar();

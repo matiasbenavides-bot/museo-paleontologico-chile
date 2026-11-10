@@ -247,7 +247,7 @@
         titulo: T.titulo || "Imágenes del capítulo",
         etiqueta: "Ver imágenes"
       });
-      if (v) v.pintarBotones(cont);
+      if (v) v.pintarTodo(cont);
     }
   }
 
