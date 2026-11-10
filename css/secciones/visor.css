@@ -204,10 +204,27 @@ body.mpv-bloqueo { overflow: hidden; }
   overflow: hidden;
 }
 .mpv__lienzo {
-  position: relative;
   min-width: 0; min-height: 0;
   width: 100%; height: 100%;
   display: grid; place-items: center;
+  /* 🔴 CR-103 — `position: absolute` para que el `max-height` de la imagen
+     tenga contra qué resolverse.
+     DEFECTO MEDIDO en celular (390×844): el lienzo medía 382×634 y la
+     imagen salía en 382×127 — usaba el 20 % del alto disponible. Motivo:
+     en un hijo de grid, `max-height:100%` NO se resuelve contra una pista
+     de altura `auto`; la imagen se quedaba con su ancho natural y el alto
+     que le daba la proporción, sin crecer.
+     Con la caja absoluta el lienzo tiene altura DEFINIDA y `max-height`
+     funciona: la imagen se ajusta al alto real y se ve de cerca.
+     `inset:0` la deja ocupando exactamente la pista de grid. */
+  position: absolute;
+  inset: 0;
+  /* 🔴 CR-104b — Al pasar a `absolute`, el lienzo salió del flujo del grid y
+     quedó POR ENCIMA de los chips y la tira, robándoles los clics (medido:
+     Playwright reportó «.mpv__lienzo intercepts pointer events» al pulsar
+     un chip). Como está posicionado, necesita `z-index` explícito para
+     volver al fondo: los controles quedan arriba (`z-index:2`). */
+  z-index: 0;
   /* 🔴 CR-100f — La imagen ampliada (2,4×) desborda su lienzo por diseño.
      Ese desborde NO debe comerse las flechas ni el cierre: el lienzo recorta
      lo que sale de su caja, y así los controles siguen siendo alcanzables
@@ -267,8 +284,34 @@ body.mpv-bloqueo { overflow: hidden; }
 }
 .mpv__pista[hidden] { display: none; }
 
+/* CR-104 — aviso de girar el teléfono. Aparece SÓLO cuando la imagen es
+   apaisada y la pantalla es vertical y angosta (lo decide js/visor.js
+   midiendo el tamaño natural). Se apaga en horizontal, que es justo el
+   modo al que invita. */
+.mpv__gira {
+  position: absolute;
+  top: 10px; left: 50%; transform: translateX(-50%);
+  padding: 6px 14px; border-radius: 999px;
+  font-size: .72rem; letter-spacing: .04em;
+  color: var(--text-main);
+  background: rgba(81, 173, 198, .18);
+  border: 1px solid var(--border-accent);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: mpvGira 2.6s ease-in-out infinite;
+}
+.mpv__gira[hidden] { display: none; }
+@keyframes mpvGira {
+  0%, 100% { opacity: .92; }
+  50% { opacity: .55; }
+}
+@media (orientation: landscape) { .mpv__gira { display: none; } }
+@media (prefers-reduced-motion: reduce) { .mpv__gira { animation: none; } }
+
 /* Flechas */
 .mpv__flecha {
+  position: relative;
+  z-index: 2;
   width: clamp(38px, 5vw, 50px); height: clamp(38px, 5vw, 50px);
   display: grid; place-items: center;
   border-radius: 50%;
@@ -339,6 +382,36 @@ body.mpv-bloqueo { overflow: hidden; }
 /* ---------- Responsive ----------
    A ≤700 px: la tira baja a miniaturas más chicas y el escenario gana alto
    porque las flechas se superponen a la imagen en vez de robarle ancho. */
+/* ---------- CR-104 — CELULAR APAISADO: ahí SÍ se ve de cerca ----------
+   DEFECTO MEDIDO: la imagen del capítulo es 1240×411 (relación 3:1). En un
+   teléfono vertical (390×636 de lienzo) el `contain` sólo puede dar
+   390×129 — el 20 % del alto. No es un fallo de CSS: es geometría. Una
+   imagen apaisada no llena una pantalla vertical sin recortarla.
+
+   La solución NO es recortar (el dueño quiere ver la pieza completa). Es
+   aprovechar el giro del teléfono: en horizontal el lienzo pasa a ~390 px
+   de alto y ~800 de ancho, y la imagen se ve casi a todo su ancho útil.
+   Además se ocultan los elementos que roban alto en ese modo. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .mpv { grid-template-rows: auto 1fr; }
+  .mpv__filtros, .mpv__pie, .mpv__tira { display: none; }
+  .mpv__barra { padding: 6px 12px; }
+  .mpv__titulo { font-size: .86rem; }
+  .mpv__titulo small { display: none; }
+  .mpv__escena { padding: 4px 44px; }
+  .mpv__flecha { top: 50%; transform: translateY(-50%); position: absolute; z-index: 2; }
+  .mpv__flecha[data-dir="prev"] { left: 4px; }
+  .mpv__flecha[data-dir="next"] { right: 4px; }
+}
+
+/* ---------- Pantalla completa: el «verlas de cerca» de verdad ----------
+   El visor pide `requestFullscreen()` al abrirse (js/visor.js). En un
+   teléfono eso quita la barra del navegador y da más alto útil; en
+   escritorio deja el lienzo limpio. Si el navegador lo niega (iOS Safari
+   no siempre lo permite), no pasa nada: el visor sigue funcionando. */
+.mpv:fullscreen { background: #010e26; }
+.mpv:-webkit-full-screen { background: #010e26; }
+
 @media (max-width: 700px) {
   .mpv__escena { grid-template-columns: 1fr; padding: 6px 4px; }
   .mpv__flecha {
@@ -350,6 +423,25 @@ body.mpv-bloqueo { overflow: hidden; }
   .mpv__flecha[data-dir="next"] { right: 6px; }
   .mpv__thumb { width: 66px; height: 46px; }
   .mpv__cuenta { font-size: .74rem; }
+
+  /* 🔴 CR-103 — Área táctil. Medido en celular: las flechas quedaban en
+     38×38 y el cerrar en 40×40, por debajo del mínimo recomendado de
+     44×44 px (49×49 en CSS de Apple y 48 dp en Android). En un teléfono
+     eso se siente como «no responde». Se fuerzan 44 px de lado táctil
+     sin agrandar el ícono: el SVG sigue a 20 px y el botón crece por
+     dentro. */
+  .mpv__flecha, .mpv__cerrar { width: 44px; height: 44px; }
+  .mpv__thumb { min-width: 72px; min-height: 52px; }
+
+  /* El pie de foto, con la imagen grande, robaría alto útil. Se limita a
+     dos líneas y se puede leer completo en la sección. */
+  .mpv__pie {
+    max-height: 3.4em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 }
 
 /* ---------- Menos movimiento ----------

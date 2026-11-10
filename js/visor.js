@@ -195,6 +195,7 @@
           '<span class="mpv__cargando" data-mpv-cargando hidden>Cargando…</span>' +
           '<img class="mpv__img" data-mpv-img alt="" decoding="async" draggable="false">' +
           '<span class="mpv__pista" data-mpv-pista hidden>Toca la imagen para acercar</span>' +
+          '<span class="mpv__gira" data-mpv-gira hidden>Gira el teléfono para verla completa</span>' +
         "</div>" +
         '<button type="button" class="mpv__flecha" data-dir="next" data-mpv-next aria-label="Imagen siguiente">' +
           ICO.next + "</button>" +
@@ -336,6 +337,7 @@
       img.onload = function () {
         cargando.hidden = true;
         img.setAttribute("data-lista", "true");
+        actualizarAvisoGiro();   /* CR-104 — depende del tamaño natural */
       };
       img.onerror = function () {
         /* Imagen rota: se dice, no se deja un hueco negro mudo. */
@@ -411,6 +413,21 @@
 
     function imgEl() {
       return est.capa && est.capa.querySelector("[data-mpv-img]");
+    }
+
+    /* ¿Hay que sugerir girar el teléfono? Sólo si la imagen es apaisada de
+       forma marcada Y la pantalla está en vertical Y es angosta. En cualquier
+       otro caso el aviso no aparece: sobraría. */
+    function actualizarAvisoGiro() {
+      var aviso = est.capa && est.capa.querySelector("[data-mpv-gira]");
+      var img = imgEl();
+      if (!aviso || !img) return;
+
+      var apaisada = img.naturalWidth > img.naturalHeight * 1.5;
+      var vertical = window.innerHeight > window.innerWidth;
+      var angosta = window.innerWidth <= 700;
+
+      aviso.hidden = !(apaisada && vertical && angosta);
     }
 
     function aplicarZoom() {
@@ -507,6 +524,24 @@
       document.body.classList.add("mpv-bloqueo");
       est.abierto = true;
 
+      /* CR-104 — «verlas de cerca» en un teléfono.
+         Medido: en vertical la imagen apaisada (3:1) sólo ocupa el 20 % del
+         alto del lienzo. No es un defecto de CSS sino de geometría, así que
+         se resuelve con el recurso que el usuario ya tiene: girar el
+         teléfono. Se pide pantalla completa (quita la barra del navegador y
+         gana alto) y, sólo si la imagen es claramente apaisada y la pantalla
+         es vertical, se avisa que se puede girar.
+         ⚠️ Si el navegador NIEGA el fullscreen (iOS Safari), no se hace
+         nada: el visor funciona igual. Se usa try/catch por eso. */
+      try {
+        if (!document.fullscreenElement && capa.requestFullscreen) {
+          var pr = capa.requestFullscreen();
+          if (pr && pr.catch) pr.catch(function () {});
+        }
+      } catch (e) { /* sin pantalla completa se sigue igual */ }
+
+      actualizarAvisoGiro();
+
       /* El foco entra al visor: sin esto, el teclado seguiría navegando la
          página de atrás y Esc no llegaría al listener correcto. */
       var cerrar = capa.querySelector("[data-mpv-cerrar]");
@@ -518,6 +553,15 @@
       est.capa.setAttribute("data-abierto", "false");
       document.body.classList.remove("mpv-bloqueo");
       est.abierto = false;
+
+      /* CR-104 — se sale de pantalla completa para no dejar al usuario
+         atrapado en el visor cerrado. */
+      try {
+        if (document.fullscreenElement && document.exitFullscreen) {
+          var ex = document.exitFullscreen();
+          if (ex && ex.catch) ex.catch(function () {});
+        }
+      } catch (e) { /* nada que hacer */ }
 
       /* DEC-087 — «llevándote a la sección»: se vuelve al <section> del que
          se salió, GUARDADO COMO NODO (no por id: el id puede cambiar de
@@ -726,6 +770,11 @@
         if (!ev.target.closest("[data-mpv-img]")) return;
         ev.preventDefault();
         alternarZoom();
+      });
+
+      /* Giro del teléfono: el aviso se recalcula solo. */
+      window.addEventListener("resize", function () {
+        if (est.abierto) actualizarAvisoGiro();
       });
 
       document.addEventListener("wheel", function (ev) {
