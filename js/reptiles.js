@@ -228,6 +228,27 @@
     var cont = $("[data-rpt-secciones]");
     if (!cont || !T.secciones) return;
     cont.innerHTML = T.secciones.map(seccionHTML).join("");
+
+    /* ---------- CR-100 — visor de imágenes (PILOTO) ----------
+       El dueño: «una interfaz para las imágenes… seleccionarlas… sección
+       específica… verlas de cerca… deslizar y salir… llevándote a la
+       sección». Elegida la opción A: un botón «Ver imágenes» al inicio de
+       CADA sección, no uno solo en la cabecera.
+
+       🔴 El visor NO conoce este capítulo: recibe el bloque `T` y deriva el
+       índice de `seccion.imagenes[]` (DEC-085). Estos siete renglones son
+       toda la integración, y son los mismos que necesitará cada capítulo
+       cuando se extienda a las otras ocho subpáginas.
+       Si `js/visor.js` no cargó, `window.VISOR` no existe y NO se pinta
+       ningún botón: la página queda exactamente como estaba. */
+    if (window.VISOR && window.VISOR.montar) {
+      var v = window.VISOR.montar({
+        bloque: T,
+        titulo: T.titulo || "Imágenes del capítulo",
+        etiqueta: "Ver imágenes"
+      });
+      if (v) v.pintarBotones(cont);
+    }
   }
 
   /* ---------- Cierre ---------- */

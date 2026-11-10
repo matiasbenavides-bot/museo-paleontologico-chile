@@ -1,0 +1,327 @@
+/* ============================================================
+   MPCH — VISOR DE IMÁGENES POR SECCIÓN  (css/secciones/visor.css)
+
+   CR-100 (2026-11-10) — Pedido del dueño: «hagamos una interfaz para
+   las imágenes, que puedas seleccionarlas en colecciones, sección
+   específica, y verlas de cerca. Deslizar y salir cuando quieras
+   llevándote a la sección».
+
+   DEC-084: UNA hoja compartida por todas las subpáginas (no una copia
+   por capítulo). DEC-085: lo que se muestra sale del índice que arma
+   `js/visor.js` LEYENDO `seccion.imagenes[]` del data — acá no hay
+   ninguna lista de imágenes ni ningún texto escrito a mano.
+
+   🔴 AISLAMIENTO: todo vive bajo `.mpv-` (museo paleontológico visor).
+   El sitio tiene 9 prefijos de capítulo (`rpt-`, `amb-`, `tbl-`…) y una
+   trampa ya medida en CR-60e (`galeria.css` forzando `aspect-ratio` a
+   toda imagen de una clase). El prefijo propio evita heredar cualquiera
+   de esas reglas.
+
+   🔴 SIN `transform` EN EL BOTÓN: el hover del sitio se enciende con luz
+   y borde. Regla del dueño heredada de la colección.
+   ============================================================ */
+
+/* ---------- El botón que abre el visor, bajo el título de CADA sección ----------
+   Decisión del dueño (2026-11-10): el botón va al inicio de cada sección,
+   no uno solo en la cabecera. Así lo que se abre es exactamente lo que
+   se está leyendo. El contador sale del `data-n` que pone el render. */
+.mpv-abrir {
+  display: inline-flex; align-items: center; gap: 9px;
+  margin: 0 0 18px;
+  padding: 9px 17px 9px 13px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: .84rem; font-weight: 600; letter-spacing: .015em;
+  color: var(--text-soft);
+  background: rgba(81, 173, 198, .07);
+  border: 1px solid var(--border-mid);
+  cursor: pointer;
+  transition: border-color .3s, background .3s, color .3s;
+}
+.mpv-abrir:hover,
+.mpv-abrir:focus-visible {
+  color: var(--text-main);
+  border-color: var(--border-accent);
+  background: rgba(81, 173, 198, .16);
+  outline: none;
+}
+.mpv-abrir:focus-visible { box-shadow: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--celeste); }
+.mpv-abrir svg { flex: 0 0 auto; }
+.mpv-abrir__n {
+  display: inline-block; min-width: 1.35em; text-align: center;
+  padding: 1px 6px; border-radius: 999px;
+  font-size: .74rem; font-variant-numeric: tabular-nums;
+  color: #02153f; background: var(--celeste-light);
+}
+/* Sección sin imágenes: el botón no se genera (lo decide el render). Esta
+   regla existe sólo por si un data futuro trae una sección vacía. */
+.mpv-abrir[hidden] { display: none; }
+
+/* ---------- La capa ---------- */
+.mpv {
+  position: fixed; inset: 0;
+  z-index: 9000;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  background: rgba(1, 14, 38, .97);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .28s ease, visibility .28s;
+}
+.mpv[data-abierto="true"] { opacity: 1; visibility: visible; }
+
+/* El `body` deja de scrollear mientras la capa está abierta. Se apaga por JS
+   y se restaura al cerrar — se llama `mpv-bloqueo` para no chocar con
+   `intro-activa` ni con ninguna clase del sitio. */
+body.mpv-bloqueo { overflow: hidden; }
+
+/* ---------- Barra superior: título, contador y cerrar ---------- */
+.mpv__barra {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px clamp(14px, 3vw, 28px);
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(2, 21, 63, .72);
+}
+.mpv__titulo {
+  font-family: var(--font-display);
+  font-size: clamp(.98rem, 2vw, 1.28rem);
+  line-height: 1.2; color: var(--text-main);
+  margin: 0; flex: 1 1 auto; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* Al filtrar por sección, el título dice de dónde salió (DEC-087). */
+.mpv__titulo small {
+  display: block;
+  font-family: inherit; font-size: .68em; font-weight: 400;
+  color: var(--text-muted); letter-spacing: .04em;
+  text-transform: uppercase; margin-top: 3px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mpv__cuenta {
+  flex: 0 0 auto;
+  font-size: .82rem; color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .03em;
+}
+.mpv__cerrar {
+  flex: 0 0 auto;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--text-soft);
+  background: rgba(81, 173, 198, .09);
+  border: 1px solid var(--border-mid);
+  cursor: pointer;
+  transition: color .3s, border-color .3s, background .3s;
+}
+.mpv__cerrar:hover, .mpv__cerrar:focus-visible {
+  color: var(--text-main); border-color: var(--border-accent);
+  background: rgba(81, 173, 198, .2); outline: none;
+}
+.mpv__cerrar:focus-visible { box-shadow: 0 0 0 2px var(--bg-deep), 0 0 0 4px var(--celeste); }
+
+/* ---------- Filtros por sección (el «sección específica» del pedido) ---------- */
+.mpv__filtros {
+  display: flex; gap: 8px;
+  padding: 11px clamp(14px, 3vw, 28px);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  border-bottom: 1px solid var(--border-subtle);
+  -webkit-overflow-scrolling: touch;
+}
+.mpv__filtros::-webkit-scrollbar { height: 5px; }
+.mpv__filtros::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 999px; }
+.mpv__chip {
+  flex: 0 0 auto;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 13px; border-radius: 999px;
+  font-family: inherit; font-size: .8rem; font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer; white-space: nowrap;
+  transition: color .25s, border-color .25s, background .25s;
+}
+.mpv__chip:hover { color: var(--text-soft); border-color: var(--border-mid); }
+.mpv__chip[aria-pressed="true"] {
+  color: #02153f; background: var(--celeste-light);
+  border-color: var(--celeste-light); font-weight: 600;
+}
+.mpv__chip[aria-pressed="true"] .mpv__chip-n { color: #02153f; opacity: .72; }
+.mpv__chip:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--bg-deep), 0 0 0 4px var(--celeste); }
+.mpv__chip-n { font-size: .74rem; opacity: .6; font-variant-numeric: tabular-nums; }
+
+/* ---------- Escenario: la imagen de cerca ----------
+   🔴 `object-fit: contain` acá SÍ corresponde (lo contrario de las figuras
+   de la página): el visor es para VER la pieza completa, no para recortarla
+   a una caja fija. La imagen nunca se amplía por encima de su tamaño real
+   con `max-width/max-height` en 100 %. */
+.mpv__escena {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(6px, 1.4vw, 16px);
+  padding: clamp(10px, 2vw, 22px) clamp(8px, 2vw, 20px);
+  min-height: 0;
+  overflow: hidden;
+}
+.mpv__lienzo {
+  position: relative;
+  min-width: 0; min-height: 0;
+  width: 100%; height: 100%;
+  display: grid; place-items: center;
+  /* 🔴 CR-100f — La imagen ampliada (2,4×) desborda su lienzo por diseño.
+     Ese desborde NO debe comerse las flechas ni el cierre: el lienzo recorta
+     lo que sale de su caja, y así los controles siguen siendo alcanzables
+     con el ratón. Sin esto, medido: el <img> interceptaba los clics sobre
+     la flecha › y no se podía pasar de imagen. */
+  overflow: hidden;
+}
+.mpv__img {
+  display: block;
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: var(--bg-deep);
+  box-shadow: 0 18px 60px rgba(1, 14, 38, .75);
+  opacity: 0;
+  transition: opacity .3s ease, transform .32s var(--ease-out-expo);
+  /* 🔴 CR-100d — `transform-origin` CENTRADO, no `0 0`.
+     Con origen en la esquina, `scale(2.4)` empujaba la imagen hacia abajo y
+     a la derecha: medido, el centro de una imagen de 1240 px terminaba en
+     x=1588 sobre un viewport de 1440 — fuera de la pantalla. El segundo
+     toque caía fuera del lienzo y no se podía volver a alejar.
+     Con origen al centro, ampliar crece hacia los cuatro lados y la imagen
+     sigue bajo el dedo. */
+  transform-origin: center center;
+  will-change: transform;
+  /* CR-101 — el toque NO selecciona texto ni muestra el menú contextual de
+     imagen: el gesto es para acercar. */
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+.mpv__img[data-lista="true"] { opacity: 1; }
+/* Ampliada: el cursor dice que se puede arrastrar. */
+.mpv__img[data-zoom="true"] { cursor: grab; }
+.mpv__img[data-zoom="true"][data-arrastrando="true"] { cursor: grabbing; }
+/* Mientras se arrastra, la transición del `transform` estorba: el
+   desplazamiento tiene que seguir al dedo, no perseguirlo con retardo. */
+.mpv__img[data-arrastrando="true"] { transition: opacity .3s ease; }
+/* Imagen aún descargando: se avisa con un texto, nunca con un hueco mudo. */
+.mpv__cargando {
+  position: absolute; inset: auto;
+  font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+/* Aviso de que se puede acercar: sólo aparece cuando la imagen no está ampliada. */
+.mpv__pista {
+  position: absolute;
+  bottom: 6px; left: 50%; transform: translateX(-50%);
+  padding: 5px 12px; border-radius: 999px;
+  font-size: .7rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text-muted);
+  background: rgba(2, 21, 63, .82);
+  border: 1px solid var(--border-subtle);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.mpv__pista[hidden] { display: none; }
+
+/* Flechas */
+.mpv__flecha {
+  width: clamp(38px, 5vw, 50px); height: clamp(38px, 5vw, 50px);
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--text-soft);
+  background: rgba(81, 173, 198, .08);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: color .3s, border-color .3s, background .3s;
+}
+.mpv__flecha:hover:not(:disabled), .mpv__flecha:focus-visible:not(:disabled) {
+  color: var(--text-main); border-color: var(--border-accent);
+  background: rgba(81, 173, 198, .2); outline: none;
+}
+.mpv__flecha:disabled { opacity: .25; cursor: default; }
+.mpv__flecha:focus-visible { box-shadow: 0 0 0 2px var(--bg-deep), 0 0 0 4px var(--celeste); }
+
+/* ---------- Pie: el pie de foto TAL CUAL del documento ----------
+   🔴 Si el dato no trae `pie` ni `alt`, este bloque NO se pinta vacío:
+   el render no lo genera. El visor no inventa descripciones (DEC-034). */
+.mpv__pie {
+  padding: 0 clamp(16px, 3vw, 30px) clamp(12px, 2vw, 20px);
+  margin: 0 auto;
+  max-width: 90ch;
+  font-size: clamp(.78rem, 1.15vw, .86rem);
+  line-height: 1.6;
+  color: var(--text-muted);
+  text-align: center;
+}
+.mpv__pie b { color: var(--text-soft); font-weight: 600; }
+.mpv__pie i { font-style: italic; color: var(--text-main); }
+.mpv__pie[hidden] { display: none; }
+
+/* ---------- Tira de miniaturas: «seleccionarlas» ----------
+   Se genera desde el mismo índice. `loading="lazy"` lo pone el JS: abrir
+   la capa con 190 miniaturas no debe disparar 190 descargas. */
+.mpv__tira {
+  display: flex; gap: 8px;
+  padding: 10px clamp(14px, 3vw, 28px) 14px;
+  overflow-x: auto;
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(2, 21, 63, .72);
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.mpv__tira::-webkit-scrollbar { height: 5px; }
+.mpv__tira::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 999px; }
+.mpv__thumb {
+  flex: 0 0 auto;
+  width: 84px; height: 58px;
+  padding: 0; border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-deep);
+  overflow: hidden; cursor: pointer;
+  transition: border-color .25s, box-shadow .25s, opacity .25s;
+  opacity: .55;
+}
+.mpv__thumb img {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover;
+}
+.mpv__thumb:hover { opacity: .9; border-color: var(--border-mid); }
+.mpv__thumb[aria-current="true"] {
+  opacity: 1; border-color: var(--celeste-light);
+  box-shadow: 0 0 0 1px var(--celeste-light), 0 0 16px rgba(81, 173, 198, .4);
+}
+.mpv__thumb:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--bg-deep), 0 0 0 4px var(--celeste); }
+
+/* ---------- Responsive ----------
+   A ≤700 px: la tira baja a miniaturas más chicas y el escenario gana alto
+   porque las flechas se superponen a la imagen en vez de robarle ancho. */
+@media (max-width: 700px) {
+  .mpv__escena { grid-template-columns: 1fr; padding: 6px 4px; }
+  .mpv__flecha {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    z-index: 2;
+    background: rgba(2, 21, 63, .82);
+  }
+  .mpv__flecha[data-dir="prev"] { left: 6px; }
+  .mpv__flecha[data-dir="next"] { right: 6px; }
+  .mpv__thumb { width: 66px; height: 46px; }
+  .mpv__cuenta { font-size: .74rem; }
+}
+
+/* ---------- Menos movimiento ----------
+   El visor NO depende de ninguna animación para funcionar: acá sólo se
+   apagan las transiciones. La capa sigue abriendo, filtrando y cerrando. */
+@media (prefers-reduced-motion: reduce) {
+  .mpv, .mpv__img, .mpv__abrir, .mpv__cerrar, .mpv__chip, .mpv__thumb, .mpv__flecha {
+    transition: none;
+  }
+}

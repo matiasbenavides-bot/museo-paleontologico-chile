@@ -52,6 +52,7 @@
 @import url("secciones/pterosaurios.css");
 /* CR-99 — Reptiles marinos en Chile (prefijo rpt-). */
 @import url("secciones/reptiles.css");
+@import url("secciones/visor.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
 @import url("secciones/responsive.css");
