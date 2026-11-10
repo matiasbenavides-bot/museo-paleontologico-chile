@@ -1,6 +1,13 @@
 # HANDOFF — Museo Paleontológico de Chile (MPCH)
 
-Última actualización: **2026-11-02** (CR-98)
+Última actualización: **2026-11-10** (CR-100 / CR-101 / CR-102 — visor de imágenes)
+
+> 🆕 **Visor de imágenes EN VIVO en `reptiles.html`.** Botón «Ver imágenes» bajo el título
+> de cada sección + **clic en cualquier figura abre el visor en esa imagen**. Un toque
+> acerca a 2,4×, arrastrar recorre, Esc/×/swipe↓ sale y devuelve a la sección.
+> Bitácora completa con los 6 defectos atrapados y las 3 trampas de medición:
+> **`BITACORA-2026-11-10.md`**. Arquitectura: DEC-084 a DEC-089.
+> ⚠️ **Falta extenderlo a las otras 8 subpáginas** (es mecánico: 7 renglones por render).
 Ruta local: `/mnt/c/dev/museo-mpch/`
 **En línea:** https://matiasbenavides-bot.github.io/museo-paleontologico-chile/
 Repo: https://github.com/matiasbenavides-bot/museo-paleontologico-chile (rama `master`, Pages desde `/`)
