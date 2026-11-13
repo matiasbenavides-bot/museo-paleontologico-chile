@@ -1,39 +1,61 @@
 # HANDOFF — Museo Paleontológico de Chile (MPCH)
 
-Última actualización: **2026-11-10** (CR-100 → CR-104 — visor de imágenes)
+Última actualización: **2026-11-12** (CR-105b → CR-112 — visor en las 9 páginas,
+tamaños de imagen en todas las colecciones, tipografía real)
 
 Ruta local: `/mnt/c/dev/museo-mpch/`
 **En línea:** https://matiasbenavides-bot.github.io/museo-paleontologico-chile/
 Repo: https://github.com/matiasbenavides-bot/museo-paleontologico-chile (rama `master`, Pages desde `/`)
 Abrir local: doble clic en `index.html` — estático, sin backend, sin build, sin dependencias
 
-> 🆕 **VISOR DE IMÁGENES EN VIVO en `reptiles.html`.**
+> 🆕 **VISOR DE IMÁGENES EN LAS 9 SUBPÁGINAS — 190/190 figuras clicables.**
 > Botón «Ver imágenes · N» bajo el título de cada sección **+ clic/tap en cualquier figura**.
 > Un toque acerca a 2,4×, arrastrar recorre, Esc/×/swipe↓ sale y **devuelve a la sección**.
 > En celular: pantalla completa y, al girar el teléfono, la imagen pasa al **83 % del alto**.
 >
-> 📘 **Referencia técnica completa: `REFERENCIA-VISOR.md`** (arquitectura, API, los 9 defectos,
+> 📘 **Referencia técnica: `REFERENCIA-VISOR.md`** (arquitectura, API, los 9 defectos,
 > las 5 trampas de medición y el procedimiento para extenderlo).
-> 📋 **Bitácora de la sesión: `BITACORA-2026-11-10.md`.**
-> 🧪 **Medidores: `MEDIDORES.md`** — un comando (`scripts/salud.py`) mide todo
-> el sitio (118 comprobaciones). Base común en `scripts/medir/base.py` con las
-> 5 trampas de medición ya resueltas. **Exit 0 = sano, exit 1 = roto.**
->
-> ⚠️ **Hoy sólo está en Reptiles marinos.** Extenderlo a las otras 8 subpáginas es mecánico
-> (3 pasos, ver `REFERENCIA-VISOR.md` §3) y suma **166 imágenes** más.
+> 📋 **Bitácora de la sesión: `BITACORA-2026-11-12.md`** — trae las mediciones, los dos
+> errores propios y por qué el criterio del «55 % del nativo» NO se puede cumplir.
+> 🧪 **Medidores: `MEDIDORES.md`** — `scripts/salud.py` mide todo el sitio
+> (118 comprobaciones). **Exit 0 = sano, exit 1 = roto.**
+> 🧱 **Grillas de imágenes: `REFERENCIA-COLECCIONES.md`** — qué clase usa cada
+> colección, las dos reglas que se rompieron (tope de ancho y `auto-fit`) y el
+> techo real del tamaño. **Leerlo antes de tocar un `grid-template-columns`.**
 
-### Estado numérico medido (2026-11-10)
+### Estado numérico medido (2026-11-12)
 
 ```
-páginas            12 (+ bitácoras)
-colección          10 cards, 9 con subpágina
-visor              24 imágenes · 11 secciones · 24 figuras clicables
-                   (sólo reptiles.html)
-escritorio         0 errores · 0 desborde 360→1440
-celular 390×844    abre · 44×44 táctil · toque acerca · swipe sale
-celular 844×390    imagen 844×280 = 83 % del alto
-no regresión       las 12 páginas: 0 errores, 0 desborde
+páginas               12
+colección             10 cards, 9 con subpágina
+visor                 9 subpáginas · 190/190 figuras clicables
+grillas de imágenes   7 hojas · columnas por RANGO · máx 2 en escritorio, 1 en celular
+tamaños               62 imágenes bajo el 55 % del nativo (antes 82) · peor 21 % (antes 10 %)
+desbordes             0 en 12 anchos (320..1920) en las 12 páginas
+consola               0 errores en las 12 páginas
+tipografía            Cormorant Garamond VARIABLE (300–700) + itálica REAL
+salud.py              118/118 TODO OK
+verifica-visor-9.py   9/9 OK (control reptiles.html primero)
 ```
+
+### 🔴 Decisiones de tamaño de imagen — leer antes de «agrandar» nada
+
+El dueño pidió tres veces «más grandes» (CR-107, CR-108, CR-109) y después
+«arregla todas las colecciones» (CR-110). **Ya está en el techo del diseño.**
+
+Si en el futuro pide «más grandes» otra vez:
+
+1. **Medir primero** con `scripts/audita-colecciones.py` — dice el % del nativo
+   por imagen y si hay desborde.
+2. **Subir el ancho de la columna** (ya está en 1040 px, el máximo razonable).
+3. **Cuando llegue al techo, la respuesta es el VISOR, no una columna de 1000 px.**
+   Forzar el 55 % del nativo en todas exige **una imagen por fila** con altos de
+   440–940 px ≈ **14.000 px de scroll** en `huellas.html`. El dueño **eligió A**
+   (2 columnas + visor) después de ver esos números.
+
+⚠️ **`auto-fit` + `minmax` NO fija las columnas: las SUBE.** Medido: `.amb-figs--3`
+daba 4 y `.amb-figs--2` daba 3. Por eso las columnas se declaran por RANGO
+(`scripts/aplica-columnas-por-rango.py`, idempotente).
 
 ### Archivos del visor
 
@@ -73,68 +95,32 @@ cd /mnt/c/dev/museo-mpch && git show HEAD:js/visor.js | md5sum
 | 2 | **«Arictonectes» / «Aristonectes»** — el Word usa las dos formas para la misma especie (CR-99). **No se corrigió**: es inconsistencia real del autor | dueño |
 | 3 | **«Reconstrucciones»** — única pieza de la colección **sin subpágina**. No hay Word | dueño (falta material) |
 | 4 | **«Pterosaur horizont»** — el Word escribe «horizont». Es el nombre propio como circula en la literatura | dueño |
+| 5 | **Láminas de baja resolución** — `huellas/10.png` tiene **348 px nativos** y la 4.ª de «tamaño» es `1014×1357`; no se pueden agrandar sin pixelarse. **Es el material, no el CSS.** Si el dueño entrega los originales, se suben | dueño (falta material) |
+| 6 | **`css/secciones/animaciones.css` tiene una `}` de más** (72 `{` vs 73 `}`) **desde CR-32b**. El sitio funciona (0 errores de consola en 12 páginas). No se tocó | criterio propio, sin prisa |
 
 ---
 
-## ✅ CR-105b (2026-11-12) — el visor ya está en las 9 páginas
+## ✅ Lo que se cerró el 2026-11-12
 
-Medido, no estimado. Control primero (`reptiles.html`, el piloto ya aprobado);
-si el control falla, ningún veredicto de las páginas nuevas vale.
+Todo el detalle, con las mediciones y los errores propios, está en
+**`BITACORA-2026-11-12.md`**. Resumen:
 
-```
-PÁGINA                   FIGURAS  CLICABLES  BOTONES  VISOR
-trilobites.html               38         38       18     sí
-amonites.html                 30         30       21     sí
-huellas.html                  23         23        8     sí
-dinosaurios-chile.html        21         21        8     sí
-tiburones.html                18         18       11     sí
-pterosaurios.html             14         14        6     sí
-ambar.html                    11         11        6     sí
-dinosaurios.html              11         11        9     sí
-reptiles.html (control)       24         24       11     sí
-TOTAL                        190        190       --     sí
-```
+| CR | Qué | Resultado medido |
+|---|---|---|
+| **CR-105b** | el visor pasa de 1 a **9 subpáginas** | 190/190 figuras clicables |
+| **CR-107** | «Estructura de los trilobites» más grande | 242 → **506 px** |
+| **CR-108** | «Huellas fósiles de trilobites» (4 imágenes) | 175 → **506 px** |
+| **CR-109** | **todas** las grillas de trilobites bajo el 60 % del nativo | ninguna bajo el 55 % |
+| **CR-110** | tamaños en **las 9 colecciones** + desbordes | 82 → **62** imágenes chicas · **0 desbordes** |
+| CR-111 | cursiva de nombres científicos **real** | Segoe UI no traía itálica: la sintetizaba |
+| CR-112 | el 700 de Cormorant **no era sintético** | la fuente es **VARIABLE** (wght 300→700) |
 
-Verificado **contra la URL en vivo** (no local): abrir desde la sección, filtro de
-origen, contador `1 / N`, imagen grande cargada (`naturalWidth > 0`), zoom 2,4×,
-Esc cierra y **vuelve a la sección con el scroll restaurado**, 0 errores de consola.
-
-### 🔴 El defecto REAL que destapó: `scroll-behavior: smooth` rompía el «volver a la sección»
-
-`css/base/base.css:2` tiene `html { scroll-behavior: smooth }`. El `cerrar()` del
-visor hacía `window.scrollTo(0, scrollPrevio)` **mientras el body seguía `fixed`**:
-el navegador ANIMABA el scroll (~1,75 s, medido: 0 → 501 → 5822 → 7039 → 7461 →
-7642 → 7649) y en varias subpáginas quedaba **en 0**. No era el piloto: en
-`reptiles.html` funcionaba por casualidad de timing.
-
-**Arreglo:** al restaurar se fuerza `scrollBehavior = "auto"` y se devuelve el valor
-previo después. Aplicado en los DOS `scrollTo` de `cerrar()`.
-
-### 🔴 Trampa nueva de medición: el «verde» que no distinguía roto de bueno
-
-La primera prueba negativa **falló**: se inyectó «sin restaurar el scroll» y el
-verificador **siguió dando OK**. Causa: `str.replace()` en Python reemplazó **sólo
-el fragmento que contenía `scrollTo`**, dejando otro `window.scrollTo(0,
-est.scrollPrevio)` intacto más abajo en la misma función. El «defecto inyectado»
-no se había inyectado.
-
-⇒ **Al inyectar un defecto, verificar que el archivo quedó roto** (`grep -c` del
-símbolo debe dar 0) **antes de fiarse del veredicto**. Y si el roto da el mismo
-resultado que el bueno, el que no sirve es el instrumento.
-
-### Scripts nuevos (reutilizables)
-
-```bash
-# estado real de las 9 páginas: figuras, clicables, botones, visor, consola
-/tmp/venv-docx2/bin/python scripts/control-visor-paginas.py
-
-# verificación funcional completa, con CONTROL primero
-/tmp/venv-docx2/bin/python scripts/verifica-visor-9.py
-/tmp/venv-docx2/bin/python scripts/verifica-visor-9.py --solo tiburones.html
-```
+⚠️ **CR-111 y CR-112 los commiteó una SESIÓN PARALELA**, igual que CR-105/106
+(`700e768`, que se llevó dentro la integración de las 8 páginas). Antes de
+commitear: `git fetch` + `git log --oneline -3` + `git show --stat` del commit
+ajeno. **`git status` limpio no significa que el trabajo sea tuyo.**
 
 ---
-
 ## Riesgos abiertos
 
 - 🔴 **Un mapeo figura→párrafo escrito a mano desalinea figuras en silencio.** Se DERIVA de
@@ -144,6 +130,20 @@ resultado que el bueno, el que no sirve es el instrumento.
 - 🔴 **`est.capa` es `null` al montar el visor** — engancharle listeners ahí mata el render
   completo de la página (CR-100a). Enganchar al `document`.
 - ⚠️ **Sesiones paralelas**: antes de editar, `git fetch` + `git rev-list --count HEAD..origin/master`.
+
+---
+
+## Documentos del proyecto
+
+| Archivo | Qué trae | Cuándo leerlo |
+|---|---|---|
+| **`HANDOFF.md`** | estado, pendientes, riesgos | **siempre, al retomar** |
+| `REFERENCIA-COLECCIONES.md` | grillas de imágenes de las 9 colecciones | antes de tocar tamaños/columnas |
+| `REFERENCIA-VISOR.md` | arquitectura y API del visor | antes de tocar `js/visor.js` |
+| `MEDIDORES.md` | cómo se mide y con qué script | antes de escribir una sonda |
+| `BITACORA-2026-11-12.md` | la sesión de los tamaños, con lo que falló | al reproducir un defecto |
+| `BITACORA-2026-11-10.md` | el visor, original | contexto del visor |
+| `fuentes/` | material del dueño tal como lo entregó | para auditar un texto |
 
 ---
 

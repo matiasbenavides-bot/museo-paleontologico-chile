@@ -2,7 +2,7 @@
 
 Cómo se mide este proyecto. Un comando, una base común, cero trampas repetidas.
 
-**Última actualización:** 2026-11-10 · CR-105 / CR-106 / CR-107
+**Última actualización:** 2026-11-12 · CR-105b → CR-112
 
 ---
 
@@ -43,6 +43,35 @@ hook de pre-push sin leer la salida.
 | **consola** | 0 errores de JS en las 12 | 12 |
 | **inventario** | tabla informativa del contenido | — |
 | | **TOTAL** | **118** |
+
+
+### Medidores de una pregunta concreta (2026-11-12)
+
+| Pregunta | Script |
+|---|---|
+| ¿el visor funciona en las 9 subpáginas? | `scripts/verifica-visor-9.py` (**control `reptiles.html` PRIMERO**) |
+| ¿el visor está montado y cuántas figuras son clicables? | `scripts/control-visor-paginas.py` |
+| ¿qué imágenes se pintan chicas y dónde hay desborde? | `scripts/audita-colecciones.py` |
+| ¿cuánto mide el visor paso a paso? | `scripts/mide-visor.py [URL]` |
+| ¿la cursiva es real o sintetizada? | `scripts/verifica-cursiva-real.py` |
+
+```bash
+# % del nativo + desborde en 12 páginas × 12 anchos
+python3 scripts/audita-colecciones.py            # completo
+python3 scripts/audita-colecciones.py --rapido   # 3 anchos (390/768/1440)
+python3 scripts/audita-colecciones.py --solo huellas.html
+
+# columnas por rango en las 7 hojas (idempotente, no repite si ya está)
+python3 scripts/aplica-columnas-por-rango.py
+```
+
+⚠️ **`audita-colecciones.py` necesita scroll completo + espera antes de medir.**
+Con `loading="lazy"` una imagen sin cargar da `naturalWidth 0` y aparece como
+rota; y `screenshot` de un elemento con rect 0 no mide nada.
+
+⚠️ **Desborde = `document.documentElement.scrollWidth > window.innerWidth`.**
+Contar «elementos que sobresalen» da falsos positivos: los adornos `#fondo-*` se
+salen a propósito (DEC-016).
 
 ---
 
