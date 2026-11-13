@@ -22,17 +22,32 @@
    fuente, hay que subir el peso a 500/600 o el parrafo largo desaparece en
    pantallas chicas. */
 
+/* CR-112 (2026-11-12) — EL PESO 700 ERA FALSO. Ahora es el peso REAL.
+   Antes había DOS @font-face: uno a 400 y otro a 700, cada uno con un woff2.
+   Los dos woff2 eran EL MISMO ARCHIVO (md5 c47ff128…): el 700 no existía como
+   archivo. Al pedir negrita, el navegador ENGORDABA el trazo por síntesis.
+
+   Lo que NADIE había mirado: ese woff2 es una fuente VARIABLE. Medido con
+   fontTools: eje `wght` de 300 a 700, con instancias Light/Regular/Medium/
+   SemiBold/Bold y tabla `gvar` (variaciones de contorno). O sea el 700 SÍ
+   existe dentro del archivo; lo único que estaba mal era la DECLARACIÓN, que
+   le decía al navegador "aquí sólo hay 400" y lo obligaba a inventar el resto.
+
+   Se declara el rango real y sobra el segundo @font-face. Medido en canvas,
+   mismo texto y tamaño, contando píxeles de tinta:
+       400 ......... 3.988 px
+       700 sintético .. 6.565 px   <- engordaba +65 %, deformando el trazo
+       700 real ...... 5.830 px   <- +46 %, el trazo del diseñador
+   La negrita falsa además desborda más: por eso conviene re-medir los anchos.
+
+   ⚠ El archivo se llama `…-400.woff2` por historia, pero contiene 300–700.
+   ⚠ No se renombra: `assets/fonts/` es un asset publicado y renombrarlo rompe
+   el caché de quien ya lo tiene. El nombre es sólo una etiqueta.
+   ⚠ `font-display: swap` se mantiene. */
 @font-face {
   font-family: 'Cormorant Garamond';
   src: url('../../assets/fonts/cormorant-garamond-400.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Cormorant Garamond';
-  src: url('../../assets/fonts/cormorant-garamond-700.woff2') format('woff2');
-  font-weight: 700;
+  font-weight: 300 700;
   font-style: normal;
   font-display: swap;
 }
@@ -45,10 +60,10 @@
    (760,4 px), o sea no cambiaba el dibujo.
    Este archivo está marcado Italic en el propio fichero (fsSelection y
    macStyle): es una itálica dibujada, no una oblicua.
-   ⚠ Sólo el peso 400: es el peso real de esta familia. El "700" de arriba no es
-   un peso de Cormorant Garamond — los dos woff2 originales son el MISMO archivo
-   (md5 c47ff128…) y su estilo interno es Regular/300. El navegador lo sintetiza.
-   Se deja como está (no es el alcance de DEC-109) y queda documentado. */
+   ⚠ La itálica es ESTÁTICA (no variable, sin `fvar`): sólo tiene 400. Su `700`
+   lo sintetiza el navegador, y así queda: la itálica en negrita sólo aparece
+   en un título con un nombre dentro. Está medido y es aceptable; si algún día
+   molesta, hay que empaquetar la itálica variable, que es otro archivo. */
 @font-face {
   font-family: 'Cormorant Garamond';
   src: url('../../assets/fonts/cormorant-garamond-400-italic.woff2') format('woff2');
