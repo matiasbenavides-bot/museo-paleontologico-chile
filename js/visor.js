@@ -521,6 +521,24 @@
       aplicarFiltro(secId);
 
       capa.setAttribute("data-abierto", "true");
+
+      /* 🔴 CR-106 — Bloquear el scroll ROMPÍA el «volver a la sección».
+         Al aplicar `overflow:hidden` al body, el navegador quita la barra de
+         scroll y **reacomoda la página**: medido, el scroll saltaba de 7768 a
+         7936 al abrir y al cerrar quedaba 93 px más abajo. Era un corrimiento
+         real, no del medidor.
+         Solución: fijar el body en su posición con `fixed` y compensar el
+         ancho de la barra, para que nada se mueva. Al cerrar se restituye el
+         scroll exacto que se guardó. */
+      est.scrollPrevio = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var barra = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.position = "fixed";
+      document.body.style.top = (-est.scrollPrevio) + "px";
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      if (barra > 0) document.body.style.paddingRight = barra + "px";
+
       document.body.classList.add("mpv-bloqueo");
       est.abierto = true;
 
@@ -551,7 +569,25 @@
     function cerrar() {
       if (!est.abierto || !est.capa) return;
       est.capa.setAttribute("data-abierto", "false");
+
+      /* CR-106 — se deshace el anclaje del body y se restituye el scroll
+         EXACTO. Sin esto el `fixed` dejaría la página arriba del todo.
+         🔴 CR-105b — `scroll-behavior: smooth` en el html hacía que el
+         `scrollTo` ANIMARA (~1,75 s) y en el ínterin el body aún estaba
+         `fixed`: la página se quedaba en 0 en varias subpáginas. Se fuerza
+         `auto` ANTES de mover, y se restaura el valor previo después. */
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.paddingRight = "";
       document.body.classList.remove("mpv-bloqueo");
+
+      var htmlPrev = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = "auto";
+      window.scrollTo(0, est.scrollPrevio);
+      document.documentElement.style.scrollBehavior = htmlPrev;
       est.abierto = false;
 
       /* CR-104 — se sale de pantalla completa para no dejar al usuario
@@ -568,7 +604,10 @@
          capítulo a capítulo y algunos traen caracteres no válidos en CSS).
          Se restaura el scroll que había, que es exactamente la sección. */
       var destino = est.origen;
+      var htmlPrev2 = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = "auto";
       window.scrollTo(0, est.scrollPrevio);
+      document.documentElement.style.scrollBehavior = htmlPrev2;
       if (destino && destino.focus) {
         if (!destino.hasAttribute("tabindex")) destino.setAttribute("tabindex", "-1");
         destino.focus({ preventScroll: true });

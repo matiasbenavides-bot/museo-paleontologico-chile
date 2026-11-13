@@ -234,7 +234,17 @@ body.mpv-bloqueo { overflow: hidden; }
 }
 .mpv__img {
   display: block;
-  max-width: 100%; max-height: 100%;
+  /* 🔴 CR-105 — `max-height: 100%` NO se resuelve aquí.
+     MEDIDO en horizontal (viewport 844×390): el lienzo mide 337 px de alto y
+     la imagen salía con 511 px — desbordaba 121 px hacia abajo. El `100%`
+     de una pista de grid `auto` no da un alto de referencia, así que el
+     tope se ignoraba en silencio (la imagen se veía «grande» por accidente,
+     cortada por el `overflow:hidden`).
+     Se usa `vh` menos lo que ocupan barra y padding: es una referencia REAL
+     que sí se resuelve. En escritorio no cambia nada porque el lienzo ya es
+     menor que ese tope. */
+  max-width: 100%;
+  max-height: calc(100vh - 96px);
   width: auto; height: auto;
   object-fit: contain;
   border-radius: var(--radius-sm);
@@ -399,6 +409,8 @@ body.mpv-bloqueo { overflow: hidden; }
   .mpv__titulo { font-size: .86rem; }
   .mpv__titulo small { display: none; }
   .mpv__escena { padding: 4px 44px; }
+  /* La barra mide ~56 px en este modo: el tope se ajusta a lo que queda. */
+  .mpv__img { max-height: calc(100vh - 64px); }
   .mpv__flecha { top: 50%; transform: translateY(-50%); position: absolute; z-index: 2; }
   .mpv__flecha[data-dir="prev"] { left: 4px; }
   .mpv__flecha[data-dir="next"] { right: 4px; }

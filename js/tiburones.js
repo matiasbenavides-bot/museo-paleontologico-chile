@@ -195,6 +195,20 @@
                figurasHTML(s.imagenes) +
              "</section>";
     }).join("");
+
+    /* ---------- CR-105 — visor de imágenes ----------
+       El visor es UNO solo (`js/visor.js`, DEC-084) y recibe el bloque del
+       capítulo: deriva el índice de `seccion.imagenes[]` (DEC-085), así que
+       no hay nada que enumerar por página. Si `visor.js` no cargó,
+       `window.VISOR` no existe y la página queda exactamente como estaba. */
+    if (window.VISOR && window.VISOR.montar) {
+      var v = window.VISOR.montar({
+        bloque: T,
+        titulo: T.titulo || "Imágenes del capítulo",
+        etiqueta: "Ver imágenes"
+      });
+      if (v) v.pintarTodo(cont);
+    }
   }
 
   /* ---------- Cierre ---------- */
