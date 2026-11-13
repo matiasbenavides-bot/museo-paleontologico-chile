@@ -1085,6 +1085,7 @@ const TRILOBITES = {
       id: "que-son",
       titulo: "¿Qué son los trilobites?",
       nivel: 2,
+      figurasGrandes: true,  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "Los trilobites fueron un grupo común de artrópodos marinos paleozoicos, provistos de un caparazón cuticular dorsal mineralizado en carbonatos (exoesqueleto) y fosilizable, la que permitió que tengan gran representación en el registro fósil. Estuvieron presentes durante 300 millones de años en todos los mares y océanos de la era Paleozoica (que va desde hace 541 a 252 millones de años). Desde que aparecen en el Cámbrico Temprano, su diversidad alcanzó valores elevados en el Cámbrico Tardío y Ordovícico, para decrecer durante el Silúrico-Devónico y reducirse aún más en el Paleozoico Tardío (Carbonífero), antes de extinguirse a fines del Pérmico.",
       ],
@@ -1106,7 +1107,7 @@ const TRILOBITES = {
       titulo: "Estructura de los trilobites",
       /* CR-107: pedido del dueño — las 3 imágenes de esta sección, más grandes.
          Es marca POR SECCIÓN: no cambia ninguna otra grilla del sitio. */
-      figurasGrandes: true,
+      figurasGrandes: "ancho", /* CR-109b: ancha y baja -> 1 por fila */
       nivel: 2,
       parrafos: [
         "Los trilobites estaban protegidos por un exoesqueleto dorsal fuertemente calcificado, de simetría bilateral y convexidad variable, que continuaba ventralmente como un doblez marginal angosto. Los trilobites poseen un cuerpo segmentado con un exoesqueleto ovalado o subelíptico en vista dorsal y está dividido longitudinalmente en tres regiones (del latín Tri, tres y lobus, lóbulo = Tres lóbulos). Su exoesqueleto está constituido de cierto número de segmentos a lo largo del cuerpo, un par de surcos axiales divide al exoesqueleto en un lóbulo central (axis, raquis) y dos lóbulos laterales (genas en el céfalo; área o campos pleurales en el tórax-pigidio), a los cuales hace alusión el término «*Trilobita* o trilobite».",
@@ -1135,6 +1136,7 @@ const TRILOBITES = {
       id: "locomocion",
       titulo: "Locomoción",
       nivel: 2,
+      figurasGrandes: "ancho", /* CR-109b: ancha y baja -> 1 por fila */  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "Los miembros encargados de la natación reciben el nombre de exopodito y consta de numerosas uniones o coyunturas que proporcionan un soporte a una serie de estructuras duras y aplanadas, como púas, que en gran número forman un eficiente sistema de nado, que le servía para movilizarse en el medio acuático.",
         "En otras ocasiones los trilobites caminaban o reptaban en la superficie del fondo, para lo cuál utilizaban otro miembro locomotor llamado endopodito, que estaba constituido por seis fuertes junturas de material quitinoso y que funcionó como una pata y se situaba por debajo del exopodito.",
@@ -1230,6 +1232,7 @@ const TRILOBITES = {
       id: "pigidio",
       titulo: "La zona caudal o pigidio",
       nivel: 3,
+      figurasGrandes: true,  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "La zona caudal o pigidio es un elemento involucrado en el sistema natatorio del trilobite, dando impulso al animal en su desplazamiento, el pigidio al igual que el céfalo, es una placa única, constituida por la fusión de los elementos posteriores.",
         "El contorno del pigidio es generalmente semielíptico, aunque en varios casos adopta otras formas como semicircular, triangular, pentagonal o subcuadrangular. Asimismo, su tamaño relativo varía considerablemente: el trilobite es denominado micropigidio (a), si el pigidio es mucho más pequeño que el céfalo, mesopigidio (b), si ambas placas tienen una tamaño un poco más pequeño o dimensiones similares al cefalón, y macropigidio (c) cuando el pigidio es del mismo tamaño o más grande que el cefalón.",
@@ -1291,6 +1294,7 @@ const TRILOBITES = {
       id: "vision",
       titulo: "Visión de los trilobites",
       nivel: 2,
+      figurasGrandes: true,  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "Los ojos de los trilobites estaban compuestos por numerosas lentes de composición calcítica, los  lentes estaban hechos de cristales de calcita, que se sitúan en la línea media del caparazón y a los costados de la glabela y son bastante visibles, éstos presentan formas muy variables, algunas  especies son ciegas habitando zonas del fondo fangoso del mar, en tanto que otras especies tienen ojos durante su estado juvenil, los que luego se atrofian hasta desaparecer en el estado de edad avanzada; sin embargo, la mayoría de las especies poseen un sistema visual bastante eficaz. Los ojos son compuestos y consisten en numerosos lentes llamados omatidios, cada uno de los cuales posee una cornea lisa que puede estar levantada o abollada, insertada en los agujeros redondos o poligonales.",
       ],
@@ -1326,6 +1330,7 @@ const TRILOBITES = {
       id: "fondo",
       titulo: "Vida en el fondo",
       nivel: 2,
+      figurasGrandes: "ancho", /* CR-109b: ancha y baja -> 1 por fila */  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "Los trilobites, por su forma aplanada, por sus ojos en posición dorsal y la dureza y flexibilidad de su caparazón se deduce que la mayoría eran animales bentónicos (Los organismos bentónicos son aquellos que se asocian a cualquier fondo acuático, viven en contacto o en una dependencia directa con el fondo del mar).  Seguramente eran micrófagos, filtrando el barro del fondo en que vivían para obtener el alimento, algunos carecían de apéndices excavadores o prensiles, así como de piezas bucales trituradoras.",
       ],
@@ -1346,6 +1351,7 @@ const TRILOBITES = {
       id: "reproduccion",
       titulo: "Reproducción y apareamiento",
       nivel: 2,
+      figurasGrandes: "ancho", /* CR-109b: ancha y baja -> 1 por fila */  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "Recientes investigaciones han revelado que existe una diferencia entre machos y hembras del trilobite *Olenoides serratus*, que podría tratarse de un dimorfismo sexual, ya que el macho al parecer presenta adaptaciones para el apareamiento. Se trata de apéndices funcionalmente especializados, que son extremidades análogas a los ganchos, en los endopoditos 10 y 11, que son utilizados por los machos hembra durante el apareamiento.",
       ],
@@ -1366,6 +1372,7 @@ const TRILOBITES = {
       id: "dimorfismo",
       titulo: "Dimorfismo sexual en trilobites",
       nivel: 2,
+      figurasGrandes: true,  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "El dimorfismo sexual se refiere a la exhibición de diferencias de apariencia entre machos y hembras de la misma especie, especialmente su tamaño, forma, color u órganos reproductivos sexuales. La mayoría de los artrópodos existentes presentan un fuerte dimorfismo sexual característico entre las especies, especialmente en la forma del cuerpo. Los trilobites exhibieron dimorfismo sexual entre sus especies como los artrópodos existentes, y su estudio es posible dado que los trilobites son uno de los artrópodos marinos extintos más abundantes y antiguos conocidos.",
         "Bajo alturas similares de especies similares, los machos parecen con su cabeza más aguzada (forma de víbora), en tanto que las hembras tienen una forma ligeramente esférica.",
@@ -1399,6 +1406,7 @@ const TRILOBITES = {
       id: "espinas",
       titulo: "Espinas, tubérculos y tridentes",
       nivel: 2,
+      figurasGrandes: true,  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "Los trilobites se encontraban entre los invertebrados dominantes en los mares del Paleozoico y exhibían una extraordinaria variedad de morfología exoesquelética, comúnmente tenían protuberancias cefálicas, espinas o bulbos, en su tórax, mostrando una notable variedad de formas. Es probable que su función principal fuera la protección contra depredadores sobre todo en estado de enrollamiento que los haría muy difícil de atacar o para el desplazamiento hidrodinámico. En tanto que otros postulan que eran rasgos sexuales secundarios.",
         "Dentro de estas características existen algunos trilobites que exhiben un tridente frontal muy extraño, que al parecer es una especie de arma. *Walliserops trifurcatus* llevaba un tridente único y gigante en la cabeza, cuya finalidad ha sido durante mucho tiempo un misterio. Ahora se piensa que se utilizaba para las peleas entre machos que luchaban por el dominio de las hembras.",
@@ -1421,6 +1429,7 @@ const TRILOBITES = {
       id: "enrollamiento",
       titulo: "Enrollamiento de los trilobites",
       nivel: 2,
+      figurasGrandes: true,  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "Muchos trilobites poseían la capacidad de enrollarse frente a condiciones adversas o para protegerse del ataque de predadores. El exoesqueleto enrollado representa una cápsula parcial o completamente cerrada, con el cefalón y el pigidio en contacto entre sí. Para lograr esta singular disposición es importante el papel que cumplían los extremos de las pleuras, que se imbricaban al nivel de las facetas articulantes para permitir la flexión del tórax.",
       ],
@@ -1457,6 +1466,7 @@ const TRILOBITES = {
       id: "tamano",
       titulo: "Tamaño",
       nivel: 2,
+      figurasGrandes: true,  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
         "Los trilobites, durante su evolución, alcanzaron diversos tamaños, desde aquellos agnostidos de algunos milímetros, hasta aquellos gigantes como *Isotelus rex*, que alcanzo un tamaño de más de 70 centímetros. Esta diversidad de tamaños sin duda influyo en la forma de vida de estos formidables artrópodos.",
         "Trilobites pequeños, izquierda y grande, *Acadoparadoxides briareus*",

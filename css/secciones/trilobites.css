@@ -204,6 +204,67 @@
    ⚠️ `10.png` sólo tiene 348 px NATIVOS: por encima de eso se reescala y
       empieza a verse blanda. No es un defecto del CSS. */
 .tri-figs--4.tri-figs--mas { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+
+/* 🔴 CR-109 (2026-11-12) — «revisa todas las que son demasiado pequeñas».
+   Auditoría MEDIDA a 1440 px de las 18 grillas de trilobites.html: el % del
+   tamaño PINTADO contra la resolución NATIVA del archivo del museo.
+
+     SECCIÓN          COLS  medio  peor          SECCIÓN        COLS medio peor
+     tamano             4    29%    17%   ← peor  vision           2   42%  41%
+     pigidio            4    28%    22%           enrollamiento    2   42%  38%
+     dimorfismo         3    42%    29%           locomocion       2   44%  39%
+     fondo              2    40%    32%           espinas          2   53%  51%
+     reproduccion       2    40%    34%           que-son          2   54%  42%
+
+   ⇒ CRITERIO ÚNICO, no sección por sección: **toda grilla que pinte por debajo
+      del 60 % de su resolución nativa se agranda**. Son 12 en TRILOBITES (estas
+      10 + «estructura» y «huellas» de CR-107/108, que ya estaban marcadas).
+
+   🔴 POR QUÉ NO BASTA CON `--mas` de 3 y 4 columnas:
+      con `minmax(420px)` en un contenedor de 1040 px entran SÓLO 2 columnas.
+      Para `--3` eso da 2+1 (una huérfana) y para `--4` da 2+2 aexpensas de
+      achicar la columna. `repeat(auto-fit, minmax(min(100%, 420px), 1fr))` +
+      los `@media` de abajo fijan el número por RANGO —regla del proyecto— y
+      nunca dejan una columna por debajo de 420 px.
+      ⚠️ `min(100%, 420px)` es obligatorio: sin él, a 390 px el mínimo de 420
+         desborda el viewport (medido: grilla 420 en un viewport de 390). */
+
+/* 🔴 CR-109 — columnas por RANGO, nunca por `auto-fit`.
+   MEDIDO: `auto-fit + minmax(min(100%,420px),1fr)` en un contenedor de 1040 px
+   metía hasta 3 columnas en las grillas `--2` y dejaba las `--4` en 240 px
+   (peor que antes). El número de columnas se DECLARA por rango.
+
+   Reparto (contenedor de 1040 px, gap 24):
+     4 columnas -> 242 px c/u. SÓLO tiene sentido si el material es pequeño;
+                   para material ancho y bajo da tiras de 240x67 px. NO se usa.
+     3 columnas -> 330 px c/u.
+     2 columnas -> 508 px c/u.  ← el bueno para imágenes anchas y bajas
+     1 columna  -> 1040 px.     ← el mejor en celular
+
+   ⇒ `--2` y `--4` van SIEMPRE a 2 columnas en escritorio y a 1 en celular.
+     `--3` va a 3 sólo cuando el ancho lo permite (necesita 3×420 + gaps). */
+.tri-figs--2.tri-figs--mas,
+.tri-figs--4.tri-figs--mas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* `--mas` topea el contenedor en 1040 px, así que 3 columnas dan 330 px
+   SIEMPRE, por ancho de pantalla que haya. Van a 2 (508 px) sin excepción.
+   MEDIDO: con 3 columnas, «estructura» quedaba en 329x136 (24% del nativo). */
+.tri-figs--3.tri-figs--mas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* 🔴 CR-109b — las cuatro que seguían bajo el 55 % del nativo: son ANCHAS y
+   BAJAS (1076x300, 1166x668, 1120x548, 971x790), así que en 2 columnas el
+   ancho todavía corta. MEDIDO con 2 columnas: estructura 37/37/50 %,
+   locomocion 52/49 %, fondo 43/63 %, reproduccion 45/63 %.
+   A UNA columna (1040 px) suben todas por encima del 70 %. */
+.tri-figs--2.tri-figs--ancho,
+.tri-figs--3.tri-figs--ancho { grid-template-columns: 1fr; }
+
+/* celular y tablet: UNA columna a ancho completo. Dos columnas de material
+   ancho y bajo lo dejan más chico que una sola imagen grande. */
+@media (max-width: 999.98px) {
+  .tri-figs--2.tri-figs--mas,
+  .tri-figs--3.tri-figs--mas,
+  .tri-figs--4.tri-figs--mas { grid-template-columns: 1fr; }
+}
 /* 🔴 CR-81 (2026-10-19): el Word trae un bloque de CUATRO imágenes seguidas
    (image14..17, en «La zona caudal o pigidio»). Con `--3` la cuarta se caía a
    una fila propia y quedaba huérfana. Medido: el render hace
