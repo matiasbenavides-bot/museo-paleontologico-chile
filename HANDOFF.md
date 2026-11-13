@@ -1,151 +1,152 @@
 # HANDOFF — Museo Paleontológico de Chile (MPCH)
 
-Última actualización: **2026-11-10** (CR-100 / CR-101 / CR-102 — visor de imágenes)
+Última actualización: **2026-11-10** (CR-100 → CR-104 — visor de imágenes)
 
-> 🆕 **Visor de imágenes EN VIVO en `reptiles.html`.** Botón «Ver imágenes» bajo el título
-> de cada sección + **clic en cualquier figura abre el visor en esa imagen**. Un toque
-> acerca a 2,4×, arrastrar recorre, Esc/×/swipe↓ sale y devuelve a la sección.
-> Bitácora completa con los 6 defectos atrapados y las 3 trampas de medición:
-> **`BITACORA-2026-11-10.md`**. Arquitectura: DEC-084 a DEC-089.
-> ⚠️ **Falta extenderlo a las otras 8 subpáginas** (es mecánico: 7 renglones por render).
 Ruta local: `/mnt/c/dev/museo-mpch/`
 **En línea:** https://matiasbenavides-bot.github.io/museo-paleontologico-chile/
 Repo: https://github.com/matiasbenavides-bot/museo-paleontologico-chile (rama `master`, Pages desde `/`)
 Abrir local: doble clic en `index.html` — estático, sin backend, sin build, sin dependencias
 
-> ⚠️ **La skill `museo-mpch` y sus `references/` son la fuente de verdad** donde haya choque con
-> este archivo. Aquí va el estado medido y el paso siguiente real.
+> 🆕 **VISOR DE IMÁGENES EN VIVO en `reptiles.html`.**
+> Botón «Ver imágenes · N» bajo el título de cada sección **+ clic/tap en cualquier figura**.
+> Un toque acerca a 2,4×, arrastrar recorre, Esc/×/swipe↓ sale y **devuelve a la sección**.
+> En celular: pantalla completa y, al girar el teléfono, la imagen pasa al **83 % del alto**.
+>
+> 📘 **Referencia técnica completa: `REFERENCIA-VISOR.md`** (arquitectura, API, los 9 defectos,
+> las 5 trampas de medición y el procedimiento para extenderlo).
+> 📋 **Bitácora de la sesión: `BITACORA-2026-11-10.md`.**
+>
+> ⚠️ **Hoy sólo está en Reptiles marinos.** Extenderlo a las otras 8 subpáginas es mecánico
+> (3 pasos, ver `REFERENCIA-VISOR.md` §3) y suma **166 imágenes** más.
 
-📋 **Bitácora de la sesión 2026-11-02 (CR-96 a CR-98), con los 5 errores cometidos y la receta
-para retomar: `BITACORA-2026-11-02.md`.**
+### Estado numérico medido (2026-11-10)
 
----
-
-## Lo que se cerró en esta sesión (2026-11-02)
-
-### CR-98 — página nueva «Pterosaurios en Chile» (9.ª subpágina)
-
-| Qué | Medición en vivo |
-|---|---|
-| Fuente | `fuentes/pterosaurios-material-del-dueno.docx` (2.181.194 b, MD5 `757f53b8…`) |
-| Contenido | **9 secciones · 22 párrafos · 14 figuras · 10 con pie** |
-| Página | 200 · 7.835 b · **9.869 px @1440** |
-| Imágenes | **14/14** cargan · 0 rotas · 0 desborde 360→1440 · 0 errores |
-| Card | **Pterosaurios**, 6.º lugar de la colección (9 cards) |
-
-🔴 **El ícono no se pudo usar tal cual.** El JPEG del dueño (1408×768) era **negro sobre
-fondo blanco**: sobre el azul de la card el blanco pinta un parche, y el trazo fino se perdía a
-los 62 px reales — medido **por píxeles**: **4 px celestes** contra 39 del trilobite. Se
-convirtió a **PNG RGBA 512×512** con el celeste de la paleta y trazo engrosado → **693 px**.
-Script re-ejecutable: `scripts/prepara-icono-pterosaurios.py` (verificado: reproduce el archivo
-publicado, MD5 `6866a069…`).
-
-🔴 **«Domeykodactilus» → «Domeykodactylus»** (CR-98b). El Word lo escribía con «i» 8 veces; el
-nombre válido lleva «y». Se dejó y **se avisó**; el dueño pidió corregirlo. Aplicado en **15
-lugares** + el `id`/ancla de la sección. **Regla que queda**: una grafía repetida no se corrige
-sola, se avisa.
-
-### CR-96 — página «Dinosaurios en Chile» (8.ª subpágina)
-
-**Se publicó la 9.ª página: `dinosaurios-chile.html`.**
-
-| Qué | Medición |
-|---|---|
-| Fuente | `fuentes/dinosaurios-chile-material-del-dueno.docx` (16.055.041 b, MD5 `237a3264…`) |
-| Contenido | **8 secciones · 19 párrafos · 21 figuras · 15 con pie** |
-| Especies | Titanosaurio de Pichasca · *Atacamatitan chilensis* · *Chilesaurus diegosuarezi* · *Arackar licanantay* · *Stegouros elengassen* · *Gonkoken nanoi* · Megaraptor · Unenlágidos |
-| En vivo | 200 · 7.944 b · **12.551 px @1440** |
-| Imágenes | **21/21 cargan** tras scrollear · 0 rotas |
-| Desborde | **0** en 360 / 390 / 520 / 768 / 1024 / 1440 |
-| Consola | **0 errores** |
-
-Commits: `4569f99` (CR-96) · `f4924cd` (CR-96b, enlace en el pie de la portada).
-
-### 🔴 Las TRES páginas de dinosaurios NO se confunden
-
-| Página | Qué es | Card en la colección |
-|---|---|---|
-| `dinosaurios.html` | El grupo **Dinosauria**: qué es, sinapomorfías, clasificación | «Dinosaurios general» |
-| `huellas.html` | **Icnología**: huellas fósiles y sitios | «…a través de las huellas» |
-| `dinosaurios-chile.html` | **Restos óseos** en Chile, ficha por especie | «Dinosaurios en Chile» |
-
-Son **tres Words distintos** del dueño. No se renombran ni se fusionan.
-
----
-
-## Estado del sitio (9 páginas, todas verificadas en vivo)
-
-| Página | Alto @1440 | Errores |
-|---|---|---|
-| `index.html` | 10.169 px | 0 |
-| `curriculum.html` | — | 0 |
-| `trilobites.html` | 15.127 px | 0 |
-| `proyecto-cec.html` | — | 0 |
-| `amonites.html` | 17.928 px | 0 |
-| `tiburones.html` | 12.107 px | 0 |
-| `ambar.html` | 6.593 px | 0 |
-| `dinosaurios.html` | 9.799 px | 0 |
-| `huellas.html` | 12.277 px | 0 |
-| **`dinosaurios-chile.html`** | **12.551 px** | **0** |
-
----
-
-## Cómo se verifica (en esta máquina)
-
-**No hay `node_modules`**: `scripts/humo-sitio.js` falla por `playwright-core`. Usar Python.
-
-```bash
-# 1. Datos + texto + figuras contra el .docx  (8 bloques, exit 1 si falla)
-node scripts/verifica-dinosaurios-chile.js
-
-# 2. Chromium real: pinta, lazy, 6 anchos, consola  (acepta URL en vivo)
-python3 scripts/mide-dinosaurios-chile.py \
-  https://matiasbenavides-bot.github.io/museo-paleontologico-chile/dinosaurios-chile.html
-
-# 3. El data carga DE VERDAD (la trampa del const sin export)
-node -e "global.window={};eval(require('fs').readFileSync('data/museo.js','utf8'));
-console.log('DINOSAURIOS_CHILE:', !!window.DINOSAURIOS_CHILE,
-            '| MUSEO:', !!window.MUSEO)"
+```
+páginas            12 (+ bitácoras)
+colección          10 cards, 9 con subpágina
+visor              24 imágenes · 11 secciones · 24 figuras clicables
+                   (sólo reptiles.html)
+escritorio         0 errores · 0 desborde 360→1440
+celular 390×844    abre · 44×44 táctil · toque acerca · swipe sale
+celular 844×390    imagen 844×280 = 83 % del alto
+no regresión       las 12 páginas: 0 errores, 0 desborde
 ```
 
-Entorno: `python-docx`, `Pillow` y `playwright` **no están en el sistema** (PEP 668).
-Se instalan en `/tmp/venv-docx2` con `uv`. Chromium:
-`~/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome`.
+### Archivos del visor
+
+```
+js/visor.js                 39 KB   motor, compartido por todos los capítulos
+css/secciones/visor.css     19 KB   estilos, prefijo .mpv-
+scripts/mide-visor.py       14 KB   medidor con Chromium real
+REFERENCIA-VISOR.md         10 KB   esta documentación técnica
+```
 
 ---
 
-## Pendientes abiertos (reales, no inventados)
+## ⚠️ Publicación: GitHub Pages puede NO servir el commit
 
-1. **«Reconstrucciones»** es la única pieza de la colección que sigue **sin subpágina propia**.
-   El dueño no ha dictado material para ella.
-2. **«Huevos de dinosaurios» fue RETIRADA** (CR-97). El dibujo está en
-   `assets/img/archivados/pieza-huevos.png` y el SVG `huevo:` sigue en `js/iconos.js`.
-   Reactivarla = devolver el PNG + descomentar el objeto en `data/museo.js`. **El render no cambia.**
-3. **Pies de figura sin `alt`** — decisión del proyecto (DEC-034): el dueño no dictó
-   descripciones y el agente no ve imágenes. No es un faltante, es una decisión.
-4. ⚠️ **«Pterosaur horizont»** — el Word escribe «horizont»; se dejó porque es el nombre propio
-   del sitio como circula en la literatura. Si el dueño dice que es «horizon», se corrige.
+**Medido el 2026-11-10:** tras el push de CR-102, lo servido era **exactamente** el commit
+anterior (md5 idéntico a `b42b97b`). **320 s** esperando y nada cambió. Un **push vacío**
+(`git commit --allow-empty -m "…" && git push`) lo destrabó; publicado a los ~200 s.
+
+**Verificación que sí sirve** (comparar contenido, no esperar a ciegas):
+
+```bash
+# ¿lo servido coincide con el commit que acabo de subir?
+curl -s "https://matiasbenavides-bot.github.io/museo-paleontologico-chile/js/visor.js"   | md5sum
+cd /mnt/c/dev/museo-mpch && git show HEAD:js/visor.js | md5sum
+# si el md5 de lo servido == el del commit ANTERIOR → forzar rebuild
+```
+
+⚠️ `max-age=600` en la CDN de Pages: `curl` con `?v=$RANDOM` evita falsos negativos por caché.
+
+---
+
+## Pendientes abiertos (reales, medidos)
+
+| # | Pendiente | Dueño de la decisión |
+|---|---|---|
+| 1 | **Extender el visor a las 8 subpáginas restantes** — trilobites 38, amonites 30, huellas 23, dinosaurios-chile 21, tiburones 18, pterosaurios 14, ámbar 11, dinosaurios 11 = **166 imágenes** | dueño (hoy aprobó sólo el piloto) |
+| 2 | **«Arictonectes» / «Aristonectes»** — el Word usa las dos formas para la misma especie (CR-99). **No se corrigió**: es inconsistencia real del autor | dueño |
+| 3 | **«Reconstrucciones»** — única pieza de la colección **sin subpágina**. No hay Word | dueño (falta material) |
+| 4 | **«Pterosaur horizont»** — el Word escribe «horizont». Es el nombre propio como circula en la literatura | dueño |
 
 ---
 
 ## Riesgos abiertos
 
 - 🔴 **Un mapeo figura→párrafo escrito a mano desalinea figuras en silencio.** Se DERIVA de
-  `word/document.xml` (ver `references/cr96-dinosaurios-chile.md` §2). Si el dueño reemplaza un
-  Word, **regenerar** el mapeo, no editarlo.
-- 🔴 **`const` sin `window.X = X` deja la página en blanco sin error de consola.** Ya pasó 4
-  veces (CR-71, CR-80, CR-86, CR-96). `node --check` NO lo detecta.
-- ⚠️ **Sesiones paralelas**: antes de editar, `git fetch` + `git log --oneline HEAD..origin/master`.
-  Esta sesión encontró el árbol limpio y sin commits ajenos pendientes.
+  `word/document.xml`. Si el dueño reemplaza un Word, **regenerar**, no editar.
+- 🔴 **`const` sin `window.X = X` deja la página en blanco sin error de consola.** Ya pasó
+  4 veces (CR-71, CR-80, CR-86, CR-96). `node --check` NO lo detecta.
+- 🔴 **`est.capa` es `null` al montar el visor** — engancharle listeners ahí mata el render
+  completo de la página (CR-100a). Enganchar al `document`.
+- ⚠️ **Sesiones paralelas**: antes de editar, `git fetch` + `git rev-list --count HEAD..origin/master`.
 
 ---
 
-## Decisión de trato que costó esta sesión
+## Cómo se verifica hoy
+
+```bash
+cd /mnt/c/dev/museo-mpch
+
+# 1. sintaxis
+node --check data/museo.js && node --check js/visor.js && node --check js/reptiles.js
+
+# 2. el data carga DE VERDAD (atrapa el const sin export)
+node -e "global.window={};eval(require('fs').readFileSync('data/museo.js','utf8'));
+console.log('REPTILES:',!!window.REPTILES,'| MUSEO:',!!window.MUSEO)"
+
+# 3. el visor completo, contra la URL EN VIVO
+/tmp/venv-docx2/bin/python scripts/mide-visor.py   https://matiasbenavides-bot.github.io/museo-paleontologico-chile/reptiles.html
+```
+
+Entorno: `python-docx`, `Pillow`, `playwright` **no están en el sistema** (PEP 668):
+
+```bash
+uv venv /tmp/venv-docx2 --python 3.12
+uv pip install --python /tmp/venv-docx2/bin/python playwright Pillow
+```
+
+Chromium: `~/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome`
+⚠️ **No hay `node_modules`**: `scripts/humo-sitio.js` falla por `playwright-core`. Usar Python.
+
+---
+
+## Lo que se cerró en sesiones anteriores (resumen)
+
+| CR | Qué | Commit |
+|---|---|---|
+| CR-99 | «Reptiles marinos en Chile» (10.ª subpágina) + card + ícono | `0491500` / `5d80f56` |
+| CR-98 | «Pterosaurios en Chile» + card e ícono | `8821138` |
+| CR-96 | «Dinosaurios en Chile» (restos óseos, 8 especies, 21 figuras) | `4569f99` |
+| CR-97 | Retirada la card «Huevos de dinosaurios» (dibujo archivado) | `e6d6c05` |
+| **CR-100/101** | **Visor de imágenes por sección (piloto)** | `b42b97b` |
+| **CR-102** | **Clic en la figura abre el visor en ESA imagen** | `c7d1c9f` |
+| **CR-103/104** | **Celular: 44×44 táctil · pantalla completa · modo apaisado** | `0959e8b` |
+
+---
+
+## Las TRES páginas de dinosaurios NO se confunden
+
+| Página | Qué es | Word fuente |
+|---|---|---|
+| `dinosaurios.html` | El grupo **Dinosauria**: qué es, sinapomorfías | «Definiendo a los dinosaurios» |
+| `huellas.html` | **Icnología**: huellas fósiles y sitios | «Huellas para Pag.» |
+| `dinosaurios-chile.html` | **Restos óseos** en Chile, ficha por especie | «Dinosaurios en Chile pag.» |
+
+Son **tres Words distintos** del dueño. No se renombran ni se fusionan.
+
+---
+
+## Decisión de trato que costó una sesión
 
 El dueño escribió *«intercambiemos huevos de dinosaurio por dinosaurios de chile»*. Se midió:
-**el Word «nuevo» era MD5 idéntico al ya publicado** y **no había ninguna inversión** en la
-colección. Después dijo *«me equivoqué»* — y eso **no** significaba «ejecuta lo que propusiste»:
-se aplicaron 2 ediciones no autorizadas y hubo que detenerse ante su «noooooooo».
+**el Word «nuevo» era MD5 idéntico al ya publicado** y **no había ninguna inversión**.
+Después dijo *«me equivoqué»* — y eso **no** significaba «ejecuta lo que propusiste»: se
+aplicaron 2 ediciones no autorizadas y hubo que detenerse ante su «noooooooo».
 
 ⇒ Ante una sospecha del dueño: **medir el data y comparar MD5 antes de tocar nada**.
 ⇒ «Me equivoqué» cierra el tema; no autoriza el plan que uno había propuesto.
+⇒ **«Al hacer clic no pasa nada» es un reporte válido**: dos veces esta sesión el dueño
+tuvo razón y el defecto era real (CR-102 y CR-104).
