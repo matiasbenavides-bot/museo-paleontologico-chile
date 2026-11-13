@@ -1157,6 +1157,9 @@ const TRILOBITES = {
     {
       id: "huellas",
       titulo: "Huellas fósiles de trilobites",
+      /* CR-108: pedido del dueño — «las imágenes de aquí también están muy
+         pequeñas». Es marca POR SECCIÓN: no cambia ninguna otra grilla. */
+      figurasGrandes: true,
       nivel: 2,
       parrafos: [
         "Las huellas fósiles o icnofósiles son parte de la actividad biológica del desenvolvimiento del trilobite en su ambiente. Estas huellas son a lo menos de tres tipos: *Cruziana*, *Diplichnites* y *Rusophycus*. Normalmente se encuentran como contramoldes, en relieve invertido, en la base (cara inferior) en capas de arenisca o cuarcita.",

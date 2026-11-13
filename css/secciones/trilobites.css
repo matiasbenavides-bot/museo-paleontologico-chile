@@ -187,6 +187,23 @@
   max-width: min(100%, clamp(560px, 62vw + 200px, 1040px));
 }
 .tri-figs--3.tri-figs--mas { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+
+/* 🔴 CR-108 (2026-11-12) — «Huellas fósiles de trilobites»: 4 imágenes.
+   El dueño: «las imágenes de aquí también están muy pequeñas».
+   MEDIDO a 1440 px, ANTES: contenedor 780 px · grilla 177/177/177/177 →
+   img1 175x67 · img2 175x92 · img3 175x114 · img4 175x49.
+   Las CUATRO en una sola fila, a 175 px cada una, con 1076x300 de original.
+
+   ⚠️ `--4` nace con `minmax(170px)` (CR-81: cuatro imágenes en una fila para
+      «La zona caudal o pigidio», que son pequeñas). Con `--mas` NO sirve: el
+      mínimo sube a 420 px, así que a 1040 px entran 2 por fila (2+2), que es
+      lo correcto para material ancho y bajo. Ceil: a ≤860 px cae a 1 por fila.
+   ⚠️ Se mantiene el tope de ancho del contenedor (`.tri-figs--mas`, 1040 px):
+      no se pasa a ancho completo de sección (1130) para no dejar las tarjetas
+      fuera de la columna de texto.
+   ⚠️ `10.png` sólo tiene 348 px NATIVOS: por encima de eso se reescala y
+      empieza a verse blanda. No es un defecto del CSS. */
+.tri-figs--4.tri-figs--mas { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
 /* 🔴 CR-81 (2026-10-19): el Word trae un bloque de CUATRO imágenes seguidas
    (image14..17, en «La zona caudal o pigidio»). Con `--3` la cuarta se caía a
    una fila propia y quedaba huérfana. Medido: el render hace
