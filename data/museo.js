@@ -1138,6 +1138,13 @@ const TRILOBITES = {
       nivel: 2,
       figurasGrandes: "ancho", /* CR-109b: ancha y baja -> 1 por fila */  /* CR-109: se pintaba <60%% de su resolución nativa */
       parrafos: [
+        /* CR-115 (2026-11-12) — NO UNIFICAR «epidodito» / «Epipodito».
+           El dueño lo revisó y confirmó que la diferencia es INTENCIONAL: el
+           párrafo dice «epidodito» y la ficha de la lámina dice «Epipodito», a
+           propósito, para reafirmar el contexto. Se avisó de la discrepancia y
+           su respuesta fue «eso está bien».
+           ⇒ NO es una errata. No "corregir" en ninguna sesión futura.
+           Se deja anotado acá para que quien llegue después no lo toque. */
         "Los miembros encargados de la natación reciben el nombre de exopodito y consta de numerosas uniones o coyunturas que proporcionan un soporte a una serie de estructuras duras y aplanadas, como púas, que en gran número forman un eficiente sistema de nado, que le servía para movilizarse en el medio acuático.",
         "En otras ocasiones los trilobites caminaban o reptaban en la superficie del fondo, para lo cuál utilizaban otro miembro locomotor llamado endopodito, que estaba constituido por seis fuertes junturas de material quitinoso y que funcionó como una pata y se situaba por debajo del exopodito.",
         "Por detrás de la base de adherencia de esta pata se sitúa un órgano parecido a una hoja llamado epidodito, que tenía a su cargo la función respiratoria, por lo tanto, funcionaba como una branquia.",
