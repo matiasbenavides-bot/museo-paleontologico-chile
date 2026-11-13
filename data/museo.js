@@ -1382,7 +1382,12 @@ const TRILOBITES = {
         "Bajo alturas similares de especies similares, los machos parecen con su cabeza más aguzada (forma de víbora), en tanto que las hembras tienen una forma ligeramente esférica.",
         "Los machos tienen longitudes idénticas en ambas antenas, mientras que las hembras tienen longitudes diferentes.",
         "El cuerpo del macho tiene forma muscular de Hércules o se ve alargado, en tanto que las hembras se aprecian más globoso o gordo. Ejemplo el caso de *Crotalocephalus*.",
-        "El cuerpo del macho tiene los primeros 6 segmentos del tórax tienen una forma pleural recta, mientras que el de la hembra parece ligeramente esférico.",
+        /* CR-114 (2026-11-12): el dueño reportó «dimorfismo sexual de trilobites
+           está repetido». Medido: estos dos párrafos eran IDÉNTICOS byte a byte
+           (md5 6ce87d8e…, 150 caracteres cada uno). Y el duplicado VIENE DEL WORD
+           ORIGINAL: son los párrafos [79] y [80] seguidos del documento, con el
+           mismo MD5. O sea no fue error de transcripción sino errata de
+           digitación del material. Se conserva uno y se elimina el segundo. */
         "El cuerpo del macho tiene los primeros 6 segmentos del tórax tienen una forma pleural recta, mientras que el de la hembra parece ligeramente esférico.",
         "Los rasgos que diferencian a los morfotipos son diferentes para cada especie, pero incluyen tanto la longitud del pigidio, más corto en los machos, como variaciones en la longitud de algunos segmentos del tórax, presentando las hembras una zona más estrecha en el mismo.",
         "El área del tórax después de los primeros 6 segmentos del macho suele tener forma de “V” y alargarse hasta el final del   pigidio. Las hembras suelen presentar una estructura en forma de “U” con un pigidio más aplanado.",
