@@ -156,7 +156,7 @@
      en adelante. Medido en celular: con lazy en todas, las últimas (isotelus)
      quedaban sin cargar y su marco se veía vacío. Las dos primeras se cargan
      siempre (`eager`), porque son las que el usuario ve al entrar. */
-  function figurasHTML(imgs) {
+  function figurasHTML(imgs, mas) {
     if (!imgs || !imgs.length) return "";
     /* 🔴 CR-81 (2026-10-19): el tope era 3, pero el Word del museo trae un
        bloque de CUATRO imágenes (image14..17, en «La zona caudal o pigidio»).
@@ -165,7 +165,10 @@
        lo que existe en el documento). Si algún día un bloque trae 5, hay que
        agregar `.tri-figs--5` en el CSS. */
     var n = imgs.length >= 4 ? 4 : imgs.length;
-    return '<div class="tri-figs tri-figs--' + n + '">' +
+    /* 🔴 CR-107: `mas` llega desde la SECCIÓN (`figurasGrandes`), no de la lista
+       de imágenes: es una marca por sección y no toca las demás grillas. */
+    var mas = mas ? " tri-figs--mas" : "";
+    return '<div class="tri-figs tri-figs--' + n + mas + '">' +
       imgs.map(function (im, k) {
         var f = FICHAS[im.credito] || {};
         var pie = im.pie ? tx(im.pie) : "";
@@ -236,7 +239,7 @@
                '<h' + (sub ? "3" : "2") + ' class="tri-sec__t">' + tx(s.titulo) +
                  '</h' + (sub ? "3" : "2") + '>' +
                cuerpo +
-               figurasHTML(s.imagenes) +
+               figurasHTML(s.imagenes, s.figurasGrandes) +
                leyendasHTML(s.imagenes) +
              "</section>";
     }).join("");

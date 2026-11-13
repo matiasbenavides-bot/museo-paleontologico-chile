@@ -28,7 +28,7 @@ import argparse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from medir.base import (  # noqa: E402
     Sitio, ok, exigir, seccion, resumen, Falla,
-    datos, bloques_con_imagenes, paginas_del_repo, servidor,
+    datos, bloques_con_imagenes, paginas_de_capitulo, paginas_del_repo, servidor,
     ANCHOS, RAIZ,
 )
 
@@ -226,6 +226,84 @@ def bloque_celular(base):
                    % (d["img"][0], d["img"][1], d["lienzo"][0], d["lienzo"][1], d["vp"]))
 
 
+# ==================================================== 4b. VISOR x9
+def bloque_visor_paginas(base, bloques):
+    """
+    El visor montado en TODAS las subpáginas de capítulo, no sólo en el piloto.
+
+    Se deriva del data: para cada bloque con figuras existe una subpágina
+    `<bloque>.html`. Lo esperado (botones, índice) sale de ahí, no de una
+    lista escrita a mano.
+    """
+    seccion("4b. VISOR EN LAS SUBPÁGINAS DE CAPÍTULO")
+    # 🔴 CR-107 — El archivo sale de `subpagina` del PROPIO data, no de una
+    # convención de nombres. Medido: `const AMMONITES` publica en
+    # `amonites.html` (una eme). Derivarlo del nombre de la constante daba
+    # 404 y el medidor culpaba a la página.
+    caps = paginas_de_capitulo()
+    ok(len(caps) == 9, "9 subpáginas de capítulo declaradas en el data",
+       sorted(caps))
+    for pag, info in sorted(caps.items()):
+        bloque = info["bloque"]
+        with Sitio(base + "/" + pag) as s:
+            # 🔴 MEDIDO — `ammonites.html` es la página más larga (26 secciones)
+            # y el montaje del visor llega DESPUÉS del reveal: leer el estado
+            # una sola vez daba `None` y reportaba «NO está montado» sobre una
+            # página correcta. Se reintenta hasta que aparezca.
+            # 🔴 MEDIDO — la primera carga de una subpágina puede llegar
+            # INCOMPLETA (los `<script>` todavía no están en el DOM: se midió
+            # una página con 0 scripts y `readyState: complete`). No es un
+            # defecto del sitio: es la carga, y hay que reintentar recargando.
+            est = None
+            for intento in range(3):
+                for _ in range(20):
+                    est = s.visor_estado()
+                    if est and est.get("montado"):
+                        break
+                    time.sleep(0.25)
+                if est and est.get("montado"):
+                    break
+                # recargar: si tampoco así, es un defecto real de la página
+                s.abrir()
+            if not est:
+                diag = s.js("""()=>({
+                    url: location.href,
+                    status: (performance.getEntriesByType('navigation')[0]||{}).responseStatus,
+                    len: document.documentElement.outerHTML.length,
+                    scripts: document.querySelectorAll('script[src]').length,
+                    tiene_museo: document.documentElement.outerHTML.includes('data/museo.js'),
+                    title: document.title,
+                    body: document.body ? document.body.textContent.trim().slice(0,140) : '(sin body)'})""")
+                ok(False, "%s: el visor NO está montado" % pag, diag)
+                continue
+
+            ok(est["indice"] == info["imagenes"],
+               "%s: índice = imágenes del data" % pag,
+               "%d/%d" % (est["indice"], info["imagenes"]))
+            n_btn = s.contar("[data-mpv-abrir]")
+            ok(n_btn == est["secciones"],
+               "%s: un botón por sección con figuras" % pag,
+               "%d botones / %d secciones" % (n_btn, est["secciones"]))
+            n_fig = s.contar("[data-mpv-fig]")
+            ok(n_fig == info["imagenes"],
+               "%s: las figuras de la página son clicables" % pag,
+               "%d/%d" % (n_fig, info["imagenes"]))
+
+            # El número del botón debe coincidir con sus figuras pintadas.
+            descuadre = s.js("""()=>{const out=[];
+                document.querySelectorAll('.rpt-sec,.tbl-sec,.amb-sec,.dch-sec,.ptx-sec,.sec')
+                  .forEach(x=>{
+                    const b=x.querySelector('[data-mpv-abrir]');
+                    if(!b) return;
+                    const pinta=x.querySelectorAll('figure').length;
+                    const dice=parseInt(b.querySelector('.mpv-abrir__n').textContent,10);
+                    if(pinta!==dice) out.push({id:x.id,pinta,dice});
+                  }); return out;}""")
+            ok(len(descuadre) == 0,
+               "%s: el número del botón = figuras de su sección" % pag,
+               descuadre)
+
+
 # ========================================================= 5. CONSOLA
 def bloque_consola(base, paginas):
     """Cero errores de JavaScript en las 12 páginas."""
@@ -260,7 +338,7 @@ def main():
     ap.add_argument("--en-vivo", action="store_true",
                     help="mide la URL publicada (por defecto)")
     ap.add_argument("--solo", default="",
-                    help="datos|paginas|responsive|celular|consola|inventario")
+                    help="datos|paginas|responsive|visor|celular|consola|inventario")
     ap.add_argument("--rapido", action="store_true",
                     help="sin responsive ni celular")
     args = ap.parse_args()
@@ -292,6 +370,8 @@ def main():
             bloque_paginas(base, paginas, bloques)
         if quiere("responsive") and not args.rapido:
             bloque_responsive(base, paginas)
+        if quiere("visor") and not args.rapido:
+            bloque_visor_paginas(base, bloques)
         if quiere("celular") and not args.rapido:
             bloque_celular(base)
         if quiere("consola"):

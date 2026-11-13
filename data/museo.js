@@ -1104,6 +1104,9 @@ const TRILOBITES = {
     {
       id: "estructura",
       titulo: "Estructura de los trilobites",
+      /* CR-107: pedido del dueño — las 3 imágenes de esta sección, más grandes.
+         Es marca POR SECCIÓN: no cambia ninguna otra grilla del sitio. */
+      figurasGrandes: true,
       nivel: 2,
       parrafos: [
         "Los trilobites estaban protegidos por un exoesqueleto dorsal fuertemente calcificado, de simetría bilateral y convexidad variable, que continuaba ventralmente como un doblez marginal angosto. Los trilobites poseen un cuerpo segmentado con un exoesqueleto ovalado o subelíptico en vista dorsal y está dividido longitudinalmente en tres regiones (del latín Tri, tres y lobus, lóbulo = Tres lóbulos). Su exoesqueleto está constituido de cierto número de segmentos a lo largo del cuerpo, un par de surcos axiales divide al exoesqueleto en un lóbulo central (axis, raquis) y dos lóbulos laterales (genas en el céfalo; área o campos pleurales en el tórax-pigidio), a los cuales hace alusión el término «*Trilobita* o trilobite».",

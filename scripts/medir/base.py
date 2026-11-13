@@ -166,31 +166,14 @@ class Sitio:
     def con_servidor_local(cls, pagina="index.html", puerto=0, **kw):
         """
         Sirve el repo en un puerto LIBRE y devuelve un Sitio.
-
-        🔴 El puerto se elige libre, no fijo: en este proyecto se midió el
-        museo equivocado porque otra sesión tenía tomado el 8899. Además se
-        comprueba el <title> antes de medir nada.
+        Delega en `servidor()`, que ya resuelve la carrera de puertos (CR-107)
+        y comprueba que responde ESTE sitio antes de medir.
         """
-        import socket
-        if not puerto:
-            s = socket.socket()
-            s.bind(("127.0.0.1", 0))
-            puerto = s.getsockname()[1]
-            s.close()
-        raiz = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        proc = subprocess.Popen(
-            [sys.executable, "-m", "http.server", str(puerto)],
-            cwd=raiz, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        )
-        # esperar a que responda, sin dormir a ciegas
-        import urllib.request
-        for _ in range(60):
-            try:
-                urllib.request.urlopen("http://127.0.0.1:%d/%s" % (puerto, pagina), timeout=1)
-                break
-            except Exception:
-                time.sleep(0.25)
-        inst = cls(pagina, base_local="http://127.0.0.1:%d" % puerto, **kw)
+        # `servidor()` está definida más abajo en este mismo módulo: se
+        # resuelve en tiempo de llamada, no de definición, así que la
+        # referencia diferida funciona sin reordenar el archivo.
+        proc, base = servidor(puerto)
+        inst = cls(pagina, base_local=base, **kw)
         inst._servidor = proc
         return inst
 
@@ -433,6 +416,7 @@ def datos():
         "  if(v&&typeof v==='object'){"
         "    out[k]=Array.isArray(v.secciones)?"
         "      {secciones:v.secciones.length,"
+        "       subpagina:v.subpagina||null,"
         "       imagenes:v.secciones.reduce((a,s)=>a+((s.imagenes||[]).length),0)}"
         "      :'objeto';"
         "  }});"
@@ -443,6 +427,32 @@ def datos():
     if r.returncode != 0:
         raise Falla("data/museo.js no carga: " + r.stderr.strip()[:300])
     return json.loads(r.stdout)
+
+
+def paginas_de_capitulo():
+    """
+    {ARCHIVO: {bloque, secciones, imagenes}} de los capítulos con figuras.
+
+    🔴 CR-107 — El nombre del ARCHIVO no se deriva del nombre de la constante.
+    Medido: `const AMMONITES` (dos emes) publica en **`amonites.html`** (una
+    eme). Adivinarlo con `bloque.lower()+".html"` daba 404 y el medidor
+    reportaba «el visor NO está montado» sobre una página correcta.
+
+    La verdad está en el propio data: cada bloque declara su archivo en
+    `subpagina`. Se usa ESE campo y no una convención de nombres.
+    """
+    salida = {}
+    for k, v in datos().items():
+        if not isinstance(v, dict) or not v.get("imagenes"):
+            continue
+        pag = v.get("subpagina")
+        if not pag:
+            # Respaldo: si un bloque no declara `subpagina`, se avisa en vez
+            # de inventar un nombre que puede no existir.
+            continue
+        salida[pag] = {"bloque": k, "secciones": v["secciones"],
+                       "imagenes": v["imagenes"]}
+    return salida
 
 
 def bloques_con_imagenes():
@@ -464,23 +474,59 @@ def servidor(puerto=0):
     """
     import socket
     import urllib.request
-    if not puerto:
-        s = socket.socket()
-        s.bind(("127.0.0.1", 0))
-        puerto = s.getsockname()[1]
-        s.close()
-    proc = subprocess.Popen([sys.executable, "-m", "http.server", str(puerto)],
-                            cwd=RAIZ, stdout=subprocess.DEVNULL,
-                            stderr=subprocess.DEVNULL)
-    base = "http://127.0.0.1:%d" % puerto
-    for _ in range(80):
-        try:
-            urllib.request.urlopen(base + "/index.html", timeout=1)
+
+    # 🔴 CR-107 — CARRERA DE PUERTOS (defecto medido, costó una hora).
+    # La versión anterior hacía bind(0), tomaba el número y CERRABA el socket
+    # antes de arrancar el servidor. Entre el cierre y el arranque, otro
+    # proceso podía quedarse con ese puerto: entonces el `http.server` nuevo
+    # fallaba al bindear, pero el bucle de espera veía responder a OTRO
+    # servidor en ese puerto... que no servía este repo → **404**.
+    # Síntoma exacto que se midió: `status: 404`, `title: 'Error response'`,
+    # 0 scripts, y SIEMPRE en la misma página, de forma intermitente.
+    #
+    # Ahora: se arranca el servidor, se comprueba que el proceso SIGUE VIVO y
+    # que el index responde con el título de ESTE sitio. Si no, se reintenta
+    # con otro puerto en lugar de medir el equivocado.
+    ultimo_error = None
+    for intento in range(5):
+        if puerto:
+            candidato = puerto
+        else:
+            s = socket.socket()
+            s.bind(("127.0.0.1", 0))
+            candidato = s.getsockname()[1]
+            s.close()
+
+        proc = subprocess.Popen([sys.executable, "-m", "http.server", str(candidato)],
+                                cwd=RAIZ, stdout=subprocess.DEVNULL,
+                                stderr=subprocess.DEVNULL)
+        base = "http://127.0.0.1:%d" % candidato
+
+        listo = False
+        for _ in range(60):
+            if proc.poll() is not None:
+                ultimo_error = "el servidor murió (puerto %d ocupado)" % candidato
+                break
+            try:
+                r = urllib.request.urlopen(base + "/index.html", timeout=1)
+                html = r.read(600).decode("utf-8", "ignore")
+                if "Museo Paleontológico" in html:
+                    listo = True
+                    break
+                ultimo_error = "el puerto %d responde OTRO sitio" % candidato
+                break
+            except Exception:
+                time.sleep(0.25)
+
+        if listo:
             return proc, base
-        except Exception:
-            time.sleep(0.25)
-    proc.terminate()
-    raise Falla("el servidor local no respondió en %s" % base)
+
+        if proc.poll() is None:
+            proc.terminate()
+        if puerto:
+            break   # si el puerto lo pidió el usuario, no se busca otro
+
+    raise Falla("no se pudo servir el repo: %s" % ultimo_error)
 
 
 if __name__ == "__main__":

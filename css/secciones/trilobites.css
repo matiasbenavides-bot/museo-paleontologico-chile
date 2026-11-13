@@ -164,6 +164,29 @@
 }
 .tri-figs--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .tri-figs--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+
+/* 🔴 CR-107 (2026-11-12) — «en esa seccion haz las 3 imagenes mas grandes».
+   MEDIDO en «Estructura de los trilobites» a 1440 px, ANTES:
+     contenedor 780 px · grilla 244/244/244 px  →
+     imágenes pintadas 242x100 · 242x141 · 242x226 px.
+     DESPUÉS (esta regla): contenedor 1040 px · grilla 331/331/331 →
+     imágenes pintadas 329x136 · 329x192 · 329x307 px.  (+36 % de ancho)
+
+   🔴 Y lo que de verdad las frenaba NO era el marco: el marco mide 216 px de
+   alto, su `max-height` resuelve a 522 px, y la imagen sólo pinta 136. Sobra
+   capacidad y no la usa. El techo es el ANCHO de la columna combinado con la
+   proporción del material (1351x558 = 2,42:1 → 331/2,42 = 136 px de alto).
+   Por eso el `minmax` sube a 320 px: es el ancho lo que hay que ganar.
+   🔴 Y `repeat(3, 1fr)` a secas es un ERROR MEDIDO: fuerza 3 columnas siempre y
+      en celular deja las imágenes en 107x44 px. Se usa `auto-fit` con el mínimo
+      ALTO (420px): a 1040 px entran 3 columnas de ~330; a 390 px cae a 1 sola
+      de 358, que es lo correcto.
+   ⚠️ Va SOLO en las secciones marcadas `figurasGrandes: true` en el dato —
+      agrandar todas las grillas de 3 cambiaría secciones ya aprobadas. */
+.tri-figs--mas {
+  max-width: min(100%, clamp(560px, 62vw + 200px, 1040px));
+}
+.tri-figs--3.tri-figs--mas { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
 /* 🔴 CR-81 (2026-10-19): el Word trae un bloque de CUATRO imágenes seguidas
    (image14..17, en «La zona caudal o pigidio»). Con `--3` la cuarta se caía a
    una fila propia y quedaba huérfana. Medido: el render hace
