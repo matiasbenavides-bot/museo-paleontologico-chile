@@ -1145,14 +1145,18 @@ const TRILOBITES = {
       ],
       imagenes: [
         {
+          /* CR-113 (2026-11-12): el dueño quitó la SEGUNDA imagen de esta
+             sección (`07.png`, 649x1067 vertical, sólo dibujo sin rótulos).
+             El Word traía DOS imágenes juntas en el mismo párrafo y no era un
+             error de transcripción: la 1ª es la lámina ROTULADA y la 2ª el
+             mismo Trilobites en vista dorsal, sin rótulos. El texto de la
+             sección enumera la ficha completa («an: Antena; ca: Cabeza; …
+             ep: Epipodito») y dice «Trilobites en vista dorsal»: esa ficha
+             describe ESTA imagen, así que se conserva la rotulada y el párrafo
+             se queda. `07.png` sigue en assets/img/ por si se necesita. */
           src: "assets/img/trilobites/word/06.jpg",
           ancho: 971, alto: 790,
           alt: "Locomoción — imagen 6 del documento del museo"
-        },
-        {
-          src: "assets/img/trilobites/word/07.png",
-          ancho: 649, alto: 1067,
-          alt: "Locomoción — imagen 7 del documento del museo"
         },
       ],
     },
