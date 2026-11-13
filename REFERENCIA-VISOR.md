@@ -233,3 +233,22 @@ es apaisada (relación > 1,5). Al girar: chips, tira y pie se ocultan y la image
 
 ⚠️ Al habilitar un capítulo, **sus figuras dejan de ser inertes**: hay que correr el
 medidor y la no-regresión de las 12 páginas.
+
+---
+
+## 3b. Estado 2026-11-12 (CR-105b) — las 9 páginas ya lo tienen
+
+Las **9** subpáginas con figuras lo tienen montado; **190/190 figuras clicables**.
+Pasos 1 y 2 aplicados por página (el `<script src="js/visor.js">` va **entre**
+`texto.js` y el `<script>` del capítulo).
+
+⚠️ **En `amonites.js` el bloque del data es `A`, no `T`** (`var A = window.AMMONITES`).
+Copiar el bloque de 7 renglones sin cambiar `bloque: T` deja el visor sin índice.
+
+Verificación: `scripts/verifica-visor-9.py` (control `reptiles.html` primero) y
+`scripts/control-visor-paginas.py` (inventario).
+
+🔴 **Y el defecto que apareció al medir:** `cerrar()` hacía `scrollTo` con
+`html { scroll-behavior: smooth }` vigente → animaba y dejaba la página en 0 en
+varias subpáginas. Ahora `scrollBehavior = "auto"` antes de mover. Detalle en
+`HANDOFF.md` §CR-105b.

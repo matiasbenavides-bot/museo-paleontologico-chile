@@ -66,10 +66,69 @@ cd /mnt/c/dev/museo-mpch && git show HEAD:js/visor.js | md5sum
 
 | # | Pendiente | Dueño de la decisión |
 |---|---|---|
-| 1 | **Extender el visor a las 8 subpáginas restantes** — trilobites 38, amonites 30, huellas 23, dinosaurios-chile 21, tiburones 18, pterosaurios 14, ámbar 11, dinosaurios 11 = **166 imágenes** | dueño (hoy aprobó sólo el piloto) |
+| ~~1~~ | ~~Extender el visor a las 8 subpáginas restantes~~ — **HECHO (CR-105b, 2026-11-12)**: las **9 páginas** con el visor, **190/190 figuras clicables**, verificado **en vivo**. Detalle abajo | — |
 | 2 | **«Arictonectes» / «Aristonectes»** — el Word usa las dos formas para la misma especie (CR-99). **No se corrigió**: es inconsistencia real del autor | dueño |
 | 3 | **«Reconstrucciones»** — única pieza de la colección **sin subpágina**. No hay Word | dueño (falta material) |
 | 4 | **«Pterosaur horizont»** — el Word escribe «horizont». Es el nombre propio como circula en la literatura | dueño |
+
+---
+
+## ✅ CR-105b (2026-11-12) — el visor ya está en las 9 páginas
+
+Medido, no estimado. Control primero (`reptiles.html`, el piloto ya aprobado);
+si el control falla, ningún veredicto de las páginas nuevas vale.
+
+```
+PÁGINA                   FIGURAS  CLICABLES  BOTONES  VISOR
+trilobites.html               38         38       18     sí
+amonites.html                 30         30       21     sí
+huellas.html                  23         23        8     sí
+dinosaurios-chile.html        21         21        8     sí
+tiburones.html                18         18       11     sí
+pterosaurios.html             14         14        6     sí
+ambar.html                    11         11        6     sí
+dinosaurios.html              11         11        9     sí
+reptiles.html (control)       24         24       11     sí
+TOTAL                        190        190       --     sí
+```
+
+Verificado **contra la URL en vivo** (no local): abrir desde la sección, filtro de
+origen, contador `1 / N`, imagen grande cargada (`naturalWidth > 0`), zoom 2,4×,
+Esc cierra y **vuelve a la sección con el scroll restaurado**, 0 errores de consola.
+
+### 🔴 El defecto REAL que destapó: `scroll-behavior: smooth` rompía el «volver a la sección»
+
+`css/base/base.css:2` tiene `html { scroll-behavior: smooth }`. El `cerrar()` del
+visor hacía `window.scrollTo(0, scrollPrevio)` **mientras el body seguía `fixed`**:
+el navegador ANIMABA el scroll (~1,75 s, medido: 0 → 501 → 5822 → 7039 → 7461 →
+7642 → 7649) y en varias subpáginas quedaba **en 0**. No era el piloto: en
+`reptiles.html` funcionaba por casualidad de timing.
+
+**Arreglo:** al restaurar se fuerza `scrollBehavior = "auto"` y se devuelve el valor
+previo después. Aplicado en los DOS `scrollTo` de `cerrar()`.
+
+### 🔴 Trampa nueva de medición: el «verde» que no distinguía roto de bueno
+
+La primera prueba negativa **falló**: se inyectó «sin restaurar el scroll» y el
+verificador **siguió dando OK**. Causa: `str.replace()` en Python reemplazó **sólo
+el fragmento que contenía `scrollTo`**, dejando otro `window.scrollTo(0,
+est.scrollPrevio)` intacto más abajo en la misma función. El «defecto inyectado»
+no se había inyectado.
+
+⇒ **Al inyectar un defecto, verificar que el archivo quedó roto** (`grep -c` del
+símbolo debe dar 0) **antes de fiarse del veredicto**. Y si el roto da el mismo
+resultado que el bueno, el que no sirve es el instrumento.
+
+### Scripts nuevos (reutilizables)
+
+```bash
+# estado real de las 9 páginas: figuras, clicables, botones, visor, consola
+/tmp/venv-docx2/bin/python scripts/control-visor-paginas.py
+
+# verificación funcional completa, con CONTROL primero
+/tmp/venv-docx2/bin/python scripts/verifica-visor-9.py
+/tmp/venv-docx2/bin/python scripts/verifica-visor-9.py --solo tiburones.html
+```
 
 ---
 
