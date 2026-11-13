@@ -130,7 +130,13 @@
 .tib-figs {
   display: grid; gap: clamp(16px, 2.4vw, 24px);
   margin: clamp(20px, 3vw, 28px) 0 0;
-  max-width: min(100%, clamp(440px, 46vw + 180px, 780px));
+  /* 🔴 CR-110 — el tope de 780 px es lo que dejaba las imágenes chicas: el
+     contenedor de la sección mide ~1130 px, así que se tiraba un 31 % del
+     ancho disponible. MEDIDO en huellas.html: una imagen de 2448 px nativos
+     se pintaba a 242 (10 %). Sube a 1040 px, igual que la regla `--mas`
+     de trilobites (CR-107/109). Se conserva el tope para no dejar las
+     tarjetas fuera de la columna de texto. */
+  max-width: min(100%, clamp(560px, 62vw + 200px, 1040px));
   align-items: stretch;
 }
 .tib-figs--1 { grid-template-columns: 1fr; }
@@ -210,4 +216,36 @@
   font-size: clamp(.74rem, 1vw, .8rem);
   letter-spacing: .1em; text-transform: uppercase;
   color: var(--text-muted);
+}
+
+/* ============================================================
+   CR-110 — COLUMNAS POR RANGO
+   🔴 `auto-fit + minmax` NO fija el número de columnas: lo SUBE
+   (.tib-figs--3 daba 4, --2 daba 3). Y aunque no lo subiera, 3 columnas
+   dentro de un contenedor de 1040 px dan 330 px por imagen.
+
+   MEDIDO en huellas.html a 1440 px, imagen por imagen: **ninguna está
+   limitada por el ALTO** — todas las de 3 y 5 columnas se limitan por el
+   ANCHO de 329 px. Una imagen de 2448 px NATIVOS se pintaba a 329 = 13 %.
+   Agrandar el marco no serviría; el techo es la COLUMNA.
+
+   ⇒ Política por rango, con el ancho por encima de todo:
+       2 columnas  -> 508 px c/u   (el bueno para material ancho y bajo)
+       1 columna   -> 1040 px      (el mejor en celular)
+       `--5` también a 2 columnas: con 3 daba 330 px y las imágenes
+       quedaban al 13 % del nativo (medido en huellas.html, 08.jpg 2448 px).
+   ============================================================ */
+@media (min-width: 900px) {
+  .tib-figs--2,
+  .tib-figs--3,
+  .tib-figs--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tib-figs--5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* celular y tablet: UNA columna. Dos columnas de material ancho y bajo lo
+   dejan más chico que una sola imagen grande. */
+@media (max-width: 899.98px) {
+  .tib-figs--2,
+  .tib-figs--3,
+  .tib-figs--4,
+  .tib-figs--5 { grid-template-columns: 1fr; }
 }

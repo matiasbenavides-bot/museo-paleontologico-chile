@@ -153,8 +153,11 @@
 .tri-figs {
   display: grid; gap: clamp(16px, 2.4vw, 24px);
   margin: clamp(20px, 3vw, 28px) 0 0;
-  max-width: min(100%,
-                 clamp(440px, 46vw + 180px, 780px));   /* tope (a) */
+  /* 🔴 CR-110 — el tope (a) era 780 px y dejaba 31 % del ancho sin usar
+     (contenedor de sección ~1130 px). MEDIDO: huellas.html pintaba una imagen
+     de 2448 px nativos a 242 (10 %). Sube a 1040 px en las cuatro hojas con
+     este patrón; `.tri-figs--mas` de CR-107/109 lo lleva aparte. */
+  max-width: min(100%, clamp(560px, 62vw + 200px, 1040px));
   /* CR-60d (2026-10-15): las tarjetas de una MISMA grilla se estiran a la
      misma altura (`stretch`, el valor por defecto), y el marco de adentro se
      estira con `flex: 1`. Sin esto, dos laminas de proporcion distinta quedaban
@@ -478,4 +481,36 @@
   font-size: clamp(.74rem, 1vw, .8rem);
   letter-spacing: .1em; text-transform: uppercase;
   color: var(--text-muted);
+}
+
+/* ============================================================
+   CR-110 — COLUMNAS POR RANGO
+   🔴 `auto-fit + minmax` NO fija el número de columnas: lo SUBE
+   (.tri-figs--3 daba 4, --2 daba 3). Y aunque no lo subiera, 3 columnas
+   dentro de un contenedor de 1040 px dan 330 px por imagen.
+
+   MEDIDO en huellas.html a 1440 px, imagen por imagen: **ninguna está
+   limitada por el ALTO** — todas las de 3 y 5 columnas se limitan por el
+   ANCHO de 329 px. Una imagen de 2448 px NATIVOS se pintaba a 329 = 13 %.
+   Agrandar el marco no serviría; el techo es la COLUMNA.
+
+   ⇒ Política por rango, con el ancho por encima de todo:
+       2 columnas  -> 508 px c/u   (el bueno para material ancho y bajo)
+       1 columna   -> 1040 px      (el mejor en celular)
+       `--5` también a 2 columnas: con 3 daba 330 px y las imágenes
+       quedaban al 13 % del nativo (medido en huellas.html, 08.jpg 2448 px).
+   ============================================================ */
+@media (min-width: 900px) {
+  .tri-figs--2,
+  .tri-figs--3,
+  .tri-figs--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tri-figs--5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* celular y tablet: UNA columna. Dos columnas de material ancho y bajo lo
+   dejan más chico que una sola imagen grande. */
+@media (max-width: 899.98px) {
+  .tri-figs--2,
+  .tri-figs--3,
+  .tri-figs--4,
+  .tri-figs--5 { grid-template-columns: 1fr; }
 }

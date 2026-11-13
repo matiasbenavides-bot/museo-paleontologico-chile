@@ -264,3 +264,35 @@
   letter-spacing: .1em; text-transform: uppercase;
   color: var(--text-muted);
 }
+
+/* ============================================================
+   CR-110 — COLUMNAS POR RANGO
+   🔴 `auto-fit + minmax` NO fija el número de columnas: lo SUBE
+   (.dch-figs--3 daba 4, --2 daba 3). Y aunque no lo subiera, 3 columnas
+   dentro de un contenedor de 1040 px dan 330 px por imagen.
+
+   MEDIDO en huellas.html a 1440 px, imagen por imagen: **ninguna está
+   limitada por el ALTO** — todas las de 3 y 5 columnas se limitan por el
+   ANCHO de 329 px. Una imagen de 2448 px NATIVOS se pintaba a 329 = 13 %.
+   Agrandar el marco no serviría; el techo es la COLUMNA.
+
+   ⇒ Política por rango, con el ancho por encima de todo:
+       2 columnas  -> 508 px c/u   (el bueno para material ancho y bajo)
+       1 columna   -> 1040 px      (el mejor en celular)
+       `--5` también a 2 columnas: con 3 daba 330 px y las imágenes
+       quedaban al 13 % del nativo (medido en huellas.html, 08.jpg 2448 px).
+   ============================================================ */
+@media (min-width: 900px) {
+  .dch-figs--2,
+  .dch-figs--3,
+  .dch-figs--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dch-figs--5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* celular y tablet: UNA columna. Dos columnas de material ancho y bajo lo
+   dejan más chico que una sola imagen grande. */
+@media (max-width: 899.98px) {
+  .dch-figs--2,
+  .dch-figs--3,
+  .dch-figs--4,
+  .dch-figs--5 { grid-template-columns: 1fr; }
+}
