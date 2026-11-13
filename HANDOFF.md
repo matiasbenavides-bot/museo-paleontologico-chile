@@ -15,6 +15,9 @@ Abrir local: doble clic en `index.html` — estático, sin backend, sin build, s
 > 📘 **Referencia técnica completa: `REFERENCIA-VISOR.md`** (arquitectura, API, los 9 defectos,
 > las 5 trampas de medición y el procedimiento para extenderlo).
 > 📋 **Bitácora de la sesión: `BITACORA-2026-11-10.md`.**
+> 🧪 **Medidores: `MEDIDORES.md`** — un comando (`scripts/salud.py`) mide todo
+> el sitio (118 comprobaciones). Base común en `scripts/medir/base.py` con las
+> 5 trampas de medición ya resueltas. **Exit 0 = sano, exit 1 = roto.**
 >
 > ⚠️ **Hoy sólo está en Reptiles marinos.** Extenderlo a las otras 8 subpáginas es mecánico
 > (3 pasos, ver `REFERENCIA-VISOR.md` §3) y suma **166 imágenes** más.
