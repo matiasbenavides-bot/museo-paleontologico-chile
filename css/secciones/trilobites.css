@@ -168,6 +168,34 @@
 .tri-figs--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .tri-figs--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 
+/* 🔴 CR-117 (2026-11-12) — «en PC las imágenes de 1 en 1 están demasiado
+   grandes; deberían ser del tamaño cuando están en 2 celdas».
+
+   MEDIDO a 1440 px, con la grilla en 1040 px:
+       2 celdas -> cada imagen 506 px
+       1 celda  -> la imagen 1038 px  (el DOBLE, y el dueño lo ve como exceso)
+
+   La causa: `--1` es `1fr`, así que la única figura se estira a todo el ancho
+   de la grilla. NO se toca el `max-width` de la grilla (1040 px): eso movería
+   también las de 2 y 3 columnas, que están aprobadas.
+
+   Se acota la GRILLA de una sola figura a `calc(50% - gap/2)`, que es
+   exactamente el ancho de una celda en la grilla de 2:
+       1040 px -> (1040 - 24) / 2 = 508 px   ≈ los 506 medidos en 2 celdas
+
+   ⚠️ SOLO a partir de 1200 px (PC). En celular y tablet NADA cambia: el dueño
+   pidió «en formato celular deja exactamente igual las imágenes». Verificado
+   contra la línea base: 390 px -> 347/356 px y 768 px -> 674 px, idénticos
+   antes y después de este cambio.
+   ⚠️ Es una regla de ANCHO sobre la grilla, no un `:has()`: la clase `--1` ya
+   la pone el render contando las imágenes de la sección, así que no hace falta
+   detectar nada desde el CSS. */
+@media (min-width: 1200px) {
+  .tri-figs.tri-figs--1,
+  .tri-figs.tri-figs--1.tri-figs--mas,
+  .tri-figs.tri-figs--1.tri-figs--ancho { max-width: calc(50% - clamp(8px, 1.2vw, 12px)); }
+}
+
 /* 🔴 CR-107 (2026-11-12) — «en esa seccion haz las 3 imagenes mas grandes».
    MEDIDO en «Estructura de los trilobites» a 1440 px, ANTES:
      contenedor 780 px · grilla 244/244/244 px  →

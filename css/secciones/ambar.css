@@ -159,6 +159,21 @@
   align-items: stretch;
 }
 .amb-figs--1 { grid-template-columns: 1fr; }
+
+/* 🔴 CR-117 (2026-11-12) — «en PC las imágenes de 1 en 1 están demasiado
+   grandes; deberían ser del tamaño cuando están en 2 celdas».
+   MEDIDO a 1440 px: en 2 celdas cada imagen mide ~506 px; en 1 celda se estira
+   a todo el ancho de la grilla (~1038), el DOBLE. Se acota la grilla de una
+   sola figura a `calc(50% - gap/2)` = exactamente una celda de la grilla de 2.
+   ⚠️ SOLO desde 1200 px. En celular y tablet NO cambia nada (pedido explícito:
+      «en formato celular deja exactamente igual las imágenes»).
+   ⚠️ No se toca el max-width de la grilla: eso movería también las de 2 y 3. */
+@media (min-width: 1200px) {
+  .amb-figs.amb-figs--1,
+  .amb-figs.amb-figs--1.amb-figs--mas,
+  .amb-figs.amb-figs--1.amb-figs--ancho { max-width: calc(50% - clamp(8px, 1.2vw, 12px)); }
+}
+
 .amb-figs--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .amb-figs--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 /* ⚠️ CR-86: en ámbar el máximo por sección es TRES (no hay ninguna de cinco
