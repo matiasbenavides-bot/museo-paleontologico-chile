@@ -497,15 +497,6 @@ const COLECCIONES = {
        escribe "Ver más", que es texto que NO dictó el dueño. */
     { icono: "tiburon",   conIcono: true,  arte: "assets/img/pieza-tiburones.png", nombre: "Restos de tiburones", detalle: "Dientes y vértebras que reconstruyen la vida de los mares antiguos.",
       enlace: "tiburones.html", enlaceTexto: "Conocer los tiburones" },
-    /* CR-96 (2026-11-02) — el dueño entregó el Word «Dinosaurios en Chile pag.»
-       y confirmó «son mias. avanza». Es un capítulo DISTINTO del general
-       (dinosaurios.html, CR-87) y del de huellas (huellas.html, CR-91):
-       acá van los RESTOS ÓSEOS, una ficha por especie. La card abre su
-       subpágina, mismo mecanismo que las otras siete. `enlaceTexto` es
-       OBLIGATORIO cuando hay `enlace`: si falta, el render escribe "Ver más",
-       que es texto que el dueño NO dictó. */
-    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Dinosaurios en Chile", detalle: "Los restos óseos hallados en el país, una ficha por especie: desde Pichasca hasta la Patagonia.",
-      enlace: "dinosaurios-chile.html", enlaceTexto: "Conocer los dinosaurios de Chile" },
     /* CR-98 (2026-11-02) — el dueño entregó el Word «Pterosaurios en Chile» y
        el JPEG del ícono de la card («son mias» implícito: es material propio).
        Capítulo NUEVO, no tiene relación con las tres páginas de dinosaurios.
@@ -521,13 +512,20 @@ const COLECCIONES = {
        ícono compartido hasta que él entregue el dibujo de la card. */
     { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-reptiles.png", nombre: "Reptiles marinos", detalle: "Plesiosaurios, ictiosaurios, pliosaurios, cocodrilos marinos y mosasaurios: el mar del Mesozoico y sus restos en Chile.",
       enlace: "reptiles.html", enlaceTexto: "Conocer los reptiles marinos" },
-    /* CR-87 (2026-10-29): el dueño pidió subpágina para los dinosaurios — mismo
-       mecanismo que Trilobites (CR-60), Ammonites (CR-83), Tiburones (CR-85) y
-       Ámbar (CR-86). La card que ABRE la página es esta, «Dinosaurios general»:
-       es la pieza de la colección a la que corresponde el material del Word
-       («Definiendo a los dinosaurios»). `enlaceTexto` es OBLIGATORIO cuando hay
-       `enlace`: si falta, el render escribe "Ver más", que es texto que el dueño
-       NO dictó. */
+    /* CR-116 (2026-11-12) — LAS TRES PIEZAS DE DINOSAURIOS, SEGUIDAS.
+       El dueño pidió dejarlas «en una fila»: «dinosaurios general, dinosaurios
+       de chile y a través de las huellas». Estaban dispersas (posiciones 5, 8
+       y 9) y caían en filas distintas de la grilla de 3 columnas. Ahora van
+       contiguas al final del bloque, y quedan así:
+           1 Trilobites   2 Ammonites    3 Ámbar
+           4 Tiburones    5 Pterosaurios 6 Reptiles marinos
+           7 Dinosaurios general  8 Dinosaurios en Chile
+           9 Dinosaurios en Chile a través de las huellas
+          10 Reconstrucciones
+       El ORDEN del array ES el orden en pantalla (el render hace un map), así
+       que esta es la única palanca: no se toca el render ni el CSS de la grilla.
+       «Reconstrucciones» queda aparte a propósito: no es una página de
+       dinosaurios y el dueño nombró sólo las tres. */
     /* CR-88 (2026-10-29): el dueño corrigió el NOMBRE de esta pieza — decía
        «Huesos de dinosaurios» y el nombre correcto es «Dinosaurios general»
        (DEC-091). Es la pieza de la colección que abre la subpágina
@@ -535,6 +533,16 @@ const COLECCIONES = {
        y «Reconstrucciones») NO se tocan: la corrección nombra ésta sola. */
     { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Dinosaurios general", detalle: "Fémures, vértebras y costillas que sostienen la reconstrucción del esqueleto.",
       enlace: "dinosaurios.html", enlaceTexto: "Conocer los dinosaurios" },
+    /* CR-96 (2026-11-02) — el dueño entregó el Word «Dinosaurios en Chile pag.»
+       y confirmó «son mias. avanza». Es un capítulo DISTINTO del general
+       (dinosaurios.html, CR-87) y del de huellas (huellas.html, CR-91):
+       acá van los RESTOS ÓSEOS, una ficha por especie. La card abre su
+       subpágina, mismo mecanismo que las otras siete. `enlaceTexto` es
+       OBLIGATORIO cuando hay `enlace`: si falta, el render escribe "Ver más",
+       que es texto que el dueño NO dictó.
+       CR-116: movida junto a sus dos hermanas de dinosaurios (ver nota arriba). */
+    { icono: "hueso",     conIcono: true,  arte: "assets/img/pieza-huesos.png", nombre: "Dinosaurios en Chile", detalle: "Los restos óseos hallados en el país, una ficha por especie: desde Pichasca hasta la Patagonia.",
+      enlace: "dinosaurios-chile.html", enlaceTexto: "Conocer los dinosaurios de Chile" },
     /* CR-97 (2026-11-02) — PIEZA RETIRADA: «Huevos de dinosaurios».
        El dueño pidió textual: «elimina huevos de dinosaurio, pero deja la imagen
        del la card», y al aclarársele que el dibujo del card ES el huevo, precisó:
