@@ -36,3 +36,23 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* DEC-109 (2026-11-12) — ITÁLICA REAL de los nombres científicos.
+   Hasta aquí el sitio sólo declaraba font-style: normal, así que al pedir
+   cursiva el navegador la SINTETIZABA: sobre el cuerpo (Segoe UI, sin itálica
+   propia) inclinaba el trazo recto, y en los títulos caía a la normal. Medido:
+   la misma palabra con y sin font-style:italic daba EXACTAMENTE el mismo ancho
+   (760,4 px), o sea no cambiaba el dibujo.
+   Este archivo está marcado Italic en el propio fichero (fsSelection y
+   macStyle): es una itálica dibujada, no una oblicua.
+   ⚠ Sólo el peso 400: es el peso real de esta familia. El "700" de arriba no es
+   un peso de Cormorant Garamond — los dos woff2 originales son el MISMO archivo
+   (md5 c47ff128…) y su estilo interno es Regular/300. El navegador lo sintetiza.
+   Se deja como está (no es el alcance de DEC-109) y queda documentado. */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  src: url('../../assets/fonts/cormorant-garamond-400-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}

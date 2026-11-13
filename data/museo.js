@@ -4673,14 +4673,14 @@ const TIBURONES = {
         "*Otodus megalodon*, con un tamaño de entre 14 a más de 20 metros, fue el pez más grande de los " +
           "océanos del mundo, un temible tiburón que, como ningún otro animal, puede llevar el justo " +
           "apelativo de megabestia, con un peso que oscilaba entre los 14 y los 37 mil ki¬los (de 14 a " +
-          "37 toneladas). Hay que imaginarse al megalodon como un tiburón blanco, (aunque no son " +
+          "37 toneladas). Hay que imaginarse al *megalodon* como un tiburón blanco, (aunque no son " +
           "parientes directos), pero tres veces más grande y masivo, características que lo " +
           "convirtieron en el cazador más feroz de los mares durante el Mioceno Superior y el Plioceno, " +
           "de 15 a 5 millones de años, ya que su fuerza de mordedura superaba en mucho a la del T. Rex.",
         "Sus fauces alojaban aproximadamente de 260 a 270 dientes acerrados, siendo los más grandes " +
           "de unos 20 centímetros, transformándose así, en el mayor depredador marino de todos los " +
           "tiempos.",
-        "El megalodon depredaba ballenas, pinnípedos, aves como *Pelagornis* y otros animales. Su " +
+        "El *megalodon* depredaba ballenas, pinnípedos, aves como *Pelagornis* y otros animales. Su " +
           "cuerpo era masivo y fusiforme, lo que le permitía desplazarse como un verdadero torpedo. " +
           "Esto sumado a una serie de elementos sensoriales, con los que podía detectar su presa a " +
           "mucha distancia y olfatear su sangre a muchos kilómetros, lo hacía un inminente peligro para " +
@@ -4688,7 +4688,7 @@ const TIBURONES = {
           "el Leviatán, un cetáceo odontoceto del grupo de los cachalotes.",
         "Su hocico abierto abarcaba más de 2,5 metros, siendo su único competidor el Leviatán, un " +
           "cetáceo odontoceto del grupo de los cachalotes.",
-        "Debido a que su cuerpo es cartilaginoso, el megalodon presenta dificultades en su " +
+        "Debido a que su cuerpo es cartilaginoso, el *megalodon* presenta dificultades en su " +
           "preservación como fósil, por lo que sólo se han conservado algunas partes de su cuerpo, unas " +
           "cuantas vértebras, pero principalmente sus dientes, a partir de los cuales se puede " +
           "extrapolar su medida.",
@@ -4702,7 +4702,7 @@ const TIBURONES = {
           src: "assets/img/tiburones/word/14.jpg",
           ancho: 1100, alto: 883,
           alt: "Diente de Megalodon adulto",
-          pie: "Diente de Megalodon adulto depositado en el Museo Paleontológico de Caldera (Foto Juan " +
+          pie: "Diente de *Megalodon* adulto depositado en el Museo Paleontológico de Caldera (Foto Juan " +
            "Castillo)."
         },
         {

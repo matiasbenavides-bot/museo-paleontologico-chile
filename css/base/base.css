@@ -32,6 +32,43 @@ body { background: var(--bg-deep); }
    en el subset descargado). */
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; font-weight: 700; letter-spacing: 0; }
 
+/* DEC-109 (2026-11-12) — CURSIVA DE LOS NOMBRES CIENTÍFICOS, EN UN SOLO SITIO.
+
+   El dueño: «no se distingue la cursiva en nombres científicos de la letra
+   normal». Medido, eran DOS fallas independientes:
+     1. El cuerpo del sitio es Segoe UI, que NO trae itálica propia: el navegador
+        la SINTETIZABA (inclinaba el trazo recto) y a 16 px eso no se distingue.
+     2. `css/base/fuentes.css` sólo declaraba `font-style: normal`, así que no
+        había ninguna itálica a la que recurrir ni en los títulos.
+
+   Se corrige con la itálica REAL de Cormorant Garamond (empaquetada, OFL) y la
+   regla se centraliza ACÁ. Antes la misma regla estaba copiada en 8 hojas de
+   sección (`.tri-sec p i`, `.amo-sec p i`, …): tocar una sola dejaba el sitio
+   inconsistente. Este archivo ya está en la cadena única de `main.css`, así que
+   una sola regla cubre las 9 páginas.
+
+   ⚠ NO se usa `font-weight` acá a propósito: así el nombre hereda el peso del
+   contexto (400 en el cuerpo, 700 en un título) y sólo cambia la INCLINACIÓN,
+   que es exactamente lo que el dueño eligió.
+
+   ⚠ Alcance: esto sólo cambia CÓMO se ve un nombre ya marcado con `*…*` en
+   `data/museo.js`. Qué es nombre científico y qué no sigue siendo DEC-088.
+
+   ⚠ Y NO se toca el <em> del hero. `css/secciones/hero.css:208` le pone
+   `font-style: normal` A PROPÓSITO (CR-46): ese <em> no es énfasis, es el corte
+   en dos líneas del título, y el dueño pidió que se leyera como una sola frase.
+   Por eso va como excepción explícita en vez de un selector universal. */
+.contenedor i, .contenedor em,
+main i,
+article i, article em,
+figcaption i, figcaption em {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+/* El <em> del hero conserva su normal (CR-46). */
+.hero__titulo em { font-style: normal; }
+
+
 /* Etiqueta de sección (eyebrow) */
 .etiqueta {
   display: inline-block; font-family: var(--font-body);
