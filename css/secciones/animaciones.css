@@ -71,9 +71,6 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
   100% { background-position: 0 -260px; }
 }
 
-  50%      { transform: translate(-50%, -54%) rotate(9deg) scale(1.045); }
-}
-
 /* --- Entrada escalonada del hero (al cargar) --- */
 .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta {
   opacity: 0; animation: entrarHero .95s var(--ease-out-expo) forwards;
@@ -224,6 +221,19 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
    elemento de 1px de alto. Se veian dos lineas donde debe haber una.
    Se elimina el ::after: el <hr> con su gradiente ya es el separador. */
 .separador { position: relative; }
+
+/* ============================================================
+   DEC-122 — Detalles de interfaz (B · C · D · E · F · G)
+   ------------------------------------------------------------
+   REGLA QUE NO SE ROMPE (costó CR-08): toda animación de estos
+   bloques se mueve SOLO en Y, opacity, box-shadow o
+   background-position. Nada en X: cualquier translateX sobre un
+   elemento dentro del layout extiende el scrollWidth del
+   documento y saca scroll lateral en tablet/escritorio medio.
+   El único X que hay abajo (`.pieza__sub`, `.enlace-cuerpo::after`)
+   vive en pseudo-elementos posicionados o con transform-origin
+   anclado, y se mide en la sonda.
+   ============================================================ */
 
 /* --- Accesibilidad: con movimiento reducido, todo quieto y visible --- */
 @media (prefers-reduced-motion: reduce) {
