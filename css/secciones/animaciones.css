@@ -277,6 +277,38 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
   to   { background-position: -100% 0; }
 }
 
+/* --- D) Retirado: el sitio no tiene enlaces de cuerpo ---
+   DEC-122 proponía "subrayado que crece" en los enlaces dentro de
+   párrafos. MEDIDO ANTES DE DEJARLO: no existe ese caso. Los 15 <a>
+   del cuerpo en las 12 páginas son los botones "volver" (que ya
+   tienen su propia flecha animada) y los CTA (.btn). Todo lo demás
+   son los 24 del menú y el pie. Un subrayado que crece no tendría a
+   quién aplicarse, y la regla con :not() quedaba como selector
+   paraguas capaz de morder cualquier <a> futuro dentro de .contenido.
+   Se retira entera. Si algún día hay un enlace en un párrafo, esta
+   es la animación que corresponde: background-size 0→100% en 1px.
+   ============================================================ */
+
+/* --- E) El CTA deja de brillar solo ---
+   `brilloBoton` corría infinito cada 4,5 s en el botón principal, es
+   decir: el elemento más llamativo de la página destellaba aunque
+   nadie lo estuviera mirando ni tocando. Pasa a dos tiempos:
+     · al pasar el cursor o al enfocarlo con teclado -> brillo inmediato
+     · en reposo -> un destello cada 7 s, más espaciado
+   El destello vive en ::after con `left` sobre el propio botón, que
+   ya tiene `overflow: hidden`: no puede desbordar el documento. */
+.btn--primario::after {
+  animation: brilloBoton 7s ease-in-out 3s infinite;
+}
+.btn--primario:hover::after,
+.btn--primario:focus-visible::after {
+  animation: brilloBotonRapido .9s var(--ease-out-expo) 1;
+}
+@keyframes brilloBotonRapido {
+  from { left: -120%; }
+  to   { left: 130%; }
+}
+
 /* --- Accesibilidad: con movimiento reducido, todo quieto y visible --- */
 @media (prefers-reduced-motion: reduce) {
   .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta,
