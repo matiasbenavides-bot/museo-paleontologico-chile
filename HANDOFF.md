@@ -212,3 +212,52 @@ aplicaron 2 ediciones no autorizadas y hubo que detenerse ante su «noooooooo».
 ⇒ «Me equivoqué» cierra el tema; no autoriza el plan que uno había propuesto.
 ⇒ **«Al hacer clic no pasa nada» es un reporte válido**: dos veces esta sesión el dueño
 tuvo razón y el defecto era real (CR-102 y CR-104).
+
+---
+
+## CR-111 … CR-120 (2026-11-12/13) — cursiva, tipografía, contenido y tamaños
+
+**Bitácora completa: `BITACORA-2026-11-12.md` (dos partes: sesión A y sesión B).**
+Todo publicado y verificado en vivo. Árbol limpio.
+
+| CR | Qué |
+|---|---|
+| 111 / DEC-109 | La cursiva de los nombres científicos era **simulada** — Segoe UI no tiene itálica |
+| 112 | El peso 700 de Cormorant era **sintético** — la fuente es VARIABLE (`fvar` 300→700) |
+| 113 | Quitada la 2ª imagen de «Locomoción» (el párrafo de la ficha NO se toca) |
+| 114 | Quitado el párrafo repetido de «Dimorfismo sexual» (venía del Word) |
+| 115 | `epidodito` / `Epipodito` es **INTENCIONAL** — no unificar |
+| 116 | Las tres piezas de dinosaurios, seguidas (orden del array = orden en pantalla) |
+| 117 | En PC, las de 1 por fila pasan a medir como en 2 celdas (506 px) |
+| 118 | «¿Qué son los trilobites?» acotada a 700 px (la 2ª es cuadrada, 506×506) |
+| 119 | Quitado `"ancho"` en estructura/fondo/reproduccion — era la causa de TODA imagen grande |
+| 120 | El pie del maxilar de *Mosasaurus* pasó de la imagen 18 a la 17 |
+
+### 🔴 Lo que hay que saber antes de tocar nada de esto
+
+- **`font-style: italic` computa `italic` TAMBIÉN en una cursiva falsa.** La única medida
+  válida es el **ANCHO** con y sin cursiva.
+- **El PESO se mide contando TINTA** en canvas, no ancho (el avance no cambia entre pesos).
+- **`COLECCIONES.piezas` no tiene secciones** (sólo tarjetas): buscar repetidos ahí da un
+  **falso verde**. Usar `scripts/busca-repetidos.js`.
+- **`figurasGrandes: "ancho"`** fuerza 1 columna y se salta la regla de CR-110 ⇒ imagen a
+  1038 px. Es la causa de toda imagen gigante.
+- **`.tri-figs--mas` gana por orden**: una clase nueva sin especificidad **no hace nada**.
+- **Al mover objetos de `COLECCIONES.piezas`, `patch`/regex DUPLICA** (dejó 12 de 10).
+- **CR-120 DIFIERE del Word a propósito** (criterio del dueño, que vio las fotos).
+
+### Sondas re-ejecutables nuevas
+
+```bash
+.venv/bin/python scripts/verifica-cursiva-real.py   # cursiva real, CON control negativo
+.venv/bin/python scripts/mide-cursiva-real.py       # diagnóstico de familia/peso/síntesis
+node scripts/busca-repetidos.js                     # repetidos en las 9 colecciones
+```
+
+### Estado medido (en vivo, 2026-11-13)
+
+```
+12/12 páginas HTTP 200 · 0 errores JS · 0 imágenes rotas · 0 desborde · 0 asteriscos
+imagen más ancha del sitio: 552 px (0 sobre 600 px en las 9 colecciones)
+14/14 anchos sin desborde (320 → 2560 px)
+```
