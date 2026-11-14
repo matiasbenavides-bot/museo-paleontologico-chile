@@ -2047,6 +2047,15 @@ const AMMONITES = {
           src: "assets/img/amonites/word/17.jpg",
           ancho: 430, alto: 607,
           alt: "Ammonites — imagen 17 del documento del museo",
+          /* CR-120 (2026-11-12) — el dueño confirmó que este pie va en la 17.
+             El pie estaba publicado en la 18. MEDIDO contra el Word: el texto
+             del maxilar es el párrafo 41, justo después de `image18` (párrafo
+             40), y las imágenes 16 y 17 van juntas en el 39 sin pie — o sea el
+             documento lo asocia a la 18. El dueño lo revisó y CONFIRMÓ que la
+             foto con las marcas del maxilar es la 17: se aplica su criterio.
+             ⚠️ Queda anotado que DIFIERE del orden del Word: no "corregirlo" en
+                una sesión futura sin volver a preguntarle. */
+          pie: "Marcas del maxilar de *Mosasaurus* orridus en una concha de Ammonite del genero *Placentíceras*.",
         },
       ],
     },
@@ -2054,13 +2063,18 @@ const AMMONITES = {
       id: "marcas-maxilar",
       titulo: "Una concha mordida",
       nivel: 3,
+      /* CR-120 (2026-11-12) — esta sección queda SIN pie a propósito: el pie
+         «Marcas del maxilar de *Mosasaurus* orridus…» se movió a la imagen 17
+         (sección «Depredación en ammonites»), donde el dueño confirmó que está
+         la foto con las marcas. La sección se conserva porque su título sigue
+         siendo válido y la imagen 18 es parte del material del Word.
+         ⚠️ Si el dueño pide reponer el pie acá, es deshacer CR-120. */
       parrafos: [],
       imagenes: [
         {
           src: "assets/img/amonites/word/18.jpg",
           ancho: 967, alto: 386,
           alt: "Ammonites — imagen 18 del documento del museo",
-          pie: "Marcas del maxilar de *Mosasaurus* orridus en una concha de Ammonite del genero *Placentíceras*.",
         },
       ],
     },
