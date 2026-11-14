@@ -55,4 +55,7 @@
 @import url("secciones/visor.css");
 @import url("secciones/fondo-ammonite.css");
 @import url("secciones/animaciones.css");
+/* H de DEC-122: accesibilidad del movimiento, en archivo PROPIO para que
+   revertir cualquier bloque de animaciones no choque con estas reglas. */
+@import url("secciones/animaciones-reduced.css");
 @import url("secciones/responsive.css");

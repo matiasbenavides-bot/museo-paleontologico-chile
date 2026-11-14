@@ -1,0 +1,51 @@
+/* ============================================================
+   MPCH — Accesibilidad del movimiento (H de DEC-122)
+   ============================================================
+
+   Con «reducir movimiento» activado (ajuste del sistema operativo), el
+   sitio apagaba 7 cosas y se le escapaban otras tantas: el borde que
+   respira de la card, el barrido del separador, el escalonado del menú
+   móvil y la llegada por ancla seguían animándose.
+
+   ¿POR QUÉ ESTE ARCHIVO EXISTE EN VEZ DE ESTAR EN animaciones.css?
+   Porque `animaciones.css` lo tocan CUATRO commits distintos (card,
+   separador, menú, ancla). Si estas reglas vivieran dentro de ese
+   archivo, revertir cualquiera de esos cuatro daría CONFLICTO de merge
+   — pasó de verdad al probarlo con la card.
+
+   Aquí cada regla sólo menciona selectores que declaran otros archivos
+   o el mismo `animaciones.css`, y no comparte ni una línea con ellos:
+   revertir el bloque dueño NO choca con este archivo. Las reglas de
+   abajo se quedan inertes solas cuando el bloque que animaban ya no
+   existe (un `animation: none` sobre un elemento que no anima es inocuo).
+
+   ⚠️ Si algún día se añade aquí una animación nueva de sitio, NO se
+   mete en este archivo: se crea su bloque en `animaciones.css` y se
+   agrega su `animation: none` aquí, sin tocar líneas ajenas.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  /* B) la card: el borde late al hover */
+  .pieza:hover::after,
+  .pieza--enlace:hover::after {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  /* C) el separador: barrido de luz */
+  .separador,
+  .separador.visible {
+    animation: none !important;
+    background-image: none;
+  }
+
+  /* F) el menú móvil: entrada escalonada ítem por ítem */
+  .nav.abierto a {
+    animation: none !important;
+  }
+
+  /* G) el ancla: entrada de la sección */
+  :target {
+    animation: none !important;
+  }
+}
