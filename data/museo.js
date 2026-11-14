@@ -1125,7 +1125,14 @@ const TRILOBITES = {
       titulo: "Estructura de los trilobites",
       /* CR-107: pedido del dueño — las 3 imágenes de esta sección, más grandes.
          Es marca POR SECCIÓN: no cambia ninguna otra grilla del sitio. */
-      figurasGrandes: "ancho", /* CR-109b: ancha y baja -> 1 por fila */
+      /* CR-119 (2026-11-12) — se quita `"ancho"` a propósito. El dueño: «las
+         imágenes de esta sección son demasiado grandes». MEDIDO: 1038 y 894 px.
+         `"ancho"` fuerza UNA columna y se salta la regla de 2 columnas de
+         CR-110, así que la figura se estiraba a todo el ancho de la grilla.
+         Sin `"ancho"` quedan en 506 px = EXACTAMENTE el tamaño ya aprobado para
+         las grillas de 2 celdas. A 1440: 1038/894 -> 506 · a 390 y 768 sin
+         cambios · a 1024 -> 403. */
+      figurasGrandes: true,
       nivel: 2,
       parrafos: [
         "Los trilobites estaban protegidos por un exoesqueleto dorsal fuertemente calcificado, de simetría bilateral y convexidad variable, que continuaba ventralmente como un doblez marginal angosto. Los trilobites poseen un cuerpo segmentado con un exoesqueleto ovalado o subelíptico en vista dorsal y está dividido longitudinalmente en tres regiones (del latín Tri, tres y lobus, lóbulo = Tres lóbulos). Su exoesqueleto está constituido de cierto número de segmentos a lo largo del cuerpo, un par de surcos axiales divide al exoesqueleto en un lóbulo central (axis, raquis) y dos lóbulos laterales (genas en el céfalo; área o campos pleurales en el tórax-pigidio), a los cuales hace alusión el término «*Trilobita* o trilobite».",
@@ -1359,7 +1366,10 @@ const TRILOBITES = {
       id: "fondo",
       titulo: "Vida en el fondo",
       nivel: 2,
-      figurasGrandes: "ancho", /* CR-109b: ancha y baja -> 1 por fila */  /* CR-109: se pintaba <60%% de su resolución nativa */
+      /* CR-119 (2026-11-12) — se quita `"ancho"`: medía 911 px y el dueño lo vio
+         demasiado grande. Sin `"ancho"` queda en 506 px, el tamaño ya aprobado
+         para las grillas de 2 celdas. Ver la nota larga en «estructura». */
+      figurasGrandes: true,
       parrafos: [
         "Los trilobites, por su forma aplanada, por sus ojos en posición dorsal y la dureza y flexibilidad de su caparazón se deduce que la mayoría eran animales bentónicos (Los organismos bentónicos son aquellos que se asocian a cualquier fondo acuático, viven en contacto o en una dependencia directa con el fondo del mar).  Seguramente eran micrófagos, filtrando el barro del fondo en que vivían para obtener el alimento, algunos carecían de apéndices excavadores o prensiles, así como de piezas bucales trituradoras.",
       ],
@@ -1380,7 +1390,10 @@ const TRILOBITES = {
       id: "reproduccion",
       titulo: "Reproducción y apareamiento",
       nivel: 2,
-      figurasGrandes: "ancho", /* CR-109b: ancha y baja -> 1 por fila */  /* CR-109: se pintaba <60%% de su resolución nativa */
+      /* CR-119 (2026-11-12) — se quita `"ancho"`: medía 1038 px y el dueño lo vio
+         demasiado grande. Sin `"ancho"` queda en 506 px, el tamaño ya aprobado
+         para las grillas de 2 celdas. Ver la nota larga en «estructura». */
+      figurasGrandes: true,
       parrafos: [
         "Recientes investigaciones han revelado que existe una diferencia entre machos y hembras del trilobite *Olenoides serratus*, que podría tratarse de un dimorfismo sexual, ya que el macho al parecer presenta adaptaciones para el apareamiento. Se trata de apéndices funcionalmente especializados, que son extremidades análogas a los ganchos, en los endopoditos 10 y 11, que son utilizados por los machos hembra durante el apareamiento.",
       ],
