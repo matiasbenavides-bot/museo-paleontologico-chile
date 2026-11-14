@@ -255,26 +255,58 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
 }
 
 /* --- C) El separador barre una luz de 1px, una sola vez ---
-   El comentario de abajo documenta que un `::after` con height:100%
-   sobre un <hr> de 1px dibujaba una SEGUNDA línea. Por eso el barrido
-   va ENMASCARADO al propio <hr> (background del ::after = el mismo
-   gradiente del hr, no un bloque encima), y así no puede duplicarse.
-   Se dispara cuando el separador entra en pantalla (.visible, que pone
-   el mismo IntersectionObserver del sitio si el elemento lleva reveal)
-   y si no, a los 2 s: nunca queda invisible por un JS que no corrió. */
+   El <hr class="separador"> de base.css es
+     linear-gradient(90deg, transparent, --border-accent, transparent)
+   es decir: una línea que nace y muere en el fondo.
+
+   🔴 PRIMER INTENTO FALLIDO, medido sobre el PNG (no sobre el DOM):
+   se puso un gradiente OPACO de 3 paradas (celeste -> celeste-light ->
+   celeste) con background-size 200% y se animó background-position.
+   El computed style decía "barridoSeparador 1.6s" — pero al contar
+   luminancia por columna en tres fotogramas, el centro de masa del brillo
+   se movió 4 PÍXELES en 1.4 s: no había barrido. La causa es que un
+   gradiente SIMÉTRICO y OPACO de extremo a extremo no se desplaza: al
+   recorrerlo se ve el mismo color. Además borraba el degradado original.
+
+   AHORA: se conservan las 3 paradas transparentes del diseño y se añade
+   una CUARTA, angosta y clara, que es la que viaja. Con
+   background-size: 250% el desplazamiento recorre la línea una vez.
+
+   🔴 TERCER AJUSTE, medido en píxeles: con background-size 250% y el
+   recorrido 100% -> 0%, el punto blanco entra a la línea por la derecha
+   recién al 60% de la animación y sale por la izquierda antes del final:
+   en el muestreo el brillo máximo NUNCA subió de 50 (el fondo del sitio
+   ronda 30), o sea que la luz pasaba casi toda la animación fuera de la
+   caja. El recorrido útil de un background de 250% es de 150% de ancho:
+   posicion 0% deja la ventana al principio del gradiente y 100% al final,
+   así que el barrido tiene que ir de 100% a 0% con el núcleo centrado.
+   Se centra el núcleo en 50% del gradiente (no al principio) y se recorta
+   el recorrido a 100% -> 0% sobre un background-size de 200%, que es el
+   único que deja el pico dentro de la caja durante TODO el recorrido. */
 .separador {
   position: relative;
-  background-image: linear-gradient(90deg, var(--celeste) 0%, var(--celeste-light) 50%, var(--celeste) 100%);
+  background-image: linear-gradient(90deg,
+      transparent 0%,
+      var(--border-accent) 30%,
+      var(--celeste-light) 44%,
+      #ffffff 50%,
+      var(--celeste-light) 56%,
+      var(--border-accent) 70%,
+      transparent 100%);
   background-size: 200% 100%;
-  background-position: 200% 0;
+  background-position: 100% 0;
 }
 .separador.visible,
 .separador:not(.reveal) {
-  animation: barridoSeparador 1.6s var(--ease-out-expo) .15s 1 forwards;
+  /* La curva NO es --ease-out-expo: medido, esa curva hace el 87% del
+     recorrido entre el 10% y el 40% del tiempo y después se arrastra 0,9 s
+     casi quieta. Un barrido necesita ritmo parejo para leerse como barrido.
+     `ease-in-out` reparte el viaje en el centro. */
+  animation: barridoSeparador 1.6s ease-in-out .15s 1 forwards;
 }
 @keyframes barridoSeparador {
-  from { background-position: 200% 0; }
-  to   { background-position: -100% 0; }
+  from { background-position: 100% 0; }
+  to   { background-position: 0% 0; }
 }
 
 /* --- D) Retirado: el sitio no tiene enlaces de cuerpo ---
