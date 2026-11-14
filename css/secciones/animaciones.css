@@ -309,6 +309,30 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
   to   { left: 130%; }
 }
 
+/* --- F) El menú móvil entra escalonado ---
+   Hasta ahora los 6 ítems del panel lateral entraban los seis de
+   golpe (el único movimiento era `navEntra` sobre el panel entero).
+   Aquí el panel conserva su barrido y los ítems aparecen de a uno,
+   separados por 40 ms. El retardo se declara sólo dentro del menú
+   móvil: en escritorio `.nav.abierto` no existe y no se toca nada. */
+@media (max-width: 900px) {
+  .nav.abierto a {
+    animation: itemNavEntra .45s var(--ease-out-expo) both;
+  }
+  .nav.abierto a:nth-child(1) { animation-delay: .10s; }
+  .nav.abierto a:nth-child(2) { animation-delay: .14s; }
+  .nav.abierto a:nth-child(3) { animation-delay: .18s; }
+  .nav.abierto a:nth-child(4) { animation-delay: .22s; }
+  .nav.abierto a:nth-child(5) { animation-delay: .26s; }
+  .nav.abierto a:nth-child(6) { animation-delay: .30s; }
+  .nav.abierto a:nth-child(7) { animation-delay: .34s; }
+  .nav.abierto a:nth-child(8) { animation-delay: .38s; }
+}
+@keyframes itemNavEntra {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
 /* --- Accesibilidad: con movimiento reducido, todo quieto y visible --- */
 @media (prefers-reduced-motion: reduce) {
   .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta,
