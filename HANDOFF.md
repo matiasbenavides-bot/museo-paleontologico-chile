@@ -175,6 +175,46 @@ Chromium: `~/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome`
 
 ---
 
+## CR-122 (2026-11-13) — DEC-122: los detalles de interfaz
+
+**Bitácora completa: `BITACORA-2026-11-13.md`.** Todo publicado y verificado en vivo.
+Árbol limpio.
+
+Nace de «MEJOREMOS LAS ANIMACIONES, AUNQUE SEAN PEQUEÑAS INTERFACES Y DETALLES
+MINUSIOSOS» + «VEAMOS SI REVERTIR POR FASES».
+
+| CR | Qué |
+|---|---|
+| 122a | `}` huérfano en `animaciones.css` (72 `{` vs 73 `}`) — el defecto de fondo |
+| 122b | la card **respira** al hover, en vez de `shimmer` infinito duplicado |
+| 122c | una luz blanca **cruza** el `<hr class="separador">` una vez |
+| 122c2 | el barrido **se ve**: 3 correcciones medidas en píxeles |
+| 122e | el CTA deja de destellar solo; brilla al hover/focus |
+| 122f | el menú móvil entra **ítem por ítem** (40 ms) |
+| 122g | llegar a un ancla **ya no es un salto seco** |
+| 122h | `prefers-reduced-motion` apaga **todo**, en archivo propio |
+
+### 🔴 Tres cosas que se pagan caro si se olvidan
+
+- **Un `@keyframes` puede estar vivo y NO verse.** `computed style` decía
+  `barridoSeparador 1.6s` mientras la luz no se movía. Se mide el **píxel**.
+- **`git revert` NO revierte un commit del medio** de una cadena que escribe en
+  el mismo archivo: se lleva los vecinos (medido: 118 líneas de conflicto).
+  Usar `scripts/revierte-bloque-dec122.py B|C|E|F|G|H`.
+- **Comentario sin `*/` se come el bloque siguiente.** Va con las llaves:
+  verificar `/*` == `*/`, no sólo el balance de `{}`.
+
+### Sondas nuevas
+
+```bash
+.venv/bin/python scripts/mide-animaciones-dec122.py [url]   # 15 anchos + disparo + reduced-motion
+.venv/bin/python scripts/veredicto-barrido.py               # pausa y fija currentTime
+.venv/bin/python scripts/captura-dec122.py                  # PNG al Escritorio para MIRAR
+python3 scripts/revierte-bloque-dec122.py --lista           # revertir por fases
+```
+
+---
+
 ## Lo que se cerró en sesiones anteriores (resumen)
 
 | CR | Qué | Commit |
