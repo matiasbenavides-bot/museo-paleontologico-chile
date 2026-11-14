@@ -254,6 +254,29 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
   animation: respirarCard 4.2s ease-in-out infinite;
 }
 
+/* --- C) El separador barre una luz de 1px, una sola vez ---
+   El comentario de abajo documenta que un `::after` con height:100%
+   sobre un <hr> de 1px dibujaba una SEGUNDA línea. Por eso el barrido
+   va ENMASCARADO al propio <hr> (background del ::after = el mismo
+   gradiente del hr, no un bloque encima), y así no puede duplicarse.
+   Se dispara cuando el separador entra en pantalla (.visible, que pone
+   el mismo IntersectionObserver del sitio si el elemento lleva reveal)
+   y si no, a los 2 s: nunca queda invisible por un JS que no corrió. */
+.separador {
+  position: relative;
+  background-image: linear-gradient(90deg, var(--celeste) 0%, var(--celeste-light) 50%, var(--celeste) 100%);
+  background-size: 200% 100%;
+  background-position: 200% 0;
+}
+.separador.visible,
+.separador:not(.reveal) {
+  animation: barridoSeparador 1.6s var(--ease-out-expo) .15s 1 forwards;
+}
+@keyframes barridoSeparador {
+  from { background-position: 200% 0; }
+  to   { background-position: -100% 0; }
+}
+
 /* --- Accesibilidad: con movimiento reducido, todo quieto y visible --- */
 @media (prefers-reduced-motion: reduce) {
   .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta,
