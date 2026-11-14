@@ -235,6 +235,25 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
    anclado, y se mide en la sonda.
    ============================================================ */
 
+/* --- B) La card respira al pasar el cursor ---
+   Sustituye al `shimmer` que corría infinito en `.pieza:hover::after`
+   (estaba declarado dos veces: colecciones.css Y animaciones.css).
+   El shimmer sigue disponible en `root.css`; aquí se apaga el bucle
+   infinito y el borde pasa a latir con un ritmo lento que se detiene
+   solo cuando el cursor se va. box-shadow NO toca el layout. */
+.pieza:hover::after {
+  animation: respirarCard 4.2s ease-in-out infinite;
+}
+@keyframes respirarCard {
+  0%, 100% { opacity: .35; background-position: 0% 50%; }
+  50%      { opacity: 1;   background-position: 100% 50%; }
+}
+/* La card enlazada tiene su propio borde de hover declarado en
+   colecciones.css; aquí sólo se le da el mismo ritmo que a las demás. */
+.pieza--enlace:hover::after {
+  animation: respirarCard 4.2s ease-in-out infinite;
+}
+
 /* --- Accesibilidad: con movimiento reducido, todo quieto y visible --- */
 @media (prefers-reduced-motion: reduce) {
   .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta,
