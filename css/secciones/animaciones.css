@@ -333,6 +333,23 @@ html.sin-js .fade-in { opacity: 1 !important; transform: none !important; animat
   to   { opacity: 1; transform: none; }
 }
 
+/* --- G) Llegar a un ancla no es un salto seco ---
+   Al entrar por `#seccion` (menú, enlace compartido, «volver
+   arriba») el navegador salta de golpe. La sección deja de aparecer
+   de golpe y sube 8px con un fade corto. Sólo Y y opacity. */
+:target {
+  animation: llegadaAncla .55s var(--ease-out-expo) both;
+  /* El respaldo NO es 72px: en este proyecto el JS publica --header-h y el
+     valor que usan las demás secciones cuando no está es 84px (ambar.css,
+     amonites.css, dinosaurios-chile.css). Se usa el MISMO o el ancla cae
+     12px arriba de donde cae en el resto del sitio. */
+  scroll-margin-top: calc(var(--header-h, 84px) + 12px);
+}
+@keyframes llegadaAncla {
+  from { opacity: .35; transform: translateY(8px); }
+  to   { opacity: 1;   transform: none; }
+}
+
 /* --- Accesibilidad: con movimiento reducido, todo quieto y visible --- */
 @media (prefers-reduced-motion: reduce) {
   .hero__lema, .hero__titulo, .hero__desc, .hero__cta, .hero__datos, .hero__tarjeta,
