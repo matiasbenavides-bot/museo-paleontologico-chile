@@ -156,7 +156,7 @@
      en adelante. Medido en celular: con lazy en todas, las últimas (isotelus)
      quedaban sin cargar y su marco se veía vacío. Las dos primeras se cargan
      siempre (`eager`), porque son las que el usuario ve al entrar. */
-  function figurasHTML(imgs, masBandera) {
+  function figurasHTML(imgs, masBandera, acotado) {
     if (!imgs || !imgs.length) return "";
     /* 🔴 CR-81 (2026-10-19): el tope era 3, pero el Word del museo trae un
        bloque de CUATRO imágenes (image14..17, en «La zona caudal o pigidio»).
@@ -174,6 +174,10 @@
     var mas = "";
     if (masBandera === "ancho") mas = " tri-figs--mas tri-figs--ancho";
     else if (masBandera) mas = " tri-figs--mas";
+    /* CR-118 — `anchoAcotado` (marca por sección): grilla más angosta para la
+       única sección cuya imagen se veía demasiado grande. Se suma como clase
+       y el tope vive en el CSS, para no meter números acá. */
+    if (acotado) mas += " tri-figs--acotado";
     return '<div class="tri-figs tri-figs--' + n + mas + '">' +
       imgs.map(function (im, k) {
         var f = FICHAS[im.credito] || {};
@@ -245,7 +249,7 @@
                '<h' + (sub ? "3" : "2") + ' class="tri-sec__t">' + tx(s.titulo) +
                  '</h' + (sub ? "3" : "2") + '>' +
                cuerpo +
-               figurasHTML(s.imagenes, s.figurasGrandes) +
+               figurasHTML(s.imagenes, s.figurasGrandes, s.anchoAcotado) +
                leyendasHTML(s.imagenes) +
              "</section>";
     }).join("");

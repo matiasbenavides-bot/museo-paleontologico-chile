@@ -1094,6 +1094,16 @@ const TRILOBITES = {
       titulo: "¿Qué son los trilobites?",
       nivel: 2,
       figurasGrandes: true,  /* CR-109: se pintaba <60%% de su resolución nativa */
+      /* CR-118 (2026-11-12) — el dueño: «las imágenes de esta sección son
+         demasiado grandes». MEDIDO a 1440 px: la 2ª imagen es CUADRADA
+         (900x900 nativos) y no la limitaba el alto sino el ancho de la celda,
+         así que se pintaba a 506x506 — al tope. En las otras secciones de 2
+         celdas el material es ancho y bajo (162-258 px de alto), por eso ahí no
+         se nota. Con `anchoAcotado` la grilla baja a 700 px: las dos imágenes
+         quedan 336x504 y 336x336, y la vertical no pierde nada.
+         ⚠️ Es marca POR SECCIÓN, igual que `figurasGrandes`: no toca ninguna
+            otra de las 9 páginas. */
+      anchoAcotado: true,
       parrafos: [
         "Los trilobites fueron un grupo común de artrópodos marinos paleozoicos, provistos de un caparazón cuticular dorsal mineralizado en carbonatos (exoesqueleto) y fosilizable, la que permitió que tengan gran representación en el registro fósil. Estuvieron presentes durante 300 millones de años en todos los mares y océanos de la era Paleozoica (que va desde hace 541 a 252 millones de años). Desde que aparecen en el Cámbrico Temprano, su diversidad alcanzó valores elevados en el Cámbrico Tardío y Ordovícico, para decrecer durante el Silúrico-Devónico y reducirse aún más en el Paleozoico Tardío (Carbonífero), antes de extinguirse a fines del Pérmico.",
       ],

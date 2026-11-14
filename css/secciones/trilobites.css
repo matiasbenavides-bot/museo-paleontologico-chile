@@ -168,6 +168,30 @@
 .tri-figs--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .tri-figs--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 
+/* 🔴 CR-118 (2026-11-12) — «las imágenes de esta sección son demasiado grandes»
+   («¿Qué son los trilobites?»).
+
+   MEDIDO a 1440 px: la 2ª imagen de esa sección es CUADRADA (900x900 nativos).
+   En una grilla de 2 con celdas de 508 px, la limitaba el ANCHO y no el alto,
+   así que se pintaba a 506x506 — al tope de la celda. En las otras secciones de
+   2 celdas el material es ancho y bajo (162-258 px de alto), y por eso ahí no
+   se nota: la que se veía grande era esta.
+
+   Tope de grilla a 700 px, medido con la página real:
+       tope 1040 -> img1 348x522   img2 506x506   (la queja)
+       tope  700 -> img1 336x504   img2 336x336   <- las dos parejas
+   La vertical (533x800) casi no pierde: 348 -> 336. La cuadrada baja de 506 a
+   336, que es lo que corrige el exceso.
+
+   ⚠️ Es marca POR SECCIÓN en el dato (`anchoAcotado: true`), igual que
+      `figurasGrandes`: no toca ninguna de las otras 9 páginas.
+   ⚠️ NO se baja a 620: ahí la vertical empezaría a encogerse de verdad
+      (296x444) y esa imagen ya está en 533 nativos, sin margen para más. */
+.tri-figs.tri-figs--acotado,
+.tri-figs.tri-figs--acotado.tri-figs--mas {
+  max-width: min(100%, 700px);
+}
+
 /* 🔴 CR-117 (2026-11-12) — «en PC las imágenes de 1 en 1 están demasiado
    grandes; deberían ser del tamaño cuando están en 2 celdas».
 
