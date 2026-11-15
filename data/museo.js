@@ -146,7 +146,16 @@ const MUSEO = {
     autores: [
       { nombre: "MATIAS IGNACIO BENAVIDES MARAMBIO", rol: "Creación de la página",
         correo: "matiasbenavidesmarambio@gmail.com" },
-      { nombre: "BETSABE PAOLA CACERES PAILLALEF",  rol: "Ilustraciones" }
+      /* CR-123 (DEC-123): el rol era "Ilustraciones" a secas y dejaba suponer
+         que Betsabé ilustró las IMÁGENES DEL MUSEO (las láminas, los fósiles).
+         El dueño precisó, textual: «solo los 9 dibujos de las colecciones».
+         Es decir: el arte DENTRO de cada card de colección (campo `arte` de
+         `COLECCIONES.piezas`, 9 PNG en assets/img/pieza-*.png), y nada más:
+         no las láminas de las subpáginas, no las fotos, no la paleta.
+         Se acota en el propio rol para que no haya que explicarlo aparte.
+         ⚠️ NO poner "de las 9 colecciones": el número quedaría obsoleto en
+         cuanto se agregue una colección, y un crédito no lleva contador. */
+      { nombre: "BETSABE PAOLA CACERES PAILLALEF",  rol: "Ilustraciones de las colecciones" }
     ]
   },
 
