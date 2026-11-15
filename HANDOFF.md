@@ -175,6 +175,74 @@ Chromium: `~/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome`
 
 ---
 
+## CR-123 / CR-124 (2026-11-13, continuación) — crédito acotado y la card pegada
+
+### CR-123 — El rol de Betsabé
+
+Decía **«Ilustraciones»** a secas y dejaba suponer que ilustró **las imágenes del
+museo** (las láminas, los fósiles, las fotos). El dueño precisó, textual:
+**«solo los 9 dibujos de las colecciones»**.
+
+Eso es el campo `arte` de `COLECCIONES.piezas`: **9 PNG** (`assets/img/pieza-*.png`),
+el dibujo **dentro** de cada card de colección. Nada más.
+
+Rol nuevo: **«Ilustraciones de las colecciones»**, en las **dos copias**
+(`data/museo.js` y el respaldo de `index.html`).
+
+- ⚠️ **NO** poner «de las 9 colecciones»: el número queda obsoleto al agregar una
+  colección, y un crédito no lleva contador.
+- ⚠️ El nombre **no** se toca: `BETSABE PAOLA CACERES PAILLALEF`, sin tildes.
+- Medido a 320/360/390/768/1280/1920: **una línea** (19 px) en todos los anchos.
+
+### CR-124 — La card pegada en C.E.C (celular)
+
+El dueño: «en cec hay una card pegada a la otra en formato celular», y aclaró que es
+**de arriba hacia abajo**, no lateral.
+
+Medido a 390 px, con el `.pm-card` apilado (`display: block`; la grilla es
+`min-width: 900px` y ahí no aplica):
+
+```
+pm-card__dir        bot 5242  ->  logo      20px
+pm-card__logo       bot 5270  ->  cabeza    22px
+pm-card__cabeza     bot 5591  ->  fotos     20px
+cec-muestra__fotos  bot 5613  ->  datos     20px
+cec-muestra__datos  bot 6187  ->  CAJA       0px   <<< el defecto
+cec-muestra__caja   bot 6746  ->  enlace    20px
+```
+
+**Causa:** `.cec-muestra__datos` recibe `margin-bottom: 0` **dentro** de la media
+query de 900 px (ahí es celda de grilla y el aire lo pone el `gap` del padre), y esa
+propiedad **no se repone fuera**. `.cec-muestra__caja` no tiene margen propio: en la
+grilla usa `align-self: start`, que en flujo normal **no hace nada**.
+
+**Arreglo:** el aire va en **la caja por arriba**, no en los datos por abajo —
+funciona en los dos regímenes y no duplica margen cuando comparten fila. Valor
+`clamp(16px, 2vw, 22px)`, el mismo de las otras costuras. Limitado a
+`max-width: 899.98px` para no tocar el escritorio.
+
+Medido después, **en vivo**: la costura más chica es **16 px** en 320/390/768; en
+1280 la más chica es 22 px. 0 desborde, 0 errores JS.
+
+### 🔴 La lección de método
+
+Se midió **tres veces mal** antes de dar con el defecto:
+
+1. Se buscó `gap: 0` entre cards **hermanas de una grilla** → 0 resultados, porque
+   en celular **el `.pm-card` no es grilla**: es `display: block` y los bloques se
+   apilan por flujo normal. Un `gap` en CSS no tendría nada que ver.
+2. Se probó el script en `proyecto-cec.html` por un lapsus del pedido; el defecto
+   era del **index**.
+3. Se intentó leer el defecto en capturas de pantalla sin poder abrirlas.
+
+⇒ **Lo que funcionó fue medir las costuras entre HERMANOS DIRECTOS de un
+`display: block`**, contando `top` de uno menos `bot` del anterior, y comparar la
+más chica contra las demás. Ahí el 0 px saltó solo.
+⇒ Cuando el dueño dice «una card pegada a otra», **la primera pregunta es
+horizontal o vertical**, y la segunda es **en qué sección**. Sin eso se mide a ciegas.
+
+---
+
 ## CR-122 (2026-11-13) — DEC-122: los detalles de interfaz
 
 **Bitácora completa: `BITACORA-2026-11-13.md`.** Todo publicado y verificado en vivo.
