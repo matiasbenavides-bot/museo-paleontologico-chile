@@ -470,6 +470,39 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   align-items: stretch;
 }
+
+/* 🔴 CR-124 (2026-11-13) — EN CELULAR LAS 4 TARJETAS DE DATO QUEDABAN
+   PEGADAS A LA CAJA DE ABAJO. Reportado por el dueño: «en cec hay una card
+   pegada a la otra en formato celular».
+
+   MEDIDO a 390 px, con la card apilada en vertical (display: block, la grilla
+   de escritorio es min-width 900px y acá no aplica):
+
+     pm-card__dir        bot 5242  ->  logo      20 px
+     pm-card__logo       bot 5270  ->  cabeza    22 px
+     pm-card__cabeza     bot 5591  ->  fotos     20 px
+     cec-muestra__fotos  bot 5613  ->  datos     20 px
+     cec-muestra__datos  bot 6187  ->  CAJA       0 px   <<< el defecto
+     cec-muestra__caja   bot 6746  ->  enlace    20 px
+
+   O sea: las CUATRO tarjetas de dato caen justo sobre el borde de
+   cec-muestra__caja, sin un solo píxel de aire.
+
+   CAUSA: `.cec-muestra__datos` recibe `margin-bottom: 0` dentro de la media
+   query de 900 px (donde es una celda de grilla y el gap lo pone el padre),
+   pero esa propiedad NO se repone fuera. Y `.cec-muestra__caja` no tiene
+   margen propio: en la grilla usa `align-self: start`, que en flujo normal
+   no hace nada.
+
+   ARREGLO: el aire se le da a LA CAJA por arriba, no a los datos por abajo.
+   Así funciona en los dos regímenes sin tocar el escritorio (donde la caja ya
+   recibe su separación del `column-gap` / `gap` de la grilla) y no se duplica
+   el margen cuando datos y caja comparten fila.
+   El valor es el MISMO que usan las otras costuras de esta card: 20 px, que
+   es el `clamp(16px, 2vw, 22px)` de `.cec-muestra__fotos` a este ancho. */
+@media (max-width: 899.98px) {
+  .cec-muestra__caja { margin-top: clamp(16px, 2vw, 22px); }
+}
 /* CR-62e (2026-10-15): el dueño pidió probar las mini cards TRANSPARENTES.
    Se midió el contraste antes de decidir (fórmula WCAG, mínimo AA = 4.5):
 
