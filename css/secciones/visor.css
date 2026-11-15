@@ -234,17 +234,46 @@ body.mpv-bloqueo { overflow: hidden; }
 }
 .mpv__img {
   display: block;
-  /* 🔴 CR-105 — `max-height: 100%` NO se resuelve aquí.
-     MEDIDO en horizontal (viewport 844×390): el lienzo mide 337 px de alto y
-     la imagen salía con 511 px — desbordaba 121 px hacia abajo. El `100%`
-     de una pista de grid `auto` no da un alto de referencia, así que el
-     tope se ignoraba en silencio (la imagen se veía «grande» por accidente,
-     cortada por el `overflow:hidden`).
-     Se usa `vh` menos lo que ocupan barra y padding: es una referencia REAL
-     que sí se resuelve. En escritorio no cambia nada porque el lienzo ya es
-     menor que ese tope. */
+  /* 🔴 CR-125 (2026-11-13) — EL TOPE DE LA IMAGEN SALE DE SU CAJA, NO DE `vh`.
+
+     DEFECTO REPORTADO POR EL DUEÑO: «algunas imágenes del visor se hacen
+     demasiado grandes y no se ven completamente».
+
+     MEDIDO sobre las 9 páginas con visor, en 4 viewports — 27 imágenes se
+     cortaban. El peor caso, trilobites/word/01.jpg a 1280×800:
+
+         lienzo  1280 × 544
+         imagen   469 × 704        ->  160 px RECORTADOS abajo
+         max-height computado: 704px  (= 100vh - 96px, con vh=800)
+
+     La imagen obedecía un tope calculado sobre el ALTO DE LA VENTANA, pero el
+     espacio real que tiene es el de `.mpv__escena`, que es mucho menor porque
+     arriba viven la barra y los filtros y abajo la tira de miniaturas. Como el
+     lienzo tiene `overflow: hidden`, todo lo que sobresale se recorta y el
+     visitante nunca ve la imagen completa. No falla en consola: la imagen
+     simplemente aparece cortada.
+
+     ESTE MISMO DEFECTO YA SE «ARREGLÓ» DOS VECES (CR-103 y CR-105) cambiando
+     el número del `calc`: primero 100%, después 100vh-96px, y abajo en el modo
+     apaisado otro 100vh-64px. Cada vez se acertó un caso y se rompió otro,
+     porque el problema no era el número: era la REFERENCIA (`vh`).
+
+     ⚠️ `max-height: 100%` NO sirve acá, y está medido: el lienzo es
+        `position: absolute` con `inset: 0`, o sea SIN `height` declarado, y un
+        porcentaje contra un alto `auto` no se resuelve (la imagen se quedaba en
+        800 px, corte 256). Tampoco sirve darle `height: 100%` ni `position:
+        static` al lienzo: medido, el corte empeoraba (300 y 480 px).
+
+     LA SOLUCIÓN: el JS publica en el lienzo el alto REAL de la escena, en px,
+     como `--mpv-alto`. El tope de la imagen se calcula contra ESE número, que
+     es justo la caja que la contiene. Medido después, en 6 viewports
+     (320×568 a 1920×1080): corte = 0 en todos, y la imagen se ve MÁS grande que
+     antes en pantalla ancha (544 px contra 469) sin recortarse.
+
+     El respaldo `100vh - 96px` se conserva SÓLO por si el JS no corre: sin él,
+     una imagen sin tope taparía los controles. */
   max-width: 100%;
-  max-height: calc(100vh - 96px);
+  max-height: var(--mpv-alto, calc(100vh - 96px));
   width: auto; height: auto;
   object-fit: contain;
   border-radius: var(--radius-sm);
@@ -409,8 +438,10 @@ body.mpv-bloqueo { overflow: hidden; }
   .mpv__titulo { font-size: .86rem; }
   .mpv__titulo small { display: none; }
   .mpv__escena { padding: 4px 44px; }
-  /* La barra mide ~56 px en este modo: el tope se ajusta a lo que queda. */
-  .mpv__img { max-height: calc(100vh - 64px); }
+  /* CR-125: este `calc` a mano era el tercer intento de adivinar el tope.
+     Ahora el valor lo publica el JS con el alto REAL de la escena, así que
+     aquí no se pone ninguno: el `--mpv-alto` del bloque .mpv__img ya sirve.
+     (Si el JS no corre, el respaldo de ese bloque cubre este caso.) */
   .mpv__flecha { top: 50%; transform: translateY(-50%); position: absolute; z-index: 2; }
   .mpv__flecha[data-dir="prev"] { left: 4px; }
   .mpv__flecha[data-dir="next"] { right: 4px; }

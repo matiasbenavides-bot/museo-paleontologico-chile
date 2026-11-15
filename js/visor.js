@@ -348,6 +348,10 @@
       if (im.ancho) img.width = im.ancho;
       if (im.alto) img.height = im.alto;
       img.src = im.src;
+      /* CR-125 — el pie (con la descripción, que puede ser larga) aparece o
+         desaparece DEBAJO de la escena y le cambia el alto. Por eso el tope de
+         la imagen se recalcula al FINAL de esta función, cuando el pie ya está
+         escrito (ver `reajustarAltoEscena` más abajo, después de `img.alt`). */
       /* Si ya estaba en caché, `onload` puede no llegar: se fuerza el estado. */
       if (img.complete && img.naturalWidth) {
         cargando.hidden = true;
@@ -364,6 +368,10 @@
       }
 
       img.alt = im.texto || "";
+
+      /* CR-125 — AHORA sí: el pie ya está escrito arriba, así que el alto de
+         la escena está completo y el tope se puede calcular bien. */
+      reajustarAltoEscena(img);
 
       cuenta.textContent = (est.pos + 1) + " / " + total;
       sub.textContent = im.secTitulo
@@ -560,10 +568,63 @@
 
       actualizarAvisoGiro();
 
+      /* 🔴 CR-125 — Publicar el alto REAL de la escena como --mpv-alto.
+         El tope de la imagen estaba en `calc(100vh - 96px)`, medido sobre la
+         VENTANA, cuando el espacio real es el de `.mpv__escena` (arriba la
+         barra y los filtros, abajo la tira). Resultado medido: 27 imágenes
+         recortadas por el `overflow: hidden` del lienzo, hasta 160 px.
+         Aquí se mide la escena y se le pasa el número al CSS.
+         ⚠️ Va DESPUÉS de `requestFullscreen` a propósito: en pantalla completa
+         el alto disponible cambia, y medirlo antes daría el valor viejo. */
+      publicarAltoEscena();
+
       /* El foco entra al visor: sin esto, el teclado seguiría navegando la
          página de atrás y Esc no llegaría al listener correcto. */
       var cerrar = capa.querySelector("[data-mpv-cerrar]");
       if (cerrar) cerrar.focus({ preventScroll: true });
+    }
+
+    /* CR-125 — Mide `.mpv__escena` y publica su alto en `--mpv-alto`.
+       Se lee el ALTO DEL CONTENIDO, no el del relleno: la escena tiene
+       `padding` (10–22 px) y ese aire no lo puede ocupar la imagen, así que
+       se descuenta. Sin el descuento, la imagen vuelve a pasarse por unos
+       píxeles — que es justo el defecto que se está corrigiendo.
+       `clientHeight` ya excluye bordes y barra de scroll pero INCLUYE el
+       padding, por eso se restan los dos paddings por separado.
+
+       🔴 SEGUNDO DEFECTO, medido: llamarla una sola vez al abrir NO alcanza.
+       Al abrir, la escena todavía no tiene su altura final porque la imagen
+       aún no cargó y el pie aún no apareció. Medido en dinosaurios-chile/03 a
+       1280×620: al abrir publicó 362 px y la escena terminó midiendo 342 —
+       la imagen se seguía pasando 20 px. Por eso:
+         · se publica ya, para que haya un valor desde el primer instante;
+         · se vuelve a publicar al cargar cada imagen (evento `load`);
+         · y una última vez en el siguiente frame, para el caso en que el
+           navegador recalculó la grilla después (fuentes, tira, pie).
+       Publicar de más es inofensivo: es el mismo número o uno más exacto. */
+    function publicarAltoEscena() {
+      if (!est.capa) return;
+      var escena = est.capa.querySelector(".mpv__escena");
+      var lienzo = est.capa.querySelector("[data-mpv-lienzo]");
+      if (!escena || !lienzo) return;
+      var cs = window.getComputedStyle(escena);
+      var usable = escena.clientHeight
+                 - (parseFloat(cs.paddingTop) || 0)
+                 - (parseFloat(cs.paddingBottom) || 0);
+      if (!(usable > 0)) return;              /* geometría aún no resuelta */
+      lienzo.style.setProperty("--mpv-alto", Math.floor(usable) + "px");
+    }
+
+    /* Publica ahora, al cargar la imagen, y en el frame siguiente. */
+    function reajustarAltoEscena(img) {
+      publicarAltoEscena();
+      if (img && !img.__mpvAltoEscena) {
+        img.__mpvAltoEscena = true;
+        img.addEventListener("load", publicarAltoEscena);
+      }
+      if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(publicarAltoEscena);
+      }
     }
 
     function cerrar() {
@@ -811,9 +872,24 @@
         alternarZoom();
       });
 
-      /* Giro del teléfono: el aviso se recalcula solo. */
+      /* Giro del teléfono: el aviso se recalcula solo.
+         CR-125: y el tope de la imagen TAMBIÉN. Al girar el teléfono cambian
+         el alto de la escena y el de la barra; si `--mpv-alto` no se recalcula,
+         la imagen se queda con el tope de la orientación anterior y vuelve a
+         cortarse (o se queda chica). Medido: era una de las causas del corte
+         en apaisado. */
       window.addEventListener("resize", function () {
-        if (est.abierto) actualizarAvisoGiro();
+        if (!est.abierto) return;
+        actualizarAvisoGiro();
+        publicarAltoEscena();
+      });
+
+      /* Pantalla completa: al entrar y salir cambia el alto disponible. Este
+         evento no lo cubre `resize` en todos los navegadores. */
+      document.addEventListener("fullscreenchange", function () {
+        if (!est.abierto) return;
+        publicarAltoEscena();
+        actualizarAvisoGiro();
       });
 
       document.addEventListener("wheel", function (ev) {
