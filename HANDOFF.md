@@ -175,7 +175,92 @@ Chromium: `~/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome`
 
 ---
 
-## CR-123 / CR-124 (2026-11-13, continuación) — crédito acotado y la card pegada
+## CR-125 (2026-11-13) — El visor ya no corta ninguna imagen
+
+Reportado por el dueño: **«algunas imágenes del visor se hacen demasiado grandes
+y no se ven completamente»**.
+
+### El número
+
+**27 imágenes recortadas** sobre las 9 páginas con visor, en 4 viewports. El peor
+caso, `trilobites/word/01.jpg` a 1280×800:
+
+```
+lienzo  1280 × 544
+imagen   469 × 704     ->  160 px RECORTADOS abajo
+max-height computado: 704px  (= 100vh − 96px, con vh=800)
+```
+
+La imagen obedecía un tope calculado sobre el **alto de la ventana**, cuando el
+espacio real es el de `.mpv__escena`: arriba viven la barra y los filtros, abajo
+la tira de miniaturas. El lienzo tiene `overflow: hidden`, así que lo que sobraba
+se recortaba y **el visitante nunca veía la imagen completa**. No falla en consola.
+
+### 🔴 Esto ya se había «arreglado» dos veces
+
+CR-103 y CR-105 cambiaron **el número** del `calc`, y en apaisado había un tercer
+`100vh - 64px`. Cada vez se acertó un caso y se rompió otro, porque el problema
+**no era el número: era la referencia** (`vh`).
+
+### Lo que se probó y NO sirve (medido — no repetirlo)
+
+| Intento | Resultado |
+|---|---|
+| `max-height: 100%` en la imagen | imagen 800 px, **corte 256**. El lienzo es `absolute` con `inset: 0`, **sin `height` declarado**: un porcentaje contra alto `auto` no se resuelve |
+| `height: 100%` en el lienzo | **corte 300** (peor) |
+| `position: static` en el lienzo | **corte 480** (peor) |
+| `width/height: 100%` en la imagen | imagen **1921 px** de alto (el `%` tampoco resuelve) |
+
+Se verificó con el **CSSOM** (`CSS.getMatchedStylesForNode`) que **sólo una regla**
+fijaba el tamaño: `.mpv__img`.
+
+### El arreglo
+
+El JS mide `.mpv__escena` y publica su **alto útil** (`clientHeight` menos
+`padding`) en `--mpv-alto` sobre el lienzo:
+
+```css
+max-height: var(--mpv-alto, calc(100vh - 96px));
+```
+
+El respaldo queda **sólo** por si el JS no corre (una imagen sin tope taparía los
+controles). Se quitó el `calc` a mano del modo apaisado.
+
+### 🔴 Segundo defecto: publicar una vez al abrir NO alcanza
+
+La escena todavía no tiene su altura final (la imagen no cargó, el pie no
+apareció). En `dinosaurios-chile/03` a 1280×620 publicó **362** y la escena
+terminó midiendo **342** → seguía cortando **20 px**.
+
+Por eso se publica: al abrir · al cargar cada imagen (`load`) · en el frame
+siguiente (`requestAnimationFrame`) · al terminar de escribir el pie · y se
+recalcula en `resize` y `fullscreenchange` (el giro del teléfono y la pantalla
+completa cambian el alto).
+
+### Medido después (en vivo, 9 páginas × 4 viewports)
+
+```
+imágenes cortadas:  27 -> 0
+aprovechamiento del alto/ancho limitante: 86 % – 100 %
+en pantalla ancha la imagen se ve MÁS grande que antes (544 px vs 469)
+y sin recortarse, porque antes el tope la frenaba antes de llenar la caja
+```
+
+### Sonda
+
+```bash
+.venv/bin/python scripts/mide-visor-recorte.py [url_base]
+```
+Abre el visor en las 9 páginas, recorre **todas** las figuras y compara el borde
+inferior del `<img>` con el del `.mpv__lienzo`. Sale con código 1 si alguna se
+corta.
+
+⇒ **Regla para el visor: el tope de la imagen nunca se calcula en `vh`.** El
+espacio disponible lo sabe `.mpv__escena`, y se lo tiene que decir al CSS.
+
+---
+
+## CR-123 / CR-124 (2026-11-13) — crédito acotado y la card pegada
 
 ### CR-123 — El rol de Betsabé
 
