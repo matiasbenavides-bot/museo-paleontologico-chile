@@ -1,6 +1,35 @@
 # HANDOFF — Museo Paleontológico de Chile (MPCH)
 
-Última actualización: **2026-11-12** (CR-105b → CR-112 — visor en las 9 páginas,
+Última actualización: **2026-11-18** (CR-126 — visibilidad en Google + la ficha
+del mapa de tiburones)
+
+## 🔴 SESIÓN ABIERTA — CR-126 está COMMITEADO Y SIN PUBLICAR
+
+`master` local = `8bd6f8b`, **un commit por delante de `origin/master`**.
+
+**El push falla por autenticación**, no por el código:
+
+```
+remote: Invalid username or token. Password authentication is not supported.
+fatal: Authentication failed
+```
+
+Medido el 2026-11-18:
+
+| Fuente de credenciales | Estado |
+|---|---|
+| `~/.git-credentials` | no existe |
+| llaves SSH | no existen |
+| `GITHUB_TOKEN` en `~/.hermes/.env` | no está |
+| `gh auth` (`hosts.yml`) | **token inválido** |
+| `credential.helper` | `!gh auth git-credential` ← depende de `gh`, que está roto |
+
+⇒ **Primer paso de la próxima sesión: arreglar la autenticación y publicar.**
+No volver a hacer el trabajo: ya está commiteado y verificado.
+
+---
+
+Última actualización previa: **2026-11-12** (CR-105b → CR-112 — visor en las 9 páginas,
 tamaños de imagen en todas las colecciones, tipografía real)
 
 Ruta local: `/mnt/c/dev/museo-mpch/`
