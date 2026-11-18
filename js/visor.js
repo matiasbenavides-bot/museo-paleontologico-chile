@@ -112,7 +112,12 @@
           alto: im.alto || 0,
           texto: texto,
           secId: s.id || "",
-          secTitulo: s.titulo || ""
+          secTitulo: s.titulo || "",
+          /* 🔴 CR-128 (DEC-128) — el visor es la vía MÁS FÁCIL para guardar una
+             imagen (clic derecho sobre la imagen grande), así que necesita saber
+             si tiene autoría confirmada. Se copia tal cual del dato; el visor NO
+             decide nada por su cuenta: si no viene, la imagen no se protege. */
+          derechos: im.derechos || null
         });
       });
 
@@ -194,6 +199,9 @@
         '<div class="mpv__lienzo" data-mpv-lienzo>' +
           '<span class="mpv__cargando" data-mpv-cargando hidden>Cargando…</span>' +
           '<img class="mpv__img" data-mpv-img alt="" decoding="async" draggable="false">' +
+          /* CR-128: velo del visor. Sólo se muestra cuando la imagen tiene
+             autoría confirmada; el visor lo prende/apaga por imagen. */
+          '<span class="mpd__velo mpd__velo--visor" data-mpv-velo hidden aria-hidden="true"></span>' +
           '<span class="mpv__pista" data-mpv-pista hidden>Toca la imagen para acercar</span>' +
           '<span class="mpv__gira" data-mpv-gira hidden>Gira el teléfono para verla completa</span>' +
         "</div>" +
@@ -365,6 +373,53 @@
       } else {
         pie.innerHTML = "";
         pie.hidden = true;
+      }
+
+      /* 🔴 CR-128 (DEC-128) — aviso de autoría DENTRO del visor.
+         El visor es la vía más fácil para sacar una imagen: se muestra grande,
+         sola y sin la página alrededor. Si la figura tiene autoría confirmada,
+         el aviso va en el pie del visor y las defensas se activan.
+         `est.capa` recibe `data-mpd-vis="1"` para que las reglas de
+         js/protege-imagenes.js (velo + atajos) se apliquen a ESTA capa. */
+      var avisoVis = est.capa.querySelector("[data-mpv-derechos]");
+      if (im.derechos) {
+        est.capa.setAttribute("data-mpd-vis", "1");
+        if (!avisoVis) {
+          avisoVis = document.createElement("p");
+          avisoVis.className = "mpd__aviso mpd__aviso--visor";
+          avisoVis.setAttribute("data-mpv-derechos", "");
+          avisoVis.innerHTML = '<span class="mpd__aviso-icono" aria-hidden="true">©</span>' +
+            '<span class="mpd__aviso-texto"></span>';
+          /* Va DEBAJO del pie, dentro de la escena, para que no empuje la
+             imagen: el tope de alto se recalcula después (CR-125). */
+          pie.parentNode.insertBefore(avisoVis, pie.nextSibling);
+        }
+        avisoVis.querySelector(".mpd__aviso-texto").textContent =
+          im.derechos.aviso || "Todos los derechos reservados.";
+        avisoVis.hidden = false;
+      } else {
+        est.capa.removeAttribute("data-mpd-vis");
+        if (avisoVis) avisoVis.hidden = true;
+      }
+
+      /* La imagen grande del visor tampoco se arrastra ni se selecciona. */
+      img.setAttribute("draggable", "false");
+      if (im.derechos) img.classList.add("mpd__img");
+      else img.classList.remove("mpd__img");
+
+      /* El velo del visor: se prende sólo con autoría confirmada. Va sobre la
+         imagen y NO sobre las flechas ni el botón de zoom (que son hermanos
+         dentro del lienzo), así que la navegación sigue intacta.
+         ⚠️ MEDIDO: la imagen del visor NO ocupa el lienzo (`place-items:center`
+         + `width/height:auto`), así que un velo con `inset:0` medía el LIENZO
+         (1440×615) en vez de la imagen (800×535) y tapaba las flechas. El velo
+         se ajusta a la imagen real, y se reajusta si cambia de tamaño. */
+      var veloVis = est.capa.querySelector("[data-mpv-velo]");
+      if (veloVis) {
+        veloVis.hidden = !im.derechos;
+        if (im.derechos && typeof ajustarVeloVisor === "function") {
+          ajustarVeloVisor(img, veloVis);
+        }
       }
 
       img.alt = im.texto || "";
@@ -624,6 +679,43 @@
       }
       if (window.requestAnimationFrame) {
         window.requestAnimationFrame(publicarAltoEscena);
+      }
+    }
+
+    /* ---------- CR-128 — el velo de derechos se pega a la IMAGEN ----------
+       La imagen del visor no llena el lienzo: se centra (`place-items:center`)
+       y mide lo que le deja su `max-height`. Un velo `inset:0` tomaba el lienzo
+       entero —medido 1440×615 contra una imagen de 800×535— y además se comía
+       la franja de las flechas. Acá se calcula el rect REAL de la imagen dentro
+       del lienzo y el velo se posiciona sobre él.
+       Se recalcula en `load`, en resize y en cada cambio de imagen, porque el
+       zoom (2,4×) y el giro del teléfono mueven la caja. */
+    function ajustarVeloVisor(img, velo) {
+      if (!img || !velo || !img.parentNode) return;
+      var lienzo = img.parentNode;
+      var aplicar = function () {
+        var ri = img.getBoundingClientRect();
+        var rl = lienzo.getBoundingClientRect();
+        if (!ri.width || !ri.height) return;      /* aún sin geometría */
+        /* La imagen sufre `transform: scale()` al ampliar: el rect ya lo
+           refleja, así que basta con trasladarlo al sistema del lienzo. */
+        velo.style.left = (ri.left - rl.left) + "px";
+        velo.style.top = (ri.top - rl.top) + "px";
+        velo.style.width = ri.width + "px";
+        velo.style.height = ri.height + "px";
+        velo.style.right = "auto";
+        velo.style.bottom = "auto";
+      };
+      aplicar();
+      if (window.requestAnimationFrame) window.requestAnimationFrame(aplicar);
+      if (!velo.__mpdEscucha) {
+        velo.__mpdEscucha = true;
+        img.addEventListener("load", aplicar);
+        if (window.ResizeObserver) {
+          new ResizeObserver(aplicar).observe(img);
+        } else {
+          window.addEventListener("resize", aplicar);
+        }
       }
     }
 

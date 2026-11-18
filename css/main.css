@@ -59,3 +59,8 @@
    revertir cualquier bloque de animaciones no choque con estas reglas. */
 @import url("secciones/animaciones-reduced.css");
 @import url("secciones/responsive.css");
+/* CR-128 (DEC-128): aviso de autoría y disuasión de copia en las figuras cuyo
+   dato trae `derechos: {...}`. Va AL FINAL a propósito: necesita pisar el
+   `position` del marco de cada colección (tib-, amo-, tri-, amb-) para que el
+   velo quede contenido, y esas hojas se importan antes. */
+@import url("secciones/protege-imagenes.css");

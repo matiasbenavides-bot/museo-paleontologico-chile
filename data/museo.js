@@ -2242,15 +2242,31 @@ const AMMONITES = {
         "En el sector también encontramos evidencia costera continental como la presencia de rizaduras de arena o ripple marks, que son ondulaciones de la arena producidas por el agua en movimiento en la orilla del mar, ríos o lagos. Otro elemento característico es la presencia de cuarteamientos poligonales que se producen en sectores de sequedad del terreno como producto de una sequía.",
       ],
       imagenes: [
+        /* 🔴 CR-128 (2026-11-18) — el dueño confirmó que ESTAS DOS imágenes de la
+           Formación Lo Valdés son suyas y solo suyas. Se marca `derechos: true`
+           para que `js/protege-imagenes.js` les ponga el aviso de autoría y la
+           disuasión de copia (DEC-128). OJO: `derechos` NO es «protegida»; es
+           «autoría confirmada por el dueño». Las 154 imágenes sin crédito del
+           sitio NO lo llevan hasta que él confirme cada una (DEC-018: atribuir
+           no es permiso; y a la inversa, un candado sin autoría confirmada es
+           una atribución falsa). */
         {
           src: "assets/img/amonites/word/29.jpg",
           ancho: 800, alto: 535,
-          alt: "Ammonites — imagen 29 del documento del museo",
+          alt: "Formación Lo Valdés — estratos casi verticales en la cordillera",
+          derechos: {
+            autor: "Juan Castillo Cornejo",
+            aviso: "Juan Castillo Cornejo. Prohibida su reproducción sin autorización."
+          }
         },
         {
           src: "assets/img/amonites/word/30.jpg",
           ancho: 800, alto: 534,
-          alt: "Ammonites — imagen 30 del documento del museo",
+          alt: "Formación Lo Valdés — afloramiento de calizas y lutitas grises",
+          derechos: {
+            autor: "Juan Castillo Cornejo",
+            aviso: "Juan Castillo Cornejo. Prohibida su reproducción sin autorización."
+          }
         },
       ],
     },

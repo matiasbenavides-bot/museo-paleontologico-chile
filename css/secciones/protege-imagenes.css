@@ -1,0 +1,123 @@
+/* ============================================================
+   MPCH — protege-imagenes.css     (CR-128 · DEC-128 · 2026-11-18)
+   ============================================================
+
+   Sólo estilos. La lógica vive en js/protege-imagenes.js.
+
+   🔴 LO QUE ESTE ARCHIVO **NO** HACE: bloquear capturas de pantalla.
+   Es imposible desde una web (medido: no hay evento ni API de captura; el
+   SO lee los píxeles antes que el navegador). Lo que sí hace es quitar la
+   vía fácil: clic derecho, arrastre y selección. El aviso de derechos es
+   la parte que tiene valor legal; el resto es disuasión.
+   ============================================================ */
+
+/* ---------- El velo ----------
+   Cubre la imagen y absorbe los gestos. `pointer-events: auto` en el VELO
+   (nunca en el <img>) es lo que permite que el clic derecho muera acá sin
+   dejar la imagen inalcanzable para el visor.
+
+   ⚠️ No lleva `cursor: not-allowed` ni borde: el visitante no debe sentir que
+   la imagen está «rota»; el aviso de abajo ya explica la condición. */
+.mpd__velo {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  pointer-events: auto;
+  /* Frena el «mantener pulsado» en celular (menú de guardar imagen). */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  background: transparent;
+}
+
+/* El marco necesita ser el contexto de posicionamiento del velo. */
+[data-mpd="1"] .tib-fig__marco,
+[data-mpd="1"] .amo-fig__marco,
+[data-mpd="1"] .tri-fig__marco,
+[data-mpd="1"] .amb-fig__marco,
+[data-mpd="1"] figure > span,
+[data-mpd="1"] figure > div {
+  position: relative;
+}
+
+/* La imagen pierde selección y arrastre. NO pierde `pointer-events`. */
+.mpd__img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+/* ---------- Aviso de autoría ----------
+   Va bajo la figura, como una línea más del pie — sin caja ni borde, para que
+   no compita con la ficha de la imagen. El © en color acento lo separa del
+   texto del pie, que habla de contenido y no de derechos. */
+.mpd__aviso {
+  display: flex;
+  align-items: baseline;
+  gap: .45em;
+  margin: 0;
+  padding: 10px 14px 14px;
+  font-size: clamp(.72rem, .95vw, .78rem);
+  line-height: 1.5;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
+  /* El aviso NO se puede seleccionar en bloque con el resto del texto: si
+     alguien arrastra toda la sección, el texto de la imagen no viaja con él. */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.mpd__aviso-icono {
+  color: var(--border-accent);
+  font-weight: 700;
+  line-height: 1;
+  flex: none;
+}
+
+.mpd__aviso-texto {
+  min-width: 0;
+}
+
+/* Cuando la figura ya tiene <figcaption>, el aviso entra después de él y el
+   pie no debe dejar un hueco doble. */
+[data-mpd="1"] figcaption + .mpd__aviso {
+  padding-top: 8px;
+}
+
+/* ============================================================
+   CR-128 — EL VISOR
+   ============================================================
+   🔴 POR QUÉ ACÁ IMPORTA MÁS QUE EN LA PÁGINA
+   En la página la imagen mide ~500 px; en el visor se muestra sola, grande y
+   sin el resto del sitio alrededor. Es LA vía para sacarla limpia. Por eso el
+   visor repite el tratamiento: velo sobre la imagen grande + aviso en su pie.
+
+   ⚠️ El velo va sobre el <img>, NO sobre el lienzo entero: las flechas de
+   anterior/siguiente son HERMANAS de la imagen dentro de `.mpv__lienzo`, así
+   que quedan libres. Si se pusiera `pointer-events` en el lienzo, la
+   navegación del visor se rompería. */
+
+/* El velo del visor se pega a la imagen, no al lienzo. */
+.mpd__velo--visor {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+.mpd__velo--visor[hidden] { display: none; }
+
+/* El pie del visor no debe quedar pegado al aviso. */
+.mpd__aviso--visor {
+  margin: 0 auto;
+  padding: 10px 0 0;
+  border-top: 0;
+  justify-content: center;
+  text-align: center;
+  font-size: clamp(.72rem, .9vw, .78rem);
+}
+.mpd__aviso--visor[hidden] { display: none; }
