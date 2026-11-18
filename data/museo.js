@@ -1477,7 +1477,8 @@ const TRILOBITES = {
         {
           src: "assets/img/trilobites/word/31.png",
           ancho: 737, alto: 316,
-          alt: "Espinas, tubérculos y tridentes — imagen 31 del documento del museo"
+          alt: "Walliserops trifurcatus con su tridente frontal",
+          pie: "*Walliserops trifurcatus*"
         },
       ],
     },
