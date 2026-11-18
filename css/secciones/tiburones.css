@@ -193,6 +193,24 @@
 /* El zoom va SOLO en la imagen de adentro (la caja no cambia de tamaño). */
 .tib-fig:hover .tib-fig__marco img { transform: scale(1.035); }
 
+/* 🔴 CR-126 — figura de ALTO LIBRE (`altoLibre: true` en el dato).
+   MEDIDO: el mapa de localidades mide 473x1102; con el `max-height` del marco
+   se pintaba a 144 px de ancho (la imagen se queda con lo que le deja el alto),
+   y el dueño pidió «la imagen grande». Acá el marco suelta su tope de alto y la
+   figura toma su ancho NATIVO como máximo: escala con `max-width: 100%`, así
+   que sigue sin recortarse ni desbordar. `min-height` se anula para que la caja
+   no imponga un piso a una imagen que ya define su tamaño. */
+.tib-fig--alto-libre .tib-fig__marco {
+  min-height: 0;
+  max-height: none;
+}
+.tib-fig--alto-libre .tib-fig__marco img {
+  max-height: none;
+  width: 100%;
+  max-width: min(100%, 473px);
+  height: auto;
+}
+
 .tib-fig figcaption {
   padding: 12px 14px 14px;
   font-size: clamp(.78rem, 1.1vw, .83rem);
@@ -200,6 +218,82 @@
   margin-top: auto;
 }
 .tib-fig figcaption b { color: var(--text-soft); font-weight: 600; }
+
+/* ---------- CR-126 — MAPA + FICHA DE LOCALIDADES, LADO A LADO ----------
+   Pedido del dueño, textual: «la imagen debería estar a la derecha en columnas
+   según (1)(2 y así, no abajo» → y al precisarlo eligió: «las 21 localidades
+   como LISTA numerada (1)(2)(3) en 2 columnas a la derecha de la imagen».
+
+   Lo que manda, en este orden:
+   1. La IMAGEN NO SE ENCOGE. Un intento anterior con `display:flex` la dejó en
+      144x335 px porque la ficha, con 21 renglones, fijaba el alto de la fila.
+      Por eso el par va en GRID: las columnas son `max-content 1fr`, y la
+      imagen toma su ancho natural (473 px) sin que el alto de la ficha la
+      afecte — en grid cada celda no impone su alto a la vecina.
+   2. La ficha ocupa el resto del ancho y reparte los 21 items en 2 COLUMNAS
+      de texto reales (`column-count`), no en dos bloques.
+   3. `align-items: start`: la ficha se pega arriba, no se estira al alto del
+      mapa de 1102 px. */
+.tib-fig--ficha { margin: 0; }
+.tib-fig--ficha__par {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: clamp(18px, 2.6vw, 30px);
+  align-items: start;
+}
+.tib-fig--ficha .tib-fig__marco { display: block; }
+
+.tib-ficha {
+  padding: clamp(14px, 2vw, 20px) clamp(16px, 2.2vw, 24px);
+  border-left: 3px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Título de la ficha. Es el mismo texto que antes iba en el pie de la figura;
+   ahora vive acá SOLO (el pie quedó con la atribución del autor). */
+.tib-ficha__t {
+  margin: 0 0 clamp(10px, 1.4vw, 14px);
+  font-size: clamp(.84rem, 1.05vw, .92rem);
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* La lista de localidades. UNA SOLA COLUMNA de texto.
+   🔴 Medido y corregido en CR-126: con `columns: 2` los 21 items se partían en
+   dos columnas de 46 caracteres dentro de una caja de 535 px, y el dueño pidió
+   «el texto de solo una columna mejor». Una columna de ancho completo lee
+   corrido, como el párrafo del Word del que sale.
+   ⚠️ `list-style: none` a propósito: el número YA viene en el texto del Word
+   («1) La Portada…»). Con un <ol> normal se leería «1. 1) La Portada…». */
+.tib-ficha__l {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 1;
+}
+.tib-ficha__item {
+  /* `break-inside: avoid` mantiene cada localidad entera: sin esto, si algún
+     día vuelve a haber columnas, se partiría «12) Punta / Topocalma.». */
+  break-inside: avoid;
+  margin: 0 0 .5em;
+  font-size: clamp(.78rem, .98vw, .86rem);
+  line-height: 1.55;
+  color: var(--text-soft);
+  text-wrap: pretty;
+}
+.tib-ficha__item:last-child { margin-bottom: 0; }
+.tib-ficha__item i { font-style: italic; }
+
+/* ---- Pantallas angostas: la ficha cae DEBAJO de la imagen.
+   Por debajo de ~860 px la imagen (473 px) no deja ancho útil al lado. */
+@media (max-width: 860px) {
+  .tib-fig--ficha__par { grid-template-columns: 1fr; }
+}
 
 /* ---------- Cierre ---------- */
 .tib-cierre {

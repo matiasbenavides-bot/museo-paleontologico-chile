@@ -1,0 +1,20 @@
+# robots.txt — Museo Paleontológico de Chile
+# CR-126 (2026-11-18)
+#
+# PROPÓSITO
+#   Declarar el sitemap para que Google, Bing y el resto de los buscadores
+#   descubran las 12 páginas sin esperar a que las encuentren por enlaces.
+#   Un sitemap declarado acá se procesa en días; sin sitemap, una subpágina
+#   enlazada sólo desde una tarjeta puede tardar semanas.
+#
+# NO SE BLOQUEA NADA
+#   Todo el sitio es público y queremos que lo indexen. No hay /admin,
+#   ni área privada, ni parámetros basura que valga la pena excluir.
+
+User-agent: *
+Allow: /
+
+# El sitemap va con la URL ABSOLUTA del dominio de GitHub Pages y con la
+# subcarpeta del repositorio, porque el sitio NO cuelga de la raíz:
+#   https://matiasbenavides-bot.github.io/museo-paleontologico-chile/
+Sitemap: https://matiasbenavides-bot.github.io/museo-paleontologico-chile/sitemap.xml

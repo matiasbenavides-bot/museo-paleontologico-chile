@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  sitemap.xml — Museo Paleontológico de Chile · CR-126 (2026-11-18)
+
+  PROPÓSITO
+    Listar las 12 páginas públicas del sitio para que los buscadores las
+    rastrean sin depender de que alguien las enlace.
+
+  REGLAS QUE SE RESPETAN ACA
+    - Las URLs son ABSOLUTAS y llevan la subcarpeta del repo
+      (/museo-paleontologico-chile/). Si se olvida, apuntan a la raiz de
+      github.io y el sitemap queda invalido.
+    - `lastmod` sale de git (`%cs` sobre el HTML), o sea de la ULTIMA VEZ QUE
+      ESE ARCHIVO CAMBIO DE VERDAD. No se pone la fecha de hoy: una fecha
+      falsa hace que Google desconfie del sitemap entero.
+    - Sin priority ni changefreq: Google los ignora desde 2017.
+    - index.html va con la URL SIN el nombre del archivo: es la misma pagina
+      y tener las dos versiones se lee como contenido duplicado.
+
+  REGLA DE ESTE ARCHIVO
+    Dentro de un comentario XML NO puede aparecer la secuencia de dos guiones
+    seguidos. Rompe el parseo con "not well-formed (invalid token)" y el punto
+    que informa el parser no es el real, lo que hace perder tiempo buscando en
+    la linea equivocada. Medido en CR-126: el culpable era el flag de formato
+    de fecha de un comando git escrito dentro de este comentario.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/</loc>
+    <lastmod>2026-11-15</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/amonites.html</loc>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/ambar.html</loc>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/curriculum.html</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/dinosaurios-chile.html</loc>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/dinosaurios.html</loc>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/huellas.html</loc>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/proyecto-cec.html</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/pterosaurios.html</loc>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/reptiles.html</loc>
+    <lastmod>2026-11-10</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/tiburones.html</loc>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matiasbenavides-bot.github.io/museo-paleontologico-chile/trilobites.html</loc>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+
+</urlset>

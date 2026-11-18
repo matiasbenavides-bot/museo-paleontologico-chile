@@ -154,27 +154,107 @@
      ⚠️ El pie y el crédito van JUNTOS en el mismo <figcaption>. En este Word
      17 de los 18 pies nombran autor (Matías Palma, Juan Castillo, José Lemos
      Caro), así que separar el crédito de la imagen sería atribución falsa. */
+  /* `figuraHTML(im, k)` — una figura suelta (marco + pie). Se usa tal cual en
+     la grilla normal y como bloque propio cuando la figura lleva ficha. */
+  function figuraHTML(im, k) {
+    var pie = im.pie ? tx(im.pie) : "";
+    var dim = (im.ancho && im.alto)
+      ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
+    var carga = k === 0 ? ' loading="eager"' : ' loading="lazy"';
+    /* 🔴 CR-126 — `altoLibre`: el marco NO limita por alto. Un mapa vertical
+       (473x1102) limitado por `max-height` se pintaba a 144 px de ancho. No es
+       una marca global: sólo la lleva la figura que el dueño pidió "grande". */
+    return '<figure class="tib-fig' + (im.altoLibre ? " tib-fig--alto-libre" : "") + '">' +
+             '<span class="tib-fig__marco">' +
+               '<img src="' + esc(im.src) + '"' + dim +
+                 ' alt="' + esc(im.alt) + '"' + carga + ' decoding="async">' +
+             "</span>" +
+             (pie ? "<figcaption><b>" + pie + "</b></figcaption>" : "") +
+           "</figure>";
+  }
+
+  /* `figuraConFichaHTML(im, k)` — la figura CON su ficha al lado.
+     Grid de 2 columnas: [imagen] [ficha]. La imagen conserva su marco y su
+     pie de siempre; la ficha es el título + el <ol> de localidades.
+
+     ⚠️ Va a nivel del IIFE, NO anidada dentro de figurasHTML: una función
+     declarada dentro de otra no existe para el resto y la página no pinta
+     nada (defecto de CR-86d, invisible para `node --check`). */
+  function figuraConFichaHTML(im, k) {
+    var pie = im.pie ? tx(im.pie) : "";
+    var dim = (im.ancho && im.alto)
+      ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
+    var carga = k === 0 ? ' loading="eager"' : ' loading="lazy"';
+
+    /* Las localidades ya vienen numeradas en el texto del Word («1) …»), así
+       que el <ol> va con `list-style: none` y el número se pinta desde el
+       propio texto: un <ol> normal lo duplicaría (1. 1) …). */
+    var items = im.fichaLista.map(function (t) {
+      return '<li class="tib-ficha__item">' + tx(t) + "</li>";
+    }).join("");
+
+    return '<figure class="tib-fig tib-fig--ficha' +
+             (im.altoLibre ? " tib-fig--alto-libre" : "") + '">' +
+             '<div class="tib-fig--ficha__par">' +
+               '<span class="tib-fig__marco">' +
+                 '<img src="' + esc(im.src) + '"' + dim +
+                   ' alt="' + esc(im.alt) + '"' + carga + ' decoding="async">' +
+               "</span>" +
+               '<aside class="tib-ficha">' +
+                 (im.fichaTitulo
+                   ? '<p class="tib-ficha__t">' + tx(im.fichaTitulo) + "</p>"
+                   : "") +
+                 '<ol class="tib-ficha__l">' + items + "</ol>" +
+               "</aside>" +
+             "</div>" +
+             (pie ? "<figcaption><b>" + pie + "</b></figcaption>" : "") +
+           "</figure>";
+  }
+
   function figurasHTML(imgs) {
     if (!imgs || !imgs.length) return "";
+
+    /* 🔴 CR-126 (2026-11-18) — «deja la ficha en texto AL LADO … hazlo SEPARADO
+       DE LA IMAGEN».
+       La figura del mapa trae 21 localidades que en el Word van dentro del pie.
+       En vez de un pie de 990 caracteres bajo una imagen vertical, la imagen se
+       publica como SIEMPRE (misma figura, mismo ancho, misma grilla: intacta) y
+       la ficha de texto va APARTE, como bloque propio de la sección —no metido
+       en la figura, no encima del pie—.
+       · El texto no se recorta ni se reescribe: es el párrafo del Word tal cual.
+       · `im.fichaFiguras` es un campo NUEVO y sólo lo lee este archivo: el visor
+         (DEC-085) sigue indexando `imagenes[]` con `pie || alt`. */
+    /* 🔴 CR-126 — «la imagen NO se toca; las localidades, como LISTA numerada
+       (1)(2)(3) en columnas A LA DERECHA de la imagen».
+       La figura del mapa trae 21 localidades que en el Word van dentro del pie.
+       · La IMAGEN se publica como cualquier figura del capítulo (misma grilla,
+         mismo marco, sin encogerse) — es lo que el dueño pidió.
+       · La ficha (título + <ol> de 21 items) va en la MISMA fila, a la derecha.
+       · El texto no se recorta ni se reescribe: `fichaLista` sale del párrafo
+         del Word partido por «N) » (ver scripts/parte-localidades.py, que
+         verifica con difflib que no se perdió ni una palabra).
+       · Mecanismo de layout: `.tib-fig--ficha` es GRID de 2 columnas
+         (imagen | ficha). No es flex: en flex la ficha fijaba el alto y la
+         imagen vertical quedaba en 144x335 (defecto medido y rechazado). */
+    var conFicha = imgs.filter(function (im) {
+      return im && (im.fichaLista && im.fichaLista.length);
+    });
+    if (conFicha.length) {
+      return '<div class="tib-figs tib-figs--figs-ficha">' +
+        imgs.map(function (im, k) {
+          return (im.fichaLista && im.fichaLista.length)
+            ? figuraConFichaHTML(im, k)
+            : figuraHTML(im, k);
+        }).join("") +
+      "</div>";
+    }
     /* ⚠️ CR-85: MEDIDO en este Word — la sección de megalodon trae CINCO imágenes
        (en ammonites el máximo era 3, por eso allá alcanzaba con --2/--3). Acá el
        tope sube a 5: sin esto, las cinco caían en una grilla de 3 columnas y
        quedaban 3 + 2 desbalanceadas. El CSS define --1, --2, --3 y --5. */
     var n = imgs.length >= 5 ? 5 : (imgs.length >= 3 ? 3 : imgs.length);
     return '<div class="tib-figs tib-figs--' + n + '">' +
-      imgs.map(function (im, k) {
-        var pie = im.pie ? tx(im.pie) : "";
-        var dim = (im.ancho && im.alto)
-          ? ' width="' + im.ancho + '" height="' + im.alto + '"' : "";
-        var carga = k === 0 ? ' loading="eager"' : ' loading="lazy"';
-        return '<figure class="tib-fig">' +
-                 '<span class="tib-fig__marco">' +
-                   '<img src="' + esc(im.src) + '"' + dim +
-                     ' alt="' + esc(im.alt) + '"' + carga + ' decoding="async">' +
-                 "</span>" +
-                 (pie ? "<figcaption><b>" + pie + "</b></figcaption>" : "") +
-               "</figure>";
-      }).join("") +
+      imgs.map(function (im, k) { return figuraHTML(im, k); }).join("") +
     "</div>";
   }
 

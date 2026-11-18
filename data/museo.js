@@ -4683,22 +4683,67 @@ const TIBURONES = {
           "zonas, y han estado presentes desde el Triásico hasta el presente.",
       ],
       imagenes: [
+        /* 🔴 CR-126 (2026-11-18) — «deja la ficha en texto AL LADO, porque es
+           mucho texto: la imagen grande a la IZQUIERDA y el texto a la DERECHA».
+           El mapa (473x1102, vertical) traía sus 21 localidades ENTERAS dentro
+           del `pie`, así que la ficha se apilaba DEBAJO de la figura y quedaba
+           una lista de 21 renglones bajo una imagen que ocupa una pantalla.
+           El texto NO se reescribe ni se corta: sale del `pie` y entra ÍNTEGRO
+           en `fichaFiguras` (mismo párrafo, ya verificado en el Word).
+           El `pie` se queda con el título de la figura + la atribución del
+           autor, como el resto de los pies del capítulo (17 de 18 nombran
+           autor). `fichaFiguras` es un campo NUEVO y sólo lo lee
+           js/tiburones.js → figurasHTML(): no toca el visor (DEC-085, que
+           indexa `imagenes[]` y usa `pie || alt`) ni ninguna otra colección. */
         {
           src: "assets/img/tiburones/word/12.jpg",
           ancho: 473, alto: 1102,
+          /* CR-126: el mapa vertical (473x1102) queda en 144 px de ancho porque
+             `.tib-fig__marco` lo limita por ALTO (`max-height`). Medido: con el
+             tope de alto liberado pinta a 473 px, su tamaño nativo. */
+          altoLibre: true,
+          /* CR-126 — «la imagen NO se toca; las localidades, como LISTA
+             numerada (1)(2)(3) en columnas A LA DERECHA de la imagen».
+             El título de la figura va aparte (`fichaTitulo`) y las 21
+             localidades van UNA POR ITEM (`fichaLista`), así el render las
+             pinta como lista numerada en columnas y no como un párrafo
+             corrido de 990 caracteres.
+             🔴 EL TEXTO NO SE REESCRIBE: es el párrafo del Word, partido por
+             el patrón «N) ». `scripts/parte-localidades.py` verifica con
+             difflib que concatenar título + lista dé EXACTAMENTE las mismas
+             palabras (medido: 0 diferencias). Si alguien edita estos items a
+             mano, vuelve a correr ese script para comprobarlo. */
+          fichaTitulo: "Mapa de las principales localidades con tiburones fósiles en Chile (Mapa Juan Castillo Cornejo).",
+          fichaLista: [
+            "1) La Portada y Caleta Herradura de Mejillones, Región de Antofagasta.",
+            "2) Cerro Negro, Región de Antofagasta.",
+            "3) Punta del Viento, Región de Antofagasta.",
+            "4) La Coipa, Región de Atacama.",
+            "5) Caldera, Región de Atacama, Bahía Inglesa.",
+            "6) Coquimbo, Región de Coquimbo.",
+            "7) Horcón, Región de Valparaíso.",
+            "8) Algarrobo, Región de Valparaíso.",
+            "9) Lo Abarca, Región de Valparaíso.",
+            "10) Navidad-Matanzas, Región de O'Higgins.",
+            "11) Lo Valdés, Región Metropolitana.",
+            "12) Punta Topocalma.",
+            "13) Caleta Loanco, Región del Maule.",
+            "14) Distintas localidades en la costa de la Región del Biobío.",
+            "15) Cerro San Miguel, Talcahuano.",
+            "16) Isla de Chiloé, Región de los Lagos.",
+            "17) Región de Aysén.",
+            "18) Sierra Baguales, Región de Magallanes.",
+            "19) Cerro Dorotea, Puerto Natales, Región de Magallanes.",
+            "20) Río de Las Minas, Península de Brunswick, Región de Magallanes.",
+            "21) Isla de James Ross e Isla Marambio, territorio Antártico."
+          ],
           alt: "Mapa de localidades con tiburones fósiles en Chile",
-          pie: "Mapa de las principales localidades con tiburones fósiles en Chile (Mapa Juan Castillo " +
-           "Cornejo). 1) La Portada y Caleta Herradura de Mejillones, Región de Antofagasta. 2) Cerro " +
-           "Negro, Región de Antofagasta. 3) Punta del Viento, Región de Antofagasta. 4) La Coipa, " +
-           "Región de Atacama. 5) Caldera, Región de Atacama, Bahía Inglesa. 6) Coquimbo, Región de " +
-           "Coquimbo. 7) Horcón, Región de Valparaíso. 8) Algarrobo, Región de Valparaíso. 9) Lo Abarca, " +
-           "Región de Valparaíso. 10) Navidad-Matanzas, Región de O'Higgins. 11) Lo Valdés, Región " +
-           "Metropolitana. 12) Punta Topocalma. 13) Caleta Loanco, Región del Maule. 14) Distintas " +
-           "localidades en la costa de la Región del Biobío. 15) Cerro San Miguel, Talcahuano. 16) Isla " +
-           "de Chiloé, Región de los Lagos. 17) Región de Aysén. 18) Sierra Baguales, Región de " +
-           "Magallanes. 19) Cerro Dorotea, Puerto Natales, Región de Magallanes. 20) Río de Las Minas, " +
-           "Península de Brunswick, Región de Magallanes. 21) Isla de James Ross e Isla Marambio, " +
-           "territorio Antártico."
+          /* CR-126: el TÍTULO ya no va acá — vive en `fichaTitulo`, sobre la
+             lista de localidades. Repetirlo en el pie lo publicaba dos veces
+             (debajo de la imagen y otra vez en la ficha). El pie conserva SOLO
+             la atribución del autor, que no puede despegarse de la imagen
+             (DEC-012): 17 de los 18 pies del capítulo nombran autor. */
+          pie: "Mapa: Juan Castillo Cornejo."
         },
       ],
     },
