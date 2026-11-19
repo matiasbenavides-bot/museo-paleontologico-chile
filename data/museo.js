@@ -59,8 +59,15 @@ const MUSEO = {
   lema: "Museo Paleontológico de Chile, 40 años trayendo el pasado al presente.",
   lemaA: "Museo Paleontológico de Chile",
   lemaB: "40 años trayendo el pasado al presente.",
+  /* CR-129: la descripcion decia «El primer museo chileno que centra su muestra
+     en la paleontologia». El dueño corrigio el 2026-11-19: es ERRONEA Y
+     OBSOLETA, porque en Chile hay mas museos de paleontologia. Se reemplaza por
+     el argumento verificable: 40 años (lema, DEC-033) y fosiles DE CHILE.
+     Este campo es la FUENTE UNICA de la descripcion del enlace: lo lee
+     scripts/aplica-seo.py para el JSON-LD de las 12 paginas. Cambiarlo aca y
+     volver a correr el script basta; NO editar los 12 HTML a mano. */
   descripcionCorta:
-    "El primer museo chileno que centra su muestra en la paleontología y en los restos fósiles.",
+    "Museo del Cámbrico al Cuaternario en el Parque O'Higgins, Santiago. 40 años reuniendo fósiles de Chile: trilobites, ammonites, ámbar, tiburones, dinosaurios y huellas.",
 
   /* --- Contacto (medido del sitio real, 2026-10-11)
          DEC-011: teléfono actualizado +56 9 9349 2714, con WhatsApp.
@@ -409,7 +416,7 @@ const QUIENES_SOMOS = {
   parrafos: [
     "Su muestra ha sido diseñada y estructurada de acuerdo a criterios expuestos por investigadores del área: arquitectos, biólogos, paleontólogos y la asesoría de técnicos museólogos.",
     "Si bien el recinto para esta muestra es pequeño, se han aprovechado todos los espacios para entregar conocimientos y para que los visitantes puedan apreciar piezas paleontológicas de nuestro país y del mundo.",
-    "Es el primer museo chileno que centra su muestra en la paleontología y en restos fósiles, que ayudan a comprender la vida pasada de nuestro país y nuestro planeta.",
+    "Es un museo chileno que centra su muestra en la paleontología y en restos fósiles, que ayudan a comprender la vida pasada de nuestro país y nuestro planeta.",
     "Su principal objetivo apunta a difundir el conocimiento y protección de la paleontología nacional, acercando a la gente a esta ciencia de gran interés para la comunidad, pero de escasa difusión en los medios."
   ],
   mision: "Difundir y proteger el patrimonio paleontológico nacional.",
